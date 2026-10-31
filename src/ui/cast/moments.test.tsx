@@ -42,7 +42,7 @@ describe('spec 31 living friends', () => {
     cleanup();
     expect(render(<Cast name="Kachhua" pose="cheer" moment="settle" at={1} breathe />).container.querySelector('svg')!.classList.contains('cast-breathe')).toBe(false);
   });
-  it('an idle friend blinks only while it is on screen, every 8-14 s', () => {
+  it('an idle friend blinks only while it is on screen, every 5-7 s (spec 45a)', () => {
     vi.useFakeTimers();
     let callback: (entries: { isIntersecting: boolean }[]) => void = () => {};
     const observe = vi.fn();
@@ -52,7 +52,9 @@ describe('spec 31 living friends', () => {
     act(() => { vi.advanceTimersByTime(20_000); });
     expect(moment(view.container)).toBe('');
     act(() => { callback([{ isIntersecting: true }]); });
-    act(() => { vi.advanceTimersByTime(14_000); });
+    act(() => { vi.advanceTimersByTime(4_999); });
+    expect(moment(view.container)).toBe('');
+    act(() => { vi.advanceTimersByTime(2_001); });
     expect(moment(view.container)).toBe('blink');
     act(() => { callback([{ isIntersecting: false }]); });
     const blinked = moveNode(view.container);
@@ -81,6 +83,30 @@ describe('spec 31 living friends', () => {
     expect(moveNode(view.container)).not.toBe(shown);
     vi.unstubAllGlobals();
     vi.useRealTimers();
+  });
+  it('each friend blinks at its own steady 5-7 s gap, and a tap is the short squash (spec 45a)', () => {
+    vi.useFakeTimers();
+    const callbacks: ((entries: { isIntersecting: boolean }[]) => void)[] = [];
+    vi.stubGlobal('IntersectionObserver', class { constructor(cb: (entries: { isIntersecting: boolean }[]) => void) { callbacks.push(cb); } observe() {} disconnect() {} });
+    const view = render(<><Cast name="Moti" pose="idle" /><Cast name="Mor" pose="idle" /></>);
+    act(() => { for (const callback of callbacks) callback([{ isIntersecting: true }]); });
+    const svgs = [...view.container.querySelectorAll('svg')];
+    const blinks: number[][] = [[], []];
+    for (let at = 100; at <= 15_000; at += 100) {
+      const before = svgs.map(svg => svg.querySelector('.cast-move'));
+      act(() => { vi.advanceTimersByTime(100); });
+      svgs.forEach((svg, index) => { if (svg.getAttribute('data-moment') === 'blink' && svg.querySelector('.cast-move') !== before[index]) blinks[index]!.push(at); });
+    }
+    for (const times of blinks) {
+      expect(times.length).toBeGreaterThanOrEqual(2);
+      expect(times[0]).toBeGreaterThanOrEqual(5_000);
+      expect(times[0]).toBeLessThan(7_100);
+      expect(Math.abs(times[1]! - times[0]! - times[0]!)).toBeLessThanOrEqual(100); // steady: the same gap again (100 ms steps)
+    }
+    vi.unstubAllGlobals();
+    vi.useRealTimers();
+    cleanup();
+    expect(moment(render(<Cast name="Chiku" moment="tap" at={1} />).container)).toBe('tap');
   });
   it('a resting friend can blink: its closed eyes carry the eye class', () => {
     const view = render(<Cast name="Kachhua" pose="rest" moment="blink" at={1} />);

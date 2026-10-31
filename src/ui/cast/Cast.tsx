@@ -10,7 +10,7 @@ export const poses: Pose[] = ['idle', 'cheer', 'think', 'rest'];
  * play it: a moment plays when `at` first becomes non-zero and again each time it changes, never on a plain re-render.
  * `breathe` adds the slow loop on a rest pose (after `settle` when both are set).
  */
-export type FriendMoment = 'blink' | 'nod' | 'hop' | 'tilt' | 'wave' | 'settle';
+export type FriendMoment = 'blink' | 'nod' | 'hop' | 'tilt' | 'wave' | 'settle' | 'tap';
 export type CastProps = { pose?: Pose; size?: number; title?: string; moment?: FriendMoment; at?: number; breathe?: boolean };
 
 /** The trigger's change count: hand it to <Cast at>. Starts at `initial` (1 plays the moment on mount). */
@@ -22,21 +22,21 @@ export function useFriendMoment(trigger: unknown, initial = 0): number {
 
 const seedOf = (text: string) => { let h = 2166136261; for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 16777619); return h >>> 0; };
 /**
- * An idle friend blinks once every 8-14 s (seeded per friend), only while it is on screen and the page is visible, and
- * never over a moment that is still playing (Codex A item 128).
+ * An idle friend blinks once every 5-7 s (spec 45a: a steady gap set per friend, so friends side by side never blink
+ * together), only while it is on screen and the page is visible, and never over a moment that is still playing (Codex A item 128).
  */
 function useIdleBlink(node: RefObject<SVGSVGElement | null>, on: boolean, seed: string, lastMoment: RefObject<number>): number {
   const [blinks, setBlinks] = useState(0);
   useEffect(() => {
     const svg = node.current;
     if (!on || !svg || typeof IntersectionObserver === 'undefined') return;
-    let timer: number | undefined, n = 0, inView = false;
+    let timer: number | undefined, inView = false;
+    const gap = 5000 + seedOf(seed) % 2000;
     const stop = () => { window.clearTimeout(timer); timer = undefined; };
     const next = () => {
       stop();
       if (!inView || document.visibilityState === 'hidden') return;
-      n += 1;
-      timer = window.setTimeout(() => { if (Date.now() - lastMoment.current > 1300) setBlinks(count => count + 1); next(); }, 8000 + seedOf(`${seed}:${n}`) % 6000);
+      timer = window.setTimeout(() => { if (Date.now() - lastMoment.current > 1300) setBlinks(count => count + 1); next(); }, gap);
     };
     const observer = new IntersectionObserver(([entry]) => { inView = !!entry?.isIntersecting; next(); });
     observer.observe(svg);

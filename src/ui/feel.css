@@ -21,3 +21,9 @@ button:not([class]):disabled, button.secondary:disabled { box-shadow: none; }
 
 .card, .ui-card { box-shadow: inset 0 1px 0 var(--card-highlight), var(--shadow-1); }
 .deck-card, .ui-deck-card { box-shadow: inset 0 1px 0 var(--card-highlight), var(--shadow-2); }
+
+/* Notebook controls press by scale, eased back; no colour flash. */
+.breath-opener button, .square-holds { transition: transform var(--dur-fast) var(--ease-out); }
+.breath-opener button:active, .square-holds:active { transform: scale(.97); }
+@media (prefers-reduced-motion: reduce) { .breath-opener button:active, .square-holds:active { transform: none; } }
+:root[data-motion='reduce'] .breath-opener button:active, :root[data-motion='reduce'] .square-holds:active { transform: none; }

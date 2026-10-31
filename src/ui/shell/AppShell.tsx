@@ -19,6 +19,8 @@ import { useFocusKeeper } from '../tasks/useTaskBoard';
 import { RULES } from '../../core/rules.config';
 import { DelayedCardSkeleton } from './DelayedCardSkeleton';
 import { back, backDestination, go, initializeHistory, navigationEventName, route, tabOf } from './router';
+import { changeRoute, routeMotionDone } from './routeMotion';
+import { markLinkedEntry } from './entry';
 import { areaOf } from '../areas';
 import { useAreaOverride } from './AreaScope';
 import { TabBar } from './TabBar';
@@ -78,6 +80,8 @@ const PauseSetup = lazy(() => import('../pause/PauseSetup').then(module => ({ de
 
 export function AppShell() {
   const [path, setPath] = useState(route);
+  // The route the screen shows or is crossing over to (popstate and hashchange both fire for one Back).
+  const shownPath = useRef(path);
   // Spec 33 §7: private books imported on this phone join the library; a change re-renders the screen (booksGen).
   const privateRows = useLiveQuery(() => db.privatePacks.toArray(), []);
   const [booksGen, setBooksGen] = useState(0);
@@ -85,6 +89,8 @@ export function AppShell() {
   const [today, setToday] = useState(() => dayKey(Date.now()));
   const [clockTime, setClockTime] = useState(Date.now);
   const [pause, setPause] = useState<{ packageName: string; reason: string; minutes: number } | null>(null);
+  // When the phone last answered whether a Pause card is waiting (the opening breath never covers one).
+  const [pauseCheckedAt, setPauseCheckedAt] = useState(0);
   const nightSettings = useLiveQuery(() => db.settings.toArray(), []);
   const todayTasks = useLiveQuery(() => db.tasks.where('dayKey').equals(today).toArray(), [today]);
   const openingChecked = useRef(false);
@@ -121,8 +127,11 @@ export function AppShell() {
     document.addEventListener('visibilitychange', refreshDate);
     return () => { window.clearInterval(interval); document.removeEventListener('visibilitychange', refreshDate); };
   }, []);
-  useEffect(() => { initializeHistory(); const update = () => { const resolved = route(); if (location.hash !== `#${resolved}`) history.replaceState(history.state ?? { nandi: true }, '', `#${resolved}`); setPath(resolved); }; update(); window.addEventListener('hashchange', update); window.addEventListener('popstate', update); window.addEventListener(navigationEventName(), update); void requestPersist(); return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); }; }, []);
-  useEffect(() => { void consumeWidgetLaunchRoute().then(path => { if (path === '#night' || path === '#plan') go(path.slice(1)); }).catch(error => recordError('promise', error)); }, []);
+  // Spec 45a: a route change cross-fades the page (routeMotion); the route is read when the change applies, so the latest wins.
+  useEffect(() => { initializeHistory(); let first = true; const update = () => { const resolved = route(); if (location.hash !== `#${resolved}`) history.replaceState(history.state ?? { nandi: true }, '', `#${resolved}`); if (resolved === shownPath.current) return; shownPath.current = resolved; changeRoute(() => setPath(route()), { first }); first = false; }; update(); first = false; window.addEventListener('hashchange', update); window.addEventListener('popstate', update); window.addEventListener(navigationEventName(), update); void requestPersist(); return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); }; }, []);
+  // Spec 45a: the opening breath waits for the widget's answer, and a widget open is not an ordinary open.
+  const [widgetChecked, setWidgetChecked] = useState(false);
+  useEffect(() => { void consumeWidgetLaunchRoute().then(path => { if (path === '#night' || path === '#plan') { markLinkedEntry(); go(path.slice(1)); } }).catch(error => recordError('promise', error)).finally(() => setWidgetChecked(true)); }, []);
   useEffect(() => {
     if (!nightSettings || !todayTasks) return;
     const setting = (key: string, fallback: string) => {
@@ -178,6 +187,7 @@ export function AppShell() {
     void LocalNotifications.addListener('localNotificationActionPerformed', async action => {
       const id = action.notification.extra?.reminderId;
       if (typeof id !== 'string') return;
+      markLinkedEntry();
       const destination = id.startsWith('nudge:night:') ? 'night' : id.startsWith('nudge:morning:') ? 'plan' : (await db.reminders.get(id))?.refType === 'session' ? 'train' : 'plan';
       history.replaceState({ nandi: true, deckIndex: 0 }, '', `#${destination}`);
       window.dispatchEvent(new Event(navigationEventName()));
@@ -199,7 +209,8 @@ export function AppShell() {
     let readAt = 0;
     const check = () => {
       if (Capacitor.isNativePlatform() && document.visibilityState === 'visible' && Date.now() - readAt > 600_000) { readAt = Date.now(); void recordOpens(db, readAt).catch(error => recordError('promise', error)); }
-      if (nightPauseAvailable() && document.visibilityState === 'visible') void nightPauseStatus().then(status => { if (status.pendingPackage) setPause({ packageName: status.pendingPackage, reason: status.pendingReason ?? 'night', minutes: Number(status.pendingMinutes ?? 0) }); }).catch(error => recordError('promise', error));
+      if (nightPauseAvailable() && document.visibilityState === 'visible') void nightPauseStatus().then(status => { if (status.pendingPackage) setPause({ packageName: status.pendingPackage, reason: status.pendingReason ?? 'night', minutes: Number(status.pendingMinutes ?? 0) }); }).catch(error => recordError('promise', error)).finally(() => setPauseCheckedAt(Date.now()));
+      else setPauseCheckedAt(Date.now());
     };
     check(); document.addEventListener('visibilitychange', check); window.addEventListener('pageshow', check); window.addEventListener('nandi:night-pause', check);
     return () => { document.removeEventListener('visibilitychange', check); window.removeEventListener('pageshow', check); window.removeEventListener('nandi:night-pause', check); };
@@ -211,7 +222,7 @@ export function AppShell() {
   useEffect(() => {
     if (firstPath.current) { firstPath.current = false; return; }
     const before = document.activeElement;
-    let tries = 0, frame = 0;
+    let tries = 0, frame = 0, live = true;
     let placed: HTMLElement | null = null;
     const place = () => {
       const now = document.activeElement;
@@ -225,8 +236,9 @@ export function AppShell() {
       }
       if (tries++ < 60) frame = requestAnimationFrame(place);
     };
-    frame = requestAnimationFrame(place);
-    return () => cancelAnimationFrame(frame);
+    // Spec 45a: focus moves once the page has finished crossing over.
+    void routeMotionDone().then(() => { if (live) frame = requestAnimationFrame(place); });
+    return () => { live = false; cancelAnimationFrame(frame); };
   }, [path]);
   const tab = tabOf(path);
   const areaOverride = useAreaOverride();
@@ -277,5 +289,5 @@ export function AppShell() {
   else screen = <Plan />;
   const root = ['plan', 'read', 'yatra', 'you'].includes(path);
   // Spec 25: the route's area colours the screen; You stays neutral.
-  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`} data-area={areaOverride ?? areaOf(path)} data-books={booksGen}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}{storageFull && <button type="button" className="auto-backup-warning storage-full" onClick={() => go('you/backup')}>This phone is out of room for NANDI's data. Tap to save a backup copy.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}>{pause.reason === 'night' ? <NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /> : <PauseCard packageName={pause.packageName} close={() => setPause(null)} />}</Suspense>}<OpenMoment night={path === 'night' || nightRouteTime(clockTime, RULES.night.defaultShutdown)} pause={!!pause} />{welcomeNeeded && <Welcome onDone={closeWelcome} />}</div>;
+  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`} data-area={areaOverride ?? areaOf(path)} data-books={booksGen}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}{storageFull && <button type="button" className="auto-backup-warning storage-full" onClick={() => go('you/backup')}>This phone is out of room for NANDI's data. Tap to save a backup copy.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}>{pause.reason === 'night' ? <NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /> : <PauseCard packageName={pause.packageName} close={() => setPause(null)} />}</Suspense>}<OpenMoment night={path === 'night' || nightRouteTime(clockTime, RULES.night.defaultShutdown)} pause={!!pause} pauseCheckedAt={pauseCheckedAt} widgetChecked={widgetChecked} />{welcomeNeeded && <Welcome onDone={closeWelcome} />}</div>;
 }

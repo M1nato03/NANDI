@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { dropCast, finishCast } from './placement';
 import { completedModuleKey } from './UnitScene';
 import { createElement } from 'react';
@@ -24,23 +24,7 @@ describe('cast placement', () => {
   });
 });
 
-describe('opening', () => {
-  it('appears once per cold module run and skips night, pause, and reduced motion', async () => {
-    vi.resetModules();
-    const { shouldOpen } = await import('./OpenMoment');
-    expect(shouldOpen({ night: false, pause: false, reduced: false })).toBe(true);
-    expect(shouldOpen({ night: false, pause: false, reduced: false })).toBe(false);
-    vi.resetModules();
-    const next = await import('./OpenMoment');
-    expect(next.shouldOpen({ night: true, pause: false, reduced: false })).toBe(false);
-    vi.resetModules();
-    const paused = await import('./OpenMoment');
-    expect(paused.shouldOpen({ night: false, pause: true, reduced: false })).toBe(false);
-    vi.resetModules();
-    const reduced = await import('./OpenMoment');
-    expect(reduced.shouldOpen({ night: false, pause: false, reduced: true })).toBe(false);
-  });
-});
+// The opening is spec 45a's square breath now: its rules are in src/core/calm/squareBreath.test.ts.
 
 describe('area accessories (spec 25 §4)', () => {
   it('every friend wears its one accessory in all 4 poses', () => {

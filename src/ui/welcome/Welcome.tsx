@@ -12,7 +12,8 @@ import { go } from '../shell/router';
 import './welcome.css';
 import { useModalFocus } from '../shell/useModalFocus';
 
-const DONE_KEY = 'welcome.done';
+export const WELCOME_DONE_KEY = 'welcome.done';
+const DONE_KEY = WELCOME_DONE_KEY;
 // Set when a friend's challenge link is the very first thing opened: the next visit still gets the first run.
 const DEFERRED_KEY = 'welcome.deferred';
 // The Playwright build skips the first run unless a test asks for it with ?welcome.

@@ -18,12 +18,6 @@
 .cast-gallery-poses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
 .cast-gallery-pose { display: grid; justify-items: center; gap: 3px; min-height: 44px; padding: 4px 0; border: 0; border-radius: var(--radius-row); background: transparent; color: var(--ink); font: 400 12px 'DM Sans', sans-serif; text-transform: capitalize; }
 .cast-gallery-pose .cast-svg { max-width: 100%; }
-.cast-open { position: fixed; inset: 0; z-index: 40; width: 100%; height: 100%; border: 0; border-radius: 0; background: var(--bg); color: var(--ink); display: grid; place-items: center; padding: 0; }
-.cast-open-inner { display: grid; justify-items: center; gap: 8px; animation: cast-arrive 1.1s ease-out both; }
-.cast-open-inner strong { font: 800 32px 'Bricolage Grotesque', sans-serif; letter-spacing: .08em; }
-@keyframes cast-arrive { from { opacity: 0; transform: translateX(-30px) scale(.88); } 70% { opacity: 1; transform: translateX(0) scale(1.04); } to { opacity: 1; transform: translateX(0) scale(1); } }
-@media (prefers-reduced-motion: reduce) { .cast-open { display: none; } .cast-open-inner { animation: none; } }
-:root[data-motion='reduce'] .cast-open { display: none; }
 .cast-unit-scene { position: fixed; z-index: 35; inset: 0; background: var(--bg); display: grid; place-items: center; padding: 20px; }
 .cast-unit-card { width: min(100%, 420px); text-align: center; }
 .cast-unit-friends { display: flex; align-items: end; justify-content: center; gap: 4px; max-width: 100%; }
@@ -49,10 +43,13 @@ body:has(.economy-toast) .screen .cast-svg, body:has(.economy-reveal) .screen .c
 .cast-m-nod > .cast-move { animation: cast-nod .5s ease-in-out 1; }
 .cast-m-hop > .cast-move { animation: cast-moment-hop .6s ease-out 1; }
 .cast-m-tilt > .cast-move { animation: cast-tilt .6s ease-in-out 1; }
-.cast-m-wave .cast-limb { animation: cast-wave .8s ease-in-out 1; }
-.cast-m-settle > .cast-move { animation: cast-settle .8s ease-out 1; }
+.cast-m-wave .cast-limb { animation: cast-wave .6s var(--ease-in-out) 1; }
+.cast-m-settle > .cast-move { animation: cast-settle .6s var(--ease-out) 1; }
+/* Spec 45a: a tap is a short squash and settle (450 ms); the friend stays where it is. */
+.cast-m-tap > .cast-move { animation: cast-tap 450ms var(--ease-out) 1; }
+@keyframes cast-tap { 30% { transform: scale(1.04, .94); } 65% { transform: scale(.98, 1.02); } }
 .cast-breathe > .cast-move { animation: cast-breathe 4s ease-in-out infinite; }
-.cast-m-settle.cast-breathe > .cast-move { animation: cast-settle .8s ease-out 1, cast-breathe 4s ease-in-out .8s infinite; }
+.cast-m-settle.cast-breathe > .cast-move { animation: cast-settle .6s var(--ease-out) 1, cast-breathe 4s ease-in-out .6s infinite; }
 @keyframes cast-blink { 50% { transform: scaleY(.1); } }
 @keyframes cast-nod { 40% { transform: translateY(3px); } }
 @keyframes cast-moment-hop { 40% { transform: translateY(-8px); } 70% { transform: translateY(0); } 85% { transform: translateY(-2px); } }

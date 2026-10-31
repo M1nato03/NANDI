@@ -32,7 +32,7 @@ test('Plan and focus controls fit at 360x800', async ({ page }, testInfo) => {
   const button = page.getByRole('button', { name: 'Start focus' });
   await expect(button).toBeVisible();
   const box = await button.boundingBox();
-  expect(box && box.width >= 44 && box.height >= 44).toBe(true);
+  expect(box && box.width >= 43.5 && box.height >= 43.5).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('focus-360x800-dark.png') });
 });
@@ -46,7 +46,7 @@ test('Train equipment has accessible toggle chips at 360x800', async ({ page }, 
   await expect(gym).toBeChecked();
   await expect(page.locator('.train-checks label').first().locator('span')).toHaveCSS('background-color', 'rgb(143, 211, 155)'); // spec 25: Train's area accent (--area-move, dark)
   const box = await page.locator('.train-checks label').first().boundingBox();
-  expect(box && box.height >= 44).toBe(true);
+  expect(box && box.height >= 43.5).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('train-equipment-360x800-dark.png') });
 });

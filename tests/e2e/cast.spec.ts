@@ -19,24 +19,7 @@ test('cast gallery shows all poses in both themes', async ({ page }, testInfo) =
   expect(errors).toEqual([]);
 });
 
-test('opening plays once and a tap skips it', async ({ page }) => {
-  await page.clock.install({ time: new Date('2026-10-20T12:00:00') });
-  await page.goto('/#plan');
-  const opening = page.getByRole('button', { name: 'Skip opening animation' });
-  await expect(opening).toBeVisible();
-  await opening.click();
-  await expect(opening).toHaveCount(0);
-  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Read' }).click();
-  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
-  await expect(opening).toHaveCount(0);
-});
-
-test('reduced motion skips opening', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/#plan');
-  await expect(page.getByRole('button', { name: 'Skip opening animation' })).toHaveCount(0);
-});
+// The opening is spec 45a's square breath now: tests/e2e/notebook-breath.spec.ts.
 
 test('Chiku stays beside a Learn question', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));

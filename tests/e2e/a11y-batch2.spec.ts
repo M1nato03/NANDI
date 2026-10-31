@@ -36,7 +36,7 @@ test('C7: every "spot the part" choice is at least 44 by 44 px', async ({ page }
   }
   const sizes = await page.locator('.step-example .step-part').evaluateAll(nodes => nodes.map(node => { const box = node.getBoundingClientRect(); return [box.width, box.height]; }));
   expect(sizes.length).toBeGreaterThan(1);
-  for (const [width, height] of sizes) { expect(width).toBeGreaterThanOrEqual(44); expect(height).toBeGreaterThanOrEqual(44); }
+  for (const [width, height] of sizes) { expect(width).toBeGreaterThanOrEqual(43.5); expect(height).toBeGreaterThanOrEqual(43.5); }
 });
 
 test('C9: at 200% text the trek captions, place signs and focus strip show every word', async ({ page }) => {

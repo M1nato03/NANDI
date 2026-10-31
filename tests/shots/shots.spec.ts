@@ -254,6 +254,93 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 's38-3-done-after-locked-sit', false);
   });
 
+  // Spec 45a: the square breath before the first page (in, hold, out, holds off, the One more round offer), Calm's
+  // Square and Slow, a route fading in, 200% text, and reduced motion at two phases.
+  test('spec 45a breath', async ({ page }) => {
+    const MORNING = new Date('2026-10-31T09:00:00');
+    const put = (rows: [string, unknown][]) => page.evaluate(async entries => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction('settings', 'readwrite'); for (const [key, value] of entries) transaction.objectStore('settings').put({ key, value, updatedAt: Date.now(), deleted: 0, deviceId: 'shots' }); transaction.oncomplete = () => resolve(); });
+      database.close();
+    }, rows);
+    const breath = page.getByRole('dialog', { name: 'Breathe with the square.' });
+    const open = async () => { await page.goto('/?e2e'); await expect(page.locator('html')).toHaveAttribute('data-opening-breath', 'shown'); await expect(breath).toBeVisible(); };
+    await page.emulateMedia({ colorScheme: theme, reducedMotion: 'no-preference' });
+    await page.clock.install({ time: MORNING });
+    await page.goto('/?e2e#you');
+    // The first visit installs the offline worker, which reloads the page once; let that happen first.
+    await page.waitForFunction(() => !!navigator.serviceWorker?.controller, undefined, { timeout: 15_000 }).catch(() => undefined);
+    await put([['welcome.done', '2026-10-30'], ['notebook.breath.opening', 'every']]);
+    await open();
+    await page.clock.runFor(2_000); await page.waitForTimeout(400);
+    await shot(page, '45a-1-opener-in', false);
+    await page.clock.runFor(4_000); await page.waitForTimeout(400);
+    await shot(page, '45a-2-opener-hold', false);
+    await page.clock.runFor(6_000); await page.waitForTimeout(400);
+    await shot(page, '45a-3-opener-out', false);
+    await breath.getByRole('button', { name: 'Holds: on' }).click();
+    await page.clock.runFor(2_000); await page.waitForTimeout(400);
+    await shot(page, '45a-4-opener-holds-off', false);
+    await page.clock.runFor(21_000); await page.waitForTimeout(300);
+    await expect(breath.getByRole('button', { name: 'One more round' })).toBeVisible();
+    await shot(page, '45a-5-one-more-round', false);
+    // 200% text on the opening page.
+    await open();
+    await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+    await page.clock.runFor(1_000); await page.waitForTimeout(300);
+    await shot(page, '45a-6-opener-200-text', true);
+    await breath.getByRole('button', { name: 'Skip →' }).click();
+    await expect(breath).toHaveCount(0);
+    // Calm: Square and Slow.
+    await put([['notebook.breath.opening', 'off'], ['notebook.breath.holds', true]]);
+    await page.goto('/?e2e#yatra/calm');
+    await page.reload(); // drops the 200% style
+    await page.getByRole('button', { name: 'Square' }).click();
+    await expect(page.getByRole('button', { name: 'Square' })).toHaveAttribute('aria-pressed', 'true');
+    await page.locator('.calm-start-bar').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(400); // the chips' colour change settles
+    await shot(page, '45a-7-calm-square-setup', false);
+    await page.getByRole('button', { name: /^Start/ }).click();
+    await page.clock.runFor(6_500); await page.waitForTimeout(400);
+    await shot(page, '45a-8-calm-square-running', false);
+    await page.getByRole('button', { name: 'Stop' }).click();
+    await page.getByRole('button', { name: 'Slow' }).click();
+    await expect(page.getByRole('button', { name: 'Slow' })).toHaveAttribute('aria-pressed', 'true');
+    await page.locator('.calm-start-bar').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(400);
+    await shot(page, '45a-9-calm-slow-setup', false);
+    await page.getByRole('button', { name: /^Start/ }).click();
+    await page.clock.runFor(2_000); await page.waitForTimeout(300);
+    await shot(page, '45a-10-calm-slow-running', false);
+    await page.getByRole('button', { name: 'Stop' }).click();
+    await page.getByRole('button', { name: 'Square' }).click();
+    await expect(page.getByRole('button', { name: 'Square' })).toHaveAttribute('aria-pressed', 'true');
+    await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+    await shot(page, '45a-11-calm-square-setup-200-text', true);
+    await page.getByRole('button', { name: /^Start/ }).click();
+    await page.clock.runFor(1_000); await page.waitForTimeout(300);
+    await shot(page, '45a-12-calm-square-running-200-text', true);
+    await page.getByRole('button', { name: 'Stop' }).click();
+    // A route change: Plan, then Read just after the tap (fading in), then Read settled.
+    await page.goto('/?e2e#plan');
+    await page.reload();
+    await expect(page.locator('#main h1')).toBeVisible();
+    await shot(page, '45a-13-route-before', false);
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Read' }).click();
+    await page.waitForTimeout(90);
+    await shot(page, '45a-14-route-fading-in', false);
+    await page.waitForTimeout(500);
+    await shot(page, '45a-15-route-after', false);
+    // Reduced motion: nothing moves; the darker side, the words and Skip are there.
+    await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
+    await put([['notebook.breath.opening', 'every']]);
+    await open();
+    await page.clock.runFor(1_000);
+    await shot(page, '45a-16-reduced-in', false);
+    await page.clock.runFor(10_500);
+    await shot(page, '45a-17-reduced-out', false);
+  });
+
   // a11y batch 2: the spot targets (outlined to show their 44 px boxes), 200% text, the reminders-off card, a full phone.
   test('a11y batch 2', async ({ page }) => {
     await page.clock.install({ time: NOON });

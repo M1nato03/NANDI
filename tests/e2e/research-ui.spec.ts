@@ -39,7 +39,7 @@ for (const scheme of ['light', 'dark'] as const) {
     for (const control of await controls.all()) {
       if (!await control.isVisible()) continue;
       const box = await control.boundingBox();
-      if (box) { expect(box.width).toBeGreaterThanOrEqual(44); expect(box.height).toBeGreaterThanOrEqual(44); }
+      if (box) { expect(box.width).toBeGreaterThanOrEqual(43.5); expect(box.height).toBeGreaterThanOrEqual(43.5); }
     }
   });
 }

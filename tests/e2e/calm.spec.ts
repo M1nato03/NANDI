@@ -19,13 +19,16 @@ async function openCalm(page: Page) {
 }
 /** Picks a length from the chips, or from the Other sheet. */
 async function pick(page: Page, length: number | 'open') {
-  if (typeof length === 'number' && [3, 5, 10, 20, 30, 60].includes(length)) { await page.getByRole('button', { name: `${length} min`, exact: true }).click(); return; }
+  // The Start label follows the saved choice; waiting for it keeps Start from starting the old length.
+  const saved = () => expect(startButton(page)).toContainText(length === 'open' ? 'until I stop' : `${length} minute`);
+  if (typeof length === 'number' && [3, 5, 10, 20, 30, 60].includes(length)) { await page.getByRole('button', { name: `${length} min`, exact: true }).click(); await saved(); return; }
   await page.locator('.calm-other').click();
   const sheet = page.getByRole('dialog', { name: 'Other lengths' });
   if (length === 'open') await sheet.getByRole('button', { name: 'Until I stop' }).click();
   else if ([1, 15, 45].includes(length)) await sheet.getByRole('button', { name: `${length} min`, exact: true }).click();
   else { await sheet.getByLabel(/^Custom/).fill(String(length)); await sheet.getByRole('button', { name: `Use ${length} min` }).click(); }
   await expect(sheet).toHaveCount(0);
+  await saved();
 }
 const startButton = (page: Page) => page.locator('.calm-start');
 /** A long sit dims the screen: a tap wakes it, then Stop. */

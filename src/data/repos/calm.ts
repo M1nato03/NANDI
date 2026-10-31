@@ -28,8 +28,11 @@ export function readBreath(value: unknown): Breath {
 export type CalmPrefs = {
   minutes: CalmLength; way: CalmWay; startBell: boolean; interval: (typeof CALM_INTERVALS)[number];
   sound: string; soundVolume: number; bellVolume: number; fade: boolean;
+  /** Spec 45a: within Paced, the square breath or today's slow in-and-out. */
+  pattern: CalmPattern;
 };
-export const DEFAULT_CALM_PREFS: CalmPrefs = { minutes: 3, way: 'paced', startBell: true, interval: 0, sound: 'none', soundVolume: 60, bellVolume: 70, fade: true };
+export type CalmPattern = 'slow' | 'square';
+export const DEFAULT_CALM_PREFS: CalmPrefs = { minutes: 3, way: 'paced', startBell: true, interval: 0, sound: 'none', soundVolume: 60, bellVolume: 70, fade: true, pattern: 'slow' };
 
 /** Stored prefs, each kept inside its bounds; anything unreadable falls back to its default. */
 export function readCalmPrefs(value: unknown): CalmPrefs {
@@ -45,6 +48,7 @@ export function readCalmPrefs(value: unknown): CalmPrefs {
     soundVolume: clamp(row.soundVolume, [0, 100], d.soundVolume),
     bellVolume: clamp(row.bellVolume, [0, 100], d.bellVolume),
     fade: typeof row.fade === 'boolean' ? row.fade : d.fade,
+    pattern: row.pattern === 'square' || row.pattern === 'slow' ? row.pattern : d.pattern,
   };
 }
 

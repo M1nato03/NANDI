@@ -42,6 +42,10 @@
 .calm-ways { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 0 0 10px; padding: 0; border: 0; }
 .calm-ways legend { grid-column: 1 / -1; }
 .calm-ways button { min-height: 44px; padding-inline: 4px; }
+/* Spec 45a: Square / Slow (and the square's holds) above Start; a square sit shows the square in the stage. */
+.calm-pattern-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.calm-stage-square .calm-square { margin: 4px auto 0; }
+.calm-square.faded { opacity: .3; transition: opacity var(--dur-slow) var(--ease-in-out); }
 .calm-set { min-width: 0; margin: 0 0 10px; padding: 0; border: 0; }
 .calm-row { position: relative; display: flex; gap: 8px; margin: 0 -16px; padding: 0 16px 4px; overflow-x: auto; scroll-padding-inline: 16px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .calm-row::-webkit-scrollbar { display: none; }

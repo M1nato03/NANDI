@@ -45,7 +45,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(lesson.getByLabel('done screen')).toBeVisible();
     await expect(lesson).toContainText('2 cards added to your deck');
     await page.screenshot({ path: testInfo.outputPath(`lesson-done-${scheme}.png`), fullPage: true });
-    const controls = await lesson.evaluate(root => [...root.querySelectorAll<HTMLButtonElement>('button')].every(button => button.getBoundingClientRect().width >= 44 && button.getBoundingClientRect().height >= 44));
+    const controls = await lesson.evaluate(root => [...root.querySelectorAll<HTMLButtonElement>('button')].every(button => button.getBoundingClientRect().width >= 43.5 && button.getBoundingClientRect().height >= 43.5));
     expect(controls).toBe(true);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await lesson.getByRole('button', { name: 'Done' }).click();

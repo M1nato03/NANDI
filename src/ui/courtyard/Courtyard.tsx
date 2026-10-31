@@ -55,7 +55,7 @@ export function CourtyardView({ state, phase, onFriend, selected, forcePose }: {
       const pose = forcePose ?? poseFor(area.today, phase);
       const tapped = taps[area.id] ?? 0;
       // A tap always moves the trigger past the first-view nod (at 1), so the hop plays (Codex A item 128).
-      const moment = tapped ? { moment: 'hop' as const, at: tapped + 1 } : nod && area.today ? { moment: 'nod' as const, at: 1 } : {};
+      const moment = tapped ? { moment: 'tap' as const, at: tapped + 1 } : nod && area.today ? { moment: 'nod' as const, at: 1 } : {};
       const label = `${area.friend}, ${area.label}: ${area.days} ${area.days === 1 ? 'day' : 'days'}${area.today ? ', done today' : ''}`;
       return onFriend
         ? <button type="button" key={area.id} className={`courtyard-friend${selected === area.id ? ' selected' : ''}`} style={style} aria-label={label} aria-pressed={selected === area.id} onClick={() => { setTaps(current => ({ ...current, [area.id]: (current[area.id] ?? 0) + 1 })); onFriend(area.id); }}><Cast name={area.friend} pose={pose} {...moment} size={size} /></button>

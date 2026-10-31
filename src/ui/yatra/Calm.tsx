@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
-import { BREATH_IN, BREATH_OUT, calmKeys, readBreath, readCalmPrefs, saveCalmDone, saveCalmSettings, type Breath, type CalmPrefs } from '../../data/repos/calm';
+import { BREATH_IN, BREATH_OUT, calmKeys, readBreath, readCalmPrefs, saveCalmDone, saveCalmSettings, type Breath, type CalmPattern, type CalmPrefs } from '../../data/repos/calm';
+import { breathKeys, readBreathSettings, saveHolds } from '../../data/repos/notebookBreath';
+import { SquareBreath } from './SquareBreath';
 import { addUserSound, calmSoundDb, MAX_USER_SOUNDS, removeUserSound, renameUserSound, type CalmSoundRow } from '../../data/calmSounds';
 import { CALM_INTERVALS, CALM_MINUTES, DIM_AFTER_MS, FADE_AFTER_MS, SCAN_LINES, doneLine, fadeApplies, intervalBells, isLongSit, nightStars, scanLine, sitMinutes, totalMs, type CalmLength, type CalmWay } from '../../core/calm/session';
 import { CALM_SOUNDS, CalmAudio, presetOf, type CalmPreset } from '../../platform/calmSound';
@@ -35,7 +37,7 @@ const presetUrl = (preset: CalmPreset) => `${import.meta.env.BASE_URL}calm/${pre
 const lengthName = (length: CalmLength) => length === 'open' ? 'until I stop' : `${length} ${length === 1 ? 'minute' : 'minutes'}`;
 
 /** `native`: spec 38's phone player runs it (it keeps playing with the screen off); the page only shows it. */
-export type Run = { startedAt: number; length: CalmLength; way: CalmWay; breath: Breath; interval: number; fade: boolean; sound?: string; native?: boolean };
+export type Run = { startedAt: number; length: CalmLength; way: CalmWay; breath: Breath; interval: number; fade: boolean; sound?: string; native?: boolean; pattern?: CalmPattern; holds?: boolean };
 
 /**
  * Spec 34 + 35 Calm: Kachhua's corner. Three ways to sit (paced breath, a body scan, a quiet sit), any length from a
@@ -43,9 +45,11 @@ export type Run = { startedAt: number; length: CalmLength; way: CalmWay; breath:
  * says what it is, never what it does to you. A sit is one row, one stretch and one star; its minutes pay (spec 36, capped).
  */
 export function Calm() {
-  const settings = useLiveQuery(() => db.settings.where('key').anyOf(calmKeys.breath, calmKeys.prefs).toArray(), []);
+  const settings = useLiveQuery(() => db.settings.where('key').anyOf(calmKeys.breath, calmKeys.prefs, breathKeys.holds).toArray(), []);
   const breath = readBreath(settings?.find(row => row.key === calmKeys.breath && !row.deleted)?.value);
   const prefs = readCalmPrefs(settings?.find(row => row.key === calmKeys.prefs && !row.deleted)?.value);
+  // Spec 45a: the square's holds are shared with the opening breath.
+  const holds = readBreathSettings(settings).holds;
   const userSounds = useLiveQuery(() => calmSoundDb.sounds.orderBy('addedAt').toArray(), [], [] as CalmSoundRow[]);
   // A setting that could not be saved says so (a11y audit C1); the screen keeps working.
   const [saveNote, setSaveNote] = useState('');
@@ -164,7 +168,7 @@ export function Calm() {
   const start = () => {
     const at = stamp();
     const own = prefs.sound.startsWith('user:') ? userSounds.find(row => `user:${row.id}` === prefs.sound) : undefined;
-    const ran: Run = { startedAt: at, length: prefs.minutes, way: prefs.way, breath, interval: prefs.interval, fade: prefs.fade, sound: presetOf(prefs.sound)?.name ?? own?.name };
+    const ran: Run = { startedAt: at, length: prefs.minutes, way: prefs.way, breath, interval: prefs.interval, fade: prefs.fade, sound: presetOf(prefs.sound)?.name ?? own?.name, ...(prefs.way === 'paced' && prefs.pattern === 'square' ? { pattern: 'square' as const, holds } : {}) };
     rung.current = { bells: 0, line: 0 };
     if (lockable) { void startNative({ ...ran, native: true }, own?.blob); return; }
     const mixer = CalmAudio.create();
@@ -206,6 +210,7 @@ export function Calm() {
   const faded = !!run && fadeApplies(run.way, run.length, run.fade) && elapsed >= FADE_AFTER_MS;
   const phase = run ? breathPhase(elapsed, run.breath) : 'out';
   const breathing = !!run && run.way === 'paced' && !faded;
+  const square = !!run && run.way === 'paced' && run.pattern === 'square';
   const stars = run ? nightStars({ way: run.way, elapsedMs: elapsed, length: run.length, breath: run.breath, interval: run.interval, fade: run.fade }) : 0;
   const style = { '--calm-in': `${shown.breath.in}s`, '--calm-out': `${shown.breath.out}s` } as CSSProperties;
   const left = total === null ? elapsed : total - elapsed;
@@ -215,13 +220,15 @@ export function Calm() {
 
   return <section className="screen calm-screen">
     <p className="eyebrow">Calm</p><h1>Breathe with Kachhua</h1>
-    {yatra?.night && <TrekScene trek={yatra.trek} night brighten={stars} breath={run && breathing ? { phase, in: run.breath.in, out: run.breath.out } : undefined} onRename={() => undefined} />}
-    <div className={`calm-stage${run ? '' : ' calm-stage-setup'}`} data-way={run?.way} data-phase={breathing ? phase : undefined} data-bells={run ? intervalBells(elapsed, run.interval, run.length) : undefined} style={style}>
+    {yatra?.night && <TrekScene trek={yatra.trek} night brighten={stars} breath={run && breathing && !square ? { phase, in: run.breath.in, out: run.breath.out } : undefined} onRename={() => undefined} />}
+    <div className={`calm-stage${run ? '' : ' calm-stage-setup'}${square ? ' calm-stage-square' : ''}`} data-way={run?.way} data-phase={breathing && !square ? phase : undefined} data-bells={run ? intervalBells(elapsed, run.interval, run.length) : undefined} style={style}>
       {/* At night Kachhua sits at camp in the scene above, so the stage shows the guide only (one Kachhua a screen). */}
-      {!yatra?.night && <Cast name="Kachhua" pose={pose} breathe={!!run && run.way === 'quiet'} size={run ? 140 : 88} title="Kachhua" />}
+      {/* Spec 45a: a square sit shows the square, with Kachhua at its corner (one Kachhua a screen). */}
+      {!yatra?.night && !square && <Cast name="Kachhua" pose={pose} breathe={!!run && run.way === 'quiet'} size={run ? 140 : 88} title="Kachhua" />}
       {run ? <>
         {/* Not live: a breath-by-breath announcement would talk over the whole sit (a11y audit C11). */}
-        {run.way === 'paced' && <p className={`calm-phase${faded ? ' faded' : ''}`} aria-hidden={faded || undefined}>{phase === 'in' ? 'Breathe in' : 'Breathe out'}</p>}
+        {square && <div className={`calm-square${faded ? ' faded' : ''}`} aria-hidden={faded || undefined}><SquareBreath elapsedMs={elapsed} holds={run.holds ?? true} paused={ownSit && sit!.status === 'paused'} context="calm" /></div>}
+        {run.way === 'paced' && !square && <p className={`calm-phase${faded ? ' faded' : ''}`} aria-hidden={faded || undefined}>{phase === 'in' ? 'Breathe in' : 'Breathe out'}</p>}
         {run.way === 'scan' && <p className="calm-phase calm-line" aria-live="polite">{SCAN_LINES[scanLine(elapsed, run.length)]}</p>}
         {run.way === 'quiet' && <p className="calm-phase">Quiet sit</p>}
         <p className="calm-clock" aria-label={total === null ? 'Time sat' : 'Time left'}>{clock(left)}</p>
@@ -229,7 +236,7 @@ export function Calm() {
         {run.sound && <p className="calm-sound-name small">{run.sound}</p>}
         {total !== null && <div className="calm-progress" role="progressbar" aria-label="Time" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(elapsed / total * 100)}><span style={{ width: `${elapsed / total * 100}%` }} /></div>}
       </> : unsaved ? <div className="calm-unsaved" role="alert"><p className="calm-phase">Your sit could not be saved.</p><button type="button" onClick={() => { finishing.current = true; record(unsaved.ran, unsaved.sat); }}>Try saving again</button></div>
-        : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
+        : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : prefs.way === 'paced' && prefs.pattern === 'square' ? (holds ? 'In, hold, out, hold: 5 seconds each' : '5 in, 6 out, round the square') : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
     </div>
     {run ? <>
       {ownSit && sit!.status === 'paused' && <p className="small calm-paused" role="status">{sit!.pausedFor === 'call' ? 'Paused for a call.' : 'Paused.'} The clock waits.</p>}
@@ -268,6 +275,12 @@ export function Calm() {
         <label>Sound volume<input type="range" min={0} max={100} value={prefs.soundVolume} onChange={event => setPrefs({ soundVolume: Number(event.target.value) })} /></label>
         <label>Bell volume<input type="range" min={0} max={100} value={prefs.bellVolume} onChange={event => setPrefs({ bellVolume: Number(event.target.value) })} /></label>
       </details>
+      {/* Spec 45a: within Paced, the square breath or today's slow in-and-out. The holds are shared with the opening breath. */}
+      {prefs.way === 'paced' && <fieldset className={`calm-ways calm-pattern${prefs.pattern === 'square' ? '' : ' calm-pattern-two'}`}><legend className="calm-legend">Breath</legend>
+        <button type="button" className={prefs.pattern === 'square' ? '' : 'secondary'} aria-pressed={prefs.pattern === 'square'} onClick={() => setPrefs({ pattern: 'square' })}>Square</button>
+        <button type="button" className={prefs.pattern === 'slow' ? '' : 'secondary'} aria-pressed={prefs.pattern === 'slow'} onClick={() => setPrefs({ pattern: 'slow' })}>Slow</button>
+        {prefs.pattern === 'square' && <button type="button" className="secondary calm-holds" aria-pressed={holds} onClick={() => saved(saveHolds(db, !holds, stamp()))}>Holds: {holds ? 'on' : 'off'}</button>}
+      </fieldset>}
       <div className="calm-start-bar">
         <button type="button" className="calm-start" onClick={start}>{prefs.minutes === 'open' ? 'Start, until I stop' : `Start ${lengthName(prefs.minutes)}`}</button>
         <p className="small calm-under">{lockable ? 'You can lock your phone. The sound and bells keep playing.' : isLongSit(prefs.minutes) ? 'Keep NANDI open. The sound and bells play here.' : 'A quiet few minutes with your breath.'}</p>

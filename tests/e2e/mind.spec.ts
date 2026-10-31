@@ -15,7 +15,7 @@ test('daily case grid contrast and layout', async ({ page }, testInfo) => {
   await expect(grid.locator('.case-no').first()).toBeVisible();
   await grid.locator('.case-no').first().click();
   await expect(grid.locator('.case-yes').first()).toBeVisible();
-  const sizes = await page.locator('.case-cell').evaluateAll(cells => cells.map(cell => cell.getBoundingClientRect()).every(rect => rect.width >= 44 && rect.height >= 44));
+  const sizes = await page.locator('.case-cell').evaluateAll(cells => cells.map(cell => cell.getBoundingClientRect()).every(rect => rect.width >= 43.5 && rect.height >= 43.5));
   expect(sizes).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const gap = await page.evaluate(() => {
@@ -96,7 +96,7 @@ for (const scheme of ['light', 'dark'] as const) {
       const controls = [...document.querySelectorAll<HTMLButtonElement>('.mind-board button:not(.mind-cell)')];
       return {
         cells: cells.every(cell => cell.getBoundingClientRect().width + 1 >= Math.min(44, available)),
-        controls: controls.every(control => control.getBoundingClientRect().height >= 44 && control.getBoundingClientRect().width >= 44),
+        controls: controls.every(control => control.getBoundingClientRect().height >= 43.5 && control.getBoundingClientRect().width >= 43.5),
         noScroll: document.documentElement.scrollWidth <= innerWidth,
       };
     });

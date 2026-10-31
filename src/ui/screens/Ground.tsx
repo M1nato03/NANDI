@@ -21,6 +21,8 @@ import { BUSY_SHIFT_KEY, INTERESTS, INTERESTS_KEY, readInterests, type InterestI
 import { notifier } from '../../platform/notifier';
 import { MORNING_DEFAULT, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON, NUDGE_STREAK_ON, NUDGE_PERMISSION_ASKED } from '../../core/nudges';
 import { CALM_SOUNDS } from '../../platform/calmSound';
+import { readBreathSettings, saveOpeningMode } from '../../data/repos/notebookBreath';
+import type { OpeningMode } from '../../core/calm/squareBreath';
 
 export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const settings = useLiveQuery(() => db.settings.toArray(), []);
@@ -31,6 +33,9 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const [permission, setPermission] = useState<'granted' | 'denied' | 'prompt'>('prompt');
   const requestingPermission = useRef(false);
   const interests = readInterests(settings ?? []);
+  // Spec 45a: the opening square breath: off, once a planning day (the default) or on every open.
+  const opening = readBreathSettings(settings).opening;
+  const [breathNote, setBreathNote] = useState('');
   // Owner panel: tap the version line 5 times within 3 seconds.
   const ownerTaps = useRef<number[]>([]);
   const interestQueue = useRef<Promise<unknown>>(Promise.resolve());
@@ -101,6 +106,9 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
     <section className="card settings-group"><h2>Appearance</h2>
       <label>Theme <select value={theme} onChange={event => void setTheme(event.target.value)}><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></label>
       <label>Motion <select value={motion} onChange={event => void setMotion(event.target.value)}><option value="system">System</option><option value="reduce">Reduced</option></select></label>
+      <label>Breath when you open NANDI <select value={opening} onChange={event => void saveOpeningMode(db, event.target.value as OpeningMode, Date.now()).then(() => setBreathNote(''), () => setBreathNote('Could not save that. Try again.'))}><option value="off">Off</option><option value="daily">Once a day</option><option value="every">Every open</option></select></label>
+      <p className="setting-help">Two rounds of the square breath before the first page. You can skip it anytime.</p>
+      {breathNote && <p className="setting-help" role="alert">{breathNote}</p>}
       <label><input type="checkbox" checked={settings?.find(row => row.key === 'economy.soundOn')?.value === true} onChange={event => void save('economy.soundOn', event.target.checked)} /> Soft check-off sounds</label>
     </section>
     <section className="card settings-group" aria-label="What you enjoy"><h2>What you enjoy</h2><p className="setting-help">NANDI suggests one of these, with a clear end, when you pause or finish your day.</p>

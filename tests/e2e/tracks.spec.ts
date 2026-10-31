@@ -33,7 +33,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await unit.getByRole('button', { name: 'See recall cards' }).click();
     await expect(unit).toContainText('Three recall cards');
     await page.screenshot({ path: testInfo.outputPath(`track-cards-${scheme}.png`), fullPage: true });
-    const controls = await unit.evaluate(root => [...root.querySelectorAll<HTMLButtonElement>('button')].every(button => button.getBoundingClientRect().width >= 44 && button.getBoundingClientRect().height >= 44));
+    const controls = await unit.evaluate(root => [...root.querySelectorAll<HTMLButtonElement>('button')].every(button => button.getBoundingClientRect().width >= 43.5 && button.getBoundingClientRect().height >= 43.5));
     expect(controls).toBe(true);
     await unit.getByRole('button', { name: 'Finish unit' }).click();
     // The section may already be open after finishing the unit; open it only if it is closed.

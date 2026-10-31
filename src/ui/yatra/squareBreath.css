@@ -1,0 +1,58 @@
+/* Spec 45a: the square breath (opening page and Calm). Only the dot moves, by transform, at an even speed per side. */
+.square-breath { display: grid; justify-items: center; }
+.square-wrap { --size: min(calc(100vw - 72px), 13.75rem); --edge: calc(var(--size) * 172 / 220); --inset: calc(var(--size) * 24 / 220); position: relative; width: var(--size); height: var(--size); flex: none; color: var(--square-line, var(--ink-3)); }
+.square-calm .square-wrap { --size: min(calc(100vw - 96px), 11.875rem); }
+.square-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.square-lines path { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; opacity: .62; }
+.square-lines path.active { stroke-width: 3; opacity: 1; color: var(--square-active, var(--ink)); stroke: var(--square-active, var(--ink)); }
+.square-lines.two-sides path.hold-side { opacity: 0; }
+.square-dot { position: absolute; left: calc(var(--inset) - 5px); top: calc(var(--inset) - 5px); width: 10px; height: 10px; border-radius: 50%; background: var(--square-dot, var(--ink)); animation-timing-function: linear; animation-fill-mode: both; animation-iteration-count: 1; will-change: transform; }
+@keyframes square-side-0 { from { transform: translate(0, 0); } to { transform: translate(var(--edge), 0); } }
+@keyframes square-side-1 { from { transform: translate(var(--edge), 0); } to { transform: translate(var(--edge), var(--edge)); } }
+@keyframes square-side-2 { from { transform: translate(var(--edge), var(--edge)); } to { transform: translate(0, var(--edge)); } }
+@keyframes square-side-3 { from { transform: translate(0, var(--edge)); } to { transform: translate(0, 0); } }
+.square-middle { position: absolute; inset: 25% 12% 22%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.square-word { font: 700 1.6rem/1.15 'Bricolage Grotesque', system-ui, sans-serif; color: var(--square-word, var(--ink)); animation: square-word-in var(--dur-fast) var(--ease-out) both; }
+.square-count { font: 500 1.25rem/1.2 system-ui, sans-serif; color: var(--square-count, var(--ink-2)); font-variant-numeric: tabular-nums; }
+@keyframes square-word-in { from { opacity: 0; transform: translateY(3px); } }
+.square-turtle { position: absolute; width: 64px; height: 64px; right: -20px; bottom: -24px; }
+.square-turtle .kachhua-shell { transform-box: fill-box; transform-origin: center bottom; transition: transform var(--phase-s, 5s) var(--ease-in-out); }
+.square-wrap[data-kind='in'] .kachhua-shell, .square-wrap[data-kind='hold'] .kachhua-shell { transform: translateY(-4px) scaleY(1.07); }
+.square-holds { min-height: 44px; min-width: 44px; margin: 14px auto 0; padding: 0 12px; border: 0; background: none; color: inherit; font: 400 .85rem system-ui, sans-serif; text-decoration: underline; text-underline-offset: 3px; box-shadow: none; }
+.square-calm .square-cue { margin-top: 26px; }
+.square-cue { min-height: 2.6em; margin: 6px 0 0; max-width: 270px; text-align: center; font-size: .9rem; line-height: 1.45; color: var(--square-cue, var(--ink-2)); }
+
+/* Reduced motion (the phone's or You's): the dot and the shell stay still; the words, the count and the darker side still change. */
+.square-dot[data-side='0'] { --dot-start: translate(0, 0); }
+.square-dot[data-side='1'] { --dot-start: translate(var(--edge), 0); }
+.square-dot[data-side='2'] { --dot-start: translate(var(--edge), var(--edge)); }
+.square-dot[data-side='3'] { --dot-start: translate(0, var(--edge)); }
+@media (prefers-reduced-motion: reduce) {
+  .square-dot { animation: none !important; transform: var(--dot-start); will-change: auto; }
+  .square-turtle .kachhua-shell { transition: none !important; transform: none !important; }
+  .square-word { animation: none !important; }
+}
+:root[data-motion='reduce'] .square-dot { animation: none !important; transform: var(--dot-start); will-change: auto; }
+:root[data-motion='reduce'] .square-turtle .kachhua-shell { transition: none !important; transform: none !important; }
+:root[data-motion='reduce'] .square-word { animation: none !important; }
+
+/* The opening page: a dark notebook page in either theme, before the first page of the day. */
+.breath-opener { --square-line: #b7ad9b; --square-active: #f5eeda; --square-dot: #ead9b7; --square-word: #f7eddc; --square-count: #ddd1ba; --square-cue: #e2d8c8;
+  position: fixed; inset: 0; z-index: 45; display: flex; flex-direction: column; overflow-y: auto; background: #30363a; color: #f5eeda; padding: max(24px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  animation: breath-opener-in var(--dur-base) var(--ease-out) both; }
+.breath-opener.leaving { animation: breath-opener-out var(--dur-base) var(--ease-in-out) both; pointer-events: none; }
+@keyframes breath-opener-in { from { opacity: 0; } }
+@keyframes breath-opener-out { to { opacity: 0; } }
+.breath-opener-head { text-align: center; margin: 8px auto 0; max-width: 320px; }
+.breath-opener-head .eyebrow { color: #e1c9a5; margin: 0; }
+.breath-opener-head h1 { margin: 6px 0 4px; color: #f7eddc; font-size: 1.75rem; }
+.breath-opener-head p { margin: 0; color: #e2d8c8; }
+.breath-opener .square-breath { margin: 22px auto 0; }
+.breath-opener-foot { position: sticky; bottom: 0; background: #30363a; margin-top: auto; padding-top: 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.breath-opener-foot button { min-height: 44px; min-width: 44px; padding: 0 14px; border-radius: var(--radius-pill); border: 1px solid #8d8678; background: transparent; color: #f5eeda; box-shadow: none; font-weight: 600; }
+.breath-opener-foot .breath-skip { margin-left: auto; }
+.breath-opener-note { width: 100%; margin: 0; font-size: .85rem; color: #f0c9a0; }
+.breath-opener :focus-visible { outline: 3px solid #ffd08a; outline-offset: 2px; }
+.breath-opener:focus, .breath-opener:focus-visible { outline: none; }
+@media (prefers-reduced-motion: reduce) { .breath-opener, .breath-opener.leaving { animation: none; } }
+:root[data-motion='reduce'] .breath-opener, :root[data-motion='reduce'] .breath-opener.leaving { animation: none; }
