@@ -91,7 +91,7 @@
 .yatra-home .trek-journey-top strong { font-weight: 600; color: var(--ink); }
 .useful-days-note { margin: 0 0 16px; color: var(--ink-2); }
 /* Spec 47b: the record's three facts, one per row, each label and its number on one line where they fit. */
-.useful-days-facts { display: grid; gap: 6px; margin: -8px 0 8px; }
+.useful-days-facts { display: grid; gap: 6px; margin: 0 0 8px; }
 .useful-days-facts > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 0 0 6px; border-bottom: 1px solid var(--surface-3); }
 .useful-days-facts dt { color: var(--ink-2); }
 .useful-days-facts dd { margin: 0; font-weight: 700; }

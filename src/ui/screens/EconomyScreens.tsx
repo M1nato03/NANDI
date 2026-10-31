@@ -57,7 +57,7 @@ function AwayPlanner({ settings, today, bank }: { settings: SettingRow[]; today:
   </div>;
 }
 
-const weekday = (key: string, style: 'short' | 'long') => new Intl.DateTimeFormat('en-GB', { weekday: style, timeZone: 'UTC' }).format(new Date(`${key}T12:00:00Z`));
+const weekday = (key: string, style: 'narrow' | 'long') => new Intl.DateTimeFormat('en-GB', { weekday: style, timeZone: 'UTC' }).format(new Date(`${key}T12:00:00Z`));
 const onDate = (key: string) => new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${key}T12:00:00Z`));
 const days = (n: number) => `${n} ${n === 1 ? 'day' : 'days'}`;
 async function saveSetting(key: string, value: unknown) {
@@ -99,7 +99,7 @@ function ThisWeek({ settings, today, dates, bank }: { settings: SettingRow[]; to
   const count = dots.filter(dot => dot.useful).length;
   return <section className="card useful-week" aria-label="This week">
     <span className="eyebrow">This week</span><h2>{count} of your {target}</h2>
-    <ol className="useful-dots">{dots.map(dot => <li key={dot.dayKey} className={dot.useful ? 'useful' : ''} aria-label={`${weekday(dot.dayKey, 'long')}, ${dot.useful ? 'useful day' : dot.dayKey > today ? 'still to come' : 'no useful action recorded'}`}><span className="useful-dot" aria-hidden="true" /><span aria-hidden="true">{weekday(dot.dayKey, 'short').slice(0, 2)}</span></li>)}</ol>
+    <ol className="useful-dots">{dots.map(dot => <li key={dot.dayKey} className={dot.useful ? 'useful' : ''} aria-label={`${weekday(dot.dayKey, 'long')}, ${dot.useful ? 'useful day' : dot.dayKey > today ? 'still to come' : 'no useful action recorded'}`}><span className="useful-dot" aria-hidden="true" /><span aria-hidden="true">{weekday(dot.dayKey, 'narrow')}</span></li>)}</ol>
     <TargetPicker settings={settings} today={today} />
     <p className="small">{bank} {bank === 1 ? 'rest day' : 'rest days'} banked · {bank >= RULES.streak.restBankMax ? 'your bank is full' : `up to ${Math.min(RULES.streak.restBankMonthly, RULES.streak.restBankMax - bank)} more arrive on the 1st`}</p>
     <AwayPlanner settings={settings} today={today} bank={bank} />
@@ -162,7 +162,7 @@ export function YourSeason() {
       {arc && <p className="small">Story: {arc}</p>}
     </div>}
     <ThisWeek settings={settings} today={economy.today} dates={weekDates} bank={view.streak.restDays} />
-    <button type="button" className="card you-link useful-record-link" onClick={() => go('yatra/days')}><strong>Your record</strong><span>Every useful day, your longest run and Clean weeks</span></button>
+    <button type="button" className="card you-link you-courtyard-link useful-record-link" onClick={() => go('yatra/days')}><strong>Your record</strong><span>Every useful day, your longest run and Clean weeks</span></button>
     {show.shards && <div className="card economy-shards"><div><span className="eyebrow">Shards</span><h2>{view.shards.toLocaleString()}</h2></div><button type="button" onClick={() => go('you/shop')}>Shop</button></div>}
     {how && <LadderHow target={target} onClose={() => setHow(false)} />}
   </section>;

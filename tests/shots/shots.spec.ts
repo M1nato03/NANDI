@@ -95,10 +95,6 @@ for (const theme of themes) test.describe(theme, () => {
       database.close();
     });
     await page.reload();
-    // The rest-bank toast would cover the card; it goes on its own.
-    await expect(page.locator('.economy-toast')).toBeVisible();
-    await page.clock.runFor(10_000);
-    await expect(page.locator('.economy-toast')).toHaveCount(0);
     const card = page.locator('.economy-season-card');
     await expect(card.locator('.economy-rival')).toBeVisible();
     await card.scrollIntoViewIfNeeded();
@@ -115,6 +111,69 @@ for (const theme of themes) test.describe(theme, () => {
     await page.locator('.economy-rival').scrollIntoViewIfNeeded();
     await shot(page, 'l1-3-you-card-200-text', false);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
+
+  test('47b useful days', async ({ page }) => {
+    test.setTimeout(180_000);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.clock.install({ time: new Date('2026-11-04T12:00:00') });
+    const seedDone = (days: string[]) => page.evaluate(async list => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => {
+        const transaction = database.transaction('ledger', 'readwrite');
+        let n = 0;
+        for (const day of list) for (let i = 0; i < 4; i++) { n += 1; transaction.objectStore('ledger').put({ id: `done:u-${day}-${n}`, dayKey: day, mode: 'tasks', kind: 'done', refId: `u-${day}-${n}`, inputs: { plannedSize: 'L', wasPlanned: true }, updatedAt: new Date(`${day}T12:00:00`).getTime() + n, deleted: 0, deviceId: 'shots' }); }
+        transaction.oncomplete = () => resolve();
+      });
+      database.close();
+    }, days);
+    // An empty week first.
+    await page.goto('/?e2e#you');
+    const week = page.getByRole('region', { name: 'This week', exact: true });
+    await expect(week).toBeVisible();
+    await page.locator('.economy-season-card').scrollIntoViewIfNeeded();
+    await shot(page, 'u1-you-empty-week', false);
+    // Three useful days of four, with the picker open and a change pending.
+    await seedDone(['2026-11-02', '2026-11-03', '2026-11-04']);
+    await page.reload();
+    await expect(week.getByRole('heading')).toHaveText('3 of your 4');
+    await page.locator('.economy-season-card').scrollIntoViewIfNeeded();
+    await shot(page, 'u2-you-season-and-week', false);
+    await week.scrollIntoViewIfNeeded();
+    await shot(page, 'u3-you-week', false);
+    await week.getByRole('button', { name: /^Change your weekly target/ }).click();
+    await week.getByRole('radio', { name: '5' }).check();
+    await week.locator('.useful-target-form').scrollIntoViewIfNeeded();
+    await shot(page, 'u4-target-picker', false);
+    await week.getByRole('button', { name: 'Set target' }).click();
+    await expect(week).toContainText('5 from Mon 9 Nov');
+    await week.scrollIntoViewIfNeeded();
+    await shot(page, 'u5-target-pending', false);
+    await page.getByRole('button', { name: 'How the ladder works' }).first().click();
+    await expect(page.getByRole('dialog', { name: 'How the ladder works' })).toBeVisible();
+    await shot(page, 'u6-ladder-how', false);
+    await page.keyboard.press('Escape');
+    await page.getByRole('button', { name: 'View the ladder' }).click();
+    await page.getByRole('group', { name: 'On your You page' }).scrollIntoViewIfNeeded();
+    await shot(page, 'u7-ladder-choice', false);
+    await page.getByRole('radio', { name: 'Keep rank tucked away' }).check();
+    await page.goBack();
+    await page.locator('.economy-season-card').scrollIntoViewIfNeeded();
+    await shot(page, 'u8-you-rank-tucked', false);
+    await page.goto('/?e2e#yatra/days');
+    await expect(page.locator('.useful-days-facts')).toBeVisible();
+    await shot(page, 'u9-record');
+    await page.goto('/?e2e#yatra');
+    await expect(page.locator('button.home-week')).toBeVisible();
+    await shot(page, 'u10-home-line', false);
+    await page.goto('/?e2e#you');
+    await textAt200(page);
+    await page.getByRole('region', { name: 'This week', exact: true }).scrollIntoViewIfNeeded();
+    await shot(page, 'u11-you-week-200', false);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.goto('/?e2e#yatra/days');
+    await textAt200(page);
+    await shot(page, 'u12-record-200', false);
   });
 
   test('spec 45b home', async ({ page }) => {

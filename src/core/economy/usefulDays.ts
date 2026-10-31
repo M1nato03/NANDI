@@ -143,7 +143,7 @@ export type RecordDay = { dayKey: string; items: string[] };
 
 /**
  * The record behind the count: each useful day, newest first, with what was finished on it, read from the ledger.
- * `titles` names done tasks by id; a task with no title left is "A planned task". A kept date whose rows are gone
+ * `titles` names done tasks by id; tasks with no title left are counted together ("2 planned tasks"). A kept date whose rows are gone
  * (a deletion, a late import) says "Useful day recorded", never an invented action.
  */
 export function usefulRecord(dates: readonly string[], facts: readonly LedgerRow[], titles: ReadonlyMap<string, string> = new Map()): RecordDay[] {
@@ -151,7 +151,10 @@ export function usefulRecord(dates: readonly string[], facts: readonly LedgerRow
     const rows = facts.filter(row => !row.deleted && row.dayKey === key);
     const count = (test: (row: LedgerRow) => boolean) => rows.filter(test).length;
     const items: string[] = [];
-    for (const row of rows.filter(row => row.mode === 'tasks' && row.kind === 'done')) items.push(titles.get(row.refId) ?? 'A planned task');
+    const tasks = rows.filter(row => row.mode === 'tasks' && row.kind === 'done');
+    for (const row of tasks) { const title = titles.get(row.refId); if (title) items.push(title); }
+    const untitled = tasks.filter(row => !titles.has(row.refId)).length;
+    if (untitled) items.push(untitled === 1 ? 'A planned task' : `${untitled} planned tasks`);
     const sessions = count(row => row.mode === 'train' && row.kind === 'session' && sessionCounts(row.inputs ?? {}));
     if (sessions) items.push(sessions === 1 ? 'A workout' : `${sessions} workouts`);
     if (count(row => row.mode === 'train' && row.kind === 'rest')) items.push('A rest-day walk');
