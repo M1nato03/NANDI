@@ -123,7 +123,7 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, '45b-8-useful-days-record', false);
     // Each friend's tap: the reaction where it stands, then its area, once.
     await page.emulateMedia({ colorScheme: theme, reducedMotion: 'no-preference' });
-    for (const [name, hash] of [['Mor at the map: Plan', 'plan'], ['Chiku on the reading rock: Read', 'read'], ['Nandi by the pack: Train', 'yatra/train'], ['Kapi in the branches: Play', 'yatra/mind'], ['Kachhua by the fire: Calm', 'yatra/calm']] as const) {
+    for (const [name, hash] of [['Plan, Mor at the map', 'plan'], ['Read, Chiku on the reading rock', 'read'], ['Train, Nandi by the pack', 'yatra/train'], ['Play, Kapi in the branches', 'yatra/mind'], ['Calm, Kachhua by the fire', 'yatra/calm']] as const) {
       await page.goto('/#yatra');
       const friend = page.getByRole('button', { name });
       await expect(friend).toBeVisible();
@@ -154,6 +154,8 @@ for (const theme of themes) test.describe(theme, () => {
     await settle();
     await shot(page, '45b-3-home-book-check', false);
     // 200% text: the page scrolls and the next move is still there.
+    await page.clock.runFor(10_000); // the finished focus's toast clears first
+    await expect(page.locator('.economy-toast')).toHaveCount(0, { timeout: 15_000 });
     await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
     await settle();
     await shot(page, '45b-6-home-200-text', false);

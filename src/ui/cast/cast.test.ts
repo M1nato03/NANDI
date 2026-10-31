@@ -45,9 +45,9 @@ describe('spec 45b: the five friends at camp', () => {
   it('on Home each friend is a labelled button at its own place, to its own area', () => {
     const html = scene(() => undefined);
     const labels = [...html.matchAll(/<button[^>]*class="trek-actor [a-z]+ camp-friend"[^>]*aria-label="([^"]+)"/g)].map(match => match[1]);
-    expect(labels).toEqual(['Mor at the map: Plan', 'Chiku on the reading rock: Read', 'Nandi by the pack: Train', 'Kapi in the branches: Play', 'Kachhua by the fire: Calm']);
+    expect(labels).toEqual(['Plan, Mor at the map', 'Read, Chiku on the reading rock', 'Train, Nandi by the pack', 'Play, Kapi in the branches', 'Calm, Kachhua by the fire']);
     expect(CAMP.map(spot => spot.route)).toEqual(['plan', 'read', 'yatra/train', 'yatra/mind', 'yatra/calm']);
-    for (const spot of CAMP) expect(html).toContain(`>${spot.place}</span>`);
+    for (const spot of CAMP) expect(html).toContain(`>${spot.area}</span>`);
     // Each hit target is at least 44 px.
     for (const spot of CAMP) expect(spot.size).toBeGreaterThanOrEqual(44);
   });

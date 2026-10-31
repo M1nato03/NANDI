@@ -38,15 +38,15 @@ const centreOf = (gx: number) => gx - 128;
 /**
  * Spec 45b: the camp. Each friend has its own place on shared ground (Mor at the map, Chiku on the reading rock, Nandi
  * by the pack, Kapi up in the branches, Kachhua by the fire), left of the group's point. On Home each is a button to
- * its area; `say` is its accessible name.
+ * its area, labelled with the area's word (jenil-87: the word passes the glance test); the place is in its accessible name.
  */
-export type CampFriend = { friend: CastName; place: string; say: string; area: string; route: string; left: number; bottom: number; size: number };
+export type CampFriend = { friend: CastName; say: string; area: string; route: string; left: number; bottom: number; size: number };
 export const CAMP: readonly CampFriend[] = [
-  { friend: 'Mor', place: 'the map', say: 'Mor at the map', area: 'Plan', route: 'plan', left: -292, bottom: 0, size: 56 },
-  { friend: 'Chiku', place: 'reading rock', say: 'Chiku on the reading rock', area: 'Read', route: 'read', left: -228, bottom: 9, size: 52 },
-  { friend: 'Nandi', place: 'the pack', say: 'Nandi by the pack', area: 'Train', route: 'yatra/train', left: -168, bottom: 0, size: 64 },
-  { friend: 'Kapi', place: 'branches', say: 'Kapi in the branches', area: 'Play', route: 'yatra/mind', left: -98, bottom: 86, size: 50 },
-  { friend: 'Kachhua', place: 'the fire', say: 'Kachhua by the fire', area: 'Calm', route: 'yatra/calm', left: -62, bottom: 0, size: 58 },
+  { friend: 'Mor', say: 'Mor at the map', area: 'Plan', route: 'plan', left: -292, bottom: 0, size: 56 },
+  { friend: 'Chiku', say: 'Chiku on the reading rock', area: 'Read', route: 'read', left: -228, bottom: 9, size: 52 },
+  { friend: 'Nandi', say: 'Nandi by the pack', area: 'Train', route: 'yatra/train', left: -168, bottom: 0, size: 64 },
+  { friend: 'Kapi', say: 'Kapi in the branches', area: 'Play', route: 'yatra/mind', left: -98, bottom: 86, size: 50 },
+  { friend: 'Kachhua', say: 'Kachhua by the fire', area: 'Calm', route: 'yatra/calm', left: -62, bottom: 0, size: 58 },
 ];
 /** The fire sits just right of Kachhua. */
 const FIRE_AT = 2;
@@ -206,12 +206,12 @@ export function TrekScene({ trek, night, dusk = false, brighten = 0, breath, onR
           {/* At a night Calm, Kachhua is awake and breathes with the timer; the others may doze (spec 34 table). */}
           {CAMP.map(spot => {
             const pose = night && !(spot.friend === 'Kachhua' && breath) ? 'rest' : 'idle';
-            const style = { left: spot.left, bottom: spot.bottom, ...(spot.friend === 'Kachhua' ? { '--calm-in': `${breath?.in ?? 4}s`, '--calm-out': `${breath?.out ?? 6}s` } : {}) } as CSSProperties;
+            const style = { left: spot.left, bottom: spot.bottom, '--lift': `${spot.bottom}px`, ...(spot.friend === 'Kachhua' ? { '--calm-in': `${breath?.in ?? 4}s`, '--calm-out': `${breath?.out ?? 6}s` } : {}) } as CSSProperties;
             const kind = `trek-actor ${spot.friend.toLowerCase()}`;
             const phase = spot.friend === 'Kachhua' ? breath?.phase : undefined;
             const cast = <Cast name={spot.friend} pose={pose} size={spot.size} {...(taps[spot.friend] ? { moment: 'tap' as const, at: taps[spot.friend] } : {})} />;
             return home
-              ? <button type="button" key={spot.friend} className={`${kind} camp-friend`} style={style} data-phase={phase} aria-label={`${spot.say}: ${spot.area}`} onClick={() => tap(spot)}>{cast}<span className="camp-label" aria-hidden="true">{spot.place}</span></button>
+              ? <button type="button" key={spot.friend} className={`${kind} camp-friend`} style={style} data-phase={phase} aria-label={`${spot.area}, ${spot.say}`} onClick={() => tap(spot)}>{cast}<span className="camp-label" aria-hidden="true">{spot.area}</span></button>
               : <span key={spot.friend} className={kind} style={style} data-phase={phase}>{cast}</span>;
           })}
         </div>

@@ -170,5 +170,5 @@ test('the scene turns to night at dusk, before the evening switch, with a warm h
   await expect(page.locator('.trek-scene.is-night')).toBeVisible();
   await expect(page.locator('.trek-narrative')).toHaveText('Tonight holds 1 star from your day.');
   // Spec 45b: Kachhua by the fire is the way to Calm.
-  await expect(page.getByRole('button', { name: 'Kachhua by the fire: Calm' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Calm, Kachhua by the fire' })).toBeVisible();
 });

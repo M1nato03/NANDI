@@ -18,7 +18,7 @@ test('Yatra\'s camp: Nandi, Kapi and Kachhua open their corners, with Yatra lit 
   await expect(page).toHaveURL(/#yatra$/);
   // Spec 45b: the corners are the friends at camp.
   await expect(page.locator('.notebook-home h1')).toBeVisible();
-  for (const [name, url, heading] of [['Nandi by the pack: Train', /#yatra\/train$/, null], ['Kapi in the branches: Play', /#yatra\/mind$/, "Kapi's shelf"], ['Kachhua by the fire: Calm', /#yatra\/calm$/, 'Breathe with Kachhua']] as const) {
+  for (const [name, url, heading] of [['Train, Nandi by the pack', /#yatra\/train$/, null], ['Play, Kapi in the branches', /#yatra\/mind$/, "Kapi's shelf"], ['Calm, Kachhua by the fire', /#yatra\/calm$/, 'Breathe with Kachhua']] as const) {
     await page.goto('/#yatra');
     await page.getByRole('button', { name }).click();
     await expect(page).toHaveURL(url);

@@ -23,10 +23,10 @@ test('a cold open lands on Yatra, with Yatra first and lit in the tab bar', asyn
   await expect(strip(page)).toHaveCount(1);
   await expect(strip(page)).toContainText('Read one idea');
   await expect(page.locator('.trek-journey-top')).toBeVisible();
-  await page.getByRole('button', { name: 'Mor at the map: Plan' }).click();
+  await page.getByRole('button', { name: 'Plan, Mor at the map' }).click();
   await expect(page).toHaveURL(/#plan$/);
   await page.goto('/#yatra');
-  await page.getByRole('button', { name: 'Chiku on the reading rock: Read' }).click();
+  await page.getByRole('button', { name: 'Read, Chiku on the reading rock' }).click();
   await expect(page).toHaveURL(/#read$/);
 });
 

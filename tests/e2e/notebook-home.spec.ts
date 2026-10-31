@@ -23,13 +23,22 @@ test.beforeEach(async ({ page }) => { await page.emulateMedia({ reducedMotion: '
 test('a new phone: no useful day yet, the camp, and one move to Read', async ({ page }) => {
   await page.clock.install({ time: WED });
   await home(page);
-  await expect(page.locator('.home-week')).toHaveText(/^0 useful days\s*this week/);
+  // A count of 0 is words, not a score; no Journal stamp before the first postcard.
+  await expect(page.locator('.home-week')).toHaveText(/^A fresh week/);
+  await expect(page.locator('.home-permit')).toHaveCount(0);
   // No time number, no bar, no time-back claim.
   await expect(page.locator('main')).not.toContainText(/back to you|time back|returned|\d+ h \d+ m|recorded/i);
   await expect(page.locator('.notebook-home progress, .notebook-home [role="progressbar"]')).toHaveCount(0);
   await expect(page.getByRole('region', { name: 'One next move' })).toHaveCount(1);
   await expect(move(page)).toHaveCount(1);
   await expect(move(page)).toContainText('Read one idea');
+  // The record with no useful day yet is only its one-line rule.
+  await page.locator('.home-week').click();
+  await expect(page.getByRole('heading', { name: 'A fresh week', level: 1 })).toBeVisible();
+  await expect(page.locator('.useful-days-note')).toHaveText(/^A day counts when/);
+  await expect(page.locator('.useful-days-list')).toHaveCount(0);
+  await expect(page.locator('main')).not.toContainText(/\byet\b|\bnone\b/i);
+  await page.goBack();
   await move(page).click();
   await expect(page).toHaveURL(/#read$/);
 });
@@ -71,7 +80,7 @@ test('in Season 1 the line counts the season, from its first Monday', async ({ p
 test('all five friends go to their areas, once each, and Back returns to the same Home', async ({ page }) => {
   await page.clock.install({ time: WED });
   await home(page);
-  for (const [name, hash] of [['Mor at the map: Plan', 'plan'], ['Chiku on the reading rock: Read', 'read'], ['Nandi by the pack: Train', 'yatra/train'], ['Kapi in the branches: Play', 'yatra/mind'], ['Kachhua by the fire: Calm', 'yatra/calm']] as const) {
+  for (const [name, hash] of [['Plan, Mor at the map', 'plan'], ['Read, Chiku on the reading rock', 'read'], ['Train, Nandi by the pack', 'yatra/train'], ['Play, Kapi in the branches', 'yatra/mind'], ['Calm, Kachhua by the fire', 'yatra/calm']] as const) {
     // A double tap still opens the area once.
     await page.getByRole('button', { name }).dblclick();
     await expect(page).toHaveURL(new RegExp(`#${hash}$`));
@@ -88,7 +97,7 @@ test('with motion, a tap plays the friend\'s reaction where it stands, then open
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.clock.install({ time: WED });
   await home(page);
-  const kapi = page.getByRole('button', { name: 'Kapi in the branches: Play' });
+  const kapi = page.getByRole('button', { name: 'Play, Kapi in the branches' });
   await expect(page.locator('.home-week-time')).toBeVisible();
   await page.waitForTimeout(1300); // the walk-in step ends
   const box = await kapi.boundingBox();

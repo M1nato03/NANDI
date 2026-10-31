@@ -97,7 +97,7 @@ test('a new screen takes focus at its heading; each task\'s Done names its task;
 test('Calm opens fully from Yatra (heading, lengths, Start); the Sound row can scroll clear of the Start bar', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await page.goto('/#yatra');
-  await page.getByRole('button', { name: 'Kachhua by the fire: Calm' }).click();
+  await page.getByRole('button', { name: 'Calm, Kachhua by the fire' }).click();
   await expect(page.getByRole('heading', { name: 'Breathe with Kachhua', level: 1 })).toBeVisible();
   await expect(page.getByRole('group', { name: 'How long' })).toBeVisible();
   await expect(page.locator('.calm-start')).toBeVisible();

@@ -97,9 +97,10 @@ function UsefulLine() {
   const economy = useEconomyDays();
   if (!economy) return <div className="home-week" />;
   const { count, span } = usefulDays(economy.view.days, economy.view.season, economy.today);
+  // jenil-87: a count of 0 reads as a score, so a new week (or season) says so in words, with no number.
   return <button type="button" className="home-week" onClick={() => go('yatra/days')}>
-    <span className="home-week-time">{count} useful {count === 1 ? 'day' : 'days'}</span>
-    <span className="home-week-label">this {span}</span>
+    {count ? <><span className="home-week-time">{count} useful {count === 1 ? 'day' : 'days'}</span><span className="home-week-label">this {span}</span></>
+      : <span className="home-week-time">A fresh {span}</span>}
     <span className="home-week-arrow" aria-hidden="true">›</span>
   </button>;
 }
@@ -165,7 +166,8 @@ export function Yatra() {
       <UsefulLine />
       <div className="home-title">
         <h1>{trek && yatra ? campLine(trek, yatra.night) : 'Field notes'}</h1>
-        {trek && <button type="button" className="home-permit" aria-label={`Journal · ${postcards}`} onClick={() => go('yatra/journal')}>
+        {/* From the first postcard on: a 0 stamp on a new phone reads as a score. */}
+        {trek && postcards > 0 && <button type="button" className="home-permit" aria-label={`Journal · ${postcards}`} onClick={() => go('yatra/journal')}>
           <span>Journal</span><b>{postcards}</b>
         </button>}
       </div>
@@ -201,12 +203,12 @@ export function UsefulDays() {
   const record = usefulRecord(economy.view.days, economy.facts, from, economy.today, titles);
   const show = (key: string) => new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${key}T12:00:00Z`));
   return <section className="screen useful-days">
-    <p className="eyebrow">Yatra</p><h1>{count} useful {count === 1 ? 'day' : 'days'}</h1>
-    <p className="useful-days-note">This {span}. A day counts when a planned task is done, a workout or rest walk, a puzzle, read or review, or a soft day's gentle thing.</p>
-    {record.length ? <ol className="useful-days-list">{record.map(row => <li key={row.dayKey} className="card">
+    <p className="eyebrow">Yatra</p><h1>{count ? `${count} useful ${count === 1 ? 'day' : 'days'}` : `A fresh ${span}`}</h1>
+    <p className="useful-days-note">{count ? `This ${span}. ` : ''}A day counts when a planned task is done, a workout or rest walk, a puzzle, read or review, or a soft day's gentle thing.</p>
+    {record.length > 0 && <ol className="useful-days-list">{record.map(row => <li key={row.dayKey} className="card">
       <h2>{show(row.dayKey)}</h2>
       <ul>{row.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
-    </li>)}</ol> : <p>Finish one thing today and it is here.</p>}
+    </li>)}</ol>}
   </section>;
 }
 
