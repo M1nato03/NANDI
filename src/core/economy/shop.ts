@@ -19,11 +19,13 @@ export const SHOP_ITEMS: readonly ShopItem[] = [
   { id: 'theme:linen', kind: 'theme', name: 'Linen theme', price: RULES.shards.prices['theme:linen'], description: 'Warm paper in light and dark.' },
   { id: 'theme:lagoon', kind: 'theme', name: 'Lagoon theme', price: RULES.shards.prices['theme:lagoon'], description: 'Calm teal in light and dark.' },
 ];
+// Spec 47b: rest days are no longer sold. The item and its price stay, so an old accepted purchase still replays as
+// the one rest day it bought; no catalogue offers it, so a new purchase is refused as not in this season.
 export const SHOP_CATALOGUES = [
-  ['freeze', 'cardback:weave', 'banner:dawn', 'puzzle:paths', 'sound:soft', 'theme:linen', 'theme:lagoon'],
-  ['freeze', 'cardback:orbit', 'banner:grove', 'puzzle:patterns', 'sound:soft', 'theme:linen', 'theme:lagoon'],
-  ['freeze', 'cardback:steps', 'banner:sky', 'puzzle:paths', 'sound:soft', 'theme:linen', 'theme:lagoon'],
-  ['freeze', 'cardback:weave', 'banner:grove', 'puzzle:patterns', 'sound:soft', 'theme:linen', 'theme:lagoon'],
+  ['cardback:weave', 'banner:dawn', 'puzzle:paths', 'sound:soft', 'theme:linen', 'theme:lagoon'],
+  ['cardback:orbit', 'banner:grove', 'puzzle:patterns', 'sound:soft', 'theme:linen', 'theme:lagoon'],
+  ['cardback:steps', 'banner:sky', 'puzzle:paths', 'sound:soft', 'theme:linen', 'theme:lagoon'],
+  ['cardback:weave', 'banner:grove', 'puzzle:patterns', 'sound:soft', 'theme:linen', 'theme:lagoon'],
 ] as const;
 /** Fixed practice boards; each seed is bundled and playable offline. */
 export const PUZZLE_PACKS = [

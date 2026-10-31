@@ -29,19 +29,20 @@ async function seed(page: Page, facts: Fact[]) {
   await page.reload();
 }
 
-test('pre-season level and streak appear before Season 1 begins', async ({ page }) => {
+test('pre-season level and the week appear before Season 1 begins (spec 47b: useful days, no streak)', async ({ page }) => {
   // The season card appears in the last week before it starts.
   await page.clock.install({ time: new Date('2026-10-27T12:00:00') });
   await page.goto('/#you');
   await seed(page, [fact('2026-10-27', 'tasks', 'done', { plannedSize: 'M', wasPlanned: true })]);
   const season = page.getByRole('region', { name: 'Your season' });
   await expect(season).toContainText('Season 1 starts Monday 2 Nov');
-  await expect(season).toContainText('1 day streak');
+  await expect(season.getByRole('region', { name: 'This week' })).toContainText('1 of your 4');
+  await expect(season).not.toContainText(/day streak/);
   await expect(season).toContainText('Level 1');
   await expect(season).not.toContainText('#500 of 500');
 });
 
-test('seeded week shows rank and Clean Week; rest day and theme survive a backup round trip', async ({ page }) => {
+test('seeded week shows rank and the useful week; a card back and theme survive a backup round trip', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-08T12:00:00') });
   await page.goto('/#you');
   const days = ['2026-10-31', '2026-11-01', '2026-11-02', '2026-11-03', '2026-11-04', '2026-11-05', '2026-11-06', '2026-11-08'];
@@ -49,8 +50,10 @@ test('seeded week shows rank and Clean Week; rest day and theme survive a backup
   const season = page.getByRole('region', { name: 'Your season' });
   await expect(season).toContainText(/Level \d+/);
   await expect(season).toContainText(/#\d+ of 500/);
-  await expect(season).toContainText('6 of 4 Hat-tricks');
-  await expect(season).toContainText('8 day streak');
+  // Spec 47b: Mon 2 to Sun 8 Nov, six useful days (not Sat 7).
+  await expect(season.getByRole('region', { name: 'This week' }).getByRole('heading')).toHaveText('6 of your 4');
+  await expect(season).toContainText('Useful days: 6 of your 4');
+  await expect(season).not.toContainText(/day streak|Hat-tricks|Stamina/);
   await expect(season).toContainText('Shards');
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
   // 47-L1: the seat above is a pace-setter, named as one, with the SP to pass it (never "sits just above").
@@ -67,7 +70,9 @@ test('seeded week shows rank and Clean Week; rest day and theme survive a backup
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
   await page.goto('/#you/shop');
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
-  await page.getByRole('button', { name: '50 Shards', exact: true }).click();
+  // Spec 47b: no rest day for sale; the cheapest item is a card back.
+  await expect(page.getByText('Adds one day to your rest bank.')).toHaveCount(0);
+  await page.locator('.shop-item', { hasText: 'Weave card back' }).getByRole('button', { name: '100 Shards' }).click();
   await expect(page.getByText('Yours. Ready to use.')).toBeVisible();
   await page.getByRole('button', { name: '400 Shards' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-economy-theme', 'linen');
@@ -101,7 +106,7 @@ test('short balance leaves a theme unavailable', async ({ page }) => {
   await expect(page.getByText(/more Shards/).first()).toBeVisible();
 });
 
-test('missed days use the rest bank before a streak pauses', async ({ page }) => {
+test('days without a mark spend the rest bank as before, and You shows only its balance', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-07T12:00:00') });
   await page.goto('/#you');
   await seed(page, [fact('2026-11-02', 'tasks', 'done', { plannedSize: 'M', wasPlanned: true }),

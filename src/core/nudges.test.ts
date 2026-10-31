@@ -27,7 +27,7 @@ describe('daily nudges', () => {
     expect(wanted([], { lastOpenedAt: new Date(2026, 9, 16, 22, 59).getTime() }).some(row => row.id === 'nudge:night:2026-10-16')).toBe(true);
   });
   it('counts morning against the two engagement slots and honors both switches', () => {
-    const full = [{ kind: 'planning' as const, at: new Date(2026, 9, 16, 9).getTime() }, { kind: 'streak' as const, at: new Date(2026, 9, 16, 20).getTime() }];
+    const full = [{ kind: 'planning' as const, at: new Date(2026, 9, 16, 9).getTime() }, { kind: 'planning' as const, at: new Date(2026, 9, 16, 20).getTime() }];
     const rows = wanted([], { scheduledEngagement: full });
     expect(rows.some(row => row.id === 'nudge:morning:2026-10-16')).toBe(false);
     expect(rows.some(row => row.id === 'nudge:night:2026-10-16')).toBe(true);
@@ -36,14 +36,8 @@ describe('daily nudges', () => {
   it('uses the fallback morning message when no task is set', () => {
     expect(wanted([], { tasks: [] }).find(row => row.id === 'nudge:morning:2026-10-16')?.body).toBe('Pick one small step for today.');
   });
-  it('keeps the opt-in streak reminder before the night limit', () => {
-    expect(wanted().some(row => row.id === 'nudge:streak:2026-10-16')).toBe(false);
-    const at23 = wanted([setting(NUDGE_STREAK_ON, true), setting('planner.bedtime', '23:30')])
-      .find(row => row.id === 'nudge:streak:2026-10-16')?.at;
-    expect(at23).toBeLessThan(new Date(2026, 9, 16, 22).getTime());
-    const at130 = wanted([setting(NUDGE_STREAK_ON, true), setting('planner.bedtime', '01:30')])
-      .find(row => row.id === 'nudge:streak:2026-10-16')?.at;
-    expect(at130).toBeLessThan(new Date(2026, 9, 16, 23, 15).getTime());
+  it('spec 47b: an old streak opt-in schedules nothing, any day, at any bedtime', () => {
+    for (const bedtime of ['23:30', '01:30']) expect(wanted([setting(NUDGE_STREAK_ON, true), setting('planner.bedtime', bedtime)]).some(row => row.id.startsWith('nudge:streak:'))).toBe(false);
   });
   it('keeps every nudge quiet on planned days away', () => {
     const rows = wanted([setting('economy.away', [{ start: '2026-10-16', end: '2026-10-18' }]), setting(NUDGE_STREAK_ON, true)]);

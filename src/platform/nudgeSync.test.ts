@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { db } from '../data/db';
-import { NUDGE_MORNING_ON, NUDGE_NIGHT_ON } from '../core/nudges';
+import { NUDGE_MORNING_ON, NUDGE_NIGHT_ON, NUDGE_STREAK_ON } from '../core/nudges';
 
 const mock = vi.hoisted(() => ({ schedule: vi.fn().mockResolvedValue(undefined), cancel: vi.fn().mockResolvedValue(undefined),
   listPending: vi.fn().mockResolvedValue([]), checkPermission: vi.fn().mockResolvedValue('granted') }));
@@ -34,6 +34,18 @@ describe('nudge reconciliation', () => {
     await reconcileNudges(now);
     expect((await db.reminders.toArray()).filter(row => row.status === 'scheduled' && row.refType === 'nudge')).toEqual([]);
     expect(mock.cancel).toHaveBeenCalledWith('nudge:night:2026-10-16');
+  });
+  it('spec 47b: a streak reminder still pending from an old opt-in is cancelled, and none is scheduled again', async () => {
+    await db.settings.put({ key: NUDGE_STREAK_ON, value: true, ...meta });
+    await db.reminders.put({ id: 'nudge:streak:2026-10-16', refType: 'nudge', refId: 'streak:2026-10-16', at: new Date(2026, 9, 16, 21).getTime(), notifId: 123,
+      channel: 'planning', title: 'A small step still counts', body: 'A task, movement, or a Mind moment is enough today.', status: 'scheduled', ...meta });
+    mock.listPending.mockResolvedValueOnce(['nudge:streak:2026-10-16']);
+    await reconcileNudges(now);
+    expect(mock.cancel).toHaveBeenCalledWith('nudge:streak:2026-10-16');
+    expect((await db.reminders.get('nudge:streak:2026-10-16'))?.status).toBe('cancelled');
+    expect(mock.schedule.mock.calls.some(([reminder]) => String(reminder.id).startsWith('nudge:streak:'))).toBe(false);
+    // The old opt-in is kept as it was, only as backup history.
+    expect((await db.settings.get(NUDGE_STREAK_ON))?.value).toBe(true);
   });
   it('does not schedule without notification permission', async () => {
     mock.checkPermission.mockResolvedValueOnce('denied');

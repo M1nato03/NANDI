@@ -8,7 +8,7 @@ import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { phaseAt } from '../../core/courtyard/courtyard';
 import { deriveTrek, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Constellation, type Trek } from '../../core/yatra/trek';
 import { nextMove } from '../../core/yatra/nextMove';
-import { usefulDays, usefulRecord } from '../../core/yatra/usefulDays';
+import { cleanWeeks, longestRun, usefulDays, usefulRecord } from '../../core/economy/usefulDays';
 import { deriveEconomy, weekStart } from '../../core/economy/deriveEconomy';
 import { softToday } from '../../core/soft/soft';
 import { readBeatChanges, taalWeek, trainDays, TAAL_BEATS_KEY } from '../../core/train/taal';
@@ -89,14 +89,14 @@ type HomeRows = NonNullable<ReturnType<typeof useHomeRows>>;
 function useEconomyDays() {
   const source = useLiveQuery(async () => ({ facts: await db.ledger.toArray(), settings: await db.settings.toArray() }), []);
   const today = dayKey(Date.now()); // eslint-disable-line react-hooks/purity
-  return useMemo(() => source ? { facts: source.facts, today, view: deriveEconomy(source.facts, undefined, source.settings, today) } : undefined, [source, today]);
+  return useMemo(() => source ? { facts: source.facts, settings: source.settings, today, view: deriveEconomy(source.facts, undefined, source.settings, today) } : undefined, [source, today]);
 }
 
 /** One honest progress line: "N useful days this season" ("this week" before Season 1). One tap opens the record. */
 function UsefulLine() {
   const economy = useEconomyDays();
   if (!economy) return <div className="home-week" />;
-  const { count, span } = usefulDays(economy.view.days, economy.view.season, economy.today);
+  const { count, span } = usefulDays(economy.view.days, economy.view.season, economy.today, economy.settings);
   // jenil-87: a count of 0 reads as a score, so a new week (or season) says so in words, with no number.
   return <button type="button" className="home-week" onClick={() => go('yatra/days')}>
     {count ? <><span className="home-week-time">{count} useful {count === 1 ? 'day' : 'days'}</span><span className="home-week-label">this {span}</span></>
@@ -199,12 +199,23 @@ export function UsefulDays() {
   const economy = useEconomyDays();
   const titles = useLiveQuery(async () => new Map((await db.tasks.toArray()).filter(row => !row.deleted).map(row => [row.id, row.title])), []);
   if (!economy || !titles) return <section className="screen" role="status">Opening the record…</section>;
-  const { count, span, from } = usefulDays(economy.view.days, economy.view.season, economy.today);
-  const record = usefulRecord(economy.view.days, economy.facts, from, economy.today, titles);
+  const { view, today, settings } = economy;
+  const { count, span, from, dates } = usefulDays(view.days, view.season, today, settings);
+  const record = usefulRecord(dates, economy.facts, titles);
+  const longest = longestRun(settings, view.streak.days);
+  const clean = cleanWeeks(view.days, from, today);
   const show = (key: string) => new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${key}T12:00:00Z`));
+  const days = (n: number) => `${n} ${n === 1 ? 'day' : 'days'}`;
+  // Spec 47b: in a season the record says the season's count; before Season 1 it is plainly "Your record".
   return <section className="screen useful-days">
-    <p className="eyebrow">Yatra</p><h1>{count ? `${count} useful ${count === 1 ? 'day' : 'days'}` : `A fresh ${span}`}</h1>
-    <p className="useful-days-note">{count ? `This ${span}. ` : ''}A day counts when a planned task is done, a workout or rest walk, a puzzle, read or review, or a soft day's gentle thing.</p>
+    <p className="eyebrow">Your record</p><h1>{span === 'week' ? 'Your record' : count ? `${count} useful ${count === 1 ? 'day' : 'days'} this season` : 'A fresh season'}</h1>
+    <dl className="useful-days-facts">
+      {span === 'week' && <div><dt>This week</dt><dd>{count ? `${count} useful ${count === 1 ? 'day' : 'days'}` : 'A fresh week'}</dd></div>}
+      <div><dt>Longest run</dt><dd>{days(longest)}</dd></div>
+      <div><dt>Clean weeks</dt><dd>{clean}</dd></div>
+    </dl>
+    <p className="small useful-days-help">Your longest run counts rest days the way they counted then. A Clean week is four Hat-trick days in one week.</p>
+    <p className="useful-days-note">A day counts when a planned task is done, a workout or rest walk, a puzzle, read or review, or a soft day's gentle thing.</p>
     {record.length > 0 && <ol className="useful-days-list">{record.map(row => <li key={row.dayKey} className="card">
       <h2>{show(row.dayKey)}</h2>
       <ul>{row.items.map((item, i) => <li key={i}>{item}</li>)}</ul>

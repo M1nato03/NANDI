@@ -6,6 +6,7 @@ import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
 import { isLegacyExport } from '../legacy-import';
+import { CONFIRMED_PREFIX, LONGEST_KEY, mergeConfirmed, mergeTargets, TARGET_KEY } from '../../core/economy/usefulDays';
 import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, fillHeldBonus, keptCandidates, mergeCloseMaps, refundReplaced, replayBonus, restoredPurchase, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { duringRestore } from '../restoreLock';
 
@@ -289,6 +290,8 @@ async function restoreInto(db: NandiDb, restored: BackupEnvelope): Promise<void>
     const storedPeak = localPeak && !localPeak.deleted ? readPeak([localPeak]) : { totalXp: 0, level: 1 };
     const minePeak = { totalXp: Math.max(storedPeak.totalXp, showing.totalXp), level: Math.max(storedPeak.level, showing.level) };
     const localSeen = readSeenUpTo(before);
+    // Spec 47b: this phone's kept useful dates, longest run and weekly target, merged back in after the import.
+    const localUseful = before.filter(row => !row.deleted && (row.key.startsWith(CONFIRMED_PREFIX) || row.key === LONGEST_KEY || row.key === TARGET_KEY));
     // Each day's close keeps what that day showed; a restore keeps the higher of this phone's and the backup's.
     const closes = before.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
     const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
@@ -325,6 +328,18 @@ async function restoreInto(db: NandiDb, restored: BackupEnvelope): Promise<void>
     if (localSeen && (!theirSeen || localSeen > theirSeen)) {
       await db.settings.put({ key: SEEN_KEY, value: localSeen, updatedAt: now, deleted: 0, deviceId });
     }
+    // Spec 47b: a restore never lowers a useful-day count or the longest run (both sides' dates, the higher run), and
+    // the weekly target keeps every week either side set (the backup's choice for a week both set).
+    const usefulRows: SettingRow[] = [];
+    for (const mine of localUseful) {
+      const theirs = await db.settings.get(mine.key);
+      const theirValue = theirs && !theirs.deleted ? theirs.value : undefined;
+      const value = mine.key === LONGEST_KEY ? Math.max(Number(mine.value) || 0, Number(theirValue) || 0)
+        : mine.key === TARGET_KEY ? mergeTargets(mine.value, theirValue)
+          : mergeConfirmed(mine.key.slice(CONFIRMED_PREFIX.length), mine.value, theirValue);
+      if (JSON.stringify(value) !== JSON.stringify(theirValue)) usefulRows.push({ key: mine.key, value, updatedAt: now, deleted: 0, deviceId });
+    }
+    if (usefulRows.length) await db.settings.bulkPut(usefulRows);
     const after = await db.settings.toArray();
     const restoredFacts = (await db.ledger.toArray()).filter(row => !row.deleted);
     const restoredRaw = asMap(after.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)));

@@ -35,7 +35,9 @@ test('a new phone: no useful day yet, the camp, and one move to Read', async ({ 
   await expect(move(page)).toContainText('Read one idea');
   // The record with no useful day yet is only its one-line rule.
   await page.locator('.home-week').click();
-  await expect(page.getByRole('heading', { name: 'A fresh week', level: 1 })).toBeVisible();
+  // Spec 47b: before Season 1 the record is plainly "Your record", its week in words.
+  await expect(page.getByRole('heading', { name: 'Your record', level: 1 })).toBeVisible();
+  await expect(page.locator('.useful-days-facts')).toContainText('This weekA fresh week');
   await expect(page.locator('.useful-days-note')).toHaveText(/^A day counts when/);
   await expect(page.locator('.useful-days-list')).toHaveCount(0);
   await expect(page.locator('main')).not.toContainText(/\byet\b|\bnone\b/i);
@@ -58,7 +60,8 @@ test('useful days count marked dates this week (before Season 1), and one tap op
   await expect(page.locator('.home-week')).toHaveText(/^2 useful days\s*this week/);
   await page.locator('.home-week').click();
   await expect(page).toHaveURL(/#yatra\/days$/);
-  await expect(page.getByRole('heading', { name: '2 useful days', level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Your record', level: 1 })).toBeVisible();
+  await expect(page.locator('.useful-days-facts')).toContainText('This week2 useful days');
   const days = page.locator('.useful-days-list > li');
   await expect(days).toHaveCount(2);
   await expect(days.nth(0)).toContainText('Tue 27 Oct');

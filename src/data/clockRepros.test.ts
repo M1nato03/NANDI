@@ -8,6 +8,7 @@ import { reconcileGamify, recordShown } from './repos/gamify';
 import { createTaskRepos } from './repos/tasks';
 import { createTrainRepos } from './repos/train';
 import { purchaseShopItem } from './repos/economy';
+import { purchaseDecision, SHOP_ITEMS } from '../core/economy/shop';
 import { exportBackup, importBackup } from './backup';
 import { getOrCreateDeviceId } from './device';
 import { deriveEconomy } from '../core/economy/deriveEconomy';
@@ -24,6 +25,12 @@ const set = (iso: string) => { now = new Date(iso).getTime(); vi.setSystemTime(n
 const shown = async () => deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), dayKey(now));
 const repos = async () => { const id = await getOrCreateDeviceId(db, now); return { tasks: createTaskRepos(db, id), train: createTrainRepos(db, id) }; };
 let t = 0;
+/** The shop's rule as it was before spec 47b: the 50-Shard rest day was on sale. */
+const beforeSpec47b: typeof purchaseDecision = (itemId, facts, settings, today) => {
+  const item = SHOP_ITEMS.find(row => row.id === itemId);
+  if (itemId !== 'freeze' || !item) return purchaseDecision(itemId, facts, settings, today);
+  return deriveEconomy(facts, undefined, settings, today).shards >= item.price ? { ok: true, item } : { ok: false, reason: 'short' };
+};
 const task = async (reconcile = true) => {
   const { tasks } = await repos(); const id = `r-${++t}`;
   await tasks.createTask({ id, title: 'x', size: 'S', estimateMin: 15, plannedSize: 'S', dayKey: dayKey(now), scheduledStart: now, mustOrCould: 'could' }, now);
@@ -62,7 +69,9 @@ it('B: a purchase made while the clock is behind never mints Shards and never ta
   set('2026-10-21T07:00:00'); await reconcileGamify(db, now);
   expect((await shown()).shards).toBe(51);
   set('2026-10-21T07:47:00');
-  expect((await purchaseShopItem(db, 'freeze', now)).ok).toBe(true);
+  // Spec 47b retired the rest day from the shop; this repro is a purchase made before that, through the same write.
+  expect((await purchaseShopItem(db, 'freeze', now)).ok).toBe(false);
+  expect((await purchaseShopItem(db, 'freeze', now, beforeSpec47b)).ok).toBe(true);
   await reconcileGamify(db, now);
   expect((await shown()).shards).toBe(1);
   set('2026-10-22T17:59:00'); await reconcileGamify(db, now);

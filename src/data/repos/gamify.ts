@@ -6,6 +6,7 @@ import { masteryMapState } from '../../core/learn/engine';
 import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, economyHorizon, fillHeldBonus, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, replayBonus, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
+import { confirmUpdates, LONGEST_KEY, longestRun } from '../../core/economy/usefulDays';
 import { dayClock, shareWindow } from '../../core/shareGate';
 import { syncRestWeekday } from './economy';
 import { shutdownAt } from '../../core/tasks/planner';
@@ -99,6 +100,11 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     // Raise the never-lower peak of XP and level (item 38): a floor for facts the replay cannot see later.
     const peak = readPeak(settings);
     if (shown.totalXp > peak.totalXp || shown.level > peak.level) await db.settings.put({ key: PEAK_KEY, value: { totalXp: Math.max(shown.totalXp, peak.totalXp), level: Math.max(shown.level, peak.level) }, updatedAt: now, deleted: 0, deviceId });
+    // Spec 47b: keep every proved useful date and the longest run's floor, so neither count can go down later.
+    for (const row of confirmUpdates(shown.days, settings, today)) await db.settings.put({ key: row.key, value: row.value, updatedAt: now, deleted: 0, deviceId });
+    const longest = longestRun(settings, shown.streak.days);
+    const longestKept = Number(settings.find(row => row.key === LONGEST_KEY && !row.deleted)?.value);
+    if (!(longestKept >= longest)) await db.settings.put({ key: LONGEST_KEY, value: longest, updatedAt: now, deleted: 0, deviceId });
     for (const quest of completedQuests(facts, today)) await add('daily-quest', `${today}:${quest.id}`, today);
     // The Focus boost opens only in the day window and ends by shutdown: quests settled at shutdown or lights-out
     // (the night quest, a plan made after shutdown) never start a 2x window at night (batch 5, item 51).

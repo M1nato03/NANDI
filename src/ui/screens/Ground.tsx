@@ -19,7 +19,7 @@ import { ReminderSettings } from './ReminderSettings';
 import { nightPauseAvailable } from '../../platform/nightPause';
 import { BUSY_SHIFT_KEY, INTERESTS, INTERESTS_KEY, readInterests, type InterestId } from '../../core/adaptive/day';
 import { notifier } from '../../platform/notifier';
-import { MORNING_DEFAULT, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON, NUDGE_STREAK_ON, NUDGE_PERMISSION_ASKED } from '../../core/nudges';
+import { MORNING_DEFAULT, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON, NUDGE_PERMISSION_ASKED } from '../../core/nudges';
 import { CALM_SOUNDS } from '../../platform/calmSound';
 import { readBreathSettings, saveOpeningMode } from '../../data/repos/notebookBreath';
 import type { OpeningMode } from '../../core/calm/squareBreath';
@@ -129,8 +129,6 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <label><input type="checkbox" checked={enabled(NUDGE_MORNING_ON)} disabled={!!nudgeSaving[NUDGE_MORNING_ON]} onChange={event => void toggleNudge(NUDGE_MORNING_ON, event.target.checked)} /> Morning first step nudge</label>
       <p className="setting-help">One local reminder for your first task each morning.</p>
       <label>Morning nudge time <input type="time" value={morning} onChange={event => void save(NUDGE_MORNING_TIME, event.target.value)} /></label>
-      <label><input type="checkbox" checked={settings?.find(row => row.key === NUDGE_STREAK_ON && !row.deleted)?.value === true} disabled={!!nudgeSaving[NUDGE_STREAK_ON]} onChange={event => void toggleNudge(NUDGE_STREAK_ON, event.target.checked)} /> Streak reminder</label>
-      <p className="setting-help">Optional, before wind-down. A small step still counts.</p>
       {Capacitor.isNativePlatform() && permission !== 'granted' && <p className="setting-help">Notifications are off on this phone. {asked ? 'Allow NANDI notifications in Android app settings.' : 'Allow NANDI notifications to receive these nudges.'} {!asked && <button type="button" className="secondary" onClick={() => void askPermission()}>Allow notifications</button>}</p>}
       <ReminderSettings />
       {message && <p role="status">{message}</p>}

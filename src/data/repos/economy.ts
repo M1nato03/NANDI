@@ -7,13 +7,16 @@ import { asEconomyWrite, restoreActive } from '../restoreLock';
 import type { NandiDb } from '../db';
 import type { SettingRow } from '../types';
 
-/** A purchase is one immutable fact. The balance and owned items are projections. */
-export async function purchaseShopItem(db: NandiDb, itemId: string, now = Date.now()): Promise<{ ok: boolean; reason?: string }> {
+/**
+ * A purchase is one immutable fact. The balance and owned items are projections. `decide` is the shop's own rule; the
+ * clock repros pass one that still allows the rest day spec 47b retired, to replay a purchase made before that.
+ */
+export async function purchaseShopItem(db: NandiDb, itemId: string, now = Date.now(), decide: typeof purchaseDecision = purchaseDecision): Promise<{ ok: boolean; reason?: string }> {
   const deviceId = await getOrCreateDeviceId(db, now), day = dayKey(now);
   if (restoreActive()) return { ok: false, reason: 'A restore is running. Try again in a moment.' };
   return asEconomyWrite(() => trackWrite(() => db.transaction('rw', [db.ledger, db.settings], async () => {
     const facts = await db.ledger.toArray(), settings = await db.settings.toArray();
-    const result = purchaseDecision(itemId, facts, settings, day);
+    const result = decide(itemId, facts, settings, day);
     if (!result.ok || !result.item) return { ok: false, reason: result.reason };
     const refId = `${itemId}:${now}`, id = `purchase:${refId}`;
     await db.ledger.add({ id, mode: 'economy', kind: 'purchase', refId, dayKey: day,

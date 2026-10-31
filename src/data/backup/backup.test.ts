@@ -128,6 +128,25 @@ describe('backup and restore', () => {
     expect(rows.map(row => (row.value as { total: number }).total)).toEqual(Array.from({ length: 120 }, (_, n) => n % 2 ? 30 : 10));
   });
 
+  it("spec 47b: a restore keeps both sides' useful dates, the higher longest run and every week's target", async () => {
+    const db = freshDb();
+    await db.settings.bulkPut([
+      { key: 'useful.confirmed:2026-11-02', value: ['2026-11-02', '2026-11-03'], ...stamp },
+      { key: 'useful.longestRun', value: 9, ...stamp },
+      { key: 'useful.weeklyTarget', value: [{ fromWeek: '2026-11-09', target: 5 }], ...stamp },
+    ]);
+    const envelope = await exportBackup(db, new Date(2026, 10, 4, 12));
+    expect(envelope.dexie.data.data.find(table => table.tableName === 'settings')!.rows.map(row => (row as { key: string }).key)).toEqual(expect.arrayContaining(['useful.confirmed:2026-11-02', 'useful.longestRun', 'useful.weeklyTarget']));
+    await db.settings.bulkPut([
+      { key: 'useful.confirmed:2026-11-02', value: ['2026-11-04'], ...stamp },
+      { key: 'useful.longestRun', value: 4, ...stamp },
+      { key: 'useful.weeklyTarget', value: [{ fromWeek: '2026-11-09', target: 3 }, { fromWeek: '2026-11-16', target: 7 }], ...stamp },
+    ]);
+    await importBackup(db, envelope);
+    expect((await db.settings.get('useful.confirmed:2026-11-02'))?.value).toEqual(['2026-11-02', '2026-11-03', '2026-11-04']);
+    expect((await db.settings.get('useful.longestRun'))?.value).toBe(9);
+    expect((await db.settings.get('useful.weeklyTarget'))?.value).toEqual([{ fromWeek: '2026-11-09', target: 5 }, { fromWeek: '2026-11-16', target: 7 }]);
+  });
   it('validates the envelope and dexie content with readable failures', async () => {
     const envelope = await exportBackup(freshDb(), 1000);
     expect(validateBackup(JSON.stringify(envelope))).toEqual({ success: true, envelope, errors: [] });

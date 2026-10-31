@@ -15,8 +15,8 @@ export async function reconcileNudges(now = Date.now()): Promise<void> {
     db.settings.toArray(), db.tasks.toArray(), db.dailyLog.toArray(), db.ledger.toArray(), db.reminders.toArray(), notifier.listPending(),
   ]);
   const lastOpenedAt = Number(localStorage.getItem(OPENED_KEY)) || undefined;
-  const scheduledEngagement = stored.filter(row => row.status === 'scheduled' && (row.refType === 'planning' || row.refType === 'streak'))
-    .map(row => ({ kind: row.refType as 'planning' | 'streak', at: row.at }));
+  const scheduledEngagement = stored.filter(row => row.status === 'scheduled' && row.refType === 'planning')
+    .map(row => ({ kind: 'planning' as const, at: row.at }));
   const desired = wantedNudges({ now, settings, tasks, logs, facts, lastOpenedAt, scheduledEngagement });
   const wanted = new Map(desired.map(row => [row.id, row]));
   const existing = stored.filter(row => row.refType === 'nudge');

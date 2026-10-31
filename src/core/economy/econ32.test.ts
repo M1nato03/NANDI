@@ -136,8 +136,8 @@ describe('clock moved back (cj2 test gaps 3.5)', () => {
     const today = '2026-11-02', caughtUp = '2026-11-12';
     const before = deriveEconomy(ahead, undefined, v3, today);
     expect(before.shards).toBeGreaterThanOrEqual(50);
-    const decision = purchaseDecision('freeze', ahead, v3, today);
-    expect(decision.ok).toBe(true);
+    // Spec 47b: the shop no longer sells a rest day; the purchase below is one bought before that, as kept in the ledger.
+    expect(purchaseDecision('freeze', ahead, v3, today)).toMatchObject({ ok: false, reason: 'This item is not in this season.' });
     const bought = [...ahead, row(today, 'economy', 'purchase', { itemId: 'freeze', price: 50, accepted: true })];
     const now = deriveEconomy(bought, undefined, v3, today);
     expect(now.shards).toBe(before.shards - 50);

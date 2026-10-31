@@ -59,7 +59,7 @@ function OwnerNumbers() {
   const tiles: [string, string][] = [
     ['Opens today', String(m.opensToday)], ['Opens a day (7 d)', String(m.opensAvg7)],
     ['Active days (7 d)', `${m.activeDays7} of 7`], ['Active days (30 d)', `${m.activeDays30} of 30`],
-    ['Streak', `${economy.streak.days} days`], ['Level', String(economy.level)],
+    ['Internal chain (diagnostic)', `${economy.streak.days} days`], ['Level', String(economy.level)],
     ['Tasks done (7 d)', String(m.tasksDone7)], ['Workouts (7 d)', String(m.workouts7)],
     ['Boards solved (7 d)', String(m.boards7)], ['Cases solved (7 d)', String(m.cases7)],
     ['Learn answers (7 d)', String(m.answers7)], ['Learn accuracy (7 d)', m.accuracy7 === null ? '—' : `${m.accuracy7}%`],

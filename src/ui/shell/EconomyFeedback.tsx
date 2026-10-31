@@ -77,15 +77,7 @@ export function EconomyFeedback() {
     prior.current = source;
     if (!previous) {
       const now = Date.now(), today = dayKey(now), season = seasonFor(today);
-      const restNoticeKey = `economy.restUsed:${today}`;
-      if (!store.get(sessionStorage, restNoticeKey)) {
-        const current = deriveEconomy(source.facts, undefined, source.settings, today);
-        if (current.streak.restUsedYesterday) {
-          store.set(sessionStorage, restNoticeKey, 'seen');
-          queueMicrotask(() => setNotice({ text: `Your rest bank covered yesterday. ${current.streak.restDays} ${current.streak.restDays === 1 ? 'day' : 'days'} ready for later.`, macro: false, character: 'Kachhua' }));
-          return;
-        }
-      }
+      // Spec 47b: no "rest bank covered yesterday" notice. The bank still spends as before; You shows its balance.
       const key = `economy.seasonReveal:${season.index - 1}`;
       const bedtime = source.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
       if (season.index > 0 && !store.get(localStorage, key) && now < shutdownAt(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime)) {
