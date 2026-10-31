@@ -484,10 +484,12 @@ public class NightPausePlugin extends Plugin {
     @PluginMethod
     public void openApp(PluginCall call) {
         String packageName = call.getString("packageName", "");
-        Intent launch = new Intent(Intent.ACTION_MAIN);
-        launch.addCategory(Intent.CATEGORY_LAUNCHER);
-        launch.setPackage(packageName);
+        // The app's own launch intent (its launcher activity, explicit). A hand-built MAIN + LAUNCHER intent is implicit,
+        // so Android adds CATEGORY_DEFAULT, which launcher activities rarely declare, and nothing opened (Jenil, build 102).
+        Intent launch = packageName.isEmpty() ? null : getContext().getPackageManager().getLaunchIntentForPackage(packageName);
+        if (launch == null) { call.reject("App is not installed"); return; }
         int snoozeMs = call.getInt("snoozeMs", 600000);
+        // The quiet time is written before the launch, so the service never shows the card over the app it just opened.
         getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
             .putString("suppressedPackage", packageName)
             .putLong("suppressUntil", System.currentTimeMillis() + Math.max(0, snoozeMs)).apply();
