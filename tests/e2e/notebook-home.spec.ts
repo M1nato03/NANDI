@@ -100,10 +100,11 @@ test('with motion, a tap plays the friend\'s reaction where it stands, then open
   await home(page);
   const kapi = page.getByRole('button', { name: 'Play, Kapi in the branches' });
   await expect(page.locator('.home-week-time')).toBeVisible();
-  await page.waitForTimeout(1300); // the walk-in step ends
   // Where Kapi stands within the scene (the page itself can shift when the "Ready to work offline" note comes and goes).
   const within = async () => { const [friend, scene] = [(await kapi.boundingBox())!, (await page.locator('.trek-scene').boundingBox())!]; return { x: friend.x - scene.x, y: friend.y - scene.y, width: friend.width, height: friend.height }; };
-  const box = await within();
+  // The walk-in step has ended once Kapi stands still: two readings 300 ms apart agree (a busy machine runs it late).
+  let box = await within();
+  await expect.poll(async () => { await page.waitForTimeout(300); const now = await within(); const still = JSON.stringify(now) === JSON.stringify(box); box = now; return still; }, { timeout: 10_000 }).toBe(true);
   await kapi.click();
   await expect(kapi.locator('svg')).toHaveAttribute('data-moment', 'tap');
   expect(await within()).toEqual(box);
