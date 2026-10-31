@@ -47,9 +47,11 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
     if (acting.current) return;
     acting.current = true;
     try {
-      if (!demo) { await recordPauseAttempt(db, packageName, outcome, Date.now()); await then(); }
-      close();
-    } catch { acting.current = false; setMessage('That did not work. You can leave NANDI normally.'); }
+      if (!demo) await recordPauseAttempt(db, packageName, outcome, Date.now());
+    } catch { acting.current = false; setMessage('That did not work. You can leave NANDI normally.'); return; }
+    // The choice is saved; the card goes even if the phone could not open the app, so nobody is stuck on it.
+    try { if (!demo) await then(); } catch { /* the app can be opened from the phone as usual */ }
+    close();
   }
   function start(what: string) { setMessage(''); setStage({ kind: 'act', act: what, endsAt: Date.now() + RULES.pause.actSeconds * 1000 }); } // eslint-disable-line react-hooks/purity
   // One showing of the card pays at most once: "I did it" leaves the act for the done screen.
