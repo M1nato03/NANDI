@@ -831,8 +831,23 @@ for (const theme of themes) test.describe(theme, () => {
     await page.clock.fastForward(37_000);
     await shot(page, 'p39-8-act-timer', false);
     await card.getByRole('button', { name: 'I did it' }).click();
-    await expect(card).toContainText('2 minutes back.');
+    await expect(card.getByRole('heading')).toHaveText(/^Done: /);
     await shot(page, 'p39-9-done', false);
+  });
+
+  // Spec 45c: the five areas from Home's friends, at 360x800 (baseline and after).
+  test('45c areas', async ({ page }) => {
+    test.setTimeout(180_000);
+    await page.clock.install({ time: new Date('2026-11-04T10:00:00') });
+    await page.goto('/#plan');
+    await page.getByLabel('Add a task').fill('Call the bank');
+    await page.getByRole('button', { name: 'Add', exact: true }).click();
+    await expect(page.locator('.mor-row, .task-row').first()).toBeVisible();
+    for (const [route, name] of [['plan', '45c-a1-plan'], ['read', '45c-a2-read'], ['read/drop', '45c-a3-sitting'], ['yatra/train', '45c-a4-train'], ['yatra/mind', '45c-a5-play'], ['yatra/calm', '45c-a6-calm'], ['you', '45c-a7-you']] as const) {
+      await page.goto(`/#${route}`);
+      await page.waitForTimeout(900);
+      await shot(page, name, false);
+    }
   });
 
   // Spec 45c decision 8: the Pause slip, its act view, and the slip at 200% text.
@@ -860,7 +875,7 @@ for (const theme of themes) test.describe(theme, () => {
     await expect(card).toHaveCount(0);
     await opens();
     await card.getByRole('button', { name: 'I did it' }).click();
-    await expect(card.getByRole('heading')).toHaveText('Done.');
+    await expect(card.getByRole('heading')).toHaveText('Done: Drink a glass of water.');
     await shot(page, '45c-p3-done', false);
     await card.getByRole('button', { name: 'Back to my day' }).click();
     await expect(card).toHaveCount(0);

@@ -80,8 +80,9 @@ test('"I did it" on the slip is the act\'s own outcome: act_done, +2 once, then 
   const before = await totalXp(page);
   await phoneOpens(page);
   await slip(page).getByRole('button', { name: 'I did it' }).click();
-  await expect(slip(page).getByRole('heading')).toHaveText('Done.');
-  await expect(slip(page)).toContainText('+2 XP · 2 minutes back.');
+  await expect(slip(page).getByRole('heading')).toHaveText('Done: Do 10 squats.');
+  await expect(slip(page).locator('.pause-earned')).toHaveText('+2 XP');
+  await expect(slip(page)).not.toContainText(/minutes back|time back/);
   await expect(slip(page).getByRole('button', { name: 'I did it' })).toHaveCount(0);
   await slip(page).getByRole('button', { name: 'Back to my day' }).click();
   expect(await did(page)).toEqual(['clear', 'home']);
@@ -99,7 +100,8 @@ test('"Start the 2 minutes" opens the act with "I did it" at once and the clock 
   await expect(slip(page).getByRole('button', { name: 'I did it' })).toBeVisible();
   await page.clock.fastForward(15_000);
   await slip(page).getByRole('button', { name: 'I did it' }).click();
-  await expect(slip(page)).toContainText('+2 XP · 2 minutes back.');
+  await expect(slip(page).getByRole('heading')).toHaveText('Done: Do 10 squats.');
+  await expect(slip(page).locator('.pause-earned')).toHaveText('+2 XP');
   expect(await attempts(page)).toEqual(['act_done']);
 });
 

@@ -12,7 +12,7 @@ import { go } from '../shell/router';
 import { useModalFocus } from '../shell/useModalFocus';
 import './pause.css';
 
-type Stage = { kind: 'card' } | { kind: 'act'; act: string; endsAt: number } | { kind: 'done'; paid: boolean };
+type Stage = { kind: 'card' } | { kind: 'act'; act: string; endsAt: number } | { kind: 'done'; act: string | null; paid: boolean };
 
 /**
  * Spec 39, the Pause card: shown when a picked app comes to the front inside the window. Every way out is one tap,
@@ -64,7 +64,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
       try { await recordPauseAttempt(db, packageName, 'act_done', Date.now()); await clearNightPause(); }
       catch { setMessage('Could not save that. Your 2 minutes still happened.'); }
     }
-    setStage({ kind: 'done', paid });
+    setStage({ kind: 'done', act: stage.kind === 'act' ? stage.act : act, paid });
   }
   const openAnyway = () => answer('opened_anyway', () => openPausedApp(packageName, card.grace * 60_000));
   const notNow = () => answer('backed_out', async () => { await clearNightPause(); await goPhoneHome(); });
@@ -83,7 +83,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
   const clock = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`;
 
   return <div ref={dialog} tabIndex={-1} className="night-pause-overlay pause-overlay" role="dialog" aria-modal="true" aria-label="Pause card">
-    <section className={`card pause-card${stage.kind === 'card' ? ' pause-slip paper paper-tape' : ''}`}>
+    <section className={`card pause-card pause-slip paper paper-tape pause-${stage.kind}`}>
       <span className="pause-friend" aria-hidden="true"><Mor pose="idle" size={40} /></span>
       {stage.kind === 'card' && <>
         <p className="eyebrow">{label}</p>
@@ -110,8 +110,9 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
         </div>
       </>}
       {stage.kind === 'done' && <>
-        <h1 className="pause-line">Done.</h1>
-        <p className="pause-earned">{stage.paid ? `+${RULES.pause.actXp} XP · 2 minutes back.` : '2 minutes back.'}</p>
+        {/* What was done, in the person's words; the XP on its own line. No claim of time given back. */}
+        <h1 className="pause-line">{stage.act ? `Done: ${stage.act[0]!.toUpperCase() + stage.act.slice(1)}.` : 'Done.'}</h1>
+        {stage.paid && <p className="pause-earned">+{RULES.pause.actXp} XP</p>}
         <button type="button" className="pause-do" onClick={() => { if (demo) close(); else void goPhoneHome().then(close, close); }}>Back to my day</button>
         <button type="button" className="text-button" onClick={() => { if (demo) close(); else void openPausedApp(packageName, card.grace * 60_000).then(close, close); }}>Open {label} now</button>
       </>}

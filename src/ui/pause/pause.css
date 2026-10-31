@@ -11,11 +11,13 @@
 /* Spec 45c: the card is a paper slip; three full-width ways of one weight, then "Not now" as a small link. */
 /* At large text the slip is taller than the phone: the overlay scrolls, and it never centres the top out of reach. */
 .pause-overlay { overflow-y: auto; overscroll-behavior: contain; align-items: safe center; }
-/* The slip's words are in rem, so they grow with the phone's text size. */
+/* The slip's words are in rem, so they grow with the phone's text size. The act and Done stay on the same sheet. */
 .pause-slip { gap: 12px; }
 .pause-slip .eyebrow { font-size: .75rem; }
 .pause-slip .pause-plan-label { font-size: 1rem; }
 .pause-slip .pause-line { font-size: 1.5rem; }
+/* Done's line is the first thing on the sheet, beside Mor: it keeps clear of the friend. */
+.pause-done .pause-line { padding-right: 48px; }
 .pause-ways { display: grid; gap: 10px; margin-top: 4px; }
 .pause-not-now { justify-self: start; color: var(--ink-2); font-weight: 400; }
 .pause-clock { margin: 0; font: 800 56px 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; text-align: center; }

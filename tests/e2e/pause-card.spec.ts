@@ -81,7 +81,8 @@ test('spec 39b: "I did it" shows from the start of the act (the clock is a guide
   await expect(card(page)).not.toContainText('Done shows when');
   await page.clock.fastForward(20_000); // a glass of water takes 20 seconds
   await card(page).getByRole('button', { name: 'I did it' }).click();
-  await expect(card(page)).toContainText('+2 XP · 2 minutes back.');
+  await expect(card(page).getByRole('heading')).toHaveText('Done: Do 10 squats.');
+  await expect(card(page).locator('.pause-earned')).toHaveText('+2 XP');
   await expect(card(page).getByRole('button', { name: 'I did it' })).toHaveCount(0);
   await card(page).getByRole('button', { name: 'Back to my day' }).click();
   expect(await did(page)).toContain('home');
