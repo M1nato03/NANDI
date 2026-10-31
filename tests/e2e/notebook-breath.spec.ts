@@ -109,6 +109,7 @@ test('left alone, the offer passes and the page comes', async ({ page }) => {
   await expect(breath(page)).toBeVisible();
   await page.clock.runFor(22_000);
   await expect(breath(page).getByRole('button', { name: 'One more round' })).toBeVisible();
+  await expect(word(page)).toHaveText('That was two rounds.');
   await page.clock.runFor(3_500);
   await expect(breath(page)).toHaveCount(0);
 });

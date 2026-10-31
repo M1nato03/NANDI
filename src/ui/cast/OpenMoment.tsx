@@ -117,7 +117,7 @@ export function OpenMoment({ night, pause, pauseCheckedAt, widgetChecked }: { ni
       <p>Follow the dot. Skip anytime.</p>
     </div>
     <SquareBreath key={`${shown.startedAt}:${shown.extraFrom}`} elapsedMs={stage.stage === 'breath' ? stage.breathMs : 0} holds={shown.holds} onHolds={toggleHolds}
-      cueRound={stage.stage === 'breath' ? stage.round : 2} rest={stage.stage === 'breath' ? undefined : 'Two rounds'} context="opener" />
+      cueRound={stage.stage === 'breath' ? stage.round : 2} rest={stage.stage === 'breath' ? undefined : 'That was two rounds.'} context="opener" />
     <div className="breath-opener-foot">
       {note && <p className="breath-opener-note" role="alert">{note}</p>}
       {stage.stage === 'again' && <button type="button" className="breath-again" onClick={oneMore}>One more round</button>}

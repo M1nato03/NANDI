@@ -284,11 +284,16 @@ for (const theme of themes) test.describe(theme, () => {
     await page.clock.runFor(21_000); await page.waitForTimeout(300);
     await expect(breath.getByRole('button', { name: 'One more round' })).toBeVisible();
     await shot(page, '45a-5-one-more-round', false);
-    // 200% text on the opening page.
+    // 200% text on the opening page, holds on: in, then hold (the page scrolls; Skip follows the cue).
+    await put([['notebook.breath.holds', true]]);
     await open();
     await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
     await page.clock.runFor(1_000); await page.waitForTimeout(300);
-    await shot(page, '45a-6-opener-200-text', true);
+    await shot(page, '45a-6a-opener-200-text-in', false);
+    await page.clock.runFor(5_000); await page.waitForTimeout(300);
+    await shot(page, '45a-6b-opener-200-text-hold', false);
+    await breath.evaluate(node => node.scrollTo(0, node.scrollHeight));
+    await shot(page, '45a-6c-opener-200-text-scrolled', false);
     await breath.getByRole('button', { name: 'Skip →' }).click();
     await expect(breath).toHaveCount(0);
     // Calm: Square and Slow.

@@ -1,7 +1,7 @@
 /* Spec 45a: the square breath (opening page and Calm). Only the dot moves, by transform, at an even speed per side. */
 .square-breath { display: grid; justify-items: center; }
-.square-wrap { --size: min(calc(100vw - 72px), 13.75rem); --edge: calc(var(--size) * 172 / 220); --inset: calc(var(--size) * 24 / 220); position: relative; width: var(--size); height: var(--size); flex: none; color: var(--square-line, var(--ink-3)); }
-.square-calm .square-wrap { --size: min(calc(100vw - 96px), 11.875rem); }
+.square-wrap { --size: min(220px, 70vw); aspect-ratio: 1; --edge: calc(var(--size) * 172 / 220); --inset: calc(var(--size) * 24 / 220); position: relative; width: var(--size); height: var(--size); flex: none; color: var(--square-line, var(--ink-3)); }
+.square-calm .square-wrap { --size: min(190px, 60vw); }
 .square-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .square-lines path { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; opacity: .62; }
 .square-lines path.active { stroke-width: 3; opacity: 1; color: var(--square-active, var(--ink)); stroke: var(--square-active, var(--ink)); }
@@ -12,8 +12,9 @@
 @keyframes square-side-2 { from { transform: translate(var(--edge), var(--edge)); } to { transform: translate(0, var(--edge)); } }
 @keyframes square-side-3 { from { transform: translate(0, var(--edge)); } to { transform: translate(0, 0); } }
 .square-middle { position: absolute; inset: 25% 12% 22%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.square-word { font: 700 1.6rem/1.15 'Bricolage Grotesque', system-ui, sans-serif; color: var(--square-word, var(--ink)); animation: square-word-in var(--dur-fast) var(--ease-out) both; }
-.square-count { font: 500 1.25rem/1.2 system-ui, sans-serif; color: var(--square-count, var(--ink-2)); font-variant-numeric: tabular-nums; }
+/* Capped so the word stays inside the square at large text sizes (the square itself is capped at 220 px). */
+.square-word { font: 700 min(1.6rem, 32px)/1.15 'Bricolage Grotesque', system-ui, sans-serif; color: var(--square-word, var(--ink)); animation: square-word-in var(--dur-fast) var(--ease-out) both; }
+.square-count { font: 500 min(1.25rem, 26px)/1.2 system-ui, sans-serif; color: var(--square-count, var(--ink-2)); font-variant-numeric: tabular-nums; }
 @keyframes square-word-in { from { opacity: 0; transform: translateY(3px); } }
 .square-turtle { position: absolute; width: 64px; height: 64px; right: -20px; bottom: -24px; }
 .square-turtle .kachhua-shell { transform-box: fill-box; transform-origin: center bottom; transition: transform var(--phase-s, 5s) var(--ease-in-out); }
@@ -45,10 +46,10 @@
 @keyframes breath-opener-out { to { opacity: 0; } }
 .breath-opener-head { text-align: center; margin: 8px auto 0; max-width: 320px; }
 .breath-opener-head .eyebrow { color: #e1c9a5; margin: 0; }
-.breath-opener-head h1 { margin: 6px 0 4px; color: #f7eddc; font-size: 1.75rem; }
+.breath-opener-head h1 { margin: 6px 0 4px; color: #f7eddc; font-size: 1.75rem; line-height: 1.15; }
 .breath-opener-head p { margin: 0; color: #e2d8c8; }
 .breath-opener .square-breath { margin: 22px auto 0; }
-.breath-opener-foot { position: sticky; bottom: 0; background: #30363a; margin-top: auto; padding-top: 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.breath-opener-foot { margin-top: auto; padding-top: 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .breath-opener-foot button { min-height: 44px; min-width: 44px; padding: 0 14px; border-radius: var(--radius-pill); border: 1px solid #8d8678; background: transparent; color: #f5eeda; box-shadow: none; font-weight: 600; }
 .breath-opener-foot .breath-skip { margin-left: auto; }
 .breath-opener-note { width: 100%; margin: 0; font-size: .85rem; color: #f0c9a0; }
