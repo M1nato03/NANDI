@@ -77,7 +77,7 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'plan-4-focus');
   });
 
-  // Spec 45b: Home as a notebook page: a recorded week with a task, a running focus, a Book check, a new phone, night,
+  // Spec 45b: Home as a notebook page: useful days and a task, a running focus, a Book check, a new phone, night,
   // each friend's tap, and 200% text with the next move still reachable.
   test('spec 45b home', async ({ page }) => {
     test.setTimeout(180_000);
@@ -91,18 +91,21 @@ for (const theme of themes) test.describe(theme, () => {
     const at = (day: string, hour: number) => new Date(`2026-10-${day}T${hour}:00:00`).getTime();
     const settle = async () => { await page.waitForTimeout(600); };
     await page.clock.install({ time: WED });
-    // A new phone: nothing recorded yet, and Read is the move.
+    // A new phone: no useful day yet, and Read is the move.
     await page.goto('/#yatra');
     await expect(page.locator('.next-move')).toBeVisible();
     await settle();
     await shot(page, '45b-4-home-new', false);
-    // A week with focus, Calm and two ideas, and a task for today.
+    // Two useful days this week (planned tasks done, Calm, ideas), and a task for today.
     await put('ledger', [
       { id: 'c1', mode: 'calm', kind: 'session', refId: 'c1', dayKey: '2026-10-26', inputs: { minutes: 12 }, ...meta },
       { id: 'c2', mode: 'calm', kind: 'session', refId: 'c2', dayKey: '2026-10-27', inputs: { minutes: 10 }, ...meta },
       { id: 'i1', mode: 'read', kind: 'idea', refId: 'i1', dayKey: '2026-10-27', inputs: {}, ...meta },
       { id: 'i2', mode: 'read', kind: 'idea', refId: 'i2', dayKey: '2026-10-27', inputs: {}, ...meta },
+      { id: 'done:d1', mode: 'tasks', kind: 'done', refId: 'd1', dayKey: '2026-10-26', inputs: { wasPlanned: true }, ...meta },
+      { id: 'done:d2', mode: 'tasks', kind: 'done', refId: 'd2', dayKey: '2026-10-27', inputs: { wasPlanned: true }, ...meta },
     ]);
+    await put('tasks', [{ id: 'd1', title: 'Pay the hostel fee', status: 'done', dayKey: '2026-10-26', ...meta }, { id: 'd2', title: 'Email the professor', status: 'done', dayKey: '2026-10-27', ...meta }]);
     await put('focus', [{ id: 'f1', taskId: 'old', startedAt: at('27', 10), endedAt: at('27', 10) + 95 * 60_000, ...meta }]);
     await page.goto('/#plan');
     await page.getByLabel('Add a task').fill('Call the bank');
@@ -112,6 +115,11 @@ for (const theme of themes) test.describe(theme, () => {
     await settle();
     await shot(page, '45b-1-home', false);
     await shot(page, '45b-1b-home-full');
+    // One tap on the line opens the record.
+    await page.locator('.home-week').click();
+    await expect(page.locator('.useful-days-list > li')).toHaveCount(2);
+    await settle();
+    await shot(page, '45b-8-useful-days-record', false);
     // Each friend's tap: the reaction where it stands, then its area, once.
     await page.emulateMedia({ colorScheme: theme, reducedMotion: 'no-preference' });
     for (const [name, hash] of [['Mor at the map: Plan', 'plan'], ['Chiku on the reading rock: Read', 'read'], ['Nandi by the pack: Train', 'yatra/train'], ['Kapi in the branches: Play', 'yatra/mind'], ['Kachhua by the fire: Calm', 'yatra/calm']] as const) {

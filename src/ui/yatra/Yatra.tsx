@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time/dayKey';
@@ -7,8 +7,9 @@ import { effectiveShutdown } from '../../core/tasks/planner';
 import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { phaseAt } from '../../core/courtyard/courtyard';
 import { deriveTrek, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Constellation, type Trek } from '../../core/yatra/trek';
-import { hoursMinutes, nextMove, recordedWeek, weekParts } from '../../core/yatra/nextMove';
-import { weekStart } from '../../core/economy/deriveEconomy';
+import { nextMove } from '../../core/yatra/nextMove';
+import { usefulDays, usefulRecord } from '../../core/yatra/usefulDays';
+import { deriveEconomy, weekStart } from '../../core/economy/deriveEconomy';
 import { softToday } from '../../core/soft/soft';
 import { readBeatChanges, taalWeek, trainDays, TAAL_BEATS_KEY } from '../../core/train/taal';
 import { isFocusRunning, taskFocusMs } from '../../core/tasks/focus';
@@ -64,13 +65,6 @@ function narrative(trek: Trek, night: boolean): string {
   return `${trek.stretch} of ${STRETCHES_PER_LEG} stretches to ${next}. Every session lights one star.`;
 }
 
-/** The minute, for the scene's day and night and the week's line. */
-function useMinute(): number {
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
-  return now;
-}
-
 /** Spec 45b: what Home reads for its top line and its one next move. Existing rows only; nothing is written. */
 function useHomeRows() {
   return useLiveQuery(async () => {
@@ -83,7 +77,6 @@ function useHomeRows() {
       today, focus, current: current && task && !task.deleted ? { row: current, title: task.title } : null,
       ledger: await db.ledger.where('dayKey').between(week, today, true, true).filter(row => !row.deleted).toArray(),
       checks: await db.ledger.where('kind').anyOf('chapter', 'chapter-check').toArray(),
-      sessions: await db.sessions.where('dayKey').between(week, today, true, true).toArray(),
       tasks: await db.tasks.where('dayKey').equals(today).toArray(),
       program: await db.programs.get('train-program'),
       beats: await db.settings.get(TAAL_BEATS_KEY(week)),
@@ -92,16 +85,23 @@ function useHomeRows() {
 }
 type HomeRows = NonNullable<ReturnType<typeof useHomeRows>>;
 
-/** jenil-87 decision 1: this week's recorded time, labelled as such. No estimate of time won back until one is measured. */
-function WeekLine({ rows, now }: { rows: HomeRows; now: number }) {
-  const week = recordedWeek({ focus: rows.focus, sessions: rows.sessions, ledger: rows.ledger, today: rows.today, now });
-  const parts = weekParts(week);
-  const ideas = week.ideas ? `${week.ideas} ${week.ideas === 1 ? 'idea' : 'ideas'} read` : '';
-  return <div className="home-week">
-    <p className="home-week-label">This week, recorded</p>
-    <p className="home-week-time">{week.minutes ? hoursMinutes(week.minutes) : 'Nothing yet'}</p>
-    <p className="home-week-what">{[parts, ideas].filter(Boolean).join(' · ') || 'Focus, Train and Calm time adds up here.'}</p>
-  </div>;
+/** Spec 45b decision 7: the economy's days, derived once per data change (as You does), for the useful-days count. */
+function useEconomyDays() {
+  const source = useLiveQuery(async () => ({ facts: await db.ledger.toArray(), settings: await db.settings.toArray() }), []);
+  const today = dayKey(Date.now()); // eslint-disable-line react-hooks/purity
+  return useMemo(() => source ? { facts: source.facts, today, view: deriveEconomy(source.facts, undefined, source.settings, today) } : undefined, [source, today]);
+}
+
+/** One honest progress line: "N useful days this season" ("this week" before Season 1). One tap opens the record. */
+function UsefulLine() {
+  const economy = useEconomyDays();
+  if (!economy) return <div className="home-week" />;
+  const { count, span } = usefulDays(economy.view.days, economy.view.season, economy.today);
+  return <button type="button" className="home-week" onClick={() => go('yatra/days')}>
+    <span className="home-week-time">{count} useful {count === 1 ? 'day' : 'days'}</span>
+    <span className="home-week-label">this {span}</span>
+    <span className="home-week-arrow" aria-hidden="true">›</span>
+  </button>;
 }
 
 /** Spec 45b: exactly one next move, one action. Its order is nextMove's. */
@@ -140,7 +140,6 @@ function NextMoveCard({ rows }: { rows: HomeRows }) {
 export function Yatra() {
   const yatra = useYatra();
   const rows = useHomeRows();
-  const now = useMinute();
   const [postcard, setPostcard] = useState<number | null>(null);
   const [renaming, setRenaming] = useState<Constellation | null>(null);
   const [name, setName] = useState('');
@@ -163,7 +162,7 @@ export function Yatra() {
   return <section className="screen yatra-screen yatra-home notebook-home">
     {/* Spec 45b: Home is a paper page. The week's recorded time and where the camp is, the camp, then one next move. */}
     <header className="home-notes">
-      {rows ? <WeekLine rows={rows} now={now} /> : <div className="home-week" />}
+      <UsefulLine />
       <div className="home-title">
         <h1>{trek && yatra ? campLine(trek, yatra.night) : 'Field notes'}</h1>
         {trek && <button type="button" className="home-permit" aria-label={`Journal · ${postcards}`} onClick={() => go('yatra/journal')}>
@@ -190,6 +189,24 @@ export function Yatra() {
       <p className="small">Leave it empty to keep the suggested name.</p>
       <div className="sheet-actions"><button type="button" onClick={() => void saveConstellationName(db, renaming.id, name, Date.now()).then(() => setRenaming(null))}>Save</button><button type="button" className="secondary" onClick={() => setRenaming(null)}>Cancel</button></div>
     </section></div>}
+  </section>;
+}
+
+/** Spec 45b decision 7: the record behind the useful-days count: each useful day and what was finished on it. */
+export function UsefulDays() {
+  const economy = useEconomyDays();
+  const titles = useLiveQuery(async () => new Map((await db.tasks.toArray()).filter(row => !row.deleted).map(row => [row.id, row.title])), []);
+  if (!economy || !titles) return <section className="screen" role="status">Opening the record…</section>;
+  const { count, span, from } = usefulDays(economy.view.days, economy.view.season, economy.today);
+  const record = usefulRecord(economy.view.days, economy.facts, from, economy.today, titles);
+  const show = (key: string) => new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${key}T12:00:00Z`));
+  return <section className="screen useful-days">
+    <p className="eyebrow">Yatra</p><h1>{count} useful {count === 1 ? 'day' : 'days'}</h1>
+    <p className="useful-days-note">This {span}. A day counts when a planned task is done, a workout or rest walk, a puzzle, read or review, or a soft day's gentle thing.</p>
+    {record.length ? <ol className="useful-days-list">{record.map(row => <li key={row.dayKey} className="card">
+      <h2>{show(row.dayKey)}</h2>
+      <ul>{row.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
+    </li>)}</ol> : <p>Finish one thing today and it is here.</p>}
   </section>;
 }
 

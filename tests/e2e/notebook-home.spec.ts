@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-// Spec 45b: Home is a notebook page: this week's recorded time, the camp's heading, five friends at camp (each a
+// Spec 45b: Home is a notebook page: the useful days (decision 7), the camp's heading, five friends at camp (each a
 // button to its area) and exactly one next move, in the order focus, Book check, Train day, task, Read.
 const WED = new Date('2026-10-28T10:00:00');
 const meta = { updatedAt: 1, deleted: 0, deviceId: 'e2e' };
@@ -20,11 +20,13 @@ async function home(page: Page) {
 
 test.beforeEach(async ({ page }) => { await page.emulateMedia({ reducedMotion: 'reduce' }); });
 
-test('a new phone: nothing recorded yet, the camp, and one move to Read', async ({ page }) => {
+test('a new phone: no useful day yet, the camp, and one move to Read', async ({ page }) => {
   await page.clock.install({ time: WED });
   await home(page);
-  await expect(page.locator('.home-week-time')).toHaveText('Nothing yet');
-  await expect(page.locator('main')).not.toContainText(/back to you|time back|returned/i);
+  await expect(page.locator('.home-week')).toHaveText(/^0 useful days\s*this week/);
+  // No time number, no bar, no time-back claim.
+  await expect(page.locator('main')).not.toContainText(/back to you|time back|returned|\d+ h \d+ m|recorded/i);
+  await expect(page.locator('.notebook-home progress, .notebook-home [role="progressbar"]')).toHaveCount(0);
   await expect(page.getByRole('region', { name: 'One next move' })).toHaveCount(1);
   await expect(move(page)).toHaveCount(1);
   await expect(move(page)).toContainText('Read one idea');
@@ -32,20 +34,38 @@ test('a new phone: nothing recorded yet, the camp, and one move to Read', async 
   await expect(page).toHaveURL(/#read$/);
 });
 
-test('the week line adds only recorded time: focus, Train and Calm minutes, and ideas as a count', async ({ page }) => {
+test('useful days count marked dates this week (before Season 1), and one tap opens the record', async ({ page }) => {
   await page.clock.install({ time: WED });
   await home(page);
-  const at = (day: string, hour: number) => new Date(`2026-10-${day}T${String(hour).padStart(2, '0')}:00:00`).getTime();
-  await put(page, 'focus', [{ id: 'f1', taskId: 'gone', startedAt: at('26', 9), endedAt: at('26', 9) + 50 * 60_000, ...meta }, { id: 'f0', taskId: 'gone', startedAt: at('25', 9), endedAt: at('25', 11), ...meta }]);
-  await put(page, 'sessions', [{ id: 's1', dayKey: '2026-10-27', status: 'completed', startedAt: at('27', 18), endedAt: at('27', 18) + 40 * 60_000, ...meta }]);
+  const done = (day: string, n: number) => ({ id: `done:e2e-${day}-${n}`, mode: 'tasks', kind: 'done', refId: `e2e-${day}-${n}`, dayKey: day, inputs: { plannedSize: 'M', wasPlanned: true }, updatedAt: new Date(`${day}T12:00:00`).getTime() + n, deleted: 0, deviceId: 'e2e' });
+  await put(page, 'tasks', [{ id: 'e2e-2026-10-27-1', title: 'Call the bank', status: 'done', dayKey: '2026-10-27', ...meta }]);
   await put(page, 'ledger', [
-    { id: 'c1', mode: 'calm', kind: 'session', refId: 'c1', dayKey: '2026-10-27', inputs: { minutes: 10 }, ...meta },
-    { id: 'i1', mode: 'read', kind: 'idea', refId: 'i1', dayKey: '2026-10-27', inputs: {}, ...meta },
+    done('2026-10-25', 1), // last week: not counted
+    done('2026-10-26', 1), done('2026-10-27', 1), done('2026-10-27', 2), // two dates this week, one of them twice
+    { id: 'calm-e2e', mode: 'calm', kind: 'session', refId: 'c', dayKey: '2026-10-27', inputs: { minutes: 12 }, ...meta },
   ]);
   await page.reload();
-  await expect(page.locator('.home-week-time')).toHaveText('1 h 40 m');
-  await expect(page.locator('.home-week-what')).toHaveText('focus, moving, breathing · 1 idea read');
-  await expect(page.locator('.home-week-label')).toHaveText('This week, recorded');
+  await expect(page.locator('.home-week')).toHaveText(/^2 useful days\s*this week/);
+  await page.locator('.home-week').click();
+  await expect(page).toHaveURL(/#yatra\/days$/);
+  await expect(page.getByRole('heading', { name: '2 useful days', level: 1 })).toBeVisible();
+  const days = page.locator('.useful-days-list > li');
+  await expect(days).toHaveCount(2);
+  await expect(days.nth(0)).toContainText('Tue 27 Oct');
+  await expect(days.nth(0)).toContainText('Call the bank');
+  await expect(days.nth(0)).toContainText('Calm, 12 min');
+  await expect(days.nth(1)).toContainText('Mon 26 Oct');
+  await page.goBack();
+  await expect(page).toHaveURL(/#yatra$/);
+});
+
+test('in Season 1 the line counts the season, from its first Monday', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-11-10T10:00:00') });
+  await home(page);
+  const done = (day: string) => ({ id: `done:s1-${day}`, mode: 'tasks', kind: 'done', refId: `s1-${day}`, dayKey: day, inputs: { plannedSize: 'M', wasPlanned: true }, updatedAt: new Date(`${day}T12:00:00`).getTime(), deleted: 0, deviceId: 'e2e' });
+  await put(page, 'ledger', ['2026-11-01', '2026-11-02', '2026-11-04', '2026-11-09'].map(done));
+  await page.reload();
+  await expect(page.locator('.home-week')).toHaveText(/^3 useful days\s*this season/);
 });
 
 test('all five friends go to their areas, once each, and Back returns to the same Home', async ({ page }) => {

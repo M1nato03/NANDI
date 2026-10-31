@@ -69,10 +69,10 @@
 :root[data-theme='dark'] { --home-stamp: #e3a592; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme='light']) { --home-stamp: #e3a592; } }
 .home-notes { margin: 0 0 12px; }
-.home-week p { margin: 0; }
-.home-week-label { color: var(--ink-2); font: italic .875rem/1.3 Georgia, serif; }
-.home-week-time { margin-top: 2px !important; color: var(--ink); font: 800 1.875rem/1.1 'Bricolage Grotesque', sans-serif; letter-spacing: -.02em; }
-.home-week-what { margin-top: 2px !important; color: var(--ink-2); font-size: .875rem; line-height: 1.35; }
+.home-week { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; width: 100%; min-height: 44px; margin: 0; padding: 0; border: 0; background: none; box-shadow: none; color: var(--ink); text-align: left; }
+.home-week-time { font: 800 1.875rem/1.15 'Bricolage Grotesque', sans-serif; letter-spacing: -.02em; }
+.home-week-label { color: var(--ink-2); font: italic 1.0625rem/1.3 Georgia, serif; }
+.home-week-arrow { margin-left: auto; align-self: center; color: var(--ink-2); font-size: 1.5rem; line-height: 1; }
 .home-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
 .home-title h1 { min-width: 0; margin: 0; font-size: 1.5rem; line-height: 1.15; overflow-wrap: anywhere; }
 .home-permit { display: grid; place-content: center; justify-items: center; flex: none; width: 64px; height: 64px; min-width: 44px; min-height: 44px; margin: 0; padding: 0; border: 2px solid var(--home-stamp); border-radius: 50%; background: transparent; box-shadow: none; color: var(--home-stamp); transform: rotate(-8deg); }
@@ -89,3 +89,8 @@
 .next-move-arrow { flex: none; color: var(--accent-ink); font-size: 1.375rem; line-height: 1; }
 .yatra-home .trek-journey { margin: 18px 0 8px; color: var(--ink-2); font-size: .875rem; }
 .yatra-home .trek-journey-top strong { font-weight: 600; color: var(--ink); }
+.useful-days-note { margin: -12px 0 16px; color: var(--ink-2); }
+.useful-days-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.useful-days-list > li { padding: 12px 14px; }
+.useful-days-list h2 { margin: 0 0 4px; font-size: 1.125rem; letter-spacing: 0; }
+.useful-days-list ul { margin: 0; padding-left: 18px; color: var(--ink-2); }

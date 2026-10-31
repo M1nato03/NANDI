@@ -69,6 +69,7 @@ const You = lazy(() => import('../screens/You').then(module => ({ default: modul
 const Yatra = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.Yatra })));
 const Calm = lazy(() => import('../yatra/Calm').then(module => ({ default: module.Calm })));
 const Journal = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.Journal })));
+const UsefulDays = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.UsefulDays })));
 const SeasonLadder = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonLadder })));
 const SeasonShop = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonShop })));
 const Badges = lazy(() => import('../screens/GamifyScreens').then(module => ({ default: module.Badges })));
@@ -280,6 +281,7 @@ export function AppShell() {
   else if (path === 'yatra/train' || path.startsWith('yatra/train/')) screen = <Train entry={path.split('/')[2]} />;
   else if (path === 'yatra/calm') screen = <Calm />;
   else if (path === 'yatra/journal') screen = <Journal />;
+  else if (path === 'yatra/days') screen = <UsefulDays />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
   else if (path === 'night') screen = <Now />;
   else if (path === 'kolam') screen = <KolamScreen />;
