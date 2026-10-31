@@ -118,6 +118,30 @@ export interface BackupValidation {
   errors: string[];
 }
 
+/** Each table's primary key: every row must carry it as a non-empty string, once (a11y audit C2). */
+const primaryKey = (table: string) => table === 'settings' ? 'key' : table === 'dailyLog' ? 'dayKey' : 'id';
+/**
+ * a11y audit C2: a file can be valid JSON with the right tables and counts and still hold broken rows. Every row must
+ * be an object with its table's key (unique), and a ledger fact must have the fields the economy reads. A file that
+ * fails is refused before anything on the phone is cleared.
+ */
+function rowErrors(table: string, rows: readonly unknown[]): string[] {
+  const errors: string[] = [];
+  const key = primaryKey(table), seen = new Set<string>();
+  rows.forEach((row, index) => {
+    const at = `${table}[${index}]`;
+    if (!row || typeof row !== 'object' || Array.isArray(row)) { errors.push(`${at}: not a row`); return; }
+    const record = row as Record<string, unknown>;
+    const id = record[key];
+    if (typeof id !== 'string' || !id) errors.push(`${at}: missing ${key}`);
+    else if (seen.has(id)) errors.push(`${at}: duplicate ${key} ${id}`);
+    else seen.add(id);
+    if (table === 'ledger') for (const field of ['mode', 'kind', 'dayKey', 'refId'] as const) if (typeof record[field] !== 'string') errors.push(`${at}: ${field} is not text`);
+    if (table === 'ledger' && (!record.inputs || typeof record.inputs !== 'object')) errors.push(`${at}: inputs missing`);
+  });
+  return errors.slice(0, 20);
+}
+
 export function validateBackup(json: string | unknown): BackupValidation {
   let input: unknown = json;
   if (typeof json === 'string') {
@@ -149,6 +173,7 @@ export function validateBackup(json: string | unknown): BackupValidation {
     else if (metadata.get(table.tableName) !== table.rows.length) {
       errors.push(`dexie.data.data: row count mismatch for ${table.tableName}`);
     }
+    errors.push(...rowErrors(table.tableName, table.rows));
   }
   for (const name of metadata.keys()) {
     if (!seen.has(name)) errors.push(`dexie.data.data: missing table ${name}`);
@@ -238,6 +263,17 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
   if (fileTables.size !== dbTables.size || [...dbTables].some(name => !fileTables.has(name))) {
     throw new Error('Backup tables do not match this app database');
   }
+  // a11y audit C2: a copy of everything on the phone first; a restore that fails half way puts it all back.
+  const safety = await exportDB(db);
+  try {
+    await restoreInto(db, restored);
+  } catch (error) {
+    await trackWrite(() => duringRestore(() => importInto(db, safety, { acceptVersionDiff: true, acceptNameDiff: true, clearTablesBeforeImport: true, overwriteValues: true })));
+    throw error;
+  }
+}
+
+async function restoreInto(db: NandiDb, restored: BackupEnvelope): Promise<void> {
   await trackWrite(() => duringRestore(async () => {
     const deviceId = await getOrCreateDeviceId(db, Date.now());
     const localSettings = (await db.settings.bulkGet([...deviceLocalKeys]))

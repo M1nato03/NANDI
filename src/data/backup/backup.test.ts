@@ -188,3 +188,44 @@ describe('backup and restore', () => {
     expect(await db.ledger.count()).toBe(1);
   });
 });
+
+describe('a11y audit C2: a damaged backup never costs the phone its data', () => {
+  async function phoneWithData() {
+    const db = freshDb();
+    await db.settings.bulkPut([{ key: 'deviceId', value: 'device-a', ...stamp }, { key: 'theme', value: 'dark', ...stamp }]);
+    await db.tasks.put({ id: 'task-1', title: 'Mine', status: 'open', dayKey: '2026-10-06', ...stamp });
+    await db.ledger.put({ id: 'task-done:task-1', kind: 'task-done', refId: 'task-1', mode: 'tasks', dayKey: '2026-10-06', inputs: {}, ...stamp });
+    return db;
+  }
+  it('refuses a file whose rows are broken (no key, a repeated key, a ledger fact without its fields) before clearing anything', async () => {
+    const db = await phoneWithData();
+    const envelope = await exportBackup(db, new Date(2026, 9, 9, 12));
+    const tables = envelope.dexie.data.data;
+    const tasks = tables.find(table => table.tableName === 'tasks')!;
+    const ledger = tables.find(table => table.tableName === 'ledger')!;
+    tasks.rows = [{ title: 'no id' }, ...tasks.rows];
+    ledger.rows = [{ id: 'task-done:task-1', kind: 'task-done' }, ...ledger.rows];
+    for (const meta of envelope.dexie.data.tables) if (meta.name === 'tasks' || meta.name === 'ledger') meta.rowCount += 1;
+    const result = validateBackup(envelope);
+    expect(result.success).toBe(false);
+    expect(result.errors.join(' ')).toMatch(/tasks\[0\]: missing id/);
+    expect(result.errors.join(' ')).toMatch(/ledger\[0\]: mode is not text/);
+    expect(result.errors.join(' ')).toMatch(/ledger\[1\]: duplicate id task-done:task-1/);
+    const before = await snapshot(db);
+    await expect(importBackup(db, envelope)).rejects.toThrow();
+    expect(await snapshot(db)).toEqual(before);
+  });
+  it('puts everything back when a restore fails half way (fault injected after the tables were replaced)', async () => {
+    const db = await phoneWithData();
+    const other = freshDb();
+    await other.settings.put({ key: 'deviceId', value: 'device-b', ...stamp, deviceId: 'device-b' });
+    await other.tasks.put({ id: 'task-9', title: 'Theirs', status: 'open', dayKey: '2026-10-07', ...stamp });
+    const theirs = await exportBackup(other, new Date(2026, 9, 9, 12));
+    const before = await snapshot(db);
+    const spy = vi.spyOn(db.settings, 'bulkPut').mockRejectedValueOnce(new Error('disk full'));
+    await expect(importBackup(db, theirs)).rejects.toThrow('disk full');
+    spy.mockRestore();
+    const after = await snapshot(db);
+    for (const name of Object.keys(before)) expect(after[name], name).toEqual(before[name]);
+  });
+});
