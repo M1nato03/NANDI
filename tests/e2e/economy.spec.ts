@@ -121,8 +121,10 @@ test('task completion shows an XP toast and a skippable level reveal', async ({ 
     await page.getByRole('region', { name: 'Today' }).getByRole('button', { name: 'Done' }).last().click();
   };
   await add('Write first note');
-  await expect(page.getByRole('dialog', { name: 'Season progress' })).toContainText('Level 2');
-  await page.getByRole('button', { name: 'Skip reveal' }).click();
+  // Spec 45c: a real level rise is the level page; Continue closes it and Plan is where it was.
+  await expect(page.getByRole('dialog', { name: 'Level 2' })).toContainText('Level 2');
+  await page.getByRole('dialog', { name: 'Level 2' }).getByRole('button', { name: 'Continue' }).click();
+  await expect(page).toHaveURL(/#plan$/);
   await add('Write second note');
   await expect(page.locator('.economy-toast')).toContainText('+5 XP');
 });

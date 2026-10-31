@@ -509,7 +509,7 @@ export function Mind({ entry }: { entry?: string }) {
   </section>;
 
   return <section className="screen mind-hub">
-    {entry !== 'courses' && entry !== 'unit' && <><FriendStage area="mind" art={<KapiMoment moment="swing" size={96} />}><p className="eyebrow">Mind</p><h1>Kapi's shelf</h1></FriendStage>
+    {entry !== 'courses' && entry !== 'unit' && <><FriendStage area="mind" art={<KapiMoment moment="swing" size={96} />}><p className="eyebrow">Kapi in the branches</p><h1>Kapi's shelf</h1></FriendStage>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
     {/* Spec 34 (item 193): today's case leads the shelf, so "Puzzles and cases" shows both without a scroll. */}
     <section className="card mind-case-card" aria-label="Today's case"><p className="eyebrow">Today's case · {caseDiff}</p><h2>{currentArcTitle(today)}</h2>

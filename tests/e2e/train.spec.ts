@@ -12,7 +12,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/#train');
-    await expect(page.getByText('Rank assessment')).toBeVisible();
+    await expect(page.getByText('A rank check · about 10 minutes')).toBeVisible();
     await capture(page, testInfo.outputPath(`train-assessment-${scheme}.png`));
     await page.getByRole('button', { name: 'Start placement' }).click();
     await expect(page.getByRole('heading', { name: 'Squat', exact: true })).toBeVisible();

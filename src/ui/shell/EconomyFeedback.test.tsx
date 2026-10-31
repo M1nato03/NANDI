@@ -64,4 +64,27 @@ describe('economy feedback', () => {
     expect(seen.every(toast => !/^\+0 XP/.test(toast.text) && !toast.className.includes('finish-bloom'))).toBe(true);
     expect(mock.playCastSound).not.toHaveBeenCalled();
   });
+
+  // Spec 45c: a real level rise opens the level page in place of the season reveal; it is one dialog with one way on.
+  const nearLevelTwo = (day: string) => db.ledger.add({ id: `train-session:${day}`, mode: 'train', kind: 'session', refId: day, dayKey: day,
+    inputs: { xp: 95 }, updatedAt: new Date(`${day}T09:00:00`).getTime(), deleted: 0, deviceId: 'test' });
+  it('45c: a level rise opens the level page, with the five friends and Continue only', async () => {
+    await nearLevelTwo('2026-11-03');
+    await finishTask('2026-11-03T12:00:00');
+    const page = await waitFor(() => { const node = document.querySelector('[role=dialog]'); expect(node?.getAttribute('aria-label')).toBe('Level 2'); return node!; });
+    expect(document.querySelectorAll('[role=dialog]')).toHaveLength(1);
+    expect(page.querySelectorAll('.level-friends [data-cast]')).toHaveLength(5);
+    expect([...page.querySelectorAll('button')].map(button => button.textContent)).toEqual(['Continue']);
+    expect(page.querySelector('.level-sheet')!.className).not.toContain('is-still');
+    expect(page.textContent).not.toMatch(/Season progress|Skip reveal/);
+  });
+
+  it('45c: with Motion off the level page is a still scene', async () => {
+    document.documentElement.dataset.motion = 'reduce';
+    await nearLevelTwo('2026-11-05');
+    await finishTask('2026-11-05T12:00:00');
+    const page = await waitFor(() => { const node = document.querySelector('[role=dialog]'); expect(node?.getAttribute('aria-label')).toBe('Level 2'); return node!; });
+    expect(page.querySelector('.level-sheet')!.className).toContain('is-still');
+    expect(mock.playCastSound).not.toHaveBeenCalled();
+  });
 });

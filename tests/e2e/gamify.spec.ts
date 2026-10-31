@@ -45,7 +45,7 @@ async function answerItem(page: Page, wrong = false) {
   const next = page.locator('.learn-feedback').getByRole('button', { name: 'Next' });
   await expect(next).toBeEnabled();
   const progress = (await page.locator('.learn-drop-head').innerText()).match(/(\d+) \/ (\d+)/);
-  const reveal = page.getByRole('dialog', { name: 'Season progress' });
+  const reveal = page.getByRole('dialog', { name: /^(Season progress|Level \d+)$/ });
   if (await reveal.isVisible()) await reveal.getByRole('button', { name: 'Continue' }).click();
   try { await next.click({ timeout: 2500 }); }
   catch (error) {

@@ -64,6 +64,8 @@ export function IdeaSitting({ topicId, module, concept, ideaIndex, ideaCount, le
     } catch { setFailed(true); setSaving(false); }
   }
   const next = () => { setPicked(undefined); if (last) void finish(); else setAt(at + 1); };
+  // Spec 45c: a page turns by its corner or a swipe to the left, the same as the full-size Continue below it.
+  const swipe = useRef<{ x: number; y: number } | null>(null);
 
   const question: { stem: string; options: readonly Choice[]; seed: string } | undefined =
     screen === 'hook' ? { stem: first.hook.stem, options: first.hook.options, seed: `${first.id}:hook` }
@@ -76,6 +78,7 @@ export function IdeaSitting({ topicId, module, concept, ideaIndex, ideaCount, le
     if (screen === 'hook') result.current.hookCorrect = option.correct;
     if (screen === 'try') result.current.guidedFirstTry = [option.correct];
   };
+  const canTurn = !saving && (screen === 'story' || screen === 'example' || screen === 'plan' || (!!question && !!chosen) || (screen === 'try' && spot && picked !== undefined));
   const eyebrow = { hook: 'Guess first', story: concept.title, example: extra?.example.situation ?? '', try: spot ? 'Spot it' : 'Try it', earlier: 'From an earlier day', plan: 'Try it today' }[screen];
 
   return <section className="screen learn-screen idea-sitting" aria-label={`Idea ${ideaIndex + 1} of ${ideaCount}`}>
@@ -84,7 +87,10 @@ export function IdeaSitting({ topicId, module, concept, ideaIndex, ideaCount, le
         <ol className="idea-dots" aria-label={`Idea ${ideaIndex + 1} of ${ideaCount}`}>{Array.from({ length: ideaCount }, (_, index) => <li key={index} className={index < ideaIndex ? 'done' : index === ideaIndex ? 'now' : ''} />)}</ol></div>
       <ol className="step-dots" aria-label={`Screen ${at + 1} of ${screens.length}`}>{screens.map((_, index) => <li key={index} className={index < at ? 'done' : index === at ? 'now' : ''} />)}</ol>
     </header>
-    <div className="learn-q" key={at}>
+    <div className="learn-q paper idea-page" key={at}
+      onPointerDown={event => { swipe.current = { x: event.clientX, y: event.clientY }; }}
+      onPointerUp={event => { const from = swipe.current; swipe.current = null; if (from && canTurn && from.x - event.clientX > 60 && Math.abs(event.clientY - from.y) < 40) next(); }}>
+      <span className="idea-folio" aria-hidden="true">{String(at + 1).padStart(2, '0')}</span>
       <p className="eyebrow">{eyebrow}</p>
       {screen === 'story' && <div className="step-teach">
         {extra ? <p className="step-teach-text">{extra.story.text}</p> : steps.map(step => <p key={step.id} className="step-teach-text">{step.teach}</p>)}
@@ -108,6 +114,8 @@ export function IdeaSitting({ topicId, module, concept, ideaIndex, ideaCount, le
       </>}
       {(screen === 'story' || screen === 'example' || screen === 'plan') && <button type="button" className="step-continue" disabled={saving} onClick={next}>{last ? 'Finish the idea' : 'Continue'}</button>}
       {failed && <div role="alert"><p>This idea could not be saved on this phone.</p><button type="button" onClick={() => void finish()}>Try saving again</button></div>}
+      {/* The turned corner is a pointer shortcut only; the full-size Continue is the button for everyone else. */}
+      {canTurn && <button type="button" className="page-corner" tabIndex={-1} aria-hidden="true" onClick={next}><span>turn</span></button>}
     </div>
     <span className="idea-friend" aria-hidden="true"><Cast name="Chiku" pose={chosen ? (chosen.correct ? 'cheer' : 'think') : 'idle'} size={48} /></span>
   </section>;

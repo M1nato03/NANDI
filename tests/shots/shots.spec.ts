@@ -848,6 +848,46 @@ for (const theme of themes) test.describe(theme, () => {
       await page.waitForTimeout(900);
       await shot(page, name, false);
     }
+    // A chapter's first sitting, page by page, then its end card.
+    await page.goto('/?e2e#read/book/richest-man-in-babylon');
+    await page.getByRole('button', { name: 'Start · Chapter 1' }).click();
+    await walkIdea(page, 'richest-man-in-babylon', async screen => { await page.waitForTimeout(400); await shot(page, `45c-s${screen}-sitting-page`, false); });
+    await expect(page.locator('.idea-end')).toBeVisible();
+    await shot(page, '45c-s9-sitting-end', false);
+    // Each area at 200% text.
+    for (const [route, name] of [['plan', '45c-t1-plan-200'], ['read', '45c-t2-read-200'], ['yatra/train', '45c-t3-train-200'], ['yatra/mind', '45c-t4-play-200'], ['yatra/calm', '45c-t5-calm-200']] as const) {
+      await page.goto(`/#${route}`);
+      await textAt200(page);
+      await page.waitForTimeout(400);
+      await shot(page, name, false);
+    }
+  });
+
+  // Spec 45c: a real level rise opens the level page (Motion off in this set, so the friends stand still).
+  test('45c level page', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-11-03T12:00:00') });
+    await page.goto('/#plan');
+    await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toBeVisible();
+    await page.evaluate(async () => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction('ledger', 'readwrite'); transaction.objectStore('ledger').put({ id: 'train-session:l2', mode: 'train', kind: 'session', refId: 'l2', dayKey: '2026-11-03', inputs: { xp: 95 }, updatedAt: Date.now(), deleted: 0, deviceId: 'shots' }); transaction.oncomplete = () => resolve(); });
+      database.close();
+    });
+    await page.reload();
+    await page.getByLabel('Add a task').fill('Write first note');
+    await page.getByRole('button', { name: 'Add', exact: true }).click();
+    await page.getByRole('region', { name: 'Today' }).getByRole('button', { name: /^Done/ }).first().click();
+    const level = page.getByRole('dialog', { name: 'Level 2' });
+    await expect(level).toBeVisible();
+    await shot(page, '45c-l1-level-page', false);
+    await textAt200(page);
+    await expect(level).toBeVisible();
+    await shot(page, '45c-l2-level-page-200', false);
+    await level.getByRole('button', { name: 'Continue' }).click();
+    await page.goto('/#you');
+    await page.reload(); // drop the 200% style
+    await page.waitForTimeout(600);
+    await shot(page, '45c-l3-you-progress', false);
   });
 
   // Spec 45c decision 8: the Pause slip, its act view, and the slip at 200% text.

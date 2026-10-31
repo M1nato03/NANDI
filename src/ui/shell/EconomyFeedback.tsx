@@ -27,7 +27,7 @@ const store = {
   set: (area: Storage, key: string, value: string): void => { try { area.setItem(key, value); } catch { /* ignore */ } },
 };
 
-type Notice = { text: string; macro: boolean; gain?: number; detail?: string; nextSeason?: string; activity?: FinishActivity; character?: 'Nandi' | 'Kachhua' };
+type Notice = { text: string; macro: boolean; gain?: number; detail?: string; nextSeason?: string; activity?: FinishActivity; character?: 'Nandi' | 'Kachhua'; level?: number; totalXp?: number };
 type Source = { facts: LedgerRow[]; settings: SettingRow[]; tasks: TaskRow[]; sessions: SessionRow[]; runs: PuzzleRunRow[]; drop?: LearnDropRow; log?: DailyLogRow };
 // Spec 33: the day's two areas are Plan and Read (Night comes after the day closes; Train is parked).
 const complete = (source: Source, now: number) => { const status = todayDotStatus(now, { tasks: source.tasks, ledger: source.facts, runs: source.runs, drop: source.drop, log: source.log }); return status.plan && status.read; };
@@ -162,7 +162,9 @@ export function EconomyFeedback() {
     const line = pickFinishLine(activity, lastLine.current);
     lastLine.current = line;
     store.set(sessionStorage, 'finish.lastLine', line);
-    setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Nandi' : undefined }));
+    setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Nandi' : undefined,
+      // Spec 45c: a real level rise opens the level page in place of the reveal; a tier change keeps the reveal.
+      level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp }));
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;
@@ -190,5 +192,33 @@ export function EconomyFeedback() {
   }, [pendingDone]);
   if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} suggestion={boundedSuggestion(readInterests(source?.settings ?? []), dayKey(Date.now()), false)} />; // eslint-disable-line react-hooks/purity
   if (!notice) return null;
+  if (notice.macro && notice.level) return <LevelPage dialog={reveal} level={notice.level} totalXp={notice.totalXp ?? 0} line={notice.detail} reduced={reduced()} close={() => {
+    setNotice(null);
+    // Focus goes back to what raised the page; if that is gone (a finished row folds away), to the page's heading.
+    requestAnimationFrame(() => { if (document.activeElement && document.activeElement !== document.body) return; const heading = document.getElementById('main')?.querySelector<HTMLElement>('h1'); if (!heading) return; if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); });
+  }} />;
   return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Nandi" pose="cheer" size={80} moment="hop" at={1} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
+}
+
+const ARRIVING = ['Mor', 'Chiku', 'Nandi', 'Kapi', 'Kachhua'] as const;
+
+/**
+ * Spec 45c: the level page. A notebook sheet with a small page mark for the level, a lantern hung for the next stretch,
+ * and the five friends arriving in a short hop wave (still with reduced motion). It pays nothing; Continue closes it and
+ * leaves the page that raised it where it was, and focus goes back where it came from.
+ */
+function LevelPage({ dialog, level, totalXp, line, reduced, close }: { dialog: React.Ref<HTMLDivElement>; level: number; totalXp: number; line?: string; reduced: boolean; close: () => void }) {
+  return <div ref={dialog} tabIndex={-1} className="economy-reveal level-page" role="dialog" aria-modal="true" aria-label={`Level ${level}`}>
+    <section className={`level-sheet paper${reduced ? ' is-still' : ''}`}>
+      <div className="level-top"><p className="eyebrow">A new level</p><span className="level-mark" aria-hidden="true">Level<b>{level}</b></span></div>
+      <h2>Level {level}</h2>
+      <p>{totalXp.toLocaleString()} XP in all.{line ? ` ${line}` : ''}</p>
+      <div className="level-scene" aria-hidden="true">
+        <svg className="level-lantern" viewBox="0 0 40 120" width="40" height="120"><path d="M20 120V18M20 18h12" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" /><path d="M32 18v8" stroke="currentColor" strokeWidth="2" /><rect x="25" y="26" width="14" height="20" rx="3" fill="var(--level-glow)" stroke="currentColor" strokeWidth="2" /></svg>
+        <div className="level-friends">{ARRIVING.map((name, index) => <span key={name} style={{ animationDelay: `${index * 90}ms` }}><Cast name={name} pose={name === 'Kachhua' ? 'idle' : 'cheer'} size={46} /></span>)}</div>
+      </div>
+      <p className="level-note">A lantern for the next stretch.</p>
+      <button type="button" onClick={close}>Continue</button>
+    </section>
+  </div>;
 }

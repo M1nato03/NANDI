@@ -53,7 +53,7 @@ export function Train({ entry }: { entry?: string }) {
     adjustRest={endAt => { void act((repos, now) => repos.setRestEnd(active.id, endAt, now), 'Rest updated.'); }}
     finish={() => { void act((repos, now) => repos.finishSession(active.id, now), 'Session saved.').then(ok => { if (ok) { setFinishedId(active.id); go('train/finish'); } }); }} /></section>;
   const finished = sessions.filter(row => row.status !== 'active').sort((a, b) => (b.endedAt ?? 0) - (a.endedAt ?? 0))[0];
-  return <section className="screen train-screen"><FriendStage area="train"><p className="eyebrow">The Proving Ground</p><h1>Train</h1></FriendStage>
+  return <section className="screen train-screen"><FriendStage area="train"><p className="eyebrow">Nandi by the pack</p><h1>Train</h1></FriendStage>
     {message && <p role="status">{message}</p>}
     {page === 'finish' && finished && (() => {
       // Spec 36 v2: a session stopped early is saved, not finished, and says what the whole plan pays (jenil-87 review).

@@ -95,7 +95,7 @@ export function Plan({ questId }: { questId?: string }) {
   return <section className="screen plan-screen">
     {/* Spec 27: the first screen is Mor, the add field and the three lists. Nothing else sits above or between them. */}
     <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} outerMove={outerMove} startRequest={startRequest} away={awayToday}
-      heading={<><p className="eyebrow">Make room for what matters</p><h1>Plan</h1>{awayToday && <p className="small">You're away. Rest well.</p>}</>} />
+      heading={<><p className="eyebrow">Mor at the map</p><h1>Plan</h1>{awayToday && <p className="small">You're away. Rest well.</p>}</>} />
     <RemindersOff />
     {!soft.state && !awayToday && <SoftChip afterBedtime={afterBed} />}{yesterdayWasSoft(softFacts, today) && <p className="small soft-note">Yesterday was a soft day. You still showed up.</p>}
     {/* Spec 39: the Pause card, one plain row: what it does now and where to set it. */}

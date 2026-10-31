@@ -59,3 +59,56 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* Spec 45c: an area page's head. Where the friend is, in the area's ink and a book hand; the one heading; the friend
+   standing on a quiet ground line shared by the whole head. No coloured band: the page itself is the surface. */
+.friend-stage.notebook-head { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 0 0 18px; padding: 0 0 10px; border-radius: 0; background: none; color: var(--ink); }
+.notebook-head::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: color-mix(in srgb, var(--area, var(--ink-3)) 40%, var(--surface-3)); }
+.notebook-head .friend-stage-text { flex: 1; min-width: 0; }
+.notebook-head .eyebrow, .notebook-title .eyebrow { margin: 0; color: var(--accent-ink); font: italic 400 1rem/1.3 Georgia, 'Times New Roman', serif; letter-spacing: 0; text-transform: none; }
+.notebook-head h1, .notebook-title h1 { margin: 2px 0 0; color: var(--ink); font-size: 2.125rem; line-height: 1.1; }
+.notebook-head[data-compact] h1 { font-size: 1.875rem; }
+.notebook-title { margin: 0 0 12px; }
+.notebook-ground { position: relative; flex: none; display: grid; place-items: end center; padding: 0 4px; }
+/* A soft shadow where the friend stands. */
+.notebook-ground::before { content: ''; position: absolute; left: 12%; right: 12%; bottom: -5px; height: 8px; border-radius: 50%; background: color-mix(in srgb, var(--ink) 12%, transparent); }
+.notebook-ground svg { position: relative; flex: none; }
+
+/* Spec 45c: a sitting is six pages of one idea. Each screen is a sheet with its page number; the turned corner (and a
+   swipe to the left) turns it, the same as Continue. A new page slides in from the right; reduced motion skips it. */
+.learn-q.idea-page { position: relative; padding: 22px 18px 56px; touch-action: pan-y; animation: page-turn-in var(--dur-base) var(--ease-out) both; }
+.idea-folio { position: absolute; top: 8px; right: 12px; color: var(--ink-3); font: italic 400 .8125rem/1 Georgia, serif; }
+.page-corner { position: absolute; right: -1px; bottom: -1px; width: 56px; height: 56px; min-height: 0; padding: 0; border: 0; border-radius: 0; background: linear-gradient(135deg, transparent 50%, var(--surface-3) 50%); box-shadow: -2px -2px 0 color-mix(in srgb, var(--ink) 8%, transparent) inset; color: var(--ink-2); }
+.page-corner span { position: absolute; right: 6px; bottom: 6px; font: italic 400 .75rem/1 Georgia, serif; }
+@keyframes page-turn-in { from { opacity: 0; transform: translateX(24px) rotate(.4deg); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .learn-q.idea-page { animation: none; } }
+/* On a page, the idea, its example and its plan are written on the sheet itself, not in a box inside it. */
+.idea-page .step-teach, .idea-page .idea-example.card, .idea-page .idea-plan.card { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.idea-sitting .idea-head { margin-bottom: 20px; }
+.idea-end.card { border: 1px solid var(--surface-3); border-radius: 6px; box-shadow: 4px 5px 0 var(--surface-3), var(--shadow-1); }
+
+/* Spec 45c: the level page, a sheet on the paper ground; the level is a small page mark, not a trophy. */
+:root { --level-glow: #f2c46d; }
+.level-page { background: var(--bg); overflow-y: auto; align-items: safe center; }
+.level-sheet { width: min(100%, 440px); display: grid; gap: 10px; padding: 28px 22px 22px; text-align: left; }
+.level-sheet .eyebrow { margin: 0; color: var(--accent-ink); font: italic 400 1rem/1.3 Georgia, 'Times New Roman', serif; letter-spacing: 0; text-transform: none; }
+.level-sheet h2 { margin: 0; font-size: 2.5rem; line-height: 1.05; }
+.level-sheet p { margin: 0; }
+.level-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.level-mark { flex: none; display: grid; justify-items: center; padding: 4px 8px; border: 1.5px solid var(--ink-3); border-radius: 4px; color: var(--ink-2); font-size: .6875rem; letter-spacing: .08em; text-transform: uppercase; transform: rotate(4deg); }
+.level-mark b { font-size: 1.125rem; letter-spacing: 0; }
+.level-scene { position: relative; display: flex; align-items: flex-end; gap: 4px; margin: 8px 0 0; padding: 0 0 8px; color: var(--ink-2); border-bottom: 2px solid var(--surface-3); }
+.level-lantern { flex: none; }
+.level-friends { display: flex; align-items: flex-end; gap: 2px; min-width: 0; }
+.level-friends > span { display: inline-flex; animation: level-hop 520ms var(--ease-out) both; }
+.level-sheet.is-still .level-friends > span { animation: none; }
+.level-note { color: var(--ink-2); font: italic 400 1rem/1.4 Georgia, 'Times New Roman', serif; }
+.level-sheet button { justify-self: stretch; margin-top: 8px; }
+@keyframes level-hop { 0% { opacity: 0; transform: translateX(-18px); } 55% { opacity: 1; transform: translateY(-10px); } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .level-friends > span { animation: none; } }
+/* Calm's setup fits one 360x800 screen (spec 35): its heading keeps to one line under the place. */
+.calm-screen .notebook-title { margin-bottom: 8px; }
+.calm-screen .notebook-title h1 { font-size: 1.75rem; }
+/* Spec 45c: You's level in the notebook's hand: a sheet, and the level as the same small page mark as the level page. */
+.your-season .economy-level.card { border: 1px solid var(--surface-3); border-radius: 6px; box-shadow: 4px 5px 0 var(--surface-3), var(--shadow-1); }
+.economy-level .economy-jersey { width: 64px; height: 72px; flex: 0 0 64px; color: var(--ink); background: none; border: 2px solid var(--ink-3); border-radius: 4px; font-size: 2.25rem; transform: rotate(-3deg); }

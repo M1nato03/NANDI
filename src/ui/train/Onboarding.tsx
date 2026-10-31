@@ -50,7 +50,7 @@ export function Onboarding({ save, startEasy, busy, autoEasy = false }: { save: 
       else setIndex(index + 1);
     } else setTests(next);
   }
-  return <section className="train-onboarding"><FriendStage area="train"><p className="eyebrow">Rank assessment · about 10 minutes</p><h1>Train</h1></FriendStage>
+  return <section className="train-onboarding"><FriendStage area="train"><p className="eyebrow">Nandi by the pack</p><h1>Train</h1><p className="small">A rank check · about 10 minutes</p></FriendStage>
     {stage === 'setup' ? <>
       {/* Spec 18: a new person can start without the 10-minute test; the ladders move them up as reps get easy. */}
       <div className="card train-easy"><h2>New to training?</h2><p>Skip the test and start on the easiest step of every move. Each move steps up once your reps get easy.</p>

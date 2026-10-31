@@ -189,7 +189,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
   const upNext = current && nextChapter(current, chaptersDone);
   const upNextState = current && upNext ? stateOf(current.body.topic.id, upNext) : undefined;
   const shelves = libraryShelves(library, chaptersDone);
-  return <section className="screen learn-screen read-screen"><FriendStage area="learn"><p className="eyebrow">Read</p><h1>Your books</h1></FriendStage>
+  return <section className="screen learn-screen read-screen"><FriendStage area="learn"><p className="eyebrow">Chiku on the reading rock</p><h1>Your books</h1></FriendStage>
     <section className="card read-continue" aria-label="Continue">
       {current && upNext ? <>
         <Cover pack={current} size="thumb" />
@@ -200,7 +200,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
     </section>
     {/* Item 135: one friend per panel. Review (idea checks, haveli, matka) is Moti's own rose card. */}
     {(dueCount > 0 || haveliIdeas.length > 0 || (matkaItems.length > 0 && matkaDone.length < matkaItems.length)) && <section className="card learn-moti" data-area="review" aria-label="Review with Moti">
-      <FriendStage area="review" size={48} compact><h2>Review with Moti</h2></FriendStage>
+      <FriendStage area="review" size={48} compact band><h2>Review with Moti</h2></FriendStage>
       {dueCount > 0 && <><button type="button" className="learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} today</button>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
       {haveliIdeas.length > 0 && <button type="button" className="secondary learn-haveli-action" onClick={() => setMoti('haveli')}>Haveli · {haveliCount(haveliToday, litToday, visits, haveliCap)}</button>}
       {matkaItems.length > 0 && matkaDone.length < matkaItems.length && <button type="button" className="secondary learn-matka-action" onClick={() => setMoti('matka')}>Matka · {matkaItems.length - matkaDone.length} sealed guesses</button>}
