@@ -34,20 +34,28 @@ describe('spec 47c: the season result', () => {
     // A deleted flag (an erase) means not shown.
     expect(resultDue(facts, [{ ...set('useful.resultShown:2026-11-02', '2026-12-07'), deleted: 1 }], '2026-12-09')).toBeDefined();
   });
-  it('the words: a headline by tier, the real facts, and the rank left out when it is tucked away', () => {
+  it('the words: a headline by tier, the real facts with the tier only on its stamp, and the rank left out when tucked away', () => {
     const base = { ...S1, rank: 212, usefulDays: 19, rankShown: true, next: { index: 1, start: '2026-12-07', end: '2027-01-03' } };
     expect(resultWords({ ...base, tier: 'Contender', shards: 150 }, '2026-12-07')).toEqual({
       eyebrow: 'Season 1 · 2 Nov–6 Dec 2026', headline: 'You reached Contender.',
-      facts: '#212 of 500 · 19 useful days moved your goal forward · 150 Shards.', closing: 'Season 2 starts today with a fresh climb.',
+      facts: '#212 of 500 · 19 useful days · 150 Shards.', closing: 'Season 2 starts today with a fresh climb.',
     });
-    expect(resultWords({ ...base, tier: 'Apex', rank: 1, shards: 300 }, '2026-12-08').facts).toBe('#1 of 500 · 19 useful days · 300 Shards.');
-    expect(resultWords({ ...base, tier: 'Apex', rank: 1, shards: 300 }, '2026-12-08').closing).toBe("Here's what you finished. Season 2 is under way, a fresh climb.");
+    expect(resultWords({ ...base, tier: 'Challenger', shards: 100 }, '2026-12-07').headline).toBe('You reached Challenger.');
+    expect(resultWords({ ...base, tier: 'Apex', rank: 1, shards: 300 }, '2026-12-08')).toMatchObject({ facts: '#1 of 500 · 19 useful days · 300 Shards.', closing: "Here's what you finished. Season 2 is under way, a fresh climb." });
     const bench = resultWords({ ...base, tier: 'Bench', rank: 431, usefulDays: 1, shards: 50, rankShown: false }, '2026-12-07');
-    expect(bench).toMatchObject({ headline: 'Season 1 is complete.', facts: 'Bench · 1 useful day toward your goal · 50 Shards.' });
-    expect(resultWords({ ...base, tier: 'Bench', usefulDays: 0, shards: 50 }, '2026-12-07').facts).toBe('#212 of 500 · Bench · 50 Shards.');
+    expect(bench).toMatchObject({ headline: 'Season 1 is complete.', facts: '1 useful day · 50 Shards.' });
+    expect(resultWords({ ...base, tier: 'Bench', usefulDays: 0, shards: 50 }, '2026-12-07').facts).toBe('#212 of 500 · 50 Shards.');
     for (const tier of ['Apex', 'Ace', 'Elite', 'Contender', 'Challenger', 'Bench']) {
-      const words = Object.values(resultWords({ ...base, tier, shards: 50 }, '2026-12-07')).join(' ');
+      const words = Object.values(resultWords({ ...base, tier, shards: 50 }, '2026-12-07', true)).join(' ');
       expect(words).not.toMatch(/fail|fell|drop|lost|lose|miss/i);
+      expect(resultWords({ ...base, tier, shards: 50 }, '2026-12-07').facts).not.toContain(tier);
     }
+  });
+  it('the goal phrase only once a goal is set (spec 42), never for Apex or Ace', () => {
+    const base = { ...S1, rank: 212, usefulDays: 19, rankShown: true, shards: 150, next: { index: 1, start: '2026-12-07', end: '2027-01-03' } };
+    expect(resultWords({ ...base, tier: 'Contender' }, '2026-12-07', true).facts).toBe('#212 of 500 · 19 useful days moved your goal forward · 150 Shards.');
+    expect(resultWords({ ...base, tier: 'Bench' }, '2026-12-07', true).facts).toBe('#212 of 500 · 19 useful days toward your goal · 150 Shards.');
+    expect(resultWords({ ...base, tier: 'Ace' }, '2026-12-07', true).facts).toBe('#212 of 500 · 19 useful days · 150 Shards.');
+    expect(resultWords({ ...base, tier: 'Bench' }, '2026-12-07').facts).not.toContain('goal');
   });
 });

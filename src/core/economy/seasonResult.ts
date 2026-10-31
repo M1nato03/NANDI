@@ -63,25 +63,35 @@ const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one :
 const onDate = (key: string) => new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${key}T12:00:00Z`));
 
 /**
- * The season-end words (spec 47 L4 with the REVERSAL rank line): one headline by tier, then the real facts. Never
- * "failed", "fell", "dropped" or "lost". With "Keep rank tucked away" on, the rank is left out. A season with no useful
- * day says nothing about useful days.
+ * The season-end words (spec 47 L4 with the REVERSAL rank line, as reviewed): one headline by tier, then the real
+ * facts, and the tier only once (its stamp). Never "failed", "fell", "dropped" or "lost". With "Keep rank tucked away"
+ * on, the rank is left out; a season with no useful day says nothing about useful days. The goal phrase ("moved your
+ * goal forward") is only for a person with a goal set (spec 42's goal profile); until then the facts stand alone.
  */
-export function resultWords(result: SeasonResult, today: string): { eyebrow: string; headline: string; facts: string; closing: string } {
+export function resultWords(result: SeasonResult, today: string, hasGoal = false): { eyebrow: string; headline: string; facts: string; closing: string } {
   const name = `Season ${result.index + 1}`;
-  const rank = result.rankShown ? `#${result.rank} of 500 · ` : '';
-  const days = plural(result.usefulDays, 'useful day', 'useful days');
-  const shards = `${result.shards} Shards`;
-  const show = (key: string) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${key}T12:00:00Z`));
-  const eyebrow = `${name} · ${show(result.start)}–${show(result.end)} ${result.end.slice(0, 4)}`;
   const next = `Season ${result.next.index + 1}`;
   const fresh = today < result.next.start ? `${next} starts ${onDate(result.next.start)} with a fresh climb.`
     : today === result.next.start ? `${next} starts today with a fresh climb.` : `${next} is under way, a fresh climb.`;
-  if (result.tier === 'Apex' || result.tier === 'Ace') {
-    return { eyebrow, headline: `You reached ${result.tier}.`, facts: `${rank}${result.usefulDays ? `${days} · ` : ''}${shards}.`, closing: `Here's what you finished. ${fresh}` };
-  }
-  if (result.tier === 'Elite' || result.tier === 'Contender') {
-    return { eyebrow, headline: `You reached ${result.tier}.`, facts: `${rank}${result.usefulDays ? `${days} moved your goal forward · ` : ''}${shards}.`, closing: fresh };
-  }
-  return { eyebrow, headline: `${name} is complete.`, facts: `${rank}${result.tier} · ${result.usefulDays ? `${days} toward your goal · ` : ''}${shards}.`, closing: fresh };
+  const top = result.tier === 'Apex' || result.tier === 'Ace';
+  const goal = !hasGoal || top ? '' : result.tier === 'Elite' || result.tier === 'Contender' ? ' moved your goal forward' : ' toward your goal';
+  return {
+    eyebrow: seasonLine(result),
+    headline: result.tier === 'Bench' ? `${name} is complete.` : `You reached ${result.tier}.`,
+    facts: resultFacts(result, goal),
+    closing: top ? `Here's what you finished. ${fresh}` : fresh,
+  };
+}
+
+/** "Season 1 · 2 Nov–6 Dec 2026". */
+export function seasonLine(result: Season): string {
+  const show = (key: string) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${key}T12:00:00Z`));
+  return `Season ${result.index + 1} · ${show(result.start)}–${show(result.end)} ${result.end.slice(0, 4)}`;
+}
+
+/** "#233 of 500 · 18 useful days · 100 Shards." (the rank only when shown; useful days only when there were any). */
+export function resultFacts(result: SeasonResult, goal = ''): string {
+  const rank = result.rankShown ? `#${result.rank} of 500 · ` : '';
+  const days = result.usefulDays ? `${plural(result.usefulDays, 'useful day', 'useful days')}${goal} · ` : '';
+  return `${rank}${days}${result.shards} Shards.`;
 }

@@ -49,10 +49,13 @@ test('the first ordinary open after Season 1 shows its result once, with real nu
   await expect(result(page)).toBeVisible();
   await expect(page.getByRole('dialog')).toHaveCount(1);
   await expect(result(page)).toContainText('Season 1 · 2 Nov–6 Dec 2026');
-  await expect(result(page).locator('.season-result-facts')).toHaveText(/^#\d+ of 500 · ((Bench|Challenger) · 3 useful days toward your goal|3 useful days moved your goal forward|3 useful days) · (50|100|150|200|250|300) Shards\.$/);
+  await expect(result(page).locator('.season-result-facts')).toHaveText(/^#\d+ of 500 · 3 useful days · (50|100|150|200|250|300) Shards\.$/);
   await expect(result(page)).toContainText('Season 2 starts today with a fresh climb.');
   await expect(result(page)).not.toContainText(/fail|fell|dropped|lost|missed/i);
-  await expect(result(page).getByRole('button', { name: 'Continue' })).toBeFocused();
+  // Focus starts on the sheet (its words read first), so a phone open draws no ring on Continue; Tab reaches Continue.
+  await expect(result(page)).toBeFocused();
+  await expect(result(page).locator('.level-friends > span')).toHaveCount(5);
+  await expect(result(page)).not.toContainText('goal');
   // At 200% text it keeps to the phone's width and every way out stays reachable.
   await textAt200(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && [...document.querySelectorAll('.season-result *')].every(node => node.getBoundingClientRect().right <= innerWidth + 1))).toBe(true);
@@ -106,7 +109,10 @@ test('with rank tucked away the result leaves out the rank; "See your useful day
   await page.getByRole('button', { name: /^Past seasons/ }).click();
   await expect(page).toHaveURL(/#yatra\/days\/seasons$/);
   await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toHaveText('Past seasons');
-  await expect(page.getByRole('article', { name: 'Season 1' })).toContainText('3 useful days');
+  const row = page.getByRole('listitem', { name: 'Season 1' });
+  await expect(row).toContainText('Season 1 · 2 Nov–6 Dec 2026');
+  await expect(row.locator('p')).toHaveText(/^3 useful days · \d+ Shards\.$/);
+  await expect(row).not.toContainText(/fresh climb|You reached|is complete|of 500/);
   await page.goBack();
   await expect(page).toHaveURL(/#yatra\/days$/);
 });

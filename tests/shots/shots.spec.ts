@@ -203,6 +203,9 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'r3-record-past-link', false);
     await page.getByRole('button', { name: /^Past seasons/ }).click();
     await expect(page.getByRole('heading', { name: 'Past seasons', level: 1 })).toBeVisible();
+    await shot(page, 'r4b-past-seasons-200');
+    await page.reload();
+    await expect(page.getByRole('heading', { name: 'Past seasons', level: 1 })).toBeVisible();
     await shot(page, 'r4-past-seasons');
     // Rank tucked away, on a fresh open of the next result (the flag cleared for the shot).
     await put('settings', [flag('season.rankShown', false), { ...flag('useful.resultShown:2026-11-02', null), deleted: 1 }]);
