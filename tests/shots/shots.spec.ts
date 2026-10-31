@@ -176,6 +176,42 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'u12-record-200', false);
   });
 
+  test('47c season result', async ({ page }) => {
+    test.setTimeout(180_000);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.clock.install({ time: new Date('2026-12-07T10:00:00') });
+    await page.goto('/?e2e#you');
+    const put = (store: string, rows: Record<string, unknown>[]) => page.evaluate(async ({ store, rows }) => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction(store, 'readwrite'); for (const row of rows) transaction.objectStore(store).put(row); transaction.oncomplete = () => resolve(); });
+      database.close();
+    }, { store, rows });
+    const days = Array.from({ length: 19 }, (_, i) => new Date(Date.UTC(2026, 10, 2 + i * 2)).toISOString().slice(0, 10));
+    let n = 0;
+    await put('ledger', days.flatMap(day => Array.from({ length: 8 }, () => ({ id: `done:r-${++n}`, dayKey: day, mode: 'tasks', kind: 'done', refId: `r-${n}`, inputs: { plannedSize: 'L', wasPlanned: true }, updatedAt: new Date(`${day}T12:00:00`).getTime() + n, deleted: 0, deviceId: 'shots' }))));
+    const flag = (key: string, value: unknown) => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 'shots' });
+    await put('settings', [flag('welcome.done', '2026-11-01'), flag('notebook.breath.opening', 'off')]);
+    await page.goto('/?e2e');
+    await page.reload();
+    const result = page.getByRole('dialog', { name: 'Season 1 result' });
+    await expect(result).toBeVisible();
+    await shot(page, 'r1-result', false);
+    await textAt200(page);
+    await shot(page, 'r2-result-200', false);
+    await result.getByRole('button', { name: 'See your useful days' }).click();
+    await page.getByRole('button', { name: /^Past seasons/ }).scrollIntoViewIfNeeded();
+    await shot(page, 'r3-record-past-link', false);
+    await page.getByRole('button', { name: /^Past seasons/ }).click();
+    await expect(page.getByRole('heading', { name: 'Past seasons', level: 1 })).toBeVisible();
+    await shot(page, 'r4-past-seasons');
+    // Rank tucked away, on a fresh open of the next result (the flag cleared for the shot).
+    await put('settings', [flag('season.rankShown', false), { ...flag('useful.resultShown:2026-11-02', null), deleted: 1 }]);
+    await page.goto('/?e2e');
+    await page.reload();
+    await expect(result).toBeVisible();
+    await shot(page, 'r5-result-tucked', false);
+  });
+
   test('spec 45b home', async ({ page }) => {
     test.setTimeout(180_000);
     const WED = new Date('2026-10-28T08:30:00');

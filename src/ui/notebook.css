@@ -119,3 +119,18 @@
 
 /* A heading that takes focus after a page change (so a screen reader starts there) is not a control: no focus ring. */
 #main h1[tabindex="-1"]:focus, [tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
+
+/* Spec 47c: the season result, the level page's sheet with the season's real facts; the tier is its small page mark. */
+.season-result-facts { font-size: 1.125rem; font-weight: 700; line-height: 1.35; }
+.season-result-friends { display: flex; align-items: flex-end; gap: 4px; padding: 0 0 8px; border-bottom: 2px solid var(--surface-3); }
+.season-result-more { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; }
+.season-result-more .text-button { min-height: 44px; font-size: 1rem; }
+.level-sheet .season-result-more button { justify-self: auto; margin-top: 0; }
+.season-results { display: grid; gap: 16px; }
+.season-result-card { width: 100%; }
+/* At 200% text the result sheet keeps to the phone's width: its column may shrink, the tier mark drops below the
+   season line when there is no room, and a long word may break. */
+.season-result { grid-template-columns: minmax(0, 1fr); overflow-x: hidden; }
+.season-result .level-sheet, .season-result-card { min-width: 0; max-width: 100%; }
+.season-result .level-top, .season-result-card .level-top { flex-wrap: wrap; }
+.season-result .level-sheet h2, .season-result-card h2 { font-size: 1.75rem; overflow-wrap: anywhere; }

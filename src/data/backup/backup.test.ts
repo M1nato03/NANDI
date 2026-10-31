@@ -147,6 +147,13 @@ describe('backup and restore', () => {
     expect((await db.settings.get('useful.longestRun'))?.value).toBe(9);
     expect((await db.settings.get('useful.weeklyTarget'))?.value).toEqual([{ fromWeek: '2026-11-09', target: 5 }, { fromWeek: '2026-11-16', target: 7 }]);
   });
+  it('spec 47c: a season result shown on either side stays shown after a restore', async () => {
+    const db = freshDb();
+    const envelope = await exportBackup(db, new Date(2026, 11, 8, 12));
+    await db.settings.put({ key: 'useful.resultShown:2026-11-02', value: '2026-12-07T05:00:00.000Z', ...stamp });
+    await importBackup(db, envelope);
+    expect((await db.settings.get('useful.resultShown:2026-11-02'))?.value).toBe('2026-12-07T05:00:00.000Z');
+  });
   it('validates the envelope and dexie content with readable failures', async () => {
     const envelope = await exportBackup(freshDb(), 1000);
     expect(validateBackup(JSON.stringify(envelope))).toEqual({ success: true, envelope, errors: [] });

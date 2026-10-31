@@ -6,6 +6,7 @@ import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
 import { isLegacyExport } from '../legacy-import';
+import { RESULT_SHOWN_PREFIX } from '../../core/economy/seasonResult';
 import { CONFIRMED_PREFIX, LONGEST_KEY, mergeConfirmed, mergeTargets, TARGET_KEY } from '../../core/economy/usefulDays';
 import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, fillHeldBonus, keptCandidates, mergeCloseMaps, refundReplaced, replayBonus, restoredPurchase, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { duringRestore } from '../restoreLock';
@@ -291,7 +292,7 @@ async function restoreInto(db: NandiDb, restored: BackupEnvelope): Promise<void>
     const minePeak = { totalXp: Math.max(storedPeak.totalXp, showing.totalXp), level: Math.max(storedPeak.level, showing.level) };
     const localSeen = readSeenUpTo(before);
     // Spec 47b: this phone's kept useful dates, longest run and weekly target, merged back in after the import.
-    const localUseful = before.filter(row => !row.deleted && (row.key.startsWith(CONFIRMED_PREFIX) || row.key === LONGEST_KEY || row.key === TARGET_KEY));
+    const localUseful = before.filter(row => !row.deleted && (row.key.startsWith(CONFIRMED_PREFIX) || row.key === LONGEST_KEY || row.key === TARGET_KEY || (row.key.startsWith(RESULT_SHOWN_PREFIX) && !!row.value)));
     // Each day's close keeps what that day showed; a restore keeps the higher of this phone's and the backup's.
     const closes = before.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
     const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
@@ -334,7 +335,9 @@ async function restoreInto(db: NandiDb, restored: BackupEnvelope): Promise<void>
     for (const mine of localUseful) {
       const theirs = await db.settings.get(mine.key);
       const theirValue = theirs && !theirs.deleted ? theirs.value : undefined;
-      const value = mine.key === LONGEST_KEY ? Math.max(Number(mine.value) || 0, Number(theirValue) || 0)
+      // Spec 47c: a result shown on either side stays shown (logical OR), so a restore never replays it.
+      const value = mine.key.startsWith(RESULT_SHOWN_PREFIX) ? (theirValue || mine.value)
+        : mine.key === LONGEST_KEY ? Math.max(Number(mine.value) || 0, Number(theirValue) || 0)
         : mine.key === TARGET_KEY ? mergeTargets(mine.value, theirValue)
           : mergeConfirmed(mine.key.slice(CONFIRMED_PREFIX.length), mine.value, theirValue);
       if (JSON.stringify(value) !== JSON.stringify(theirValue)) usefulRows.push({ key: mine.key, value, updatedAt: now, deleted: 0, deviceId });

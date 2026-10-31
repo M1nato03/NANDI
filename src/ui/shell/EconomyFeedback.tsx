@@ -4,7 +4,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time';
 import { softMoreKey, softToday } from '../../core/soft/soft';
-import { addEconomyDays, deriveEconomy, seasonFor } from '../../core/economy/deriveEconomy';
+import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { RULES } from '../../core/rules.config';
 import { shutdownAt } from '../../core/tasks/planner';
 import { isAfterBedtime } from '../../core/time';
@@ -27,7 +27,7 @@ const store = {
   set: (area: Storage, key: string, value: string): void => { try { area.setItem(key, value); } catch { /* ignore */ } },
 };
 
-type Notice = { text: string; macro: boolean; gain?: number; detail?: string; nextSeason?: string; activity?: FinishActivity; character?: 'Nandi' | 'Kachhua'; level?: number; totalXp?: number };
+type Notice = { text: string; macro: boolean; gain?: number; detail?: string; activity?: FinishActivity; character?: 'Nandi' | 'Kachhua'; level?: number; totalXp?: number };
 type Source = { facts: LedgerRow[]; settings: SettingRow[]; tasks: TaskRow[]; sessions: SessionRow[]; runs: PuzzleRunRow[]; drop?: LearnDropRow; log?: DailyLogRow };
 // Spec 33: the day's two areas are Plan and Read (Night comes after the day closes; Train is parked).
 const complete = (source: Source, now: number) => { const status = todayDotStatus(now, { tasks: source.tasks, ledger: source.facts, runs: source.runs, drop: source.drop, log: source.log }); return status.plan && status.read; };
@@ -76,23 +76,8 @@ export function EconomyFeedback() {
     if (!previous || signature(previous) !== signature(source)) void reconcileGamify(db).catch(() => { /* Later writes retry reconciliation. */ });
     prior.current = source;
     if (!previous) {
-      const now = Date.now(), today = dayKey(now), season = seasonFor(today);
-      // Spec 47b: no "rest bank covered yesterday" notice. The bank still spends as before; You shows its balance.
-      const key = `economy.seasonReveal:${season.index - 1}`;
-      const bedtime = source.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
-      if (season.index > 0 && !store.get(localStorage, key) && now < shutdownAt(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime)) {
-        const past = deriveEconomy(source.facts, undefined, source.settings, addEconomyDays(season.start, -1));
-        // A season that ended before the first day here is not this person's: no reveal (season late entry).
-        if (!source.facts.some(row => !row.deleted && row.dayKey < season.start)) { store.set(localStorage, key, 'seen'); return; }
-        const countKey = `economy.macro:${today}`;
-        const count = Number(store.get(sessionStorage, countKey) ?? 0);
-        if (count < RULES.juice.macroPerDayMax) {
-          store.set(sessionStorage, countKey, String(count + 1)); store.set(localStorage, key, 'seen');
-          queueMicrotask(() => setNotice({ text: `Season ${season.index} · ${past.season.tier}`, macro: true, character: 'Nandi',
-            detail: `${Math.round(past.season.sp)} SP this season · +${RULES.shards.seasonEnd[past.season.tier as keyof typeof RULES.shards.seasonEnd]} Shards`,
-            nextSeason: `Next season · Season ${season.index + 1}` }));
-        }
-      }
+      // Spec 47b: no "rest bank covered yesterday" notice. Spec 47c: the season-end reveal is now the season result
+      // page, shown once by the open moment (ui/cast/OpenMoment), so nothing is raised here on the first load.
       return;
     }
     const oldIds = new Set(previous.facts.map(row => row.id));
@@ -189,7 +174,7 @@ export function EconomyFeedback() {
     // Focus goes back to what raised the page; if that is gone (a finished row folds away), to the page's heading.
     requestAnimationFrame(() => { if (document.activeElement && document.activeElement !== document.body) return; const heading = document.getElementById('main')?.querySelector<HTMLElement>('h1'); if (!heading) return; if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); });
   }} />;
-  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Nandi" pose="cheer" size={80} moment="hop" at={1} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
+  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Nandi" pose="cheer" size={80} moment="hop" at={1} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p><button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
 }
 
 const ARRIVING = ['Mor', 'Chiku', 'Nandi', 'Kapi', 'Kachhua'] as const;

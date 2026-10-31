@@ -71,6 +71,7 @@ const Calm = lazy(() => import('../yatra/Calm').then(module => ({ default: modul
 const Journal = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.Journal })));
 const UsefulDays = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.UsefulDays })));
 const SeasonLadder = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonLadder })));
+const PastResults = lazy(() => import('../season/SeasonResult').then(module => ({ default: module.PastResults })));
 const SeasonShop = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonShop })));
 const Badges = lazy(() => import('../screens/GamifyScreens').then(module => ({ default: module.Badges })));
 const Night = lazy(() => import('../screens/Night').then(module => ({ default: module.Night })));
@@ -282,6 +283,8 @@ export function AppShell() {
   else if (path === 'yatra/calm') screen = <Calm />;
   else if (path === 'yatra/journal') screen = <Journal />;
   else if (path === 'yatra/days') screen = <UsefulDays />;
+  // Spec 47c: every finished season's result, from the record.
+  else if (path === 'yatra/days/seasons') screen = <PastResults />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
   else if (path === 'night') screen = <Now />;
   else if (path === 'kolam') screen = <KolamScreen />;

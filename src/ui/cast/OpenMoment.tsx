@@ -10,6 +10,9 @@ import { useModalFocus } from '../shell/useModalFocus';
 import { WELCOME_DONE_KEY } from '../welcome/Welcome';
 import { SquareBreath } from '../yatra/SquareBreath';
 import { recordError } from '../errorRing';
+import { loadResultDue, markResultShown } from '../../data/repos/seasonResult';
+import type { SeasonResult } from '../../core/economy/seasonResult';
+import { SeasonResultPage } from '../season/SeasonResult';
 
 /** A notification tap reaches the app a moment after it opens; the breath waits that long before it decides. */
 const NATIVE_GRACE_MS = 500;
@@ -35,6 +38,9 @@ export function OpenMoment({ night, pause, pauseCheckedAt, widgetChecked }: { ni
   const [now, setNow] = useState(() => Date.now());
   const [note, setNote] = useState('');
   const decided = useRef(0);
+  // Spec 47c: a season's result waits for the breath, then shows; it never stacks with it, a Pause card or the night.
+  const [result, setResult] = useState<SeasonResult | null>(null);
+  const resultNext = useRef<SeasonResult | null>(null);
   const latest = useRef({ night, pause });
   useEffect(() => { latest.current = { night, pause }; });
 
@@ -42,7 +48,7 @@ export function OpenMoment({ night, pause, pauseCheckedAt, widgetChecked }: { ni
   useEffect(() => {
     let hiddenAt = 0;
     const visibility = () => {
-      if (document.visibilityState === 'hidden') { hiddenAt = Date.now(); setShown(null); setLeaving(false); return; }
+      if (document.visibilityState === 'hidden') { hiddenAt = Date.now(); resultNext.current = null; setShown(null); setLeaving(false); return; }
       if (hiddenAt && Date.now() - hiddenAt >= OPEN_GAP_MS) { startNewEntry(); setOpenedAt(Date.now()); }
       hiddenAt = 0;
     };
@@ -63,7 +69,10 @@ export function OpenMoment({ night, pause, pauseCheckedAt, widgetChecked }: { ni
       const due = openerDue({ mode: settings.opening, today, lastShownDay: settings.lastShownDay, ordinary });
       // What this open decided, for tests and the owner's checks: 'shown' or 'skipped'.
       document.documentElement.dataset.openingBreath = due ? 'shown' : 'skipped';
-      if (!due) return;
+      const seasonResult = ordinary ? await loadResultDue(db, today).catch(() => undefined) : undefined;
+      if (!live) return;
+      if (!due) { if (seasonResult && !latest.current.pause && !latest.current.night) setResult(seasonResult); return; }
+      resultNext.current = seasonResult ?? null;
       setNote(''); setLeaving(false); setNow(at);
       setShown({ startedAt: at, holds: settings.holds, extraFrom: null });
       await markBreathShown(db, today, at).catch(() => setNote('Could not save that the breath was shown today. It may come back once more.'));
@@ -73,6 +82,11 @@ export function OpenMoment({ night, pause, pauseCheckedAt, widgetChecked }: { ni
 
   // A Pause card, the night route or a route change (a late notification) always wins: the breath goes at once.
   useEffect(() => { if (shown && (pause || night)) queueMicrotask(() => setShown(null)); }, [shown, pause, night]);
+  useEffect(() => { if (pause || night) { resultNext.current = null; if (result) queueMicrotask(() => setResult(null)); } }, [result, pause, night]);
+  // The breath is done: a result that waited for it shows now.
+  useEffect(() => { if (!shown && resultNext.current) { const next = resultNext.current; resultNext.current = null; queueMicrotask(() => setResult(next)); } }, [shown]);
+  // Marked shown only once it is on screen.
+  useEffect(() => { if (result) void markResultShown(db, result.start, Date.now()).catch(error => recordError('promise', error)); }, [result]);
   useEffect(() => {
     if (!shown) return;
     const away = () => setShown(null);
@@ -100,6 +114,7 @@ export function OpenMoment({ night, pause, pauseCheckedAt, widgetChecked }: { ni
     return () => window.clearTimeout(timer);
   }, [leaving]);
   const dialog = useModalFocus<HTMLDivElement>(leave);
+  if (result && !shown) return <SeasonResultPage result={result} close={() => { setResult(null); requestAnimationFrame(focusScreen); }} />;
   if (!shown || !stage) return null;
   const toggleHolds = () => {
     const holds = !shown.holds, at = Date.now();

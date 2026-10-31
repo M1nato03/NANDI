@@ -43,6 +43,7 @@ export function parentRoute(path: string): string {
   if (path.startsWith('yatra/mind/board/')) return 'yatra/mind/practice';
   if (path.startsWith('yatra/mind/')) return 'yatra/mind';
   if (path.startsWith('yatra/train/')) return 'yatra/train';
+  if (path === 'yatra/days/seasons') return 'yatra/days';
   if (path.startsWith('yatra/')) return 'yatra';
   if (path.startsWith('read/chapter/')) return `read/book/${path.split('/')[2]}`;
   if (path.startsWith('read/check/')) return 'yatra';
