@@ -4,8 +4,8 @@ import { todaysBoard } from './helpers/mind';
 test('tabs and Today dots navigate to feature homes at phone size', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
-  // Spec 33: three tabs (Read's heading is "Your books") and three dots: Plan, Read, Night.
-  const heading: Record<string, string> = { Plan: 'Plan', Read: 'Your books', You: 'You' };
+  // Spec 33: Read's heading is "Your books"; spec 45b: Home's is the camp's line. Three dots: Plan, Read, Night.
+  const heading: Record<string, string> = { Plan: 'Plan', Read: 'Your books', Yatra: 'Camp at Jobra', You: 'You' };
   for (const name of ['Plan', 'Read', 'Yatra', 'You']) {
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name }).click();
     await expect(page.getByRole('heading', { name: heading[name], exact: true })).toBeVisible();
