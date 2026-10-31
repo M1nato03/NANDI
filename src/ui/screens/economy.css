@@ -73,3 +73,8 @@
 :root[data-motion='reduce'] .finish-moment, :root[data-motion='reduce'] .done-for-today, :root[data-motion='reduce'] .finish-bloom .finish-check { animation: none; }
 .ladder-gap { text-align: center; color: var(--ink-3); padding: 2px 0; }
 .economy-pair > :only-child { grid-column: 1 / -1; }
+/* 47-L1: the ladder's other seats are pace-setters, fixed targets. The tag takes the line's own ink, so it keeps the
+   paragraph's contrast on every card back and banner, and it wraps with the line at 200% text. */
+.economy-rival .pace-tag { display: inline-block; padding: 0 .4em; border: 1px solid currentColor; border-radius: 999px; font-size: .8125em; font-weight: 700; line-height: 1.5; white-space: nowrap; }
+.economy-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.ladder-screen .ladder-pace { color: var(--ink-2); font-size: .9375rem; }

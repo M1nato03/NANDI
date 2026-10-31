@@ -53,8 +53,15 @@ test('seeded week shows rank and Clean Week; rest day and theme survive a backup
   await expect(season).toContainText('8 day streak');
   await expect(season).toContainText('Shards');
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  // 47-L1: the seat above is a pace-setter, named as one, with the SP to pass it (never "sits just above").
+  const rival = season.locator('.economy-rival');
+  await expect(rival).toHaveText(/^[^,]+, pace-setter, · \d+ SP to pass$/);
+  await expect(rival.locator('.pace-tag')).toHaveText('pace-setter');
+  await expect(season).not.toContainText(/sits just above|Real players/);
   const rankText = (await season.locator('.economy-season-card strong').textContent())?.trim();
   await season.getByRole('button', { name: 'View the ladder' }).click();
+  // 47-L1: the ladder says what its other 499 seats are.
+  await expect(page.locator('.ladder-pace')).toHaveText("Season 1 · you vs 499 pace-setters. They're fixed targets, not people. Nobody else can see your rank.");
   await expect(page.locator('.ladder-seat.you')).toContainText(rankText!.split(' ')[0]!);
   expect(await page.locator('.ladder-seat').filter({ hasText: /SP/ }).count()).toBeGreaterThan(20);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);

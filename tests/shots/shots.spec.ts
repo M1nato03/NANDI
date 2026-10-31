@@ -79,6 +79,43 @@ for (const theme of themes) test.describe(theme, () => {
 
   // Spec 45b: Home as a notebook page: useful days and a task, a running focus, a Book check, a new phone, night,
   // each friend's tap, and 200% text with the next move still reachable.
+  // 47-L1: the You season card's pace-setter line and the ladder's header, inside Season 1 with some SP; and at 200% text.
+  test('ladder L1 pace-setters', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-11-08T12:00:00') });
+    await page.goto('/#you');
+    await page.evaluate(async () => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => {
+        const transaction = database.transaction('ledger', 'readwrite');
+        let n = 0;
+        for (const day of ['2026-11-02', '2026-11-03', '2026-11-04', '2026-11-05', '2026-11-06']) for (let i = 0; i < 6; i++) { n += 1; transaction.objectStore('ledger').put({ id: `done:l1-${n}`, dayKey: day, mode: 'tasks', kind: 'done', refId: `l1-${n}`, inputs: { plannedSize: 'L', wasPlanned: true }, updatedAt: new Date(`${day}T12:00:00`).getTime() + n, deleted: 0, deviceId: 'shots' }); }
+        transaction.oncomplete = () => resolve();
+      });
+      database.close();
+    });
+    await page.reload();
+    // The rest-bank toast would cover the card; it goes on its own.
+    await expect(page.locator('.economy-toast')).toBeVisible();
+    await page.clock.runFor(10_000);
+    await expect(page.locator('.economy-toast')).toHaveCount(0);
+    const card = page.locator('.economy-season-card');
+    await expect(card.locator('.economy-rival')).toBeVisible();
+    await card.scrollIntoViewIfNeeded();
+    await shot(page, 'l1-1-you-card', false);
+    await page.getByRole('button', { name: 'View the ladder' }).click();
+    await expect(page.locator('.ladder-pace')).toBeVisible();
+    await shot(page, 'l1-2-ladder', false);
+    await page.reload();
+    await expect(page.locator('.ladder-pace')).toBeVisible();
+    await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+    await shot(page, 'l1-4-ladder-200-text', false);
+    await page.goto('/#you');
+    await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+    await page.locator('.economy-rival').scrollIntoViewIfNeeded();
+    await shot(page, 'l1-3-you-card-200-text', false);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
+
   test('spec 45b home', async ({ page }) => {
     test.setTimeout(180_000);
     const WED = new Date('2026-10-28T08:30:00');
