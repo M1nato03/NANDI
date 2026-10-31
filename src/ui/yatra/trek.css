@@ -40,12 +40,12 @@
 .trek-actor { position: absolute; bottom: 0; filter: drop-shadow(0 4px 3px #241b1844); }
 .trek-group .trek-actor { animation: trek-step 1.1s ease-in-out; }
 .trek-place { position: absolute; bottom: 18px; z-index: 14; display: flex; flex-direction: column; align-items: center; gap: 2px; transform: translateX(-50%); pointer-events: none; }
-.trek-place b { padding: 3px 6px; border-radius: 4px; background: #fff9e7e6; color: #56483a; font-size: 10px; line-height: 1; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.trek-place b { max-width: 9em; padding: 3px 6px; border-radius: 4px; background: #fff9e7e6; color: #56483a; font-size: 10px; line-height: 1.15; font-weight: 900; letter-spacing: .08em; text-align: center; text-transform: uppercase; overflow-wrap: anywhere; }
 .trek-place i { width: 1px; height: 8px; background: #5a5147; }
 .trek-place.current b { background: #fff2ca; color: #4b3727; box-shadow: 0 0 0 1px #f4b400; }
-.trek-caption { position: absolute; left: 16px; top: 13px; z-index: 20; min-width: 126px; padding: 7px 9px; border: 1px solid #ffffffa1; border-radius: 7px; background: #fff9eddc; color: #194d4b; pointer-events: none; }
+.trek-caption { position: absolute; left: 16px; top: 13px; z-index: 20; min-width: 126px; max-width: calc(100% - 32px); padding: 7px 9px; border: 1px solid #ffffffa1; border-radius: 7px; background: #fff9eddc; color: #194d4b; pointer-events: none; }
 .trek-caption b { display: block; font-size: 10px; line-height: 1; letter-spacing: .12em; }
-.trek-caption span { display: block; margin-top: 3px; color: #22221c; font: italic 16px/1 Georgia, serif; }
+.trek-caption span { display: block; margin-top: 3px; color: #22221c; font: italic 16px/1.2 Georgia, serif; }
 
 .trek-scene.is-night .trek-overlay, .trek-scene.is-night .trek-pinpricks, .trek-scene.is-night .trek-sky { opacity: 1; }
 .trek-scene.is-night .trek-sky path { stroke-dashoffset: 0; }

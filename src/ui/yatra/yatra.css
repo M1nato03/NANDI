@@ -77,7 +77,8 @@
 .yatra-focus-strip { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; margin: 12px 0 0; padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--surface-2); color: var(--ink); font-weight: 400; text-align: left; box-shadow: none; }
 .yatra-focus-strip i { flex: none; width: 10px; height: 10px; border: 2px solid var(--accent); border-radius: 50%; }
 .yatra-focus-strip i.running { animation: yatra-glow 2.4s ease-in-out infinite; }
-.yatra-focus-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* a11y C9: a long task name wraps instead of being cut; the clock still shows. */
+.yatra-focus-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .yatra-focus-clock { flex: none; font-variant-numeric: tabular-nums; }
 .yatra-focus-strip b { flex: none; color: var(--accent-ink); }
 @keyframes yatra-glow { 50% { background: var(--accent); } }

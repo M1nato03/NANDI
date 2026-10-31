@@ -88,9 +88,11 @@ test('owner flag with a note updates the count and survives reload', async ({ pa
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   test.setTimeout(90_000);
   await page.goto('/?e2e#you/settings');
+  // Route-ready at each step: the settings screen, then the review screen and its count, have loaded.
+  await expect(page.getByText('About this app')).toBeVisible({ timeout: 15_000 });
   await page.getByText('About this app').click();
   await page.getByRole('button', { name: 'Review content' }).click();
-  await expect(page.getByRole('heading', { name: 'Review content' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Review content' })).toBeVisible({ timeout: 15_000 });
   await expect(page.getByText('0 flagged')).toBeVisible();
   const first = page.locator('.content-review-item').first();
   await expect(first).toContainText('Correct answer:');
@@ -100,6 +102,7 @@ test('owner flag with a note updates the count and survives reload', async ({ pa
   await first.getByRole('button', { name: 'Save flag' }).click();
   await expect(page.getByText('1 flagged')).toBeVisible();
   await page.reload();
+  await expect(page.getByRole('heading', { name: 'Review content' })).toBeVisible({ timeout: 15_000 });
   await expect(page.getByText('1 flagged')).toBeVisible();
   await expect(page.locator('.content-review-item').first()).toContainText('Check the source and feedback.');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

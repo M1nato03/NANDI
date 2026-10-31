@@ -33,6 +33,7 @@ import { softToday, yesterdayWasSoft } from '../../core/soft/soft';
 import { isAfterBedtime } from '../../core/time';
 import { useModalFocus } from '../shell/useModalFocus';
 import { errorMessage } from '../shell/errorMessage';
+import { RemindersOff } from '../shell/RemindersOff';
 
 export function Plan({ questId }: { questId?: string }) {
   const board = useTaskBoard();
@@ -95,6 +96,7 @@ export function Plan({ questId }: { questId?: string }) {
     {/* Spec 27: the first screen is Mor, the add field and the three lists. Nothing else sits above or between them. */}
     <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} outerMove={outerMove} startRequest={startRequest} away={awayToday}
       heading={<><p className="eyebrow">Make room for what matters</p><h1>Plan</h1>{awayToday && <p className="small">You're away. Rest well.</p>}</>} />
+    <RemindersOff />
     {!soft.state && !awayToday && <SoftChip afterBedtime={afterBed} />}{yesterdayWasSoft(softFacts, today) && <p className="small soft-note">Yesterday was a soft day. You still showed up.</p>}
     {/* Spec 39: the Pause card, one plain row: what it does now and where to set it. */}
     <button type="button" className="card plan-pause-row" onClick={() => go('plan/pause')}><span><strong>Pause card</strong><small>{pauseCard.offToday ? 'Off for today' : pauseCard.on ? `On · ${pauseCard.packages.map(name => pauseAppLabel(name)).join(', ')}` : 'Off · show your plan when you open Instagram'}</small></span><span aria-hidden="true">›</span></button>

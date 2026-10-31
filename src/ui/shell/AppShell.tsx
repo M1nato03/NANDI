@@ -95,6 +95,21 @@ export function AppShell() {
   const restored = async () => { await appearance.reload(); setRestoreGen(gen => gen + 1); };
   const nativeUpdater = useNativeUpdater();
   const autoBackupWarning = useAutoBackup();
+  // a11y C5: the phone ran out of room for NANDI's data: one line says so, and leads to a backup to keep a copy.
+  const [storageFull, setStorageFull] = useState(false);
+  useEffect(() => {
+    const full = (reason: unknown) => {
+      const error = reason as { name?: string; inner?: { name?: string } } | null;
+      if (error?.name === 'QuotaExceededError' || error?.inner?.name === 'QuotaExceededError') setStorageFull(true);
+    };
+    const rejected = (event: PromiseRejectionEvent) => full(event.reason);
+    const failed = (event: ErrorEvent) => full(event.error);
+    const told = () => setStorageFull(true);
+    window.addEventListener('unhandledrejection', rejected);
+    window.addEventListener('error', failed);
+    window.addEventListener('nandi:storage-full', told);
+    return () => { window.removeEventListener('unhandledrejection', rejected); window.removeEventListener('error', failed); window.removeEventListener('nandi:storage-full', told); };
+  }, []);
   useForegroundMinutes();
   const [welcomeNeeded, closeWelcome] = useWelcomeNeeded();
   useWidgetSync();
@@ -262,5 +277,5 @@ export function AppShell() {
   else screen = <Plan />;
   const root = ['plan', 'read', 'yatra', 'you'].includes(path);
   // Spec 25: the route's area colours the screen; You stays neutral.
-  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`} data-area={areaOverride ?? areaOf(path)} data-books={booksGen}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}>{pause.reason === 'night' ? <NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /> : <PauseCard packageName={pause.packageName} close={() => setPause(null)} />}</Suspense>}<OpenMoment night={path === 'night' || nightRouteTime(clockTime, RULES.night.defaultShutdown)} pause={!!pause} />{welcomeNeeded && <Welcome onDone={closeWelcome} />}</div>;
+  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`} data-area={areaOverride ?? areaOf(path)} data-books={booksGen}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}{storageFull && <button type="button" className="auto-backup-warning storage-full" onClick={() => go('you/backup')}>This phone is out of room for NANDI's data. Tap to save a backup copy.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}>{pause.reason === 'night' ? <NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /> : <PauseCard packageName={pause.packageName} close={() => setPause(null)} />}</Suspense>}<OpenMoment night={path === 'night' || nightRouteTime(clockTime, RULES.night.defaultShutdown)} pause={!!pause} />{welcomeNeeded && <Welcome onDone={closeWelcome} />}</div>;
 }

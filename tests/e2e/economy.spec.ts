@@ -87,6 +87,9 @@ test('seeded week shows rank and Clean Week; rest day and theme survive a backup
 test('short balance leaves a theme unavailable', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-03T12:00:00') });
   await page.goto('/#you/shop');
+  // Route-ready: the shop and its balance have loaded (a busy machine can be slow to open it).
+  await expect(page.getByRole('heading', { name: 'Shop', level: 1 })).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText(/Shards ready$/)).toBeVisible();
   await expect(page.getByRole('button', { name: '400 Shards' })).toBeDisabled();
   await expect(page.getByText(/more Shards/).first()).toBeVisible();
 });

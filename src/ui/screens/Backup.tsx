@@ -38,6 +38,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
   // The restore's own line sits in its card (jenil-87): the page-bottom status is easy to miss.
   const [restored, setRestored] = useState('');
   const [persisted, setPersisted] = useState<boolean | null>(null);
+  const [keepNote, setKeepNote] = useState('');
   const [usage, setUsage] = useState<StorageEstimate | null>(null);
   const [counts, setCounts] = useState<Record<string, number> | null>(null);
   const [auto, setAuto] = useState<AutoBackupState | null>(null);
@@ -143,7 +144,8 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     </div>}
     <div className="card"><h2>Device storage</h2><p>Persistent storage: {persisted === null ? 'Unavailable' : persisted ? 'On' : 'Off'}</p>
       <p>Used: {usage?.usage === undefined ? 'Unavailable' : `${(usage.usage / 1048576).toFixed(1)} MB`} · Quota: {usage?.quota === undefined ? 'Unavailable' : `${(usage.quota / 1048576).toFixed(1)} MB`}</p>
-      <button className="secondary" onClick={() => void requestPersist().then(refresh)}>Ask to keep data on this device</button></div>
+      <button className="secondary" onClick={() => void requestPersist().then(kept => { setKeepNote(kept ? 'This device will keep NANDI\'s data.' : 'This browser did not agree to keep it. Export a backup now and then, so you always have a copy.'); return refresh(); }).catch(() => setKeepNote('Could not ask just now. Export a backup to keep a copy.'))}>Ask to keep data on this device</button>
+      {keepNote && <p className="small" role="status">{keepNote}</p>}</div>
     {counts && <p className="small">Current rows: {Object.values(counts).reduce((a, b) => a + b, 0)}</p>}
     {message && <p role="status">{message}</p>}
   </section>;

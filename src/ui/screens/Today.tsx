@@ -8,6 +8,7 @@ import { currentFocus, minutes, taskGroups, todayTasks, visibleTasks } from '../
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { isAway } from '../../core/economy/away';
 import { dayKey } from '../../core/time';
+import { RemindersOff } from '../shell/RemindersOff';
 import '../tasks/tasks.css';
 
 export function Today() {
@@ -46,6 +47,7 @@ export function Today() {
   }
   return <section className="screen focus-screen"><p className="eyebrow">One step at a time</p><h1>Focus</h1>{awayToday && <p>You're away. Rest well.</p>}
     {board.message && <p role="status">{board.message}</p>}
+    {taskFocus && <RemindersOff focus />}
     {justFinished && <p className="task-result" role="status">Planned {justFinished.planned} min · Took {justFinished.actual} min ({justFinished.planned ? (justFinished.actual / justFinished.planned).toFixed(1) : '0.0'}x)</p>}
     {rewardOn && typeof reward === 'string' && reward.trim() && ((taskFocus && phase && phase.phase !== 'work') || (justFinished && justFinished.actual >= 25)) && <p className="task-result" role="status">Block done. Time for {reward}.</p>}
     <section className="card now-card" aria-label="Focus task">{task ? <><span className="pill">{group ? `Step ${step} of ${group.total}` : 'Today'}</span><h2>{task.title}</h2>{task.firstStep && <p>First: {task.firstStep}</p>}
