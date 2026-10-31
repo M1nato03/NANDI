@@ -4,8 +4,8 @@ import { todaysBoard } from './helpers/mind';
 test('tabs and Today dots navigate to feature homes at phone size', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
-  // Spec 33: Read's heading is "Your books"; spec 45b: Home's is the camp's line. Three dots: Plan, Read, Night.
-  const heading: Record<string, string> = { Plan: 'Plan', Read: 'Your books', Yatra: 'Camp at Jobra', You: 'You' };
+  // Spec 45c: Read's heading is its area word; spec 45b: Home's is the camp's line. Three dots: Plan, Read, Night.
+  const heading: Record<string, string> = { Plan: 'Plan', Read: 'Read', Yatra: 'Camp at Jobra', You: 'You' };
   for (const name of ['Plan', 'Read', 'Yatra', 'You']) {
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name }).click();
     await expect(page.getByRole('heading', { name: heading[name], exact: true })).toBeVisible();
@@ -35,7 +35,7 @@ test('browser Back restores the Mind board and saved puzzle progress', async ({ 
   const cells = await board.locator('.mind-grid button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')));
   expect(cells).not.toEqual(before);
   await page.goBack();
-  await expect(page.getByRole('heading', { name: "Kapi's shelf", exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Play', exact: true })).toBeVisible();
   await todaysBoard(page).click();
   await expect(board.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
   expect(await board.locator('.mind-grid button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')))).toEqual(cells);

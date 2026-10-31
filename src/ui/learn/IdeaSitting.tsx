@@ -85,12 +85,12 @@ export function IdeaSitting({ topicId, module, concept, ideaIndex, ideaCount, le
     <header className="idea-head">
       <div className="idea-count"><span className="small">Idea {ideaIndex + 1} of {ideaCount}</span>
         <ol className="idea-dots" aria-label={`Idea ${ideaIndex + 1} of ${ideaCount}`}>{Array.from({ length: ideaCount }, (_, index) => <li key={index} className={index < ideaIndex ? 'done' : index === ideaIndex ? 'now' : ''} />)}</ol></div>
-      <ol className="step-dots" aria-label={`Screen ${at + 1} of ${screens.length}`}>{screens.map((_, index) => <li key={index} className={index < at ? 'done' : index === at ? 'now' : ''} />)}</ol>
     </header>
     <div className="learn-q paper idea-page" key={at}
       onPointerDown={event => { swipe.current = { x: event.clientX, y: event.clientY }; }}
       onPointerUp={event => { const from = swipe.current; swipe.current = null; if (from && canTurn && from.x - event.clientX > 60 && Math.abs(event.clientY - from.y) < 40) next(); }}>
-      <span className="idea-folio" aria-hidden="true">{String(at + 1).padStart(2, '0')}</span>
+      {/* The page's place in the sitting is said once, here (jenil-87: the dots and a bar said it three times). */}
+      <p className="idea-folio"><span aria-hidden="true">{String(at + 1).padStart(2, '0')} / {String(screens.length).padStart(2, '0')}</span><span className="sr-text">Page {at + 1} of {screens.length}</span></p>
       <p className="eyebrow">{eyebrow}</p>
       {screen === 'story' && <div className="step-teach">
         {extra ? <p className="step-teach-text">{extra.story.text}</p> : steps.map(step => <p key={step.id} className="step-teach-text">{step.teach}</p>)}

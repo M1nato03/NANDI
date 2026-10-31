@@ -35,11 +35,11 @@ test('a correctly used technique unlocks after solve and survives reload and bac
   await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
   await page.getByRole('button', { name: "Back to Kapi's shelf" }).click();
   await page.reload();
-  await expect(page.getByRole('heading', { name: "Kapi's shelf", exact: true })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole('heading', { name: 'Play', exact: true })).toBeVisible({ timeout: 30_000 });
   await page.evaluate(() => (window as Window & { __nandiTest?: { roundTripCurrent: () => Promise<void> } }).__nandiTest!.roundTripCurrent());
   // A real restore runs from the Backup screen and screens mount fresh afterwards; reload to match.
   await page.reload();
-  await expect(page.getByRole('heading', { name: "Kapi's shelf", exact: true })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole('heading', { name: 'Play', exact: true })).toBeVisible({ timeout: 30_000 });
   await openMoreBoards(page);
   await page.getByText('Technique cards', { exact: true }).click();
   const card = page.locator('.mind-technique-list article').filter({ has: page.getByRole('heading', { name: deduction.technique, exact: true }) });

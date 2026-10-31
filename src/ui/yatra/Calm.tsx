@@ -219,7 +219,7 @@ export function Calm() {
   const pose = run ? (run.way === 'paced' ? 'idle' : 'rest') : done !== null ? 'rest' : 'idle';
 
   return <section className="screen calm-screen">
-    <header className="notebook-title"><p className="eyebrow">Kachhua by the fire</p><h1>Breathe with Kachhua</h1></header>
+    <header className="notebook-title"><p className="eyebrow">Kachhua by the fire</p><h1>Calm</h1></header>
     {yatra?.night && <TrekScene trek={yatra.trek} night brighten={stars} breath={run && breathing && !square ? { phase, in: run.breath.in, out: run.breath.out } : undefined} onRename={() => undefined} />}
     <div className={`calm-stage${run ? '' : ' calm-stage-setup'}${square ? ' calm-stage-square' : ''}`} data-way={run?.way} data-phase={breathing && !square ? phase : undefined} data-bells={run ? intervalBells(elapsed, run.interval, run.length) : undefined} style={style}>
       {/* At night Kachhua sits at camp in the scene above, so the stage shows the guide only (one Kachhua a screen). */}

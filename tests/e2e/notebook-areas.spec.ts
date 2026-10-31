@@ -9,10 +9,10 @@ import { textAt200 } from './helpers/text';
 const NOON = new Date('2026-11-04T10:00:00');
 const AREAS = [
   { friend: 'Plan, Mor at the map', hash: 'plan', place: 'Mor at the map', heading: 'Plan' },
-  { friend: 'Read, Chiku on the reading rock', hash: 'read', place: 'Chiku on the reading rock', heading: 'Your books' },
+  { friend: 'Read, Chiku on the reading rock', hash: 'read', place: 'Chiku on the reading rock', heading: 'Read' },
   { friend: 'Train, Nandi by the pack', hash: 'yatra/train', place: 'Nandi by the pack', heading: 'Train' },
-  { friend: 'Play, Kapi in the branches', hash: 'yatra/mind', place: 'Kapi in the branches', heading: "Kapi's shelf" },
-  { friend: 'Calm, Kachhua by the fire', hash: 'yatra/calm', place: 'Kachhua by the fire', heading: 'Breathe with Kachhua' },
+  { friend: 'Play, Kapi in the branches', hash: 'yatra/mind', place: 'Kapi in the branches', heading: 'Play' },
+  { friend: 'Calm, Kachhua by the fire', hash: 'yatra/calm', place: 'Kachhua by the fire', heading: 'Calm' },
 ] as const;
 const head = (page: Page) => page.locator('.notebook-head, .notebook-title').first();
 
@@ -57,8 +57,10 @@ test('a sitting is pages: a folio on each, the corner and a swipe turn it like C
   await page.getByRole('button', { name: 'Start · Chapter 1' }).click();
   const sitting = page.locator('.idea-sitting');
   const pageSheet = sitting.locator('.idea-page');
-  const screenOf = () => sitting.getByRole('list', { name: /^Screen \d+ of \d+$/ }).getAttribute('aria-label');
-  await expect(pageSheet.locator('.idea-folio')).toHaveText('01');
+  // The page says where it is once: its folio (no second bar of screens).
+  await expect(pageSheet.locator('.idea-folio [aria-hidden]')).toHaveText('01 / 05');
+  await expect(pageSheet.locator('.idea-folio .sr-text')).toHaveText('Page 1 of 5');
+  await expect(sitting.locator('.step-dots')).toHaveCount(0);
   // A guess has no corner until it is answered: the page never turns past an open question.
   await expect(pageSheet.locator('.page-corner')).toHaveCount(0);
   await walkIdea(page, 'richest-man-in-babylon', async screen => {
@@ -68,15 +70,14 @@ test('a sitting is pages: a folio on each, the corner and a swipe turn it like C
       await expect(corner).toHaveAttribute('tabindex', '-1');
       await expect(corner).toHaveAttribute('aria-hidden', 'true');
       await corner.click();
-      await expect(pageSheet.locator('.idea-folio')).toHaveText('03');
-      expect(await screenOf()).toMatch(/^Screen 3 of /);
+      await expect(pageSheet.locator('.idea-folio [aria-hidden]')).toHaveText('03 / 05');
       // A swipe to the left turns the next page.
       const box = (await pageSheet.boundingBox())!;
       await page.mouse.move(box.x + box.width - 30, box.y + 120);
       await page.mouse.down();
       await page.mouse.move(box.x + 40, box.y + 125, { steps: 6 });
       await page.mouse.up();
-      await expect(pageSheet.locator('.idea-folio')).toHaveText('04');
+      await expect(pageSheet.locator('.idea-folio [aria-hidden]')).toHaveText('04 / 05');
     }
   });
   const end = page.locator('.idea-end');

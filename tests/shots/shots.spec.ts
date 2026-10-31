@@ -677,7 +677,7 @@ for (const theme of themes) test.describe(theme, () => {
   test('yatra: calm setup, other lengths, sounds, quiet sit, dim, done', async ({ page }) => {
     await page.clock.install({ time: NOON });
     await page.goto('/#yatra/calm');
-    await expect(page.getByRole('heading', { name: 'Breathe with Kachhua' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Calm', exact: true })).toBeVisible();
     await page.getByRole('button', { name: '20 min', exact: true }).click();
     await expect(page.locator('.calm-start')).toHaveText('Start 20 minutes');
     await shot(page, 'calm-setup-paced', false);

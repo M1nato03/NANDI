@@ -18,7 +18,7 @@ test('Yatra\'s camp: Nandi, Kapi and Kachhua open their corners, with Yatra lit 
   await expect(page).toHaveURL(/#yatra$/);
   // Spec 45b: the corners are the friends at camp.
   await expect(page.locator('.notebook-home h1')).toBeVisible();
-  for (const [name, url, heading] of [['Train, Nandi by the pack', /#yatra\/train$/, null], ['Play, Kapi in the branches', /#yatra\/mind$/, "Kapi's shelf"], ['Calm, Kachhua by the fire', /#yatra\/calm$/, 'Breathe with Kachhua']] as const) {
+  for (const [name, url, heading] of [['Train, Nandi by the pack', /#yatra\/train$/, null], ['Play, Kapi in the branches', /#yatra\/mind$/, 'Play'], ['Calm, Kachhua by the fire', /#yatra\/calm$/, 'Calm']] as const) {
     await page.goto('/#yatra');
     await page.getByRole('button', { name }).click();
     await expect(page).toHaveURL(url);
@@ -39,7 +39,7 @@ test('every old Train, Mind and Games route lands in its Yatra corner; You and R
   await expect(page.getByRole('heading', { name: 'You', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: /^Train/ })).toHaveCount(0);
   await page.goto('/#read');
-  await expect(page.getByRole('heading', { name: 'Your books', level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Read', level: 1 })).toBeVisible();
   await expect(page.getByText('Games', { exact: true })).toHaveCount(0);
 });
 

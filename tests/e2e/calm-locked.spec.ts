@@ -26,7 +26,7 @@ async function openCalm(page: Page) {
   await page.goto('/#plan');
   await page.evaluate(() => sessionStorage.setItem('nandi.e2eCalm', JSON.stringify({ on: true })));
   await page.goto('/#yatra/calm');
-  await expect(page.getByRole('heading', { name: 'Breathe with Kachhua' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Calm', exact: true })).toBeVisible();
 }
 
 test.beforeEach(async ({ page }) => { await page.emulateMedia({ reducedMotion: 'reduce' }); });

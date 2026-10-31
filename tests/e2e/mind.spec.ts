@@ -32,18 +32,18 @@ test('daily case grid contrast and layout', async ({ page }, testInfo) => {
 test('Practice hub shows daily status, destinations and fits a phone', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
   await page.goto('/#mind');
-  await expect(page.getByRole('heading', { name: "Kapi's shelf", exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Play', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: /^Open the case$/ })).toBeVisible();
   await expect(todaysBoard(page)).toContainText("Today's board");
   await openMoreBoards(page);
   await expect(page.getByRole('heading', { name: 'Practice boards' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Your books', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Read', exact: true })).toHaveCount(0);
   await expect(page.getByText('4 left:', { exact: false })).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: 'screenshots/mind-hub-390x844.png', fullPage: true });
   await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Read' }).click();
-  await expect(page.getByRole('heading', { name: 'Your books', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
 });
 
 for (const scheme of ['light', 'dark'] as const) {

@@ -15,7 +15,7 @@ const calmRows = (page: Page) => page.evaluate(async () => {
 async function openCalm(page: Page) {
   await page.clock.install({ time: NOON });
   await page.goto('/#yatra/calm');
-  await expect(page.getByRole('heading', { name: 'Breathe with Kachhua' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Calm', exact: true })).toBeVisible();
 }
 /** Picks a length from the chips, or from the Other sheet. */
 async function pick(page: Page, length: number | 'open') {

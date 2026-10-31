@@ -29,7 +29,7 @@ async function heal(page: Page) {
 test('Calm: a sit that could not be saved says so, and saving again keeps it', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await page.goto('/#yatra/calm');
-  await expect(page.getByRole('heading', { name: 'Breathe with Kachhua' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Calm', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Quiet', exact: true }).click();
   await page.getByRole('button', { name: '3 min', exact: true }).click();
   await page.locator('.calm-start').click();
@@ -98,7 +98,7 @@ test('Calm opens fully from Yatra (heading, lengths, Start); the Sound row can s
   await page.clock.install({ time: NOON });
   await page.goto('/#yatra');
   await page.getByRole('button', { name: 'Calm, Kachhua by the fire' }).click();
-  await expect(page.getByRole('heading', { name: 'Breathe with Kachhua', level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Calm', level: 1, exact: true })).toBeVisible();
   await expect(page.getByRole('group', { name: 'How long' })).toBeVisible();
   await expect(page.locator('.calm-start')).toBeVisible();
   // At the bottom of the page the Sound row sits fully above the sticky Start bar.

@@ -73,7 +73,7 @@ test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo
   await learnCard.getByRole('button', { name: 'Continue' }).click();
   // Spec 33: the drop hands back to Read; an idea's map and Practice live on its book page.
   await expect(page).toHaveURL(/#read$/);
-  await expect(page.getByRole('heading', { name: 'Your books', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Read: done' })).toBeVisible();
   const node = await openIdeas(page, 'money-markets', 'Inflation');
   await expect(page.locator('.read-chapter').first().locator('.learn-idea-row')).toHaveCount(3);

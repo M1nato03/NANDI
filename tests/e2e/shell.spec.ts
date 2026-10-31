@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
 
-// Spec 33: three tabs; Read's heading is "Your books".
+// Spec 33: three tabs; spec 45c: Read's heading is its area word.
 const names = ['Plan', 'Read', 'Yatra', 'You'];
 // Spec 37: Yatra's heading is the greeting.
-const heading: Record<string, string | RegExp> = { Plan: 'Plan', Read: 'Your books', Yatra: /^(On the way to .+|Camp at .+|At .+|By a trailside fire|A day on the trail|Trail complete|.+ camp|Field notes)$/, You: 'You' };
+const heading: Record<string, string | RegExp> = { Plan: 'Plan', Read: 'Read', Yatra: /^(On the way to .+|Camp at .+|At .+|By a trailside fire|A day on the trail|Trail complete|.+ camp|Field notes)$/, You: 'You' };
 
 test('day one shows a calm You before Season 1', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
@@ -13,7 +13,7 @@ test('day one shows a calm You before Season 1', async ({ page }) => {
   await expect(page.getByRole('region', { name: 'Your season' })).not.toContainText('Season 1 starts');
   await expect(page.getByRole('region', { name: 'Your season' })).not.toContainText('Shards');
   await page.goto('/#mind');
-  await expect(page.getByRole('main')).toContainText("Kapi's shelf");
+  await expect(page.getByRole('main')).toContainText('Play');
 });
 
 test('offline ready notice clears visible buttons and dismisses', async ({ page }) => {

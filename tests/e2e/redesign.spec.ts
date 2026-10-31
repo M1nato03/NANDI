@@ -28,7 +28,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('button', { name: 'Plan: done' })).toBeVisible();
     await page.getByRole('button', { name: 'Read: not done' }).click();
     await expect(page).toHaveURL(/#read$/);
-    await expect(page.getByRole('heading', { name: 'Your books', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
     await expect(page.getByRole('region', { name: 'Continue' })).toBeVisible();
     await expect(page.getByRole('region', { name: 'Courses' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Review cards' })).toHaveCount(0);
@@ -36,7 +36,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
     await page.getByRole('button', { name: /^Play, / }).click();
     await expect(page).toHaveURL(/#yatra\/mind$/);
-    await expect(page.getByRole('heading', { name: "Kapi's shelf", exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Play', exact: true })).toBeVisible();
     await expect(todaysBoard(page)).toBeVisible();
     await expect(page.getByRole('button', { name: /^(?:Open|Continue) the case$/ })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();

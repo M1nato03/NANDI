@@ -192,7 +192,7 @@ export function EconomyFeedback() {
   }, [pendingDone]);
   if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} suggestion={boundedSuggestion(readInterests(source?.settings ?? []), dayKey(Date.now()), false)} />; // eslint-disable-line react-hooks/purity
   if (!notice) return null;
-  if (notice.macro && notice.level) return <LevelPage dialog={reveal} level={notice.level} totalXp={notice.totalXp ?? 0} line={notice.detail} reduced={reduced()} close={() => {
+  if (notice.macro && notice.level) return <LevelPage dialog={reveal} level={notice.level} totalXp={notice.totalXp ?? 0} reduced={reduced()} close={() => {
     setNotice(null);
     // Focus goes back to what raised the page; if that is gone (a finished row folds away), to the page's heading.
     requestAnimationFrame(() => { if (document.activeElement && document.activeElement !== document.body) return; const heading = document.getElementById('main')?.querySelector<HTMLElement>('h1'); if (!heading) return; if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); });
@@ -207,12 +207,12 @@ const ARRIVING = ['Mor', 'Chiku', 'Nandi', 'Kapi', 'Kachhua'] as const;
  * and the five friends arriving in a short hop wave (still with reduced motion). It pays nothing; Continue closes it and
  * leaves the page that raised it where it was, and focus goes back where it came from.
  */
-function LevelPage({ dialog, level, totalXp, line, reduced, close }: { dialog: React.Ref<HTMLDivElement>; level: number; totalXp: number; line?: string; reduced: boolean; close: () => void }) {
+function LevelPage({ dialog, level, totalXp, reduced, close }: { dialog: React.Ref<HTMLDivElement>; level: number; totalXp: number; reduced: boolean; close: () => void }) {
   return <div ref={dialog} tabIndex={-1} className="economy-reveal level-page" role="dialog" aria-modal="true" aria-label={`Level ${level}`}>
     <section className={`level-sheet paper${reduced ? ' is-still' : ''}`}>
       <div className="level-top"><p className="eyebrow">A new level</p><span className="level-mark" aria-hidden="true">Level<b>{level}</b></span></div>
       <h2>Level {level}</h2>
-      <p>{totalXp.toLocaleString()} XP in all.{line ? ` ${line}` : ''}</p>
+      <p>{totalXp.toLocaleString()} XP in all.</p>
       <div className="level-scene" aria-hidden="true">
         <svg className="level-lantern" viewBox="0 0 40 120" width="40" height="120"><path d="M20 120V18M20 18h12" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" /><path d="M32 18v8" stroke="currentColor" strokeWidth="2" /><rect x="25" y="26" width="14" height="20" rx="3" fill="var(--level-glow)" stroke="currentColor" strokeWidth="2" /></svg>
         <div className="level-friends">{ARRIVING.map((name, index) => <span key={name} style={{ animationDelay: `${index * 90}ms` }}><Cast name={name} pose={name === 'Kachhua' ? 'idle' : 'cheer'} size={46} /></span>)}</div>

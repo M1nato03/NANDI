@@ -189,7 +189,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
   const upNext = current && nextChapter(current, chaptersDone);
   const upNextState = current && upNext ? stateOf(current.body.topic.id, upNext) : undefined;
   const shelves = libraryShelves(library, chaptersDone);
-  return <section className="screen learn-screen read-screen"><FriendStage area="learn"><p className="eyebrow">Chiku on the reading rock</p><h1>Your books</h1></FriendStage>
+  return <section className="screen learn-screen read-screen"><FriendStage area="learn"><p className="eyebrow">Chiku on the reading rock</p><h1>Read</h1></FriendStage>
     <section className="card read-continue" aria-label="Continue">
       {current && upNext ? <>
         <Cover pack={current} size="thumb" />
