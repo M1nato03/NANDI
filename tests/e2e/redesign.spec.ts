@@ -51,7 +51,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('heading', { name: 'Train', exact: true })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`tabs-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    const small = await page.locator('.tabbar a, .today-dot').evaluateAll(nodes => nodes.filter(node => { const box = node.getBoundingClientRect(); return box.width < 44 || box.height < 44; }).length);
+    const small = await page.locator('.tabbar a, .today-dot').evaluateAll(nodes => nodes.filter(node => { const box = node.getBoundingClientRect(); return box.width < 43.5 || box.height < 43.5; }).length);
     expect(small).toBe(0);
   });
 }

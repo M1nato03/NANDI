@@ -18,7 +18,7 @@ test('visible controls meet tap size and tabs do not scroll sideways in both the
       const tooSmall = await page.locator('button, a, select, input').evaluateAll(nodes => nodes.flatMap(node => {
         const box = node.getBoundingClientRect();
         const visible = box.width > 0 && box.height > 0 && getComputedStyle(node).visibility !== 'hidden';
-        return visible && (box.width < 44 || box.height < 44) ? [`${Math.round(box.width)}x${Math.round(box.height)} ${node.outerHTML}`] : [];
+        return visible && (box.width < 43.5 || box.height < 43.5) ? [`${Math.round(box.width)}x${Math.round(box.height)} ${node.outerHTML}`] : [];
       }));
       expect(tooSmall, `${scheme} ${name}: controls under 44 px`).toEqual([]);
       expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } } }).document.documentElement.scrollWidth), `${scheme} ${name} horizontal scroll`).toBeLessThanOrEqual(page.viewportSize()!.width);

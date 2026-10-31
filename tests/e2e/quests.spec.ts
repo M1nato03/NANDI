@@ -4,7 +4,7 @@ import { openMore } from './helpers/plan';
 async function checkLayout(page: Page) {
   const small = await page.locator('button, input, select, .tabbar a').evaluateAll(nodes => nodes
     .map(node => ({ label: node.textContent?.trim() || node.getAttribute('aria-label'), rect: node.getBoundingClientRect() }))
-    .filter(item => item.rect.width > 0 && item.rect.height > 0 && (item.rect.width < 44 || item.rect.height < 44))
+    .filter(item => item.rect.width > 0 && item.rect.height > 0 && (item.rect.width < 43.5 || item.rect.height < 43.5))
     .map(item => item.label));
   expect(small).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

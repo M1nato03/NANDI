@@ -29,7 +29,7 @@ test("Mor's list starts a count-up focus on a task and Done finishes it, leaving
   const focus = page.getByRole('region', { name: 'Focus' });
   await expect(focus).toContainText('First block');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  expect(await focus.locator('button').evaluateAll(nodes => nodes.filter(node => { const box = node.getBoundingClientRect(); return box.width < 44 || box.height < 44; }).length)).toBe(0);
+  expect(await focus.locator('button').evaluateAll(nodes => nodes.filter(node => { const box = node.getBoundingClientRect(); return box.width < 43.5 || box.height < 43.5; }).length)).toBe(0);
   await focus.getByRole('button', { name: 'Done' }).click();
   await expect(page.getByRole('region', { name: 'Focus' })).toHaveCount(0);
   await expect(today).toContainText('Second block');

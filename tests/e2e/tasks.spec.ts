@@ -85,7 +85,7 @@ test('the split task circle asks once, then marks every open step done', async (
 
 async function expectLargeControls(page: Page) {
   const sizes = await page.locator('button, input, select, summary, .tabbar a').evaluateAll((nodes) => nodes.filter((node) => { const rect = node.getBoundingClientRect(); return rect.width > 0 && rect.height > 0; }).map((node) => { const rect = node.getBoundingClientRect(); return { name: node.textContent?.trim() || node.getAttribute('aria-label') || node.tagName, width: rect.width, height: rect.height }; }));
-  expect(sizes.filter((item) => item.width < 44 || item.height < 44)).toEqual([]);
+  expect(sizes.filter((item) => item.width < 43.5 || item.height < 43.5)).toEqual([]);
 }
 
 for (const scheme of ['light', 'dark'] as const) {

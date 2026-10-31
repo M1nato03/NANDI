@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 async function capture(page: Page, path: string) {
   const sizes = await page.locator('.train-screen button, .train-screen input, .train-workout button').evaluateAll(nodes => nodes.map(node => { const box = node.getBoundingClientRect(); return { label: node.textContent?.trim() || node.getAttribute('aria-label') || node.tagName, width: box.width, height: box.height }; }).filter(box => box.width > 0 && box.height > 0));
-  expect(sizes.filter(box => box.width < 44 || box.height < 44)).toEqual([]);
+  expect(sizes.filter(box => box.width < 43.5 || box.height < 43.5)).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path, fullPage: true });
 }

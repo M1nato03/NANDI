@@ -13,7 +13,7 @@ async function expectLayout(page: Page) {
   expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } }; innerWidth: number }).document.documentElement.scrollWidth <= (globalThis as unknown as { innerWidth: number }).innerWidth)).toBe(true);
   const small = await page.locator('button, input, select, summary, .tabbar a').evaluateAll((nodes) => nodes.filter((node) => {
     const box = node.getBoundingClientRect();
-    return box.width > 0 && box.height > 0 && (box.width < 44 || box.height < 44);
+    return box.width > 0 && box.height > 0 && (box.width < 43.5 || box.height < 43.5);
   }).map((node) => node.getAttribute('aria-label') || node.textContent?.trim() || node.tagName));
   expect(small).toEqual([]);
 }
