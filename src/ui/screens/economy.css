@@ -78,17 +78,26 @@
 .economy-rival .pace-tag { display: inline-block; padding: 0 .4em; border: 1px solid currentColor; border-radius: 999px; font-size: .8125em; font-weight: 700; line-height: 1.5; white-space: nowrap; }
 .economy-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .ladder-screen .ladder-pace { color: var(--ink-2); font-size: .9375rem; }
-/* Spec 47b: this week as seven days. A filled dot is a useful day; an empty one is only empty, never a warning. */
-.useful-week h2 { margin: 2px 0 10px; }
+/* Spec 47b: this week as seven days. A filled dot is a useful day; an empty one is only empty, never a warning; a day
+   still to come is lighter and dashed. Everything here is in rem, so 200% text grows the whole card evenly. */
+.your-season .useful-week h2 { margin: 2px 0 10px; font-size: 1.625rem; line-height: 1.15; }
+.useful-week .eyebrow { font-size: .75rem; }
+.useful-week .small, .useful-week .away-form label { font-size: .8125rem; }
+.useful-week p, .useful-week button { font-size: 1rem; }
 .useful-dots { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin: 0 0 12px; padding: 0; list-style: none; }
 .useful-dots li { display: grid; justify-items: center; gap: 4px; color: var(--ink-2); font-size: .8125rem; }
-.useful-dot { width: 18px; height: 18px; border: 2px solid var(--ink-3); border-radius: 50%; }
+.useful-dot { width: 1.125rem; height: 1.125rem; border: 2px solid var(--ink-3); border-radius: 50%; }
 .useful-dots li.useful .useful-dot { border-color: var(--teal); background: var(--teal); }
+.useful-dots li.future { color: var(--ink-3); }
+.useful-dots li.future .useful-dot { border-style: dashed; opacity: .55; }
 .useful-target p { margin: 0 0 4px; }
-.useful-target .text-button { min-height: 44px; }
+.useful-target .text-button { min-height: 44px; font-size: 1rem; }
 .useful-target-form { margin: 8px 0; padding: 12px; border: 1px solid var(--surface-3); border-radius: 8px; }
-.useful-target-options { display: flex; flex-wrap: wrap; gap: 8px 16px; }
-.useful-target-options label { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 700; }
+.useful-target-form legend { padding: 0 4px; font-weight: 700; }
+.useful-target-options { display: flex; flex-wrap: wrap; gap: 0 20px; }
+/* A radio and its words are one 44 px row, left-aligned, in the theme's accent (not the browser's blue). */
+.useful-target-options label, .ladder-choice label { display: flex; align-items: center; justify-content: flex-start; gap: 10px; min-height: 44px; margin: 0; font-size: 1rem; font-weight: 700; cursor: pointer; }
+.useful-target-form input[type='radio'], .ladder-choice input[type='radio'] { flex: none; width: 1.375rem; height: 1.375rem; min-width: 0; min-height: 0; margin: 0; accent-color: var(--accent); }
 .economy-season-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
 /* L3: the ladder's rules, in a sheet that scrolls when the text is large. */
 .ladder-how { width: min(100%, 560px); max-height: 90vh; overflow-y: auto; padding: 0 20px 20px; }
@@ -98,7 +107,6 @@
 .ladder-tiers caption { text-align: left; font-weight: 700; margin: 0 0 6px; }
 .ladder-tiers th, .ladder-tiers td { padding: 6px 4px; border-bottom: 1px solid var(--surface-3); text-align: left; }
 .ladder-how-link { min-height: 44px; }
-/* L2: the person's choice of what You shows. */
-.ladder-choice { margin-top: 16px; border: 1px solid var(--surface-3); }
-.ladder-choice legend { font-weight: 700; padding: 0 4px; }
-.ladder-choice label { display: flex; align-items: center; gap: 8px; min-height: 44px; }
+/* L2: the person's choice of what You shows, under the ladder's header and before its rows. */
+.ladder-choice { margin: 4px 0 16px; padding: 8px 12px; border: 1px solid var(--surface-3); border-radius: 8px; }
+.ladder-choice legend { padding: 0 4px; font-weight: 700; }

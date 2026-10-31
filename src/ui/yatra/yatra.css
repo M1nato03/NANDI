@@ -90,6 +90,10 @@
 .yatra-home .trek-journey { margin: 18px 0 8px; color: var(--ink-2); font-size: .875rem; }
 .yatra-home .trek-journey-top strong { font-weight: 600; color: var(--ink); }
 .useful-days-note { margin: 0 0 16px; color: var(--ink-2); }
+/* Spec 47b: the record is in rem, so 200% text grows it evenly. */
+.screen.useful-days h1 { font-size: 1.875rem; line-height: 1.1; }
+.useful-days .eyebrow { font-size: .75rem; }
+.useful-days .small { font-size: .8125rem; }
 /* Spec 47b: the record's three facts, one per row, each label and its number on one line where they fit. */
 .useful-days-facts { display: grid; gap: 6px; margin: 0 0 8px; }
 .useful-days-facts > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 0 0 6px; border-bottom: 1px solid var(--surface-3); }

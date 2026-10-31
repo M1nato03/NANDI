@@ -99,7 +99,7 @@ function ThisWeek({ settings, today, dates, bank }: { settings: SettingRow[]; to
   const count = dots.filter(dot => dot.useful).length;
   return <section className="card useful-week" aria-label="This week">
     <span className="eyebrow">This week</span><h2>{count} of your {target}</h2>
-    <ol className="useful-dots">{dots.map(dot => <li key={dot.dayKey} className={dot.useful ? 'useful' : ''} aria-label={`${weekday(dot.dayKey, 'long')}, ${dot.useful ? 'useful day' : dot.dayKey > today ? 'still to come' : 'no useful action recorded'}`}><span className="useful-dot" aria-hidden="true" /><span aria-hidden="true">{weekday(dot.dayKey, 'narrow')}</span></li>)}</ol>
+    <ol className="useful-dots">{dots.map(dot => <li key={dot.dayKey} className={dot.useful ? 'useful' : dot.dayKey > today ? 'future' : ''} aria-label={`${weekday(dot.dayKey, 'long')}, ${dot.useful ? 'useful day' : dot.dayKey > today ? 'still to come' : 'no useful action recorded'}`}><span className="useful-dot" aria-hidden="true" /><span aria-hidden="true">{weekday(dot.dayKey, 'narrow')}</span></li>)}</ol>
     <TargetPicker settings={settings} today={today} />
     <p className="small">{bank} {bank === 1 ? 'rest day' : 'rest days'} banked · {bank >= RULES.streak.restBankMax ? 'your bank is full' : `up to ${Math.min(RULES.streak.restBankMonthly, RULES.streak.restBankMax - bank)} more arrive on the 1st`}</p>
     <AwayPlanner settings={settings} today={today} bank={bank} />
@@ -179,15 +179,17 @@ export function SeasonLadder() {
   const target = view.season.target;
   const climb = picked ?? rankShown(settings);
   const choose = (value: boolean) => { setMessage(''); setPicked(value); void saveSetting(RANK_SHOWN_KEY, value).catch(() => { setPicked(undefined); setMessage('Could not save this choice. Try again.'); }); };
-  return <section className="screen ladder-screen"><p className="eyebrow">Your season</p><h1>500 seats</h1><p className="ladder-pace">Season {view.season.index + 1} · you vs 499 pace-setters. They're fixed targets, not people. Nobody else can see your rank.</p><p>#{view.season.rank} of 500 · {view.season.tier} · {view.season.sp} SP</p>
+  return <section className="screen ladder-screen"><p className="eyebrow">Your season</p><h1>500 seats</h1><p className="ladder-pace">Season {view.season.index + 1} · you vs 499 pace-setters. They're fixed targets, not people. Nobody else can see your rank.</p>
+    <p>#{view.season.rank} of 500 · {view.season.tier} · {view.season.sp} SP</p>
     <button type="button" className="text-button ladder-how-link" onClick={() => setHow(true)}>How the ladder works</button>
-    <div className="ladder-list">{boardSeats(view.season.rank).map((seat, index, seats) => <Fragment key={seat}>{index > 0 && seat - seats[index - 1]! > 1 && <div className="ladder-gap" aria-hidden="true">…</div>}<div className={`ladder-seat${seat === view.season.rank ? ' you' : ''}`} key={seat}><strong>#{seat}</strong><span>{seat === view.season.rank ? 'You' : rivalName(view.season.index, seat)}</span><small>{seat === view.season.rank ? `${view.season.sp} SP` : `${seatThreshold(seat, target)} SP`}</small></div></Fragment>)}</div>
-    {/* Spec 47 L2: the person chooses whether You shows the climb. This page always shows it: opening it is a choice. */}
-    <fieldset className="card ladder-choice"><legend>On your You page</legend>
+    {/* Spec 47 L2: the person chooses whether You shows the climb. This page always shows it: opening it is a choice. It
+        sits under the header, before the rows, so it is found (jenil-87). */}
+    <fieldset className="ladder-choice"><legend>On your You page</legend>
       <label><input type="radio" name="rank-shown" checked={climb} onChange={() => choose(true)} />Show my climb</label>
       <label><input type="radio" name="rank-shown" checked={!climb} onChange={() => choose(false)} />Keep rank tucked away</label>
       {message && <p role="status">{message}</p>}
     </fieldset>
+    <div className="ladder-list">{boardSeats(view.season.rank).map((seat, index, seats) => <Fragment key={seat}>{index > 0 && seat - seats[index - 1]! > 1 && <div className="ladder-gap" aria-hidden="true">…</div>}<div className={`ladder-seat${seat === view.season.rank ? ' you' : ''}`} key={seat}><strong>#{seat}</strong><span>{seat === view.season.rank ? 'You' : rivalName(view.season.index, seat)}</span><small>{seat === view.season.rank ? `${view.season.sp} SP` : `${seatThreshold(seat, target)} SP`}</small></div></Fragment>)}</div>
     {how && <LadderHow target={target} onClose={() => setHow(false)} />}
   </section>;
 }
