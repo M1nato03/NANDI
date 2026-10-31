@@ -106,6 +106,7 @@ for (const theme of themes) test.describe(theme, () => {
       { id: 'done:d2', mode: 'tasks', kind: 'done', refId: 'd2', dayKey: '2026-10-27', inputs: { wasPlanned: true }, ...meta },
     ]);
     await put('tasks', [{ id: 'd1', title: 'Pay the hostel fee', status: 'done', dayKey: '2026-10-26', ...meta }, { id: 'd2', title: 'Email the professor', status: 'done', dayKey: '2026-10-27', ...meta }]);
+    await page.reload(); // raw IndexedDB writes are not seen by Dexie's live queries
     await put('focus', [{ id: 'f1', taskId: 'old', startedAt: at('27', 10), endedAt: at('27', 10) + 95 * 60_000, ...meta }]);
     await page.goto('/#plan');
     await page.getByLabel('Add a task').fill('Call the bank');
