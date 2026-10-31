@@ -87,7 +87,7 @@ test('spec 41: a chapter is read one idea a sitting (the first is the day\'s dro
   // The next day: the Book check sits on Yatra.
   await page.clock.setFixedTime(new Date(NOON.getTime() + 86_400_000));
   await page.reload();
-  await page.getByRole('button', { name: /Book check · three questions/ }).click();
+  await page.getByRole('button', { name: /^Book check/ }).click();
   for (let question = 0; question < 3; question++) await answerRight(page, 'how-things-work');
   await expect(page.getByRole('heading', { name: 'Did you try it?' })).toBeVisible();
   await page.getByRole('button', { name: 'Yes', exact: true }).click();

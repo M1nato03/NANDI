@@ -34,7 +34,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('button', { name: 'Review cards' })).toHaveCount(0);
     // Spec 34: Kapi's shelf is Yatra's Mind corner.
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
-    await page.getByRole('button', { name: /^Mind: / }).click();
+    await page.getByRole('button', { name: /^Play, / }).click();
     await expect(page).toHaveURL(/#yatra\/mind$/);
     await expect(page.getByRole('heading', { name: "Kapi's shelf", exact: true })).toBeVisible();
     await expect(todaysBoard(page)).toBeVisible();
@@ -47,7 +47,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('main').getByRole('button', { name: 'Open Learn' })).toHaveCount(0);
     // Spec 34: Train is Yatra's Train corner now.
     await tabs.filter({ hasText: 'Yatra' }).click();
-    await page.getByRole('button', { name: /^Train: / }).click();
+    await page.getByRole('button', { name: /^Train, / }).click();
     await expect(page.getByRole('heading', { name: 'Train', exact: true })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`tabs-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

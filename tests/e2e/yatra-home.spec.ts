@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-// Spec 37: Yatra is home. Spec 45b: it is a notebook page: the week's recorded time, the camp's heading, the five
+// Spec 37: Yatra is home. Spec 45b: it is a notebook page: the useful days, the camp's heading, the five
 // friends at camp (each a way to its area), then one next move (a running focus takes it).
 const at = (hour: number) => new Date(`2026-10-28T${String(hour).padStart(2, '0')}:00:00`);
 const tabs = (page: Page) => page.getByRole('navigation', { name: 'Main tabs' });
@@ -14,7 +14,7 @@ test('a cold open lands on Yatra, with Yatra first and lit in the tab bar', asyn
   await expect(tabs(page).getByRole('link')).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
   await expect(tabs(page).getByRole('link', { name: 'Yatra' })).toHaveAttribute('aria-current', 'page');
   await expect(heading(page)).toHaveText('Camp at Jobra');
-  await expect(page.locator('.home-week')).toContainText('This week, recorded');
+  await expect(page.locator('.home-week')).toHaveText(/^A fresh week/);
   // All five friends sit at the camp, each a button to its area.
   await expect(page.locator('.trek-group [data-cast]')).toHaveCount(5);
   for (const name of ['Mor', 'Chiku', 'Kachhua', 'Kapi', 'Nandi']) await expect(page.locator(`.trek-group [data-cast="${name}"]`)).toHaveCount(1);
