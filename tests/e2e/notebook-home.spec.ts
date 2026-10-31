@@ -100,10 +100,12 @@ test('with motion, a tap plays the friend\'s reaction where it stands, then open
   const kapi = page.getByRole('button', { name: 'Play, Kapi in the branches' });
   await expect(page.locator('.home-week-time')).toBeVisible();
   await page.waitForTimeout(1300); // the walk-in step ends
-  const box = await kapi.boundingBox();
+  // Where Kapi stands within the scene (the page itself can shift when the "Ready to work offline" note comes and goes).
+  const within = async () => { const [friend, scene] = [(await kapi.boundingBox())!, (await page.locator('.trek-scene').boundingBox())!]; return { x: friend.x - scene.x, y: friend.y - scene.y, width: friend.width, height: friend.height }; };
+  const box = await within();
   await kapi.click();
   await expect(kapi.locator('svg')).toHaveAttribute('data-moment', 'tap');
-  expect(await kapi.boundingBox()).toEqual(box);
+  expect(await within()).toEqual(box);
   await expect(page).toHaveURL(/#yatra$/);
   await page.clock.runFor(300);
   await expect(page).toHaveURL(/#yatra\/mind$/);
@@ -147,6 +149,10 @@ test('at 360x800 nothing overlaps, and at 200% text the page scrolls to the next
   await page.setViewportSize({ width: 360, height: 800 });
   await page.clock.install({ time: WED });
   await home(page);
+  // Measure the settled page: the useful-days line replaces its placeholder, and the camp and the move load after it.
+  await expect(page.locator('button.home-week')).toHaveText(/^A fresh week/);
+  await expect(page.locator('.notebook-home h1')).toHaveText('Camp at Jobra');
+  await expect(page.locator('.next-move')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const box = async (selector: string) => (await page.locator(selector).boundingBox())!;
   const [week, title, scene, next] = [await box('.home-week'), await box('.home-title'), await box('.trek-scene'), await box('.next-move')];
