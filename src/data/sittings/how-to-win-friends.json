@@ -1,0 +1,392 @@
+{
+  "htwf-criticism": {
+    "story": {
+      "text": "A teammate makes an error. A harsh label may make them defend themself. You ask what happened, then point to the work that needs checking. You leave the person apart from the mistake and give feedback they can use.",
+      "diagram": "Person and error in separate circles; an arrow points to the work to check."
+    },
+    "example": {
+      "situation": "A flatmate left the kitchen tap running.",
+      "text": "Ask what happened, then say the tap needs turning off after use. Keep the conversation on the tap, not the flatmate's character."
+    },
+    "plan": {
+      "ifThen": "If I notice a mistake today, I'll ask what happened before I describe what needs fixing."
+    }
+  },
+  "htwf-appreciation": {
+    "story": {
+      "text": "A helper finishes a small task. You notice the particular part they handled and thank them for it. The thanks has a true reason and shows their help mattered. You give it for its own sake, without treating praise as a trick.",
+      "diagram": "A specific act leads to a clear thank you."
+    },
+    "example": {
+      "situation": "Your college classmate shares clear notes after you miss a lecture.",
+      "text": "Thank them for including the diagrams that helped you follow the topic. Name what they actually did."
+    },
+    "plan": {
+      "ifThen": "If someone helps me today, I'll thank them for one specific thing they did."
+    }
+  },
+  "htwf-shared-interest": {
+    "story": {
+      "text": "You have a plan and want another person to join. First you ask what they want. If your plan meets a need they name, you explain how. You do not invent a benefit, and you leave them free to decline.",
+      "diagram": "Their stated need and your plan overlap only where the benefit is real."
+    },
+    "example": {
+      "situation": "You ask a flatmate to share the weekly cleaning rota.",
+      "text": "Ask what would make chores easier for them. If a rota fits that need, explain it. Let them suggest another arrangement."
+    },
+    "plan": {
+      "ifThen": "If I invite someone into a plan today, I'll ask what they need and leave room for no."
+    }
+  },
+  "htwf-genuine-interest": {
+    "story": {
+      "text": "A new member arrives. You ask what brought them here and listen to their answer. Your next question follows something they said. The first conversation begins a connection; you keep learning about them in later talks.",
+      "diagram": "Ask, hear an answer, then ask about a detail from it."
+    },
+    "example": {
+      "situation": "A new colleague joins your office lunch table.",
+      "text": "Ask what kind of work brought them to the team. If they mention a project, ask about that project rather than changing the subject to yourself."
+    },
+    "plan": {
+      "ifThen": "If I meet someone new today, I'll ask one follow-up about something they tell me."
+    }
+  },
+  "htwf-smile": {
+    "story": {
+      "text": "You greet someone with a small, natural smile. It may make the short meeting feel warmer. Then you attend to their words and the mood of the moment, because a smile alone cannot tell you what they mean.",
+      "diagram": "A greeting has two cues: face and spoken words."
+    },
+    "example": {
+      "situation": "You meet a neighbour by the lift after work.",
+      "text": "Offer a natural smile and greeting. If they seem tired or in a hurry, listen to their reply and let the exchange stay brief."
+    },
+    "plan": {
+      "ifThen": "If I greet someone today, I'll smile naturally and listen to their reply."
+    }
+  },
+  "htwf-names": {
+    "story": {
+      "text": "Someone tells you their name. You listen carefully and try to say it correctly. If it slips from memory, you ask again. Getting the name right is one part of showing care; what you say next matters too.",
+      "diagram": "Hear the name, check it if needed, continue the conversation."
+    },
+    "example": {
+      "situation": "A new teammate introduces herself during a college group project.",
+      "text": "Listen to her name. If you are unsure of the pronunciation, ask her to say it again, then use it correctly when discussing the task."
+    },
+    "plan": {
+      "ifThen": "If I forget someone's name today, I'll ask again instead of guessing."
+    }
+  },
+  "htwf-listening": {
+    "story": {
+      "text": "Your mate begins telling you what happened. You let them finish, because the rest may contain facts you have not heard. You ask about something in their story before offering advice. Hearing them does not require them to agree with you.",
+      "diagram": "Full story leads to a question, then an optional suggestion."
+    },
+    "example": {
+      "situation": "A flatmate explains why the shared laundry was delayed.",
+      "text": "Let them finish. Ask about the timing they mention before you suggest a new schedule."
+    },
+    "plan": {
+      "ifThen": "If someone tells me a problem today, I'll let them finish and ask before advising."
+    }
+  },
+  "htwf-others-interests": {
+    "story": {
+      "text": "Your mate brings up something they care about. You ask what interests them in it and stay with their topic, even though it is new to you. The conversation has a place to begin; a bond needs more time and care.",
+      "diagram": "Their interest opens a conversation, which continues over time."
+    },
+    "example": {
+      "situation": "A colleague mentions the community play they are rehearsing.",
+      "text": "Ask which part they enjoy working on. Let them describe it, even if theatre is unfamiliar to you."
+    },
+    "plan": {
+      "ifThen": "If someone mentions an interest today, I'll ask one honest question about it."
+    }
+  },
+  "htwf-sincere-importance": {
+    "story": {
+      "text": "Someone helps with a difficult task. You name the skill you saw and say which act helped you. In a harder conversation, you also make room for their view. The person can see that your thanks rests on something real.",
+      "diagram": "Real act, specific thanks, room for their view."
+    },
+    "example": {
+      "situation": "A junior colleague spots a missing date in a shared report.",
+      "text": "Thank them for checking the dates closely. Ask whether they noticed anything else before you send the report."
+    },
+    "plan": {
+      "ifThen": "If someone helps me today, I'll name the act and hear their view."
+    }
+  },
+  "htwf-arguments": {
+    "story": {
+      "text": "A disagreement starts to turn into a fight to win. You pause before replying. When it is safe, you suggest a calm spoken talk. You still check the disputed fact, because keeping peace must not conceal an error.",
+      "diagram": "Pause, talk calmly, check the fact."
+    },
+    "example": {
+      "situation": "Two flatmates disagree over whose turn it is to clean the kitchen.",
+      "text": "Pause the argument. Look at the rota together and talk through any change that was agreed."
+    },
+    "plan": {
+      "ifThen": "If a disagreement heats up today, I'll pause, speak calmly, and check the disputed fact."
+    }
+  },
+  "htwf-respect-opinions": {
+    "story": {
+      "text": "Your cousin recalls one train time; you recall another. You hear their view without calling them wrong. Then you show the ticket and check the printed time together. A clear correction can sit beside respectful words.",
+      "diagram": "Two views lead to one ticket check."
+    },
+    "example": {
+      "situation": "A classmate remembers a different deadline for the group assignment.",
+      "text": "Hear their reason, then open the class notice together. State the listed deadline without labelling their memory foolish."
+    },
+    "plan": {
+      "ifThen": "If someone recalls a fact differently today, I'll hear them and check the source together."
+    }
+  },
+  "htwf-admit-error": {
+    "story": {
+      "text": "You send your mate to the wrong room. As soon as you notice, you say you gave the wrong number and send the correct one. You apologise and fix the note. They decide how to respond; trust may take time.",
+      "diagram": "Name the error, correct the note, allow a response."
+    },
+    "example": {
+      "situation": "You gave your college group the wrong meeting room.",
+      "text": "Message the correct room as soon as you find out. Say that the earlier number was yours and apologise for the detour."
+    },
+    "plan": {
+      "ifThen": "If I find an error I made today, I'll name it promptly and send the correction."
+    }
+  },
+  "htwf-friendly-start": {
+    "story": {
+      "text": "At a stall, you think the change is wrong. You begin calmly and name the bill and the sum you expected. You check the amount with the vendor without labelling them. The warm start helps you address the mistake directly.",
+      "diagram": "Calm opening leads to a shared check of the bill."
+    },
+    "example": {
+      "situation": "A chai stall gives ₹10 change from a ₹50 note for a ₹30 order.",
+      "text": "Calmly say what you paid and what the order cost. Ask to check the change together."
+    },
+    "plan": {
+      "ifThen": "If a bill seems wrong today, I'll state the amounts calmly and ask to check them."
+    }
+  },
+  "htwf-yes-yes": {
+    "story": {
+      "text": "A team is divided over its plan. You begin with the aim they share, then ask how each person sees the choice. A quick polite yes is not enough; you check what each person actually agrees to before moving ahead.",
+      "diagram": "Shared aim branches into views, then a checked choice."
+    },
+    "example": {
+      "situation": "Your college group wants a presentation everyone can finish on time.",
+      "text": "Name that shared aim. Ask which tasks each person can take, and check that their answers mean they can do them."
+    },
+    "plan": {
+      "ifThen": "If a group plans something today, I'll name our shared aim and check what each person chose."
+    }
+  },
+  "htwf-let-them-talk": {
+    "story": {
+      "text": "Your mate has a list of costs you have not seen. You let them explain the whole list and ask about a detail before sharing your view. They may still disagree, but you have heard the facts they wanted to give.",
+      "diagram": "Their full list, your follow-up question, then your view."
+    },
+    "example": {
+      "situation": "A flatmate says the shared grocery bill came to ₹680.",
+      "text": "Let them explain the items before questioning the total. Ask about any item you do not recognise, then share your view."
+    },
+    "plan": {
+      "ifThen": "If someone explains a cost today, I'll hear the full list before giving my view."
+    }
+  },
+  "htwf-own-idea": {
+    "story": {
+      "text": "A group needs a hall. Rather than choose it alone, you ask what members need. Their answers can change the plan. Together you test a suggestion against the cost and booking rules, so the option they choose is real.",
+      "diagram": "Group needs shape options; cost and booking rules narrow the choice."
+    },
+    "example": {
+      "situation": "Your college club is choosing a room for an event with a ₹500 budget.",
+      "text": "Ask members what the room must have. Check their suggestions against the budget and availability before deciding together."
+    },
+    "plan": {
+      "ifThen": "If I plan with a group today, I'll ask what they need before suggesting an option."
+    }
+  },
+  "htwf-their-view": {
+    "story": {
+      "text": "A parcel is late. You ask the seller what held it up and hear a limit you had not seen. Then you explain your own deadline. With both needs in view, you discuss another route and check whether the shop can keep it.",
+      "diagram": "Seller's limit and your deadline lead to a checked alternative."
+    },
+    "example": {
+      "situation": "A local shop has delayed a ₹250 printed poster for your college event.",
+      "text": "Ask what caused the delay. Explain when the event begins, then check whether a revised pickup time is workable for the shop."
+    },
+    "plan": {
+      "ifThen": "If someone delays a task today, I'll ask about their constraint and explain my deadline."
+    }
+  },
+  "htwf-sympathy": {
+    "story": {
+      "text": "Your neighbour worries that noise will wake their baby. You name the worry and ask whether you understood it. Then you ask what would help and promise only a step you can keep. Later, you check whether it helped.",
+      "diagram": "Hear the worry, agree on a feasible step, check back."
+    },
+    "example": {
+      "situation": "A neighbour says your evening calls carry through the wall.",
+      "text": "Check whether the noise interrupts their rest. Ask what would help, agree on a change you can make, and check back later."
+    },
+    "plan": {
+      "ifThen": "If someone raises a concern today, I'll check I understood it and offer a step I can keep."
+    }
+  },
+  "htwf-better-motives": {
+    "story": {
+      "text": "You ask staff about passing on spare bread. You explain who may use it and how long pickup would take. A shared good does not claim anyone's time. Each worker can judge the full request and say no.",
+      "diagram": "Possible benefit plus time cost leads to a free choice."
+    },
+    "example": {
+      "situation": "A college canteen has spare bread after lunch.",
+      "text": "If you suggest passing it to a nearby group, explain who could use it and how long collection takes. Let staff decide whether they can help."
+    },
+    "plan": {
+      "ifThen": "If I ask for help today, I'll explain the benefit and time needed, then accept no."
+    }
+  },
+  "htwf-show-idea": {
+    "story": {
+      "text": "The club compares two halls. You place seats beside cost so members can see what each option offers. You draw both bars on one scale. Then you ask what the chart leaves out, since guests may need more than a low price.",
+      "diagram": "Two halls shown with seats and cost on matching scales, plus a blank for other needs."
+    },
+    "example": {
+      "situation": "Your club compares rooms costing ₹400 and ₹550 for an event.",
+      "text": "Put each room's seats beside its price. Use the same scale for both, then ask whether location or access also matters."
+    },
+    "plan": {
+      "ifThen": "If I compare options today, I'll show them on one scale and ask what the comparison leaves out."
+    }
+  },
+  "htwf-challenge": {
+    "story": {
+      "text": "A team practises catching. You suggest a small goal and ask whether players want to try it. Someone may need a drill or rest first. If a catch is missed, you ask which part was hard and use that answer for the next drill.",
+      "diagram": "Choose a small goal, try by choice, learn from a miss."
+    },
+    "example": {
+      "situation": "Your college cricket group is practising catches.",
+      "text": "Ask whether teammates want to try five clean catches. If someone misses, ask which throw was difficult and adjust the next drill without blame."
+    },
+    "plan": {
+      "ifThen": "If I suggest a challenge today, I'll keep it small and ask whether others want to try."
+    }
+  },
+  "htwf-start-praise": {
+    "story": {
+      "text": "A writer hands you a table with one wrong sum. You first name the part that is clear, so the praise is true. Then you point to the sum that needs checking. If the error is urgent, you raise it at once.",
+      "diagram": "Real strength, specific error; urgency can move the error first."
+    },
+    "example": {
+      "situation": "A colleague's clear expense table has a ₹90 total entered as ₹900.",
+      "text": "Tell them the layout is easy to read, then point directly to the wrong total. If the table is being sent now, flag the error first."
+    },
+    "plan": {
+      "ifThen": "If I review someone's work today, I'll name a real strength and point to the exact error."
+    }
+  },
+  "htwf-indirect-fix": {
+    "story": {
+      "text": "A notice has the wrong room number. You ask the writer about that line privately, giving them room to correct it. The aim is that students reach the right room. If a wrong time would make people miss a train, you state it at once.",
+      "diagram": "Quiet question leads to correction; urgent time error leads to direct notice."
+    },
+    "example": {
+      "situation": "A college notice lists the wrong classroom for a seminar.",
+      "text": "Ask its writer privately to check the room line and let them update it. If students are already leaving, tell them the right room immediately."
+    },
+    "plan": {
+      "ifThen": "If I spot a small error today, I'll ask about it privately; if urgent, I'll state the correction."
+    }
+  },
+  "htwf-own-mistake-first": {
+    "story": {
+      "text": "The team finds a wrong sum on a bill. You name the line you wrote and apologise for your part. Then you correct the bill so the customer gets the right total. Owning your part helps each person see what they can fix.",
+      "diagram": "Your line leads to your correction; other lines remain with their owners."
+    },
+    "example": {
+      "situation": "At a part-time gig, a customer is charged ₹180 instead of ₹150.",
+      "text": "If you entered the amount, say so and correct the bill. Let your coworker check any separate mistake they made."
+    },
+    "plan": {
+      "ifThen": "If a shared error appears today, I'll name and fix the part I caused."
+    }
+  },
+  "htwf-ask-not-order": {
+    "story": {
+      "text": "Your classmate owes notes for a group task. You ask when they can send them, because you may not see their other work. You share the due date. Their reply helps the group decide who will do each part.",
+      "diagram": "Question plus due date leads to a shared task plan."
+    },
+    "example": {
+      "situation": "Your college project needs a classmate's notes by Thursday.",
+      "text": "Ask when they can send the notes and tell them why Thursday matters. Use their answer to divide the remaining work."
+    },
+    "plan": {
+      "ifThen": "If I need someone's work today, I'll ask when they can do it and share the deadline."
+    }
+  },
+  "htwf-save-face": {
+    "story": {
+      "text": "A writer puts the wrong time on a notice. You speak to them alone and let them fix it. Residents still need the correct hour, so you send that out. There is no need to name the person who made the error.",
+      "diagram": "Private correction, public right time, no public blame."
+    },
+    "example": {
+      "situation": "Your housing group posts the wrong time for a water shutdown.",
+      "text": "Tell the person who posted it privately. Let them correct it, then share the right hour with residents without naming who erred."
+    },
+    "plan": {
+      "ifThen": "If someone makes a public mistake today, I'll speak privately and make sure others get the correction."
+    }
+  },
+  "htwf-praise-progress": {
+    "story": {
+      "text": "Your cousin checks a sales ledger. The sales column is right this week, and you name that gain. You also show the next column to check. One good week is real progress, though the ledger still needs work.",
+      "diagram": "One corrected column leads to the next column to check."
+    },
+    "example": {
+      "situation": "Your cousin's stall ledger now records each ₹20 tea sale correctly.",
+      "text": "Point out the accurate sales entries. Then show the expense column that still needs checking, without calling the whole ledger finished."
+    },
+    "plan": {
+      "ifThen": "If I see improvement today, I'll name the exact gain and the next thing to check."
+    }
+  },
+  "htwf-good-name": {
+    "story": {
+      "text": "A student catches two wrong sums. You name that careful work before offering one more page to check. The new task fits the skill you saw. You keep help available, so trust does not become a test of their worth.",
+      "diagram": "Observed skill leads to one fitting task, with help nearby."
+    },
+    "example": {
+      "situation": "A junior colleague catches two errors in a ₹600 event budget.",
+      "text": "Tell them which checks were careful. Offer one more page to review and let them know whom to ask if a figure is unclear."
+    },
+    "plan": {
+      "ifThen": "If someone handles a task well today, I'll name what I saw and offer a fitting next task."
+    }
+  },
+  "htwf-easy-next-step": {
+    "story": {
+      "text": "A cashier has a wrong row on a bill. You show the row, receipt, and code guide so the first check is clear. After the row is fixed, you check the full total, because one change may affect it.",
+      "diagram": "Receipt and guide point to one row, then to the final total."
+    },
+    "example": {
+      "situation": "At a part-time shop shift, a ₹75 item appears as ₹95 on a bill.",
+      "text": "Show the cashier the receipt and the exact row. Check the code guide together, then verify the final total after the row changes."
+    },
+    "plan": {
+      "ifThen": "If I help fix an error today, I'll show the first row to check and verify the final result."
+    }
+  },
+  "htwf-welcome-task": {
+    "story": {
+      "text": "A college fest needs a welcome desk. You explain how it helps guests, then describe the full duties and shift length. A student says they cannot take that shift. You accept the no and offer another role only if it fits.",
+      "diagram": "Purpose, full duties and hours, then a free choice."
+    },
+    "example": {
+      "situation": "Your college event needs someone to guide arriving guests.",
+      "text": "Explain whom the role helps, the registration work, and the two-hour shift. If a classmate declines, ask whether a shorter sign-setting task suits them."
+    },
+    "plan": {
+      "ifThen": "If I invite help today, I'll explain the full task and accept the person's answer."
+    }
+  }
+}

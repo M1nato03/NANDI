@@ -1,0 +1,197 @@
+{
+  "htsw-today": {
+    "story": {
+      "text": "The train is late, and a project is due next week. A traveller writes down when to plan the project, then opens the task needed today. The later deadline still matters; it need not occupy this whole hour.",
+      "diagram": "two boxes: plan next week's task, then do today's task"
+    },
+    "example": {
+      "situation": "A first job and a family visit next week.",
+      "text": "The visit needs a train booking. She notes a time tonight to check tickets, then sends the report due at work today."
+    },
+    "plan": {
+      "ifThen": "If a later task interrupts my work today, I'll note when to return to it and do the next task."
+    }
+  },
+  "htsw-worst-case": {
+    "story": {
+      "text": "A supplier may miss the delivery. The shopkeeper names the possible loss: an empty shelf on Saturday. He allows for that result, then asks whether another delivery or a call to customers could reduce its cost.",
+      "diagram": "three boxes: name the risk, allow for it, find one step"
+    },
+    "example": {
+      "situation": "A hostel room may not be ready on move-in day.",
+      "text": "A student names the practical problem: one night without a room. She checks the move-in date and asks a friend whether she could stay over if needed."
+    },
+    "plan": {
+      "ifThen": "If a plan may fall through today, I'll name the likely loss and ask what one backup I can arrange."
+    }
+  },
+  "htsw-facts": {
+    "story": {
+      "text": "A fee notice looks wrong. Its amount and due date are hard to read, so the reader gets the full notice and marks what it actually says. Only then can she choose whether to pay or ask for a correction.",
+      "diagram": "notice to facts to missing detail to next action"
+    },
+    "example": {
+      "situation": "A shared flat's rent total seems high.",
+      "text": "Before sending her share, a new tenant checks the written amount, due date, and split with her flatmates. If a figure is missing, she asks for it."
+    },
+    "plan": {
+      "ifThen": "If a notice worries me today, I'll read its amount and date before deciding the next step."
+    }
+  },
+  "htsw-busy": {
+    "story": {
+      "text": "A canteen order is late. The worker sets a time to check it, then folds table covers while waiting. When the time comes, he checks the order and makes the call it needs. Folding gave the wait useful work; it did not settle the order.",
+      "diagram": "check time set, useful task during wait, return to concern"
+    },
+    "example": {
+      "situation": "Waiting for an exam timetable.",
+      "text": "A student decides to check the college notice at 5 pm. Until then, she finishes one page of revision. At 5, she checks for the date and adjusts her plan if needed."
+    },
+    "plan": {
+      "ifThen": "If I'm waiting for news today, I'll set a check time and finish one useful task before it."
+    }
+  },
+  "htsw-small-things": {
+    "story": {
+      "text": "A shop sign has a crooked letter, while a bill shows the wrong price. The owner checks what each costs and when it matters. He corrects the bill now and notes the sign for later; a small issue can still deserve a fix.",
+      "diagram": "two columns: wrong price now, crooked letter later"
+    },
+    "example": {
+      "situation": "A first salary slip has a ₹120 error.",
+      "text": "She asks payroll to check the amount before the correction window closes. A smudged label on her desk can wait until the pay issue is settled."
+    },
+    "plan": {
+      "ifThen": "If two small problems compete today, I'll check their cost and deadlines, then handle the one that matters first."
+    }
+  },
+  "htsw-odds": {
+    "story": {
+      "text": "One train was late last week. The traveller looks at records for the same route, rather than treating one trip as the usual pattern. The count cannot promise the next train will be on time, so he keeps a backup for an important arrival.",
+      "diagram": "one late trip beside a count of trips on the same route"
+    },
+    "example": {
+      "situation": "A new employee fears missing a morning shift.",
+      "text": "One bus was late yesterday. He checks several recent trips on his route. If the record is thin, he treats the timing as unknown and leaves room for an earlier bus."
+    },
+    "plan": {
+      "ifThen": "If one bad example stays on my mind, I'll check comparable records and keep a practical backup."
+    }
+  },
+  "htsw-inevitable": {
+    "story": {
+      "text": "The monsoon has closed a road. The traveller cannot reopen it, so she checks another route. If the fare or closure notice is wrong, she can still ask for a correction. A settled fact sets the starting point, not every choice after it.",
+      "diagram": "closed road marked fixed; alternate route marked open"
+    },
+    "example": {
+      "situation": "A train has already left without a student.",
+      "text": "He checks the next train and tells his family his revised arrival time. If the ticket record shows an error, he asks the counter to check it."
+    },
+    "plan": {
+      "ifThen": "If something cannot be undone today, I'll name the fact and choose one step still open to me."
+    }
+  },
+  "htsw-stop-loss": {
+    "story": {
+      "text": "A form has been sent, with a reply due next week. The sender picks one time to check for news and returns to her other work. If a new deadline arrives, she changes the plan. Reopening the inbox without news need not take every minute.",
+      "diagram": "sent form to scheduled check; new deadline branches to revised plan"
+    },
+    "example": {
+      "situation": "A first-job applicant awaits an interview date.",
+      "text": "He checks his email once after lunch. Until then, he finishes a course assignment. If the employer sends a same-day request, he responds to the new deadline."
+    },
+    "plan": {
+      "ifThen": "If I send a request today, I'll set a fair check time and revise it if new facts arrive."
+    }
+  },
+  "htsw-blessings": {
+    "story": {
+      "text": "A bus is late, but a friend has saved a seat for the talk. The traveller names both facts. The delay still needs a plan; the friend's act also belongs in the account of the day. Neither fact erases the other.",
+      "diagram": "two boxes side by side: delay and seat saved"
+    },
+    "example": {
+      "situation": "Rent is due after a difficult week at work.",
+      "text": "A young tenant still checks the rent date. She also notices that her flatmate cooked dinner when she got home late. The help is real, and so is the bill."
+    },
+    "plan": {
+      "ifThen": "If today has a hard task, I'll name one real help beside it, then keep the task in view."
+    }
+  },
+  "htsw-even": {
+    "story": {
+      "text": "A teammate takes credit for a page. Its writer keeps the dated draft and asks for the record to be corrected. A reply meant to hurt would add a wrong; a clear request stays with the page and can end when the record is fixed.",
+      "diagram": "dated draft to clear request to corrected record"
+    },
+    "example": {
+      "situation": "A part-time worker's hours are missing from a rota.",
+      "text": "She saves the shift messages and asks the manager to correct the hours. She states the missing dates and the ₹900 owed, without adding a personal attack."
+    },
+    "plan": {
+      "ifThen": "If someone takes credit for my work today, I'll keep the record and ask for a specific correction."
+    }
+  },
+  "htsw-criticism": {
+    "story": {
+      "text": "A teacher says a chart is unclear; another person calls its maker careless. The student checks which label or key needs work and leaves the personal label aside. A useful correction can be heard while she asks for a fair way to discuss it.",
+      "diagram": "comment split into task detail and personal label"
+    },
+    "example": {
+      "situation": "A supervisor reviews a new employee's report.",
+      "text": "The supervisor says one total is missing, then calls him lazy. He checks the total and asks to keep the discussion about the report. The missing number can be fixed."
+    },
+    "plan": {
+      "ifThen": "If I hear a harsh comment today, I'll check its task detail and ask for a fair way to speak."
+    }
+  },
+  "htsw-review": {
+    "story": {
+      "text": "A report is nearly ready. Its writer notes a date she missed before, then asks a reader to check that part. She compares the reply with the record: a real slip can be fixed, while a mistaken warning can be answered with the source.",
+      "diagram": "past slip to focused review to check against record"
+    },
+    "example": {
+      "situation": "A college student prepares a scholarship form.",
+      "text": "He once entered the wrong term date. Today he asks a classmate to check that field, then compares the answer with the college notice before submitting."
+    },
+    "plan": {
+      "ifThen": "If I finish a draft today, I'll ask someone to check one detail and compare their note with the source."
+    }
+  },
+  "htsw-rest": {
+    "story": {
+      "text": "At an event, a helper finishes one stack of pages before pausing. She marks where the next stack begins. If guests still need her, she finds cover first. The short rest gives the task a clear restart, without promising better output.",
+      "diagram": "finish a part to pause to next part; live duty needs cover"
+    },
+    "example": {
+      "situation": "A weekend gig at a chai stall.",
+      "text": "A worker wants a short break between orders. He hands the counter to his coworker before stepping aside, then returns for the next batch. He does not leave a customer waiting."
+    },
+    "plan": {
+      "ifThen": "If I reach a safe stopping point today, I'll mark the next step and take a short pause."
+    }
+  },
+  "htsw-one-task": {
+    "story": {
+      "text": "A desk holds three forms, a bill, and old notes. The worker puts today's form in front. When a guest arrives, she serves the live need before returning to later papers. For a bill with no amount, she asks for the full copy before deciding.",
+      "diagram": "current due task in front; live need branches ahead of later work"
+    },
+    "example": {
+      "situation": "A first-job desk has several open requests.",
+      "text": "One customer is waiting, a ₹350 receipt lacks a total, and a stock list is due tomorrow. She helps the customer, asks for the receipt detail, then returns to the list."
+    },
+    "plan": {
+      "ifThen": "If my desk fills up today, I'll put the due task in view and handle a live need first."
+    }
+  },
+  "htsw-interest": {
+    "story": {
+      "text": "A class has a long guest list to check. One student asks which names need a call, then marks the answer for the team. The question gives the work an aim. If the list is too large for one person, they can share the pages.",
+      "diagram": "long list to useful question to names needing calls; pages can be shared"
+    },
+    "example": {
+      "situation": "A part-time worker checks shelf tags.",
+      "text": "Rather than expecting fun, she asks which tags lack prices and marks them for fixing. When the stack is too large for her shift, she asks a coworker to split it."
+    },
+    "plan": {
+      "ifThen": "If a routine task awaits today, I'll ask what useful finding it can produce and request help if needed."
+    }
+  }
+}
