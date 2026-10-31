@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openMore } from '../e2e/helpers/plan';
 import { answerRight, seedTaughtTopics, walkIdea } from '../e2e/learn-helpers';
+import { textAt200 } from '../e2e/helpers/text';
 
 // The 360x800 review set (item 140): each main screen with seeded data, reduced motion so a frame is stable.
 // Run with `npm run shots`; add a shot here when a change touches a screen that is not in the set.
@@ -826,12 +827,49 @@ for (const theme of themes) test.describe(theme, () => {
     const card = page.getByRole('dialog', { name: 'Pause card' });
     await expect(card).toBeVisible();
     await shot(page, 'p39-7-card', false);
-    await card.getByRole('button', { name: 'Do my 2-min thing' }).click();
+    await card.getByRole('button', { name: /^Start the 2 minutes: / }).click();
     await page.clock.fastForward(37_000);
     await shot(page, 'p39-8-act-timer', false);
     await card.getByRole('button', { name: 'I did it' }).click();
     await expect(card).toContainText('2 minutes back.');
     await shot(page, 'p39-9-done', false);
+  });
+
+  // Spec 45c decision 8: the Pause slip, its act view, and the slip at 200% text.
+  test('45c pause slip', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-11-04T12:00:00') });
+    await page.goto('/?e2e#plan/pause');
+    await page.getByLabel('Instagram').check();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('group', { name: 'Quick picks' }).getByRole('button', { name: 'drink a glass of water' }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Turn it on' }).click();
+    await expect(page.getByRole('heading', { name: 'On', exact: true })).toBeVisible();
+    const card = page.getByRole('dialog', { name: 'Pause card' });
+    const opens = async () => {
+      await page.evaluate(() => { sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'limit' })); window.dispatchEvent(new Event('nandi:night-pause')); });
+      await expect(card).toBeVisible();
+    };
+    await opens();
+    await shot(page, '45c-p1-slip', false);
+    await card.getByRole('button', { name: /^Start the 2 minutes: / }).click();
+    await expect(card.getByRole('button', { name: 'I did it' })).toBeVisible();
+    await shot(page, '45c-p2-act', false);
+    await card.getByRole('button', { name: 'Not now' }).click();
+    await expect(card).toHaveCount(0);
+    await opens();
+    await card.getByRole('button', { name: 'I did it' }).click();
+    await expect(card.getByRole('heading')).toHaveText('Done.');
+    await shot(page, '45c-p3-done', false);
+    await card.getByRole('button', { name: 'Back to my day' }).click();
+    await expect(card).toHaveCount(0);
+    await opens();
+    await textAt200(page);
+    await expect(card).toBeVisible();
+    await shot(page, '45c-p4-slip-200-text', false);
+    await card.getByRole('button', { name: 'Not now' }).scrollIntoViewIfNeeded();
+    await shot(page, '45c-p5-slip-200-text-end', false);
   });
 
   test('pause card 39b', async ({ page }) => {
@@ -852,7 +890,7 @@ for (const theme of themes) test.describe(theme, () => {
     };
     await opens();
     await shot(page, 'p39b-1-card-three-ways', false);
-    await card.getByRole('button', { name: 'Do my 2-min thing' }).click();
+    await card.getByRole('button', { name: /^Start the 2 minutes: / }).click();
     await expect(card.getByRole('button', { name: 'I did it' })).toBeVisible();
     await shot(page, 'p39b-2-act-i-did-it-at-start', false);
     await card.getByRole('button', { name: 'Not now' }).click();

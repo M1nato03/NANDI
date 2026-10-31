@@ -75,7 +75,7 @@ test('spec 39b: "I did it" shows from the start of the act (the clock is a guide
   await phoneOpens(page);
   await expect(card(page).getByRole('heading')).toHaveText("If I open Instagram, I'll do 10 squats first.");
   for (const name of ['Do it in NANDI', 'Not now', 'Open Instagram anyway']) await expect(card(page).getByRole('button', { name })).toBeVisible();
-  await card(page).getByRole('button', { name: 'Do my 2-min thing' }).click();
+  await card(page).getByRole('button', { name: /^Start the 2 minutes: / }).click();
   await expect(card(page).getByRole('timer')).toHaveText('2:00');
   await expect(card(page).getByRole('button', { name: 'I did it' })).toBeVisible();
   await expect(card(page)).not.toContainText('Done shows when');

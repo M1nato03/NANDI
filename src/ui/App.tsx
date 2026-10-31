@@ -3,6 +3,7 @@ import './theme.css';
 import './components.css';
 import './redesign.css';
 import './feel.css';
+import './notebook.css';
 import './areas.css';
 import { areaTokenCss } from './areas';
 

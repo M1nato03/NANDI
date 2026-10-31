@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { textAt200 } from './helpers/text';
 
 // Spec 45b: Home is a notebook page: the useful days (decision 7), the camp's heading, five friends at camp (each a
 // button to its area) and exactly one next move, in the order focus, Book check, Train day, task, Read.
@@ -166,7 +167,8 @@ test('at 360x800 nothing overlaps, and at 200% text the page scrolls to the next
     expect(hit).toBeTruthy();
   }
   expect(new Set(await Promise.all(friends.map(point => page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest('.camp-friend')?.getAttribute('aria-label'), point))))).toHaveProperty('size', 5);
-  await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+  await textAt200(page);
+  await expect(page.locator('.next-move')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await move(page).scrollIntoViewIfNeeded();
   await expect(move(page)).toBeInViewport();

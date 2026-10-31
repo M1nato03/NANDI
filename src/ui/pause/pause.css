@@ -8,8 +8,16 @@
 .pause-picks { display: grid; gap: 10px; }
 .pause-exits { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .pause-exits .text-button { min-height: 48px; justify-content: center; text-align: center; }
-/* Spec 39b: three equal ways on from the card. */
-.pause-exits-3 { grid-template-columns: repeat(3, 1fr); }
+/* Spec 45c: the card is a paper slip; three full-width ways of one weight, then "Not now" as a small link. */
+/* At large text the slip is taller than the phone: the overlay scrolls, and it never centres the top out of reach. */
+.pause-overlay { overflow-y: auto; overscroll-behavior: contain; align-items: safe center; }
+/* The slip's words are in rem, so they grow with the phone's text size. */
+.pause-slip { gap: 12px; }
+.pause-slip .eyebrow { font-size: .75rem; }
+.pause-slip .pause-plan-label { font-size: 1rem; }
+.pause-slip .pause-line { font-size: 1.5rem; }
+.pause-ways { display: grid; gap: 10px; margin-top: 4px; }
+.pause-not-now { justify-self: start; color: var(--ink-2); font-weight: 400; }
 .pause-clock { margin: 0; font: 800 56px 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; text-align: center; }
 .pause-earned { margin: 0; color: var(--accent); font-weight: 700; }
 .pause-demo { margin: 0; text-align: center; }

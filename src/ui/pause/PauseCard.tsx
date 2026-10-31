@@ -15,11 +15,12 @@ import './pause.css';
 type Stage = { kind: 'card' } | { kind: 'act'; act: string; endsAt: number } | { kind: 'done'; paid: boolean };
 
 /**
- * Spec 39, the Pause card: shown when a picked app comes to the front inside the window. The person's own plan, one
- * big "Do my 2-min thing", and "Do it in NANDI", "Not now" and "Open <app> anyway" at equal weight: every way out is
- * one tap, with no countdown before it and no "are you sure". Spec 39b: "I did it" shows from the start of the act;
- * the 2 minutes are a guide, never a gate, and the person's word is enough. `demo` is the setup's "See it once":
- * nothing is recorded or opened.
+ * Spec 39, the Pause card: shown when a picked app comes to the front inside the window. Every way out is one tap,
+ * with no countdown before it and no "are you sure". Spec 39b: "I did it" shows from the start of the act; the 2
+ * minutes are a guide, never a gate, and the person's word is enough. Spec 45c (decision 8): a paper slip with the
+ * person's plan, a quiet "Start the 2 minutes" link into the act, and three full-width ways of equal weight: "I did it"
+ * (the act's own outcome and pay), "Do it in NANDI" and "Open <app> anyway"; "Not now" stays as a small link.
+ * `demo` is the setup's "See it once": nothing is recorded or opened.
  */
 export function PauseCard({ packageName, close, demo, demoAct }: { packageName: string; close: () => void; demo?: boolean; demoAct?: string | null }) {
   const dialog = useModalFocus<HTMLDivElement>();
@@ -54,9 +55,9 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
     close();
   }
   function start(what: string) { setMessage(''); setStage({ kind: 'act', act: what, endsAt: Date.now() + RULES.pause.actSeconds * 1000 }); } // eslint-disable-line react-hooks/purity
-  // One showing of the card pays at most once: "I did it" leaves the act for the done screen.
+  // One showing of the card pays at most once: "I did it", on the slip or in the act, leaves for the done screen.
   async function finish() {
-    if (stage.kind !== 'act' || acting.current) return;
+    if (stage.kind === 'done' || acting.current) return;
     acting.current = true;
     const paid = actsToday(facts, dayKey(Date.now())).nextPays;
     if (!demo) {
@@ -82,19 +83,20 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
   const clock = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`;
 
   return <div ref={dialog} tabIndex={-1} className="night-pause-overlay pause-overlay" role="dialog" aria-modal="true" aria-label="Pause card">
-    <section className="card pause-card">
+    <section className={`card pause-card${stage.kind === 'card' ? ' pause-slip paper paper-tape' : ''}`}>
       <span className="pause-friend" aria-hidden="true"><Mor pose="idle" size={40} /></span>
       {stage.kind === 'card' && <>
         <p className="eyebrow">{label}</p>
         <p className="pause-plan-label">Your plan:</p>
         <h1 className="pause-line">{pauseLine(label, act)}</h1>
-        {act ? <button type="button" className="pause-do" onClick={() => start(act)}>Do my 2-min thing</button>
+        {act ? <button type="button" className="ink-link pause-start" aria-label={`Start the 2 minutes: ${act}`} onClick={() => start(act)}>Start the 2 minutes</button>
           : <div className="pause-picks" role="group" aria-label="Pick a 2-minute thing">{PAUSE_ACTS.slice(0, 4).map(pick => <button type="button" key={pick} className="secondary" onClick={() => start(pick)}>{pick[0]!.toUpperCase() + pick.slice(1)}</button>)}</div>}
-        <div className="pause-exits pause-exits-3">
-          <button type="button" className="text-button" onClick={() => void inApp()}>Do it in NANDI</button>
-          <button type="button" className="text-button" onClick={() => void notNow()}>Not now</button>
-          <button type="button" className="text-button" onClick={() => void openAnyway()}>Open {label} anyway</button>
+        <div className="pause-ways">
+          <button type="button" className="paper-choice" onClick={() => void finish()}>I did it</button>
+          <button type="button" className="paper-choice" onClick={() => void inApp()}>Do it in NANDI</button>
+          <button type="button" className="paper-choice" onClick={() => void openAnyway()}>Open {label} anyway</button>
         </div>
+        <button type="button" className="ink-link pause-not-now" onClick={() => void notNow()}>Not now</button>
       </>}
       {stage.kind === 'act' && <>
         <p className="eyebrow">Your 2 minutes</p>
