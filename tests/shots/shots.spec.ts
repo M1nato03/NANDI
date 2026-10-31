@@ -77,37 +77,86 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'plan-4-focus');
   });
 
-  // Spec 37: Yatra is home: morning and night, a running focus, and scrolled to the doors.
-  test('yatra home: morning, night, focus strip, doors', async ({ page }) => {
-    await page.clock.install({ time: new Date('2026-10-28T08:30:00') });
-    await page.goto('/');
-    await expect(page.getByRole('heading', { name: 'Good morning.', level: 1 })).toBeVisible();
-    await page.waitForTimeout(800);
-    await shot(page, 'home-1-morning', false);
-    await page.getByRole('heading', { name: 'Whenever you feel ready' }).scrollIntoViewIfNeeded();
-    await page.evaluate(() => window.scrollBy(0, 200));
-    await shot(page, 'home-4-doors', false);
-    await shot(page, 'home-5-full');
+  // Spec 45b: Home as a notebook page: a recorded week with a task, a running focus, a Book check, a new phone, night,
+  // each friend's tap, and 200% text with the next move still reachable.
+  test('spec 45b home', async ({ page }) => {
+    test.setTimeout(180_000);
+    const WED = new Date('2026-10-28T08:30:00');
+    const meta = { updatedAt: 1, deleted: 0, deviceId: 'shots' };
+    const put = (store: string, rows: Record<string, unknown>[]) => page.evaluate(async ({ store, rows }) => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction(store, 'readwrite'); for (const row of rows) transaction.objectStore(store).put(row); transaction.oncomplete = () => resolve(); });
+      database.close();
+    }, { store, rows });
+    const at = (day: string, hour: number) => new Date(`2026-10-${day}T${hour}:00:00`).getTime();
+    const settle = async () => { await page.waitForTimeout(600); };
+    await page.clock.install({ time: WED });
+    // A new phone: nothing recorded yet, and Read is the move.
+    await page.goto('/#yatra');
+    await expect(page.locator('.next-move')).toBeVisible();
+    await settle();
+    await shot(page, '45b-4-home-new', false);
+    // A week with focus, Calm and two ideas, and a task for today.
+    await put('ledger', [
+      { id: 'c1', mode: 'calm', kind: 'session', refId: 'c1', dayKey: '2026-10-26', inputs: { minutes: 12 }, ...meta },
+      { id: 'c2', mode: 'calm', kind: 'session', refId: 'c2', dayKey: '2026-10-27', inputs: { minutes: 10 }, ...meta },
+      { id: 'i1', mode: 'read', kind: 'idea', refId: 'i1', dayKey: '2026-10-27', inputs: {}, ...meta },
+      { id: 'i2', mode: 'read', kind: 'idea', refId: 'i2', dayKey: '2026-10-27', inputs: {}, ...meta },
+    ]);
+    await put('focus', [{ id: 'f1', taskId: 'old', startedAt: at('27', 10), endedAt: at('27', 10) + 95 * 60_000, ...meta }]);
     await page.goto('/#plan');
-    await page.getByLabel('Add a task').fill('Write the report');
+    await page.getByLabel('Add a task').fill('Call the bank');
     await page.getByRole('button', { name: 'Add', exact: true }).click();
-    await page.getByRole('button', { name: 'Start: Write the report' }).click();
+    await page.goto('/#yatra');
+    await expect(page.locator('.next-move')).toContainText('Call the bank');
+    await settle();
+    await shot(page, '45b-1-home', false);
+    await shot(page, '45b-1b-home-full');
+    // Each friend's tap: the reaction where it stands, then its area, once.
+    await page.emulateMedia({ colorScheme: theme, reducedMotion: 'no-preference' });
+    for (const [name, hash] of [['Mor at the map: Plan', 'plan'], ['Chiku on the reading rock: Read', 'read'], ['Nandi by the pack: Train', 'yatra/train'], ['Kapi in the branches: Play', 'yatra/mind'], ['Kachhua by the fire: Calm', 'yatra/calm']] as const) {
+      await page.goto('/#yatra');
+      const friend = page.getByRole('button', { name });
+      await expect(friend).toBeVisible();
+      await page.waitForTimeout(1300); // the walk-in step ends
+      await friend.click();
+      await page.waitForTimeout(120);
+      await shot(page, `45b-5-tap-${hash.replace('/', '-')}`, false);
+      await page.clock.runFor(400);
+      await expect(page).toHaveURL(new RegExp(`#${hash}$`));
+    }
+    await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
+    // A running focus takes the move.
+    await page.goto('/#plan');
+    await page.getByRole('button', { name: 'Start: Call the bank' }).click();
     await expect(page.getByRole('region', { name: 'Focus' })).toBeVisible();
     await page.clock.fastForward(24 * 60_000 + 10_000);
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
-    await expect(page.locator('.yatra-focus-strip')).toBeVisible();
-    await page.waitForTimeout(800);
-    await shot(page, 'home-3-focus', false);
-    // The focus ends before the evening, so the night shot is the plain home.
-    await page.locator('.yatra-focus-strip').click();
+    await expect(page.locator('.next-move')).toContainText('Working on');
+    await settle();
+    await shot(page, '45b-2-home-focus', false);
+    await page.locator('.next-move-go').click();
     await page.getByRole('region', { name: 'Focus' }).getByRole('button', { name: 'Done' }).click();
     await expect(page.getByRole('region', { name: 'Focus' })).toHaveCount(0);
+    // Yesterday's chapter waits for its Book check.
+    await put('ledger', [{ id: 'ch1', mode: 'read', kind: 'chapter', refId: 'richest-man-in-babylon:babylon-2', dayKey: '2026-10-27', inputs: { checkLater: true }, ...meta }]);
+    await page.goto('/#yatra');
+    await expect(page.locator('.next-move')).toContainText('Book check');
+    await settle();
+    await shot(page, '45b-3-home-book-check', false);
+    // 200% text: the page scrolls and the next move is still there.
+    await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+    await settle();
+    await shot(page, '45b-6-home-200-text', false);
+    await page.locator('.next-move-go').scrollIntoViewIfNeeded();
+    await shot(page, '45b-6b-home-200-text-move', false);
+    // Night at camp.
     await page.clock.setSystemTime(new Date('2026-10-28T22:10:00'));
+    await page.goto('/#plan');
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: 'Good evening.', level: 1 })).toBeVisible();
-    await expect(page.locator('.yatra-quiet')).toHaveText('The friends are by the fire tonight.');
-    await page.waitForTimeout(800);
-    await shot(page, 'home-2-night', false);
+    await expect(page.locator('.trek-scene.is-night')).toBeVisible();
+    await settle();
+    await shot(page, '45b-7-home-night', false);
   });
 
   // Spec 36 v2: Train done with 6 sets, a hard board with 1 hint, a chapter done (ideas and right answers), You after a heavy day.
@@ -539,9 +588,9 @@ for (const theme of themes) test.describe(theme, () => {
         const leave = page.getByRole('button', { name: 'Leave night deck' });
         if (await leave.isVisible()) await leave.click();
         await page.evaluate(() => { if (location.hash !== '#yatra') location.hash = 'yatra'; });
-        await expect(page.getByRole('heading', { name: /^Good (morning|afternoon|evening|night)/, level: 1 })).toBeVisible({ timeout: 1500 });
+        await expect(page.locator('.notebook-home h1')).toBeVisible({ timeout: 1500 });
         await page.waitForTimeout(800);
-        await expect(page.getByRole('heading', { name: /^Good (morning|afternoon|evening|night)/, level: 1 })).toBeVisible({ timeout: 100 });
+        await expect(page.locator('.notebook-home h1')).toBeVisible({ timeout: 100 });
       }).toPass({ timeout: 20_000 });
       const card = page.getByRole('button', { name: 'Keep in the journal' });
       await page.waitForTimeout(1200);

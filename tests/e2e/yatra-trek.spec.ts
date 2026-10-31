@@ -27,10 +27,10 @@ async function openYatra(page: Page) {
     const leave = page.getByRole('button', { name: 'Leave night deck' });
     if (await leave.isVisible()) await leave.click();
     await page.evaluate(() => { if (location.hash !== '#yatra') location.hash = '#yatra'; });
-    await expect(page.getByRole('heading', { name: /^Good (morning|afternoon|evening|night)/, level: 1 })).toBeVisible({ timeout: 1500 });
+    await expect(page.locator('.notebook-home h1')).toBeVisible({ timeout: 1500 });
     // After shutdown the app moves to the night deck once its settings load; stay only once Yatra holds.
     await page.waitForTimeout(800);
-    await expect(page.getByRole('heading', { name: /^Good (morning|afternoon|evening|night)/, level: 1 })).toBeVisible({ timeout: 100 });
+    await expect(page.locator('.notebook-home h1')).toBeVisible({ timeout: 100 });
   }).toPass({ timeout: 20_000 });
 }
 const line = (page: Page) => page.locator('.trek-journey-top strong');
@@ -42,7 +42,7 @@ test('a Train, a Mind and a Calm session each walk one stretch and light one sta
   await page.goto('/?e2e#plan');
   await seed(page, [row('train', 1)]);
   await openYatra(page);
-  await expect(page.locator('.yatra-welcome .eyebrow')).toHaveText('Yatra · Hampta Pass');
+  await expect(page.locator('.notebook-home h1')).toHaveText('On the way to Chika');
   await expect(line(page)).toHaveText('Stretch 1 of 3 to Chika');
   await expect(page.locator('.trek-footprint')).toHaveCount(5);
   await seed(page, [row('train', 1), row('calm', 2)]);
@@ -89,14 +89,14 @@ test('a day with no session is a warm camp day, never a miss', async ({ page }) 
   await openYatra(page);
   await expect(line(page)).toHaveText('Stretch 1 of 3 to Chika');
   await expect(page.locator('.trek-narrative')).toHaveText('The friends are resting by the fire. A session today walks them on.');
-  await expect(page.locator('.trek-caption')).toContainText('A day on the trail');
+  await expect(page.locator('.notebook-home h1')).toHaveText('A day on the trail');
   await expect(page.locator('.trek-fire')).toHaveCount(1);
   await expect(page.locator('main')).not.toContainText(/missed|failed|lost|broke/i);
   // At night with no session the sky is quiet, and the group sits at a trailside fire mid-leg.
   await page.clock.setSystemTime(NIGHT);
   await page.reload();
   await openYatra(page);
-  await expect(page.locator('.trek-caption')).toContainText('By a trailside fire');
+  await expect(page.locator('.notebook-home h1')).toHaveText('By a trailside fire');
   await expect(page.locator('.trek-narrative')).toHaveText('The friends rested by the fire today. The trail will be here tomorrow.');
 });
 
@@ -107,10 +107,10 @@ test('every place on the trail is drawn at 360 px and nothing sits under the tab
   await openYatra(page);
   await expect(page.locator('.trek-place b')).toHaveText(['Jobra', 'Chika', 'Balu Ka Ghera', 'Hampta Pass', 'Shea Goru', 'Chatru']);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  const last = (await page.locator('.trek-actions').boundingBox())!;
-  await page.locator('.trek-actions').scrollIntoViewIfNeeded();
+  const last = (await page.locator('.trek-journey').boundingBox())!;
+  await page.locator('.trek-journey').scrollIntoViewIfNeeded();
   const bar = (await page.getByRole('navigation', { name: 'Main tabs' }).boundingBox())!;
-  const actions = (await page.locator('.trek-actions').boundingBox())!;
+  const actions = (await page.locator('.trek-journey').boundingBox())!;
   expect(actions.y + actions.height).toBeLessThanOrEqual(bar.y + 1);
   expect(last.height).toBeGreaterThan(0);
 });
@@ -169,5 +169,6 @@ test('the scene turns to night at dusk, before the evening switch, with a warm h
   await openYatra(page);
   await expect(page.locator('.trek-scene.is-night')).toBeVisible();
   await expect(page.locator('.trek-narrative')).toHaveText('Tonight holds 1 star from your day.');
-  await expect(page.getByRole('button', { name: 'Breathe at camp' })).toBeVisible();
+  // Spec 45b: Kachhua by the fire is the way to Calm.
+  await expect(page.getByRole('button', { name: 'Kachhua by the fire: Calm' })).toBeVisible();
 });

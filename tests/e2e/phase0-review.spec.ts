@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 // Spec 34: four tabs; Read's heading is "Your books".
 const tabs = ['Plan', 'Read', 'Yatra', 'You'];
 // Spec 37: Yatra's heading is the greeting.
-const headings: Record<string, string | RegExp> = { Plan: 'Plan', Read: 'Your books', Yatra: /^Good (morning|afternoon|evening|night)/, You: 'You' };
+const headings: Record<string, string | RegExp> = { Plan: 'Plan', Read: 'Your books', Yatra: /^(On the way to .+|Camp at .+|At .+|By a trailside fire|A day on the trail|Trail complete|.+ camp|Field notes)$/, You: 'You' };
 interface TestHook { shellCounts: () => Promise<Record<string, number>>; wipeData: () => Promise<void> }
 
 test('visible controls meet tap size and tabs do not scroll sideways in both themes', async ({ page }) => {

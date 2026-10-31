@@ -81,12 +81,6 @@
 .trek-rail i { height: 5px; border-radius: 4px; background: var(--surface-3); }
 .trek-rail i.filled { background: #FF6A1A; }
 .trek-narrative { margin: 8px 0 0; color: var(--ink-2); }
-.trek-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px; }
-.yatra-corners.compact { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.yatra-corners.compact .yatra-corner { flex-direction: column; justify-content: center; gap: 6px; min-height: 0; padding: 10px 6px; text-align: center; }
-.yatra-corners.compact .yatra-corner svg { width: 56px; height: 56px; }
-.yatra-corners.compact .yatra-corner-text strong { font-size: 18px; }
-.yatra-corners.compact .yatra-corner-text span { font-size: 12px; line-height: 1.2; }
 .trek-postcard { position: relative; padding: 12px; }
 .trek-postcard h2 { margin: 6px 0 8px; font: italic 26px/1 Georgia, serif; }
 .trek-postcard p { margin: 0 0 8px; }
@@ -99,3 +93,34 @@
 /* Item 203: the hour before Yatra's dusk warms the light; the sun sits lower. */
 .trek-scene.is-dusk .trek-overlay { opacity: .38; background: linear-gradient(180deg, #f08a5d55 0%, #e0705f44 45%, #5a3d5a55 100%); }
 .trek-scene.is-dusk .trek-sun { top: 96px; background: #f2a65e; box-shadow: 0 0 0 18px #f5a76a33, 0 0 50px #ff9f6a66; }
+
+/* Spec 45b: the camp. Props stand behind the friends; on Home each friend is a button with a small hand-lettered place. */
+.trek-prop { position: absolute; bottom: 0; pointer-events: none; }
+.trek-prop svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.trek-prop.tree { width: 70px; height: 140px; bottom: -2px; }
+.trek-prop.map { width: 40px; height: 16px; bottom: -8px; z-index: 1; }
+.trek-prop.rock { width: 64px; height: 18px; bottom: -3px; }
+.trek-prop.pack { width: 22px; height: 28px; }
+.trek-fire.is-cold { height: 40px; animation: none; }
+.trek-actor.camp-friend { display: block; min-width: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 12px; background: transparent; box-shadow: none; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.trek-actor.camp-friend .cast-svg { display: block; }
+.trek-actor.camp-friend:focus-visible { outline: 3px solid var(--focus, #1f6feb); outline-offset: 2px; }
+.camp-label { position: absolute; top: calc(100% + 1px); left: 50%; transform: translateX(-50%); padding: 0 3px; white-space: nowrap; color: #3f382d; font: italic min(.75rem, 15px)/1.2 Georgia, serif; text-shadow: 0 0 3px #f6efdf, 0 0 6px #f6efdf; pointer-events: none; }
+.trek-actor.kapi .camp-label { top: auto; bottom: calc(100% + 1px); }
+.trek-scene.is-night .camp-label { color: #f3e7c8; text-shadow: 0 0 4px #14213a, 0 0 8px #14213a; }
+/* The friends in the notebook's quieter ink: a little less colour, one shared ground shadow. */
+.trek-scene.is-home .trek-actor { filter: saturate(.84); }
+.trek-scene.is-home .trek-actor::after { content: ''; position: absolute; z-index: -1; left: 12%; right: 12%; bottom: -3px; height: 7px; border-radius: 50%; background: #3a2f2026; }
+.trek-scene.is-home .trek-actor.kapi::after { display: none; }
+/* Home's heading names the camp, so the scene does not sign it twice. */
+.trek-scene.is-home .trek-place.current { display: none; }
+/* Home's day scene on paper: softer sky and hills. Night keeps its own colours. */
+.trek-scene.is-home:not(.is-night) .trek-world::before { background: linear-gradient(#e9e4d2 0%, #ece6d3 55%, #e0d3b5 100%); }
+.trek-scene.is-home:not(.is-night) .trek-ridge-far path:first-child { fill: #c3c8b8; }
+.trek-scene.is-home:not(.is-night) .trek-ridge-mid path:first-child { fill: #a9b49d; }
+.trek-scene.is-home:not(.is-night) .trek-ridge-mid path:last-child { fill: #98a68c; }
+.trek-scene.is-home:not(.is-night) .trek-ridge-front path:first-child { fill: #7f8f76; }
+.trek-scene.is-home:not(.is-night) .trek-ridge-front path:last-child { fill: #6e7d66; }
+.trek-scene.is-home:not(.is-night) .trek-sun { background: #edd3a0; box-shadow: 0 0 0 18px #efdcb233; }
+.trek-scene.is-home:not(.is-night) .trek-road { background: #cdbb98; }
+.trek-scene.is-home:not(.is-night) .trek-stream { opacity: .7; }

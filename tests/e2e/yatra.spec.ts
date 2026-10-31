@@ -9,19 +9,18 @@ const calmRows = (page: Page) => page.evaluate(async () => {
   return rows.filter(row => row.mode === 'calm');
 });
 
-test('Yatra holds three corners, each opening its friend, with Yatra lit in the tab bar', async ({ page }) => {
+test('Yatra\'s camp: Nandi, Kapi and Kachhua open their corners, with Yatra lit in the tab bar', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
   await page.goto('/#plan');
   const tabs = page.getByRole('navigation', { name: 'Main tabs' });
   await expect(tabs.getByRole('link')).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
   await tabs.getByRole('link', { name: 'Yatra' }).click();
   await expect(page).toHaveURL(/#yatra$/);
-  await expect(page.getByRole('heading', { name: /^Good (morning|afternoon|evening|night)/, level: 1 })).toBeVisible();
-  const corners = page.getByRole('list', { name: 'Corners' }).getByRole('button');
-  await expect(corners).toHaveText([/Train\s*With Nandi/, /Mind\s*Puzzles and cases/, /Calm\s*Breathe with Kachhua/]);
-  for (const [name, url, heading] of [['Train', /#yatra\/train$/, null], ['Mind', /#yatra\/mind$/, "Kapi's shelf"], ['Calm', /#yatra\/calm$/, 'Breathe with Kachhua']] as const) {
+  // Spec 45b: the corners are the friends at camp.
+  await expect(page.locator('.notebook-home h1')).toBeVisible();
+  for (const [name, url, heading] of [['Nandi by the pack: Train', /#yatra\/train$/, null], ['Kapi in the branches: Play', /#yatra\/mind$/, "Kapi's shelf"], ['Kachhua by the fire: Calm', /#yatra\/calm$/, 'Breathe with Kachhua']] as const) {
     await page.goto('/#yatra');
-    await page.getByRole('button', { name: new RegExp(`^${name}: `) }).click();
+    await page.getByRole('button', { name }).click();
     await expect(page).toHaveURL(url);
     await expect(tabs.getByRole('link', { name: 'Yatra' })).toHaveAttribute('aria-current', 'page');
     if (heading) await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible();

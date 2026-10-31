@@ -5,7 +5,7 @@ import { walkIdea } from './learn-helpers';
 const NOON = new Date('2026-10-28T12:00:00');
 
 /** 200% text for the parts the audit named (the browser cannot scale text alone, so these get double size). */
-const doubleText = (page: Page) => page.addStyleTag({ content: '.trek-place b { font-size: 20px !important; } .trek-caption b { font-size: 20px !important; } .trek-caption span { font-size: 32px !important; } .yatra-focus-strip { font-size: 32px !important; } .deck-context { font-size: 28px !important; }' });
+const doubleText = (page: Page) => page.addStyleTag({ content: '.trek-place b { font-size: 20px !important; } .trek-caption b { font-size: 20px !important; } .trek-caption span { font-size: 32px !important; } .next-move-go { font-size: 32px !important; } .next-move-text strong { font-size: 38px !important; } .next-move-text span { font-size: 28px !important; } .notebook-home h1 { font-size: 48px !important; } .deck-context { font-size: 28px !important; }' });
 /** No word cut off: nothing hides overflow, nothing ends in an ellipsis or is held to one line, and no line is wider than its box. */
 const fits = (page: Page, selector: string) => page.locator(selector).evaluateAll(nodes => nodes.every(node => {
   const style = getComputedStyle(node);
@@ -46,10 +46,11 @@ test('C9: at 200% text the trek captions, place signs and focus strip show every
   await page.getByRole('button', { name: 'Add', exact: true }).click();
   await page.getByRole('button', { name: 'Start focus' }).click();
   await page.goto('/?e2e#yatra');
-  await expect(page.locator('.yatra-focus-strip')).toBeVisible();
+  await expect(page.locator('.next-move')).toContainText('Working on');
   await doubleText(page);
-  expect(await fits(page, '.yatra-focus-text')).toBe(true);
-  expect(await fits(page, '.trek-caption')).toBe(true);
+  // Spec 45b: the focus is Home's one next move, and the heading names the camp (the scene's caption is Calm's).
+  expect(await fits(page, '.next-move-text strong')).toBe(true);
+  expect(await fits(page, '.notebook-home h1')).toBe(true);
   expect(await fits(page, '.trek-place b')).toBe(true);
   // The current camp's sign is fully inside the trail's view (jenil-87), not half off its edge.
   await expect.poll(() => page.evaluate(() => {

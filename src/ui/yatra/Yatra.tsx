@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time/dayKey';
@@ -7,29 +7,20 @@ import { effectiveShutdown } from '../../core/tasks/planner';
 import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { phaseAt } from '../../core/courtyard/courtyard';
 import { deriveTrek, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Constellation, type Trek } from '../../core/yatra/trek';
-import { greeting, quietLine } from '../../core/yatra/welcome';
+import { hoursMinutes, nextMove, recordedWeek, weekParts } from '../../core/yatra/nextMove';
+import { weekStart } from '../../core/economy/deriveEconomy';
+import { softToday } from '../../core/soft/soft';
+import { readBeatChanges, taalWeek, trainDays, TAAL_BEATS_KEY } from '../../core/train/taal';
 import { isFocusRunning, taskFocusMs } from '../../core/tasks/focus';
 import { bookCheckDue } from '../../core/learn/books';
 import { currentTrail } from '../../data/yatra/trails';
 import { CONSTELLATION_PREFIX, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
-import { Cast, type CastName } from '../cast/Cast';
 import { go } from '../shell/router';
 import { useModalFocus } from '../shell/useModalFocus';
-import { TrekScene } from './TrekScene';
+import { campLine, TrekScene } from './TrekScene';
 import './yatra.css';
 import './trek.css';
 
-/** Spec 34: Yatra's three corners. Each friend keeps its own corner. */
-const CORNERS: { id: 'train' | 'mind' | 'calm'; friend: CastName; title: string; caption: string; area: string }[] = [
-  { id: 'train', friend: 'Nandi', title: 'Train', caption: 'With Nandi', area: 'train' },
-  { id: 'mind', friend: 'Kapi', title: 'Mind', caption: 'Puzzles and cases', area: 'mind' },
-  { id: 'calm', friend: 'Kachhua', title: 'Calm', caption: 'Breathe with Kachhua', area: 'night' },
-];
-/** Spec 37: the two wide doors first, Plan with Mor and Read with Chiku. */
-const DOORS: { id: 'plan' | 'read'; friend: CastName; title: string; caption: string; area: string }[] = [
-  { id: 'plan', friend: 'Mor', title: 'Plan my day', caption: 'With Mor', area: 'plan' },
-  { id: 'read', friend: 'Chiku', title: 'Read a little', caption: 'With Chiku', area: 'learn' },
-];
 const CARDS_KEY = 'nandi.yatra.cards';
 const readCards = (): string[] => { try { const value = JSON.parse(localStorage.getItem(CARDS_KEY) ?? '[]') as unknown; return Array.isArray(value) ? value.filter((id): id is string => typeof id === 'string') : []; } catch { return []; } };
 const keepCard = (id: string) => { try { localStorage.setItem(CARDS_KEY, JSON.stringify([...new Set([...readCards(), id])])); } catch { /* a convenience only */ } };
@@ -73,50 +64,83 @@ function narrative(trek: Trek, night: boolean): string {
   return `${trek.stretch} of ${STRETCHES_PER_LEG} stretches to ${next}. Every session lights one star.`;
 }
 
-/** The minute, for the greeting and the day's line. */
+/** The minute, for the scene's day and night and the week's line. */
 function useMinute(): number {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
   return now;
 }
 
-/** Spec 41: the day after a chapter's last idea, its Book check waits here, right after a running focus. */
-function BookCheckStrip() {
-  const due = useLiveQuery(async () => bookCheckDue(await db.ledger.where('kind').anyOf('chapter', 'chapter-check').toArray(), dayKey(Date.now())), []);
-  if (!due) return null;
-  // No book packs here: Yatra opens first, so the strip names the check, and the check names its chapter.
-  return <button type="button" className="yatra-focus-strip yatra-book-check" onClick={() => go(`read/check/${due.topicId}/${due.moduleId}`)}>
-    <span className="yatra-focus-text">Book check · three questions</span>
-    <b>Open</b>
-  </button>;
+/** Spec 45b: what Home reads for its top line and its one next move. Existing rows only; nothing is written. */
+function useHomeRows() {
+  return useLiveQuery(async () => {
+    const today = dayKey(Date.now());
+    const week = weekStart(today);
+    const focus = await db.focus.filter(row => !row.deleted).toArray();
+    const current = focus.filter(row => row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt)[0];
+    const task = current ? await db.tasks.get(current.taskId) : undefined;
+    return {
+      today, focus, current: current && task && !task.deleted ? { row: current, title: task.title } : null,
+      ledger: await db.ledger.where('dayKey').between(week, today, true, true).filter(row => !row.deleted).toArray(),
+      checks: await db.ledger.where('kind').anyOf('chapter', 'chapter-check').toArray(),
+      sessions: await db.sessions.where('dayKey').between(week, today, true, true).toArray(),
+      tasks: await db.tasks.where('dayKey').equals(today).toArray(),
+      program: await db.programs.get('train-program'),
+      beats: await db.settings.get(TAAL_BEATS_KEY(week)),
+    };
+  }, []);
+}
+type HomeRows = NonNullable<ReturnType<typeof useHomeRows>>;
+
+/** jenil-87 decision 1: this week's recorded time, labelled as such. No estimate of time won back until one is measured. */
+function WeekLine({ rows, now }: { rows: HomeRows; now: number }) {
+  const week = recordedWeek({ focus: rows.focus, sessions: rows.sessions, ledger: rows.ledger, today: rows.today, now });
+  const parts = weekParts(week);
+  const ideas = week.ideas ? `${week.ideas} ${week.ideas === 1 ? 'idea' : 'ideas'} read` : '';
+  return <div className="home-week">
+    <p className="home-week-label">This week, recorded</p>
+    <p className="home-week-time">{week.minutes ? hoursMinutes(week.minutes) : 'Nothing yet'}</p>
+    <p className="home-week-what">{[parts, ideas].filter(Boolean).join(' · ') || 'Focus, Train and Calm time adds up here.'}</p>
+  </div>;
 }
 
-/** Spec 37: while a focus is open, one soft strip under the scene leads back to Plan's focus card. Nothing else changes. */
-function FocusStrip() {
-  const open = useLiveQuery(async () => {
-    const rows = await db.focus.filter(row => !row.deleted).toArray();
-    const current = rows.filter(row => row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt)[0];
-    const task = current ? await db.tasks.get(current.taskId) : undefined;
-    return current && task && !task.deleted ? { rows, current, title: task.title } : null;
-  }, []);
+/** Spec 45b: exactly one next move, one action. Its order is nextMove's. */
+function NextMoveCard({ rows }: { rows: HomeRows }) {
   const [now, setNow] = useState(() => Date.now());
-  const running = open ? isFocusRunning(open.current) : false;
+  const running = rows.current ? isFocusRunning(rows.current.row) : false;
   useEffect(() => { if (!running) return; const timer = window.setInterval(() => setNow(Date.now()), 1000); return () => window.clearInterval(timer); }, [running]);
-  if (!open) return null;
-  const seconds = Math.floor(taskFocusMs(open.rows, open.current.taskId, Math.max(now, open.current.startedAt)) / 1000);
-  return <button type="button" className="yatra-focus-strip" onClick={() => go('plan')}>
-    <i aria-hidden="true" className={running ? 'running' : undefined} />
-    {/* A long task name gives way; the clock always shows. */}
-    <span className="yatra-focus-text">{running ? 'Working on' : 'Paused'} '{open.title}'</span>
-    <span className="yatra-focus-clock">· {Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, '0')}</span>
-    <b>Open</b>
-  </button>;
+  const today = rows.today;
+  const program = rows.program;
+  const beat = program ? taalWeek({ today, programDays: program.days ?? [1, 3, 5], target: program.weeklyTarget ?? 3, days: trainDays(rows.ledger), changes: readBeatChanges(rows.beats && !rows.beats.deleted ? rows.beats.value : undefined) }).beats.find(row => row.today) : undefined;
+  const move = nextMove({
+    focus: rows.current ? { title: rows.current.title, running } : null,
+    bookCheck: bookCheckDue(rows.checks, today) ?? null,
+    trainToday: beat?.plan === 'clap' && !beat.filled,
+    tasks: rows.tasks, today,
+    softDay: !!softToday(rows.ledger, today).state,
+  });
+  let title: string, detail: ReactNode;
+  if (move.kind === 'focus') {
+    const seconds = Math.floor(taskFocusMs(rows.focus, rows.current!.row.taskId, Math.max(now, rows.current!.row.startedAt)) / 1000);
+    title = `${move.running ? 'Working on' : 'Paused'} '${move.title}'`;
+    detail = <span className="next-move-clock">{Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, '0')} on the clock</span>;
+  } else if (move.kind === 'book-check') { title = 'Book check'; detail = 'Three questions on yesterday\'s chapter'; }
+  else if (move.kind === 'train') { title = 'Today\'s session with Nandi'; detail = 'A Train day'; }
+  else if (move.kind === 'task') { title = move.title; detail = move.at != null ? `Planned for ${new Date(move.at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}` : 'Planned for today'; }
+  else { title = 'Read one idea'; detail = 'A short sitting with Chiku'; }
+  return <section className="next-move" aria-labelledby="next-move-eyebrow" data-kind={move.kind}>
+    <p className="eyebrow" id="next-move-eyebrow">One next move</p>
+    <button type="button" className="next-move-go" onClick={() => go(move.route)}>
+      <span className="next-move-text"><strong>{title}</strong><span>{detail}</span></span>
+      <span className="next-move-arrow" aria-hidden="true">↗</span>
+    </button>
+  </section>;
 }
 
 export function Yatra() {
   const yatra = useYatra();
+  const rows = useHomeRows();
   const now = useMinute();
-  const hour = new Date(now).getHours();
   const [postcard, setPostcard] = useState<number | null>(null);
   const [renaming, setRenaming] = useState<Constellation | null>(null);
   const [name, setName] = useState('');
@@ -134,42 +158,27 @@ export function Yatra() {
   }, [yatra, postcard]);
   const trek = yatra?.trek;
   const leg = trek && postcard !== null ? trek.trail.legs[postcard] : undefined;
+  const postcards = trek ? trek.legs.filter(row => row.gateOn).length : 0;
 
-  return <section className="screen yatra-screen yatra-home">
-    {/* Spec 37: Yatra is home. A greeting and one quiet line, then the camp; no counts above the fold. */}
-    <header className="yatra-welcome">
-      <p className="eyebrow">{trek ? `Yatra · ${trek.trail.name}` : 'Yatra'}</p>
-      <h1>{greeting(hour)}</h1>
-      <p className="yatra-quiet">{quietLine(dayKey(now), hour, !!yatra?.night)}</p>
+  return <section className="screen yatra-screen yatra-home notebook-home">
+    {/* Spec 45b: Home is a paper page. The week's recorded time and where the camp is, the camp, then one next move. */}
+    <header className="home-notes">
+      {rows ? <WeekLine rows={rows} now={now} /> : <div className="home-week" />}
+      <div className="home-title">
+        <h1>{trek && yatra ? campLine(trek, yatra.night) : 'Field notes'}</h1>
+        {trek && <button type="button" className="home-permit" aria-label={`Journal · ${postcards}`} onClick={() => go('yatra/journal')}>
+          <span>Journal</span><b>{postcards}</b>
+        </button>}
+      </div>
     </header>
-    {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} />}
-    <FocusStrip />
-    <BookCheckStrip />
-    <h2 className="yatra-ready">Whenever you feel ready</h2>
-    <ul className="yatra-doors" aria-label="Doors">{DOORS.map(door => <li key={door.id}>
-      <button type="button" className="card yatra-door" data-area={door.area} aria-label={`${door.title}: ${door.caption}`} onClick={() => go(door.id)}>
-        <Cast name={door.friend} pose="idle" size={56} />
-        <span className="yatra-corner-text"><strong>{door.title}</strong><span>{door.caption}</span></span>
-        <span className="yatra-door-chevron" aria-hidden="true">›</span>
-      </button>
-    </li>)}</ul>
-    <ul className="yatra-corners compact" aria-label="Corners">{CORNERS.map(corner => <li key={corner.id}>
-      <button type="button" className="card yatra-corner" data-area={corner.area} aria-label={`${corner.title}: ${corner.caption}`} onClick={() => go(`yatra/${corner.id}`)}>
-        <Cast name={corner.friend} pose="idle" size={72} />
-        <span className="yatra-corner-text"><strong>{corner.title}</strong><span>{corner.caption}</span></span>
-      </button>
-    </li>)}</ul>
-    {trek && yatra && <>
-      <div className="trek-journey">
-        <div className="trek-journey-top"><strong>{trekLine(trek)}</strong></div>
-        {!trek.complete && <div className="trek-rail" aria-hidden="true">{Array.from({ length: STRETCHES_PER_LEG }, (_, i) => <i key={i} className={i < trek.stretch ? 'filled' : undefined} />)}</div>}
-        <p className="trek-narrative" role="status">{narrative(trek, yatra.night)}</p>
-      </div>
-      <div className="trek-actions">
-        {yatra.night && <button type="button" onClick={() => go('yatra/calm')}>Breathe at camp</button>}
-        <button type="button" className="secondary" onClick={() => go('yatra/journal')}>Journal · {trek.legs.filter(row => row.gateOn).length}</button>
-      </div>
-    </>}
+    {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} onFriend={spot => go(spot.route)} />}
+    {rows && <NextMoveCard rows={rows} />}
+    {/* Below the move, a quiet note on the trail: information, never a second action. */}
+    {trek && yatra && <div className="trek-journey">
+      <div className="trek-journey-top"><strong>{trekLine(trek)}</strong></div>
+      {!trek.complete && <div className="trek-rail" aria-hidden="true">{Array.from({ length: STRETCHES_PER_LEG }, (_, i) => <i key={i} className={i < trek.stretch ? 'filled' : undefined} />)}</div>}
+      <p className="trek-narrative" role="status">{narrative(trek, yatra.night)}</p>
+    </div>}
     {leg && <div className="sheet-backdrop" onClick={closePostcard}><section ref={postcardDialog} tabIndex={-1} className="task-sheet trek-postcard" role="dialog" aria-modal="true" aria-label={`${leg.landmark.name} postcard`} onClick={event => event.stopPropagation()}>
       <p className="eyebrow">A gate on the trail · {leg.landmark.kind}</p><h2>{leg.postcard.title ?? leg.landmark.name}</h2>
       {leg.postcard.lines.map(line => <p key={line}>{line}</p>)}

@@ -1,10 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
 
-// Spec 37: Yatra is home. The app opens on it, with a greeting, the camp, a strip back to a running focus, then the doors.
+// Spec 37: Yatra is home. Spec 45b: it is a notebook page: the week's recorded time, the camp's heading, the five
+// friends at camp (each a way to its area), then one next move (a running focus takes it).
 const at = (hour: number) => new Date(`2026-10-28T${String(hour).padStart(2, '0')}:00:00`);
 const tabs = (page: Page) => page.getByRole('navigation', { name: 'Main tabs' });
-const greeting = (page: Page) => page.getByRole('main').getByRole('heading', { level: 1 });
-const strip = (page: Page) => page.locator('.yatra-focus-strip');
+const heading = (page: Page) => page.getByRole('main').getByRole('heading', { level: 1 });
+const strip = (page: Page) => page.locator('.next-move-go');
 
 test('a cold open lands on Yatra, with Yatra first and lit in the tab bar', async ({ page }) => {
   await page.clock.setFixedTime(at(10));
@@ -12,23 +13,20 @@ test('a cold open lands on Yatra, with Yatra first and lit in the tab bar', asyn
   await expect(page).toHaveURL(/#yatra$/);
   await expect(tabs(page).getByRole('link')).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
   await expect(tabs(page).getByRole('link', { name: 'Yatra' })).toHaveAttribute('aria-current', 'page');
-  await expect(greeting(page)).toHaveText('Good morning.');
-  await expect(page.locator('.yatra-welcome .eyebrow')).toHaveText('Yatra · Hampta Pass');
-  await expect(page.locator('.yatra-quiet')).toHaveText(/^(Take a breath\. Then pick one small thing\.|Nothing is due this minute\.|There is room to begin gently\.|Stay a little\. The day is yours\.|The trail can wait until you are ready\.)$/);
-  // All five friends sit at the camp.
+  await expect(heading(page)).toHaveText('Camp at Jobra');
+  await expect(page.locator('.home-week')).toContainText('This week, recorded');
+  // All five friends sit at the camp, each a button to its area.
   await expect(page.locator('.trek-group [data-cast]')).toHaveCount(5);
   for (const name of ['Mor', 'Chiku', 'Kachhua', 'Kapi', 'Nandi']) await expect(page.locator(`.trek-group [data-cast="${name}"]`)).toHaveCount(1);
-  // Then the doors, in order, and the trek below.
-  await expect(page.getByRole('heading', { name: 'Whenever you feel ready' })).toBeVisible();
-  await expect(page.getByRole('list', { name: 'Doors' }).getByRole('button')).toHaveText([/Plan my day\s*With Mor/, /Read a little\s*With Chiku/]);
-  await expect(page.getByRole('list', { name: 'Corners' }).getByRole('button')).toHaveText([/Train/, /Mind/, /Calm/]);
+  await expect(page.locator('.camp-friend')).toHaveCount(5);
+  // Then exactly one next move, and the trek below it.
+  await expect(strip(page)).toHaveCount(1);
+  await expect(strip(page)).toContainText('Read one idea');
   await expect(page.locator('.trek-journey-top')).toBeVisible();
-  // No focus is open, so there is no strip.
-  await expect(strip(page)).toHaveCount(0);
-  await page.getByRole('button', { name: 'Plan my day: With Mor' }).click();
+  await page.getByRole('button', { name: 'Mor at the map: Plan' }).click();
   await expect(page).toHaveURL(/#plan$/);
   await page.goto('/#yatra');
-  await page.getByRole('button', { name: 'Read a little: With Chiku' }).click();
+  await page.getByRole('button', { name: 'Chiku on the reading rock: Read' }).click();
   await expect(page).toHaveURL(/#read$/);
 });
 
@@ -39,17 +37,17 @@ test('a link still wins: a notification route to Plan opens Plan', async ({ page
   await expect(tabs(page).getByRole('link', { name: 'Plan' })).toHaveAttribute('aria-current', 'page');
 });
 
-for (const [hour, words, night] of [[8, 'Good morning.', false], [14, 'Good afternoon.', false], [17, 'Good evening.', false], [19, 'Good evening.', true], [22, 'Good evening.', true]] as const) {
-  test(`at ${hour}:00 the greeting is "${words}"${night ? ' (never "Good night" on opening the app)' : ''}`, async ({ page }) => {
+for (const [hour, words, night] of [[8, 'Camp at Jobra', false], [14, 'Camp at Jobra', false], [17, 'Camp at Jobra', false], [19, 'At Jobra', true], [22, 'At Jobra', true]] as const) {
+  test(`at ${hour}:00 the heading is "${words}"`, async ({ page }) => {
     await page.clock.setFixedTime(at(hour));
     await page.goto('/');
-    await expect(greeting(page)).toHaveText(words);
-    if (night) await expect(page.locator('.yatra-quiet')).toHaveText('The friends are by the fire tonight.');
-    else await expect(page.locator('.yatra-quiet')).not.toHaveText('The friends are by the fire tonight.');
+    await expect(heading(page)).toHaveText(words);
+    if (night) await expect(page.locator('.trek-scene.is-night')).toBeVisible();
+    else await expect(page.locator('.trek-scene.is-night')).toHaveCount(0);
   });
 }
 
-test('a running focus shows one strip under the camp, and it opens the focus card', async ({ page }) => {
+test('a running focus is the one next move, and it opens the focus card', async ({ page }) => {
   await page.clock.install({ time: at(10) });
   await page.goto('/#plan');
   await page.getByLabel('Add a task').fill('Write the report');
@@ -59,16 +57,16 @@ test('a running focus shows one strip under the camp, and it opens the focus car
   await expect(page.getByRole('region', { name: 'Focus' })).toContainText('Write the report');
   await page.clock.fastForward(24 * 60_000);
   await tabs(page).getByRole('link', { name: 'Yatra' }).click();
-  await expect(strip(page)).toHaveText(/^Working on 'Write the report'\s*· 24:\d\d\s*Open$/);
+  await expect(strip(page)).toHaveText(/^Working on 'Write the report'\s*24:\d\d on the clock\s*↗$/);
   await strip(page).click();
   await expect(page).toHaveURL(/#plan$/);
   await expect(page.getByRole('region', { name: 'Focus' })).toBeVisible();
-  // Once the focus is done the strip is gone.
+  // Once the focus is done, the move is Read again.
   await page.getByRole('region', { name: 'Focus' }).getByRole('button', { name: 'Done' }).click();
   await expect(page.getByRole('region', { name: 'Focus' })).toHaveCount(0);
   await tabs(page).getByRole('link', { name: 'Yatra' }).click();
-  await expect(greeting(page)).toBeVisible();
-  await expect(strip(page)).toHaveCount(0);
+  await expect(heading(page)).toBeVisible();
+  await expect(strip(page)).toContainText('Read one idea');
 });
 
 test('a focus left running is held at "Still working?" when the app next opens on Yatra, and its XP stops there', async ({ page }) => {
@@ -84,10 +82,10 @@ test('a focus left running is held at "Still working?" when the app next opens o
   await page.clock.setSystemTime(at(21));
   await page.goto('/');
   await expect(page).toHaveURL(/#yatra$/);
-  await expect(strip(page)).toHaveText(/^Paused 'Write the report'\s*· 6\d:\d\d\s*Open$/);
+  await expect(strip(page)).toHaveText(/^Paused 'Write the report'\s*6\d:\d\d on the clock\s*↗$/);
   // The pause holds: the clock does not move on.
   await page.clock.fastForward(5 * 60_000);
-  await expect(strip(page)).toHaveText(/· 6\d:\d\d/);
+  await expect(strip(page)).toHaveText(/6\d:\d\d on the clock/);
   await strip(page).click();
   const card = page.getByRole('region', { name: 'Focus' });
   await expect(card).toContainText('Paused: no tap after "Still working?"');
