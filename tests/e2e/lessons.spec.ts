@@ -83,7 +83,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
     await expect(page.getByLabel('Puzzle result')).toBeVisible();
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-    await page.getByRole('button', { name: "Back to Kapi's shelf" }).click();
+    await page.getByRole('button', { name: 'Back to Play' }).click();
     // The first board can be the intro; if the daily board is still open, solve it too.
     await expect(todaysBoard(page)).toBeVisible();
     if (!BOARD_DONE.test(await todaysBoard(page).innerText())) {
@@ -93,7 +93,7 @@ for (const scheme of ['light', 'dark'] as const) {
       await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
       await expect(page.getByLabel('Puzzle result')).toBeVisible();
       await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-      await page.getByRole('button', { name: "Back to Kapi's shelf" }).click();
+      await page.getByRole('button', { name: 'Back to Play' }).click();
     }
     await expect(page.getByRole('button', { name: /^(?:Open|Continue) the case$/ })).toBeVisible();
     await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
@@ -104,7 +104,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('.mind-case')).toHaveAttribute('data-save-state', 'saved');
     await expect(page.locator('.mind-case').getByRole('status')).toHaveText('Saved.');
     await expect(page.locator('.mind-case').getByRole('status')).toBeVisible();
-    await page.getByRole('button', { name: "Back to Kapi's shelf" }).click();
+    await page.getByRole('button', { name: 'Back to Play' }).click();
     await expect(page.getByRole('button', { name: 'Done · see it again' })).toBeVisible();
     await expect(todaysBoard(page)).toContainText(BOARD_DONE);
     await page.screenshot({ path: testInfo.outputPath(`practice-status-${scheme}.png`), fullPage: true });

@@ -80,10 +80,10 @@ export function back(fallback = parentRoute(route())): void {
   if (entry()?.from) history.back();
   else go(fallback);
 }
-/** Where Back goes, named: a tab, or the Yatra corner a screen sits in (spec 34). */
+/** Where Back goes, named: a tab, or the Yatra corner a screen sits in (spec 34), by its heading (spec 45c: Play, Train). */
 export function backDestination(): string {
   const target = canonicalRoute(entry()?.from ?? parentRoute(route()));
-  if (target === 'yatra/mind' || target.startsWith('yatra/mind/')) return "Kapi's shelf";
+  if (target === 'yatra/mind' || target.startsWith('yatra/mind/')) return 'Play';
   if (target === 'yatra/train' || target.startsWith('yatra/train/')) return 'Train';
   return tabOf(target);
 }

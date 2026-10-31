@@ -39,7 +39,7 @@ test('browser Back restores the Mind board and saved puzzle progress', async ({ 
   await todaysBoard(page).click();
   await expect(board.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
   expect(await board.locator('.mind-grid button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')))).toEqual(cells);
-  const back = await page.getByRole('button', { name: "Back to Kapi's shelf" }).boundingBox();
+  const back = await page.getByRole('button', { name: 'Back to Play' }).boundingBox();
   // 43.5: a box measured while the page fades in (spec 45a) can read 43.99 px.
   expect(back && back.width >= 43.5 && back.height >= 43.5, JSON.stringify(back)).toBe(true);
 });
