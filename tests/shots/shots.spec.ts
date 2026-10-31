@@ -254,6 +254,51 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 's38-3-done-after-locked-sit', false);
   });
 
+  // a11y batch 2: the spot targets (outlined to show their 44 px boxes), 200% text, the reminders-off card, a full phone.
+  test('a11y batch 2', async ({ page }) => {
+    await page.clock.install({ time: NOON });
+    await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+    await walkIdea(page, 'how-things-work');
+    await page.getByRole('button', { name: 'One more idea' }).click();
+    for (let screen = 0; screen < 6 && !(await page.locator('.step-example').count()); screen++) {
+      await page.clock.runFor(1000);
+      if (await page.locator('.learn-options').count()) await page.locator('.learn-options button').first().click();
+      await page.locator('.idea-sitting').getByRole('button', { name: /^(Continue|Finish the idea)$/ }).first().click();
+    }
+    await page.clock.runFor(1000);
+    await page.addStyleTag({ content: '.step-example .step-part { outline: 2px dashed #d0021b; outline-offset: 0; }' });
+    await shot(page, 'a2-1-spot-44px-outlined', false);
+    // 200% text: the focus strip and the trek's caption and signs.
+    await page.goto('/?e2e#plan/focus');
+    await page.getByLabel('Add a task').fill('Write the long quarterly report for the regional office');
+    await page.getByRole('button', { name: 'Add', exact: true }).click();
+    await page.getByRole('button', { name: 'Start focus' }).click();
+    await page.goto('/?e2e#yatra');
+    await expect(page.locator('.yatra-focus-strip')).toBeVisible();
+    await page.addStyleTag({ content: '.trek-place b { font-size: 20px !important; } .trek-caption b { font-size: 20px !important; } .trek-caption span { font-size: 32px !important; } .yatra-focus-strip { font-size: 32px !important; } .deck-context { font-size: 28px !important; }' });
+    await page.clock.runFor(1000);
+    await shot(page, 'a2-2-yatra-200-text', false);
+    // The reminders-off card under Plan's lists (a timed task today, notifications off).
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2eNotify', 'denied'));
+    await page.evaluate(async at => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction('tasks', 'readwrite'); transaction.objectStore('tasks').put({ id: 'shot-timed', title: 'Call the bank', status: 'planned', dayKey: '2026-10-26', size: 'S', estimateMin: 15, mustOrCould: 'must', scheduledStart: at, updatedAt: at, deleted: 0, deviceId: 'shots' }); transaction.oncomplete = () => resolve(); });
+      database.close();
+    }, NOON.getTime() + 3_600_000);
+    await page.goto('/?e2e#plan');
+    await expect(page.locator('.reminders-off')).toBeVisible();
+    await page.locator('.reminders-off').scrollIntoViewIfNeeded();
+    await shot(page, 'a2-3-reminders-off', false);
+    // A full phone: the line at the top, and Backup's answer to "Ask to keep data".
+    await page.evaluate(() => window.dispatchEvent(new Event('nandi:storage-full')));
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await shot(page, 'a2-4-storage-full-line', false);
+    await page.getByRole('button', { name: /out of room for NANDI's data/ }).click();
+    await page.getByRole('button', { name: 'Ask to keep data on this device' }).click();
+    await page.getByRole('button', { name: 'Ask to keep data on this device' }).scrollIntoViewIfNeeded();
+    await shot(page, 'a2-5-keep-data-answer', false);
+  });
+
   // Spec 41: one idea a sitting. Babylon has its extra screens (story, example, plan); the rest use the fallback.
   test('spec 41 sittings', async ({ page }) => {
     test.setTimeout(240_000);

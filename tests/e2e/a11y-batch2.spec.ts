@@ -6,8 +6,11 @@ const NOON = new Date('2026-10-28T12:00:00');
 
 /** 200% text for the parts the audit named (the browser cannot scale text alone, so these get double size). */
 const doubleText = (page: Page) => page.addStyleTag({ content: '.trek-place b { font-size: 20px !important; } .trek-caption b { font-size: 20px !important; } .trek-caption span { font-size: 32px !important; } .yatra-focus-strip { font-size: 32px !important; } .deck-context { font-size: 28px !important; }' });
-/** No word cut off: the element shows all of its text (nothing scrolled away or hidden). */
-const fits = (page: Page, selector: string) => page.locator(selector).evaluateAll(nodes => nodes.every(node => node.scrollWidth <= node.clientWidth + 1 && node.scrollHeight <= node.clientHeight + 1));
+/** No word cut off: nothing hides overflow, nothing ends in an ellipsis or is held to one line, and no line is wider than its box. */
+const fits = (page: Page, selector: string) => page.locator(selector).evaluateAll(nodes => nodes.every(node => {
+  const style = getComputedStyle(node);
+  return style.overflow !== 'hidden' && style.textOverflow !== 'ellipsis' && style.whiteSpace !== 'nowrap' && node.scrollWidth <= node.clientWidth + 1;
+}));
 
 async function seedTimedTask(page: Page, title: string) {
   await page.evaluate(async ({ title, at }) => {
