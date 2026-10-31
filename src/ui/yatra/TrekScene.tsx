@@ -92,7 +92,22 @@ export function TrekScene({ trek, night, dusk = false, brighten = 0, breath, onR
       label.dataset.cut = left < node.scrollLeft + 4 || right > node.scrollLeft + node.clientWidth - 4 ? 'yes' : 'no';
     }
   };
-  useLayoutEffect(() => { const node = scroller.current; if (node) node.scrollLeft = Math.max(0, centreOf(groupX(walked, legs)) - node.clientWidth / 2); fitLabels(); }, [walked, legs, night]);
+  // a11y C9 (jenil-87): the current camp's sign sits fully in view too, at any text size: the least scroll that shows it.
+  const keepSign = () => {
+    const node = scroller.current, sign = world.current?.querySelector<HTMLElement>('.trek-place.current b');
+    if (!node || !sign) return;
+    const box = sign.getBoundingClientRect(), view = node.getBoundingClientRect();
+    if (box.right > view.right - 8) node.scrollLeft += box.right - view.right + 8;
+    else if (box.left < view.left + 8) node.scrollLeft -= view.left + 8 - box.left;
+  };
+  useLayoutEffect(() => { const node = scroller.current; if (node) node.scrollLeft = Math.max(0, centreOf(groupX(walked, legs)) - node.clientWidth / 2); keepSign(); fitLabels(); }, [walked, legs, night]);  
+  useEffect(() => {
+    const sign = world.current?.querySelector<HTMLElement>('.trek-place.current b');
+    if (!sign || typeof ResizeObserver === 'undefined') return;
+    const watch = new ResizeObserver(() => { keepSign(); fitLabels(); });
+    watch.observe(sign);
+    return () => watch.disconnect();
+  }, [walked, legs, night]);  
   const onScroll = () => { fitLabels(); const x = scroller.current?.scrollLeft ?? 0; if (far.current) far.current.style.transform = `translateX(${x * 0.23}px)`; if (mid.current) mid.current.style.transform = `translateX(${x * 0.12}px)`; };
   const place = trek.trail.places[Math.min(trek.place, trek.trail.places.length - 1)]!;
   const next = trek.trail.places[trek.place + 1];

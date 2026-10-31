@@ -51,6 +51,13 @@ test('C9: at 200% text the trek captions, place signs and focus strip show every
   expect(await fits(page, '.yatra-focus-text')).toBe(true);
   expect(await fits(page, '.trek-caption')).toBe(true);
   expect(await fits(page, '.trek-place b')).toBe(true);
+  // The current camp's sign is fully inside the trail's view (jenil-87), not half off its edge.
+  await expect.poll(() => page.evaluate(() => {
+    const sign = document.querySelector('.trek-place.current b'), view = document.querySelector('.trek-scroll');
+    if (!sign || !view) return true;
+    const box = sign.getBoundingClientRect(), frame = view.getBoundingClientRect();
+    return box.left >= frame.left && box.right <= frame.right;
+  })).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
