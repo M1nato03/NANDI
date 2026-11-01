@@ -11,6 +11,7 @@ vi.mock('../../platform/nightPause', () => ({ nightPauseAvailable: () => false }
 vi.mock('./NightPlanSetting', () => ({ NightPlanSetting: () => null }));
 vi.mock('./ReminderSettings', () => ({ ReminderSettings: () => null }));
 vi.mock('./ErrorRing', () => ({ ErrorRing: () => null }));
+vi.mock('./MinutesRecord', () => ({ MinutesRecord: () => null }));
 import { Ground } from './Ground';
 
 beforeEach(async () => {
