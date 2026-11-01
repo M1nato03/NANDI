@@ -11,7 +11,11 @@
 .motif-halftone .book-cover-motif { background: radial-gradient(circle, var(--cover-mark) 2.2px, transparent 2.6px) 0 0 / 11px 11px; }
 .motif-kolam .book-cover-motif { background: radial-gradient(circle, var(--cover-mark) 1.8px, transparent 2.2px) 0 0 / 14px 14px, radial-gradient(circle, transparent 5px, var(--cover-mark) 5.5px, var(--cover-mark) 6.5px, transparent 7px) 7px 7px / 14px 14px; }
 .motif-stamp .book-cover-motif { margin: 7px; border: 2px dashed var(--cover-mark); border-radius: 4px 8px 8px 4px; }
-.book-cover-title { position: relative; font: 700 15px/1.05 'Bricolage Grotesque', sans-serif; letter-spacing: .01em; overflow-wrap: anywhere; }
+/* Spec 50 §4: wrap at spaces only (never "Babylo|n"); a title too big for its cover steps its font down in Cover.tsx. */
+.book-cover-title { position: relative; flex: none; font: 700 15px/1.05 'Bricolage Grotesque', sans-serif; letter-spacing: .01em; overflow-wrap: normal; word-break: normal; hyphens: manual;
+  /* The fit measures each step at once; reduced motion gives every property a tiny transition (theme.css), which would
+     leave the size it measures one step behind, so a title never transitions its size. */
+  transition-property: none; }
 .book-cover-author { position: relative; margin-top: 4px; font: 600 10px/1 'DM Sans', sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
 .cover-thumb { width: 52px; height: 72px; padding: 6px 6px 6px 10px; }
 .cover-thumb .book-cover-title { font-size: 10px; }

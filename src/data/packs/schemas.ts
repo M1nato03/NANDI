@@ -82,7 +82,8 @@ export const bookSchema = v.strictObject({
   region: v.optional(v.literal('IN')),
   edition: v.optional(text),
   authorDied: v.optional(integer),
-  cover: v.strictObject({ palette: v.picklist(coverPalettes), motif: v.picklist(coverMotifs) }),
+  // Spec 50 §4: `short` is an optional cover title ("Babylon"); the full title stays in the label and in aria.
+  cover: v.strictObject({ palette: v.picklist(coverPalettes), motif: v.picklist(coverMotifs), short: v.optional(v.pipe(text, v.maxLength(24))) }),
   blurb: v.pipe(text, v.maxLength(140)),
 });
 export const chapterCheckKinds = ['recall', 'chiku', 'quiz'] as const;

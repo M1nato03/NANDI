@@ -215,6 +215,37 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'r5-result-tucked', false);
   });
 
+  test('covers fix', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.clock.install({ time: new Date('2026-11-04T12:00:00') });
+    // The phone's larger text (Android text zoom) stood in by larger cover titles, there from the first frame.
+    await page.addInitScript(() => {
+      if (!sessionStorage.getItem('zoom-shot')) return;
+      const css = '.read-library .book-cover .book-cover-title { font-size: 20px; } .read-continue .cover-thumb .book-cover-title { font-size: 13px; }';
+      const add = () => { if (!document.head) return false; const style = document.createElement('style'); style.textContent = css; document.head.append(style); return true; };
+      if (!add()) { const watch = new MutationObserver(() => { if (add()) watch.disconnect(); }); watch.observe(document, { childList: true, subtree: true }); }
+    });
+    await page.goto('/?e2e#read');
+    const library = page.getByRole('region', { name: 'Library' });
+    await expect(library).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    await library.scrollIntoViewIfNeeded();
+    await shot(page, 'c1-library', false);
+    await page.getByRole('region', { name: 'Classics' }).scrollIntoViewIfNeeded();
+    await shot(page, 'c2-classics', false);
+    await page.evaluate(() => sessionStorage.setItem('zoom-shot', '1'));
+    await page.reload();
+    await expect(library).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    await page.getByRole('region', { name: 'Classics' }).scrollIntoViewIfNeeded();
+    await shot(page, 'c3-classics-phone-text-larger', false);
+    await page.evaluate(() => sessionStorage.removeItem('zoom-shot'));
+    await page.reload();
+    await textAt200(page);
+    await page.getByRole('region', { name: 'Classics' }).scrollIntoViewIfNeeded();
+    await shot(page, 'c4-classics-200', false);
+  });
+
   test('spec 45b home', async ({ page }) => {
     test.setTimeout(180_000);
     const WED = new Date('2026-10-28T08:30:00');
