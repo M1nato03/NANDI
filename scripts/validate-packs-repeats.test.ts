@@ -6,7 +6,7 @@ import { validateAll } from './validate-packs';
 
 // Spec 51: within one pack, ideas must not share recall pieces, a first step (title AND takeaway), a recall decoy, or
 // the Chiku game's card, question and guess lines. Run through validateAll in editorial mode, as `npm run packs` does.
-type Concept = { id: string; recall: { pieces: string[]; decoys: { text: string }[] }; steps: { title: string; takeaway: string }[]; chiku: { cards: { text: string }[]; newDay: { question: string }; guesses: { why: string }[] } };
+type Concept = { id: string; misconceptions: { name: string }[]; recall: { pieces: string[]; decoys: { text: string }[] }; steps: { title: string; takeaway: string }[]; chiku: { cards: { text: string }[]; newDay: { question: string }; guesses: { why: string }[] } };
 const read = (name: string) => JSON.parse(readFileSync(join('content', 'topics', name), 'utf8')) as { body: { modules: { concepts: Concept[] }[] } };
 const conceptsOf = (pack: ReturnType<typeof read>) => pack.body.modules.flatMap(module => module.concepts);
 
@@ -54,6 +54,13 @@ describe('spec 51: one pack cannot repeat a template across ideas', () => {
     expect(question.errors.some(error => error.startsWith(`${question.path}: duplicate Chiku question shared by ${question.a} and ${question.b}: `))).toBe(true);
     const why = await errorsFor((a, b) => { b.chiku.guesses[2]!.why = a.chiku.guesses[2]!.why; });
     expect(why.errors.some(error => error.startsWith(`${why.path}: duplicate Chiku guess why shared by ${why.a} and ${why.b}: `))).toBe(true);
+  });
+  it('fails when two ideas share a misconception name, or the same pair of names', async () => {
+    const one = await errorsFor((a, b) => { b.misconceptions[1]!.name = a.misconceptions[0]!.name; });
+    expect(one.errors.some(error => error.startsWith(`${one.path}: duplicate misconception name shared by ${one.a} and ${one.b}: `))).toBe(true);
+    expect(one.errors.filter(error => error.includes('duplicate misconception names'))).toEqual([]);
+    const pair = await errorsFor((a, b) => { b.misconceptions[0]!.name = a.misconceptions[1]!.name; b.misconceptions[1]!.name = a.misconceptions[0]!.name; });
+    expect(pair.errors).toContain(`${pair.path}: duplicate misconception names shared by ${pair.a} and ${pair.b}`);
   });
   it('a repeat inside one idea, or across two packs, is fine', async () => {
     const inside = await errorsFor((a) => { a.recall.decoys[1]!.text = a.recall.decoys[0]!.text; });

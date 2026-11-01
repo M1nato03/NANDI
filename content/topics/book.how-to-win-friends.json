@@ -2276,7 +2276,7 @@
               {
                 "id": "htwf-genuine-interest-m1",
                 "name": "Questions can be a trick",
-                "correction": "A kind act has to be real. Ask about something that matters to the person, then listen to the answer. Care works best when it is real.",
+                "correction": "A question asked only to look good is easy to spot. Ask about what matters to them, then listen.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -2934,7 +2934,7 @@
               {
                 "id": "htwf-smile-m1",
                 "name": "A forced smile earns trust",
-                "correction": "A kind act has to be real. Offer a natural smile when it fits. Read the other person and the setting; a smile is no sure way to earn trust.",
+                "correction": "A smile you force can look fake or out of place. Smile when it fits the moment and their mood.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -3540,7 +3540,7 @@
               {
                 "id": "htwf-names-m1",
                 "name": "A guessed name will do",
-                "correction": "A kind act has to be real. Hear the name, check how to say it, and use it with care. If you forget, ask again without fuss.",
+                "correction": "A wrong name can sting. Ask how to say it, and ask again if it slips.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -4146,7 +4146,7 @@
               {
                 "id": "htwf-listening-m1",
                 "name": "Advice must come first",
-                "correction": "A kind act has to be real. Let the person finish, then ask about what they said. Offer advice only when it is welcome.",
+                "correction": "Advice before they finish may solve the wrong problem. Hear the whole story, then ask if they want ideas.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -4752,7 +4752,7 @@
               {
                 "id": "htwf-others-interests-m1",
                 "name": "Shared interests need pretending",
-                "correction": "A kind act has to be real. Ask what the person cares about and speak from a real point of overlap. Let them also ask about you.",
+                "correction": "You do not have to like what they like. Ask about it with real curiosity instead of faking it.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -5351,7 +5351,7 @@
               {
                 "id": "htwf-sincere-importance-m1",
                 "name": "Praise can buy a favour",
-                "correction": "A kind act has to be real. Notice a real act and say why it mattered. Keep the thanks true; no one owes you a favour for it.",
+                "correction": "Praise aimed at a favour sounds empty. Name a real act you saw and expect nothing back.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -5976,7 +5976,7 @@
               {
                 "id": "htwf-arguments-m1",
                 "name": "Winning the fight settles it",
-                "correction": "A kind act has to be real. Step away from a contest of pride, then talk through the facts. A fair disagreement may still be needed.",
+                "correction": "Beating someone in a fight rarely changes their mind. Slow down and check the facts together.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -6641,7 +6641,7 @@
               {
                 "id": "htwf-respect-opinions-m1",
                 "name": "Respect means blunt correction",
-                "correction": "A kind act has to be real. Hear the view and correct the fact with care. Respect does not ask you to accept a wrong claim.",
+                "correction": "Saying flat out that someone is wrong makes them defend the view. Check the fact together and keep it kind.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -7247,7 +7247,7 @@
               {
                 "id": "htwf-admit-error-m1",
                 "name": "Blame can replace admission",
-                "correction": "A kind act has to be real. Name your mistake, fix what you can, and give the other person room to respond. An apology is not a reset button.",
+                "correction": "Blame hides the mistake and keeps it alive. Say what you got wrong and fix what you can.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -7853,7 +7853,7 @@
               {
                 "id": "htwf-friendly-start-m1",
                 "name": "A hard talk needs blame",
-                "correction": "A kind act has to be real. Start with a calm word and state the real issue. Warmth can help a hard talk, but keep the issue clear.",
+                "correction": "Blame at the start makes the other person defend. Open calmly, then name the real issue.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -8459,7 +8459,7 @@
               {
                 "id": "htwf-yes-yes-m1",
                 "name": "Loaded yeses make agreement",
-                "correction": "A kind act has to be real. Begin with a true point you both accept. Let the other person disagree with the plan; do not lead them into empty yeses.",
+                "correction": "Yeses you steer out of someone are not real agreement. Start from a point you truly share.",
                 "sourceRefs": [
                   "carnegie"
                 ]
@@ -9065,7 +9065,7 @@
               {
                 "id": "htwf-let-them-talk-m1",
                 "name": "Cutting in gets the facts",
-                "correction": "A kind act has to be real. Ask, listen, and leave room for the full account. Then share your view so both people can decide.",
+                "correction": "Cutting in can miss the detail that explains it all. Let them finish, then ask and share your view.",
                 "sourceRefs": [
                   "carnegie"
                 ]

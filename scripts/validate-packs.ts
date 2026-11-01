@@ -45,20 +45,21 @@ const text = (value: unknown): value is string => typeof value === 'string';
 /**
  * Spec 51: ideas in one pack filled from one template (How to Win Friends had 12 with the same recall, first step and
  * Chiku game). Within a pack, no two concepts may share all three recall pieces, the first step's title AND takeaway, a
- * recall decoy's text, a Chiku card, the Chiku new-day question or a Chiku guess's why. Exact strings, no trimming or
+ * recall decoy's text, a Chiku card, the Chiku new-day question, a Chiku guess's why, a misconception name, or the
+ * same set of misconception names. Exact strings, no trimming or
  * case folding; a repeat inside one concept and a repeat across packs are fine. Instruction labels ("Tap the better
  * line.") are not checked. Malformed fields are skipped here: the shape check reports them.
  */
 export function repeatedTextErrors(path: string, concepts: readonly unknown[]): string[] {
   const errors: string[] = [];
-  const seen = { recall: new Map<string, string[]>(), first: new Map<string, string[]>(), decoy: new Map<string, string[]>(), card: new Map<string, string[]>(), question: new Map<string, string[]>(), why: new Map<string, string[]>() };
+  const seen = { recall: new Map<string, string[]>(), first: new Map<string, string[]>(), decoy: new Map<string, string[]>(), card: new Map<string, string[]>(), question: new Map<string, string[]>(), why: new Map<string, string[]>(), misconception: new Map<string, string[]>(), misconceptionSet: new Map<string, string[]>() };
   const check = (map: Map<string, string[]>, key: string, id: string, name: string, suffix = '') => {
     for (const earlier of map.get(key) ?? []) if (earlier !== id) errors.push(`${path}: ${name} shared by ${earlier} and ${id}${suffix}`);
     if (!(map.get(key) ?? []).includes(id)) map.set(key, [...(map.get(key) ?? []), id]);
   };
   for (const raw of concepts) {
     if (!raw || typeof raw !== 'object') continue;
-    const concept = raw as { id?: unknown; recall?: { pieces?: unknown; decoys?: unknown }; steps?: unknown; chiku?: { cards?: unknown; newDay?: { question?: unknown }; guesses?: unknown } };
+    const concept = raw as { id?: unknown; recall?: { pieces?: unknown; decoys?: unknown }; steps?: unknown; chiku?: { cards?: unknown; newDay?: { question?: unknown }; guesses?: unknown }; misconceptions?: unknown };
     if (!text(concept.id)) continue;
     const id = concept.id;
     const pieces = concept.recall?.pieces;
@@ -73,6 +74,9 @@ export function repeatedTextErrors(path: string, concepts: readonly unknown[]): 
     const question = concept.chiku?.newDay?.question;
     if (text(question)) check(seen.question, question, id, 'duplicate Chiku question', `: ${question}`);
     for (const why of texts(concept.chiku?.guesses, 'why')) check(seen.why, why, id, 'duplicate Chiku guess why', `: ${why}`);
+    const names = texts(concept.misconceptions, 'name');
+    if (names.size) check(seen.misconceptionSet, JSON.stringify([...names].sort()), id, 'duplicate misconception names');
+    for (const name of names) check(seen.misconception, name, id, 'duplicate misconception name', `: ${name}`);
   }
   return errors;
 }
