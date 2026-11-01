@@ -41,7 +41,8 @@ test('a level rise is one level page: the friends, the lantern, Continue; it pay
   await level.getByRole('button', { name: 'Continue' }).click();
   await expect(level).toHaveCount(0);
   await expect(page).toHaveURL(/#plan$/);
-  expect(await page.evaluate(() => document.getElementById('main')!.contains(document.activeElement))).toBe(true);
+  // Focus lands inside the page again, at the latest once the finished row has folded away (CI 41287286423).
+  await expect.poll(() => page.evaluate(() => document.getElementById('main')!.contains(document.activeElement))).toBe(true);
   // Nothing was paid for the page: the total is the level's, and another finish shows a plain toast, not a second page.
   const total = await xpInAll(page);
   await page.goto('/#plan');

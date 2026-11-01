@@ -171,8 +171,11 @@ export function EconomyFeedback() {
   if (!notice) return null;
   if (notice.macro && notice.level) return <LevelPage dialog={reveal} level={notice.level} totalXp={notice.totalXp ?? 0} reduced={reduced()} close={() => {
     setNotice(null);
-    // Focus goes back to what raised the page; if that is gone (a finished row folds away), to the page's heading.
-    requestAnimationFrame(() => { if (document.activeElement && document.activeElement !== document.body) return; const heading = document.getElementById('main')?.querySelector<HTMLElement>('h1'); if (!heading) return; if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); });
+    // Focus goes back to what raised the page; if that is gone (a finished row folds away), to the page's heading. The
+    // row can fold away a moment after focus went back to its Done, so it is checked again once the fold is over.
+    const toHeading = () => { if (document.activeElement && document.activeElement !== document.body) return; const heading = document.getElementById('main')?.querySelector<HTMLElement>('h1'); if (!heading) return; if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); };
+    requestAnimationFrame(toHeading);
+    window.setTimeout(toHeading, 500);
   }} />;
   return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Nandi" pose="cheer" size={80} moment="hop" at={1} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p><button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
 }
