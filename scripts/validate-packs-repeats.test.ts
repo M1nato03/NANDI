@@ -6,16 +6,17 @@ import { validateAll } from './validate-packs';
 
 // Spec 51: within one pack, ideas must not share recall pieces, a first step (title AND takeaway), a recall decoy, or
 // the Chiku game's card, question and guess lines. Run through validateAll in editorial mode, as `npm run packs` does.
-type Concept = { id: string; misconceptions: { name: string }[]; recall: { pieces: string[]; decoys: { text: string }[] }; steps: { title: string; takeaway: string }[]; chiku: { cards: { text: string }[]; newDay: { question: string }; guesses: { why: string }[] } };
+type Concept = { id: string; items: { stem: string }[]; misconceptions: { name: string }[]; recall: { pieces: string[]; decoys: { text: string }[] }; steps: { title: string; takeaway: string }[]; chiku: { cards: { text: string }[]; newDay: { question: string }; guesses: { why: string }[] } };
 const read = (name: string) => JSON.parse(readFileSync(join('content', 'topics', name), 'utf8')) as { body: { modules: { concepts: Concept[] }[] } };
 const conceptsOf = (pack: ReturnType<typeof read>) => pack.body.modules.flatMap(module => module.concepts);
 
 const dirs: string[] = [];
 afterEach(() => { for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true }); });
-async function errorsFor(change: (a: Concept, b: Concept) => void, other?: (pack: ReturnType<typeof read>, htwf: ReturnType<typeof read>) => void) {
+async function errorsFor(change: (a: Concept, b: Concept) => void, other?: (pack: ReturnType<typeof read>, htwf: ReturnType<typeof read>) => void, all?: (concepts: Concept[]) => void) {
   const pack = read('book.how-to-win-friends.json');
   const [a, b] = conceptsOf(pack) as [Concept, Concept];
   change(a, b);
+  all?.(conceptsOf(pack));
   const dir = mkdtempSync(join(tmpdir(), 'packs-51-'));
   dirs.push(dir);
   const path = join(dir, 'htwf.json');
@@ -61,6 +62,13 @@ describe('spec 51: one pack cannot repeat a template across ideas', () => {
     expect(one.errors.filter(error => error.includes('duplicate misconception names'))).toEqual([]);
     const pair = await errorsFor((a, b) => { b.misconceptions[0]!.name = a.misconceptions[1]!.name; b.misconceptions[1]!.name = a.misconceptions[0]!.name; });
     expect(pair.errors).toContain(`${pair.path}: duplicate misconception names shared by ${pair.a} and ${pair.b}`);
+  });
+  it('fails when one scene frame opens or closes item stems in more than 3 ideas', async () => {
+    const places = ['the hostel', 'a canteen', 'the train', 'a classroom'];
+    const four = await errorsFor(() => undefined, undefined, concepts => concepts.slice(0, 4).forEach((concept, index) => { concept.items[0]!.stem = `In ${places[index]}, which reply would help this talk?`; }));
+    expect(four.errors.some(error => error.includes('item stem ends "which reply would help this talk" repeats in 4 ideas'))).toBe(true);
+    const three = await errorsFor(() => undefined, undefined, concepts => concepts.slice(0, 3).forEach((concept, index) => { concept.items[0]!.stem = `In ${places[index]}, which reply would help this talk?`; }));
+    expect(three.errors.filter(error => error.includes('repeats in'))).toEqual([]);
   });
   it('a repeat inside one idea, or across two packs, is fine', async () => {
     const inside = await errorsFor((a) => { a.recall.decoys[1]!.text = a.recall.decoys[0]!.text; });

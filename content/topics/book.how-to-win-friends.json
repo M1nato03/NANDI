@@ -2032,7 +2032,7 @@
                 "conceptId": "htwf-genuine-interest",
                 "step": "htwf-genuine-interest-s1",
                 "job": "transfer",
-                "stem": "In a college club, which reply would help this talk?",
+                "stem": "A new member joins your college club. What could you say?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-genuine-interest-m1"
@@ -2119,11 +2119,9 @@
                 "conceptId": "htwf-genuine-interest",
                 "step": "htwf-genuine-interest-s2",
                 "job": "combine",
-                "stem": "At a canteen, what may help a talk move ahead?",
+                "stem": "At the canteen, a classmate is choosing lunch. What helps you learn about them?",
                 "difficultySeed": 2,
-                "misconceptionTags": [
-                  "htwf-genuine-interest-m1"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "questions"
                 ],
@@ -2142,9 +2140,6 @@
                     "text": "Guess their choice for them.",
                     "feedback": "Guessing for them skips the answer you meant to ask for.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "htwf-genuine-interest-m1"
-                    ],
                     "sourceRefs": [
                       "questions"
                     ]
@@ -2197,9 +2192,7 @@
                 "job": "reverse",
                 "stem": "You asked a kind question and got a short answer. What now?",
                 "difficultySeed": 3,
-                "misconceptionTags": [
-                  "htwf-genuine-interest-m2"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "questions"
                 ],
@@ -2218,9 +2211,6 @@
                     "text": "Ask more until they give a long answer.",
                     "feedback": "Pressing for more turns interest into a demand.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "htwf-genuine-interest-m2"
-                    ],
                     "sourceRefs": [
                       "questions"
                     ]
@@ -2236,7 +2226,7 @@
                 "stem": "At a college canteen, how many of four questions show genuine interest if two ask about a friend's project, one asks for a favour, and one changes the subject?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-genuine-interest-m2"
+                  "htwf-genuine-interest-m1"
                 ],
                 "sourceRefs": [
                   "questions"
@@ -2253,11 +2243,11 @@
                   },
                   {
                     "id": "b",
-                    "text": "4 project questions",
+                    "text": "All 4 questions",
                     "feedback": "A subject change and a favour request do not ask about the project.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-genuine-interest-m2"
+                      "htwf-genuine-interest-m1"
                     ],
                     "sourceRefs": [
                       "questions"
@@ -2529,14 +2519,14 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts at a college club. What can I try? Give me one card.",
+              "ask": "A new member just joined my college club. What do I say? Give me one card.",
               "cards": [
                 {
                   "text": "Ask what they enjoy in the club.",
                   "correct": true
                 },
                 {
-                  "text": "Talk only about your own role.",
+                  "text": "Talk only about my own role.",
                   "misconceptionId": "htwf-genuine-interest-m1"
                 },
                 {
@@ -2545,7 +2535,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again at a canteen.",
+                "caption": "New day: Chiku meets a classmate at the canteen.",
                 "prop": "book",
                 "question": "Will Chiku ask about what matters to them?"
               },
@@ -2642,7 +2632,7 @@
                 "conceptId": "htwf-smile",
                 "step": "htwf-smile-s1",
                 "job": "transfer",
-                "stem": "In a Delhi lift, which reply would help this talk?",
+                "stem": "Your neighbour steps into the lift in your Delhi building. How do you greet them?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-smile-m1"
@@ -2777,7 +2767,7 @@
                 "conceptId": "htwf-smile",
                 "step": "htwf-smile-s2",
                 "job": "combine",
-                "stem": "At a college hall, what may help a talk move ahead?",
+                "stem": "You walk into a college hall before a talk. What helps you greet people?",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "htwf-smile-m1"
@@ -2856,7 +2846,7 @@
                 "stem": "A neighbour does not smile back. What is fair?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-smile-m2"
+                  "htwf-smile-m1"
                 ],
                 "sourceRefs": [
                   "smileCulture"
@@ -2877,7 +2867,7 @@
                     "feedback": "Asking for a smile puts pressure on them.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-smile-m2"
+                      "htwf-smile-m1"
                     ],
                     "sourceRefs": [
                       "smileCulture"
@@ -3194,7 +3184,7 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts at a Delhi lift. What can I try? Give me one card.",
+              "ask": "My neighbour just got into the lift. How do I greet them? Give me one card.",
               "cards": [
                 {
                   "text": "Offer a small smile if they seem at ease.",
@@ -3210,7 +3200,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again at a college hall.",
+                "caption": "New day: Chiku greets a classmate in the college hall.",
                 "prop": "book",
                 "question": "Will Chiku read the mood before smiling?"
               },
@@ -3307,7 +3297,7 @@
                 "conceptId": "htwf-names",
                 "step": "htwf-names-s1",
                 "job": "transfer",
-                "stem": "In an exam hall, which reply would help this talk?",
+                "stem": "A classmate tells you their name in the exam hall. What helps?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-names-m1"
@@ -3383,10 +3373,10 @@
                 "conceptId": "htwf-names",
                 "step": "htwf-names-s2",
                 "job": "combine",
-                "stem": "On a train, what may help a talk move ahead?",
+                "stem": "On a train, you forget the name of the person next to you. What helps?",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "htwf-names-m1"
+                  "htwf-names-m2"
                 ],
                 "sourceRefs": [
                   "names"
@@ -3407,7 +3397,7 @@
                     "feedback": "Saying a wrong name does not bring you closer.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-names-m1"
+                      "htwf-names-m2"
                     ],
                     "sourceRefs": [
                       "names"
@@ -3462,7 +3452,7 @@
                 "stem": "You forget a name after class. What can you do?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-names-m2"
+                  "htwf-names-m1"
                 ],
                 "sourceRefs": [
                   "nameReview"
@@ -3483,7 +3473,7 @@
                     "feedback": "A name you may have wrong can upset them.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-names-m2"
+                      "htwf-names-m1"
                     ],
                     "sourceRefs": [
                       "nameReview"
@@ -3500,7 +3490,7 @@
                 "stem": "At a neighbourhood meeting, you remember two checked names and guess a third. How many names can you use with care?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-names-m2"
+                  "htwf-names-m1"
                 ],
                 "sourceRefs": [
                   "nameReview"
@@ -3521,7 +3511,7 @@
                     "feedback": "A guessed name has not been confirmed by its owner.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-names-m2"
+                      "htwf-names-m1"
                     ],
                     "sourceRefs": [
                       "nameReview"
@@ -3800,14 +3790,14 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts at an exam hall. What can I try? Give me one card.",
+              "ask": "A classmate just told me their name. What do I do? Give me one card.",
               "cards": [
                 {
-                  "text": "Check the name you just heard.",
+                  "text": "Check the name I just heard.",
                   "correct": true
                 },
                 {
-                  "text": "Use a name you only guessed.",
+                  "text": "Use a name I only guessed.",
                   "misconceptionId": "htwf-names-m1"
                 },
                 {
@@ -3816,7 +3806,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again on a train.",
+                "caption": "New day: Chiku meets a fellow traveller on a train.",
                 "prop": "book",
                 "question": "Will Chiku check the name first?"
               },
@@ -3913,7 +3903,7 @@
                 "conceptId": "htwf-listening",
                 "step": "htwf-listening-s1",
                 "job": "transfer",
-                "stem": "In a hostel room, which reply would help this talk?",
+                "stem": "Your hostel roommate had a hard day. What helps?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-listening-m1"
@@ -3954,7 +3944,7 @@
                 "stem": "Which line explains good listening to a friend?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "htwf-listening-m1"
+                  "htwf-listening-m2"
                 ],
                 "sourceRefs": [
                   "carnegie"
@@ -3975,7 +3965,7 @@
                     "feedback": "Kind words used to win their side are not listening.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-listening-m1"
+                      "htwf-listening-m2"
                     ],
                     "sourceRefs": [
                       "carnegie"
@@ -3989,7 +3979,7 @@
                 "conceptId": "htwf-listening",
                 "step": "htwf-listening-s2",
                 "job": "combine",
-                "stem": "On a Mumbai train, what may help a talk move ahead?",
+                "stem": "On a Mumbai train, a rider starts telling you a story. What helps?",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "htwf-listening-m1"
@@ -4106,7 +4096,7 @@
                 "stem": "On a train, a good friend shares four points. You hear and say two back, cut in on one, and miss one. How many did you say back?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-listening-m2"
+                  "htwf-listening-m1"
                 ],
                 "sourceRefs": [
                   "listenField"
@@ -4127,7 +4117,7 @@
                     "feedback": "An interruption and a missed detail were not reflected back.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-listening-m2"
+                      "htwf-listening-m1"
                     ],
                     "sourceRefs": [
                       "listenField"
@@ -4406,14 +4396,14 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts at a hostel room. What can I try? Give me one card.",
+              "ask": "My flatmate is telling me about a hard day. What do I do? Give me one card.",
               "cards": [
                 {
                   "text": "Let my flatmate finish their story.",
                   "correct": true
                 },
                 {
-                  "text": "Cut in with your own story.",
+                  "text": "Cut in with my own story.",
                   "misconceptionId": "htwf-listening-m1"
                 },
                 {
@@ -4422,7 +4412,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again on a Mumbai train.",
+                "caption": "New day: a fellow rider tells Chiku a long story on the train.",
                 "prop": "book",
                 "question": "Will Chiku let them finish?"
               },
@@ -4519,7 +4509,7 @@
                 "conceptId": "htwf-others-interests",
                 "step": "htwf-others-interests-s1",
                 "job": "transfer",
-                "stem": "In a cricket club, which reply would help this talk?",
+                "stem": "Your teammate at the cricket club loved last week's match. What can you ask?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-others-interests-m1"
@@ -4595,11 +4585,9 @@
                 "conceptId": "htwf-others-interests",
                 "step": "htwf-others-interests-s2",
                 "job": "combine",
-                "stem": "At a college library, what may help a talk move ahead?",
+                "stem": "A peer at the college library is hunting for a book. What can you ask?",
                 "difficultySeed": 2,
-                "misconceptionTags": [
-                  "htwf-others-interests-m1"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "interests"
                 ],
@@ -4618,9 +4606,6 @@
                     "text": "Turn each answer back to your own book.",
                     "feedback": "Turning back to your book drops their topic.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "htwf-others-interests-m1"
-                    ],
                     "sourceRefs": [
                       "interests"
                     ]
@@ -4674,7 +4659,7 @@
                 "stem": "You know little about the match. What works?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-others-interests-m2"
+                  "htwf-others-interests-m1"
                 ],
                 "sourceRefs": [
                   "interests"
@@ -4695,7 +4680,7 @@
                     "feedback": "A made-up view is pretending, not interest.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-others-interests-m2"
+                      "htwf-others-interests-m1"
                     ],
                     "sourceRefs": [
                       "interests"
@@ -4711,9 +4696,7 @@
                 "job": "recall",
                 "stem": "A colleague mentions cricket, gardening and a family trip. You ask about cricket and the trip but switch away from gardening. How many of their interests did you follow up?",
                 "difficultySeed": 3,
-                "misconceptionTags": [
-                  "htwf-others-interests-m2"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "interests"
                 ],
@@ -4732,9 +4715,6 @@
                     "text": "3 interests followed up",
                     "feedback": "You did not ask about the garden, so that third topic was left out.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "htwf-others-interests-m2"
-                    ],
                     "sourceRefs": [
                       "interests"
                     ]
@@ -5005,14 +4985,14 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts at a cricket club. What can I try? Give me one card.",
+              "ask": "My teammate keeps talking about a cricket match. What do I say? Give me one card.",
               "cards": [
                 {
                   "text": "Ask what they enjoy about the game.",
                   "correct": true
                 },
                 {
-                  "text": "Pretend you saw a match you missed.",
+                  "text": "Pretend I saw a match I missed.",
                   "misconceptionId": "htwf-others-interests-m1"
                 },
                 {
@@ -5021,7 +5001,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again at a college library.",
+                "caption": "New day: Chiku meets a reader at the college library.",
                 "prop": "book",
                 "question": "Will Chiku ask about their game?"
               },
@@ -5118,7 +5098,7 @@
                 "conceptId": "htwf-sincere-importance",
                 "step": "htwf-sincere-importance-s1",
                 "job": "transfer",
-                "stem": "In a family shop, which reply would help this talk?",
+                "stem": "A clerk at the family shop checked three shelves for you. What can you say?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-sincere-importance-m1"
@@ -5158,9 +5138,7 @@
                 "job": "misconception",
                 "stem": "Why name the clerk’s work in your thanks?",
                 "difficultySeed": 1,
-                "misconceptionTags": [
-                  "htwf-sincere-importance-m1"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "carnegie"
                 ],
@@ -5179,9 +5157,6 @@
                     "text": "A grand label gives a clearer reason.",
                     "feedback": "Big praise without a detail tells them little.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "htwf-sincere-importance-m1"
-                    ],
                     "sourceRefs": [
                       "carnegie"
                     ]
@@ -5194,7 +5169,7 @@
                 "conceptId": "htwf-sincere-importance",
                 "step": "htwf-sincere-importance-s2",
                 "job": "combine",
-                "stem": "At a Chennai canteen, what may help a talk move ahead?",
+                "stem": "A cook at a Chennai canteen took care with your order. What can you say?",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "htwf-sincere-importance-m1"
@@ -5273,7 +5248,7 @@
                 "stem": "The clerk cannot search again today. What now?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-sincere-importance-m2"
+                  "htwf-sincere-importance-m1"
                 ],
                 "sourceRefs": [
                   "heard"
@@ -5294,7 +5269,7 @@
                     "feedback": "Praise used to push for more is not thanks.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-sincere-importance-m2"
+                      "htwf-sincere-importance-m1"
                     ],
                     "sourceRefs": [
                       "heard"
@@ -5311,7 +5286,7 @@
                 "stem": "At a family meal, three thanks make guests feel seen and one seeks a ride. How many value help without a hidden request?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-sincere-importance-m2"
+                  "htwf-sincere-importance-m1"
                 ],
                 "sourceRefs": [
                   "heard"
@@ -5332,7 +5307,7 @@
                     "feedback": "Flattery used to secure a ride is not thanks for a past act.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-sincere-importance-m2"
+                      "htwf-sincere-importance-m1"
                     ],
                     "sourceRefs": [
                       "heard"
@@ -5611,7 +5586,7 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts at a family shop. What can I try? Give me one card.",
+              "ask": "A clerk searched three shelves for me. What do I say? Give me one card.",
               "cards": [
                 {
                   "text": "Thank them for the help they gave.",
@@ -5627,7 +5602,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again at a Chennai canteen.",
+                "caption": "New day: a cook takes care with Chiku's order at the canteen.",
                 "prop": "book",
                 "question": "Will Chiku thank the clerk sincerely?"
               },
@@ -5732,7 +5707,7 @@
                 "conceptId": "htwf-arguments",
                 "step": "htwf-arguments-s1",
                 "job": "transfer",
-                "stem": "In a college group chat, which reply would help this talk?",
+                "stem": "Your college group chat is getting heated. What could help?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-arguments-m1"
@@ -5819,10 +5794,10 @@
                 "conceptId": "htwf-arguments",
                 "step": "htwf-arguments-s2",
                 "job": "combine",
-                "stem": "At a Delhi office, what may help a talk move ahead?",
+                "stem": "At a Delhi office, someone posts a wrong figure in a tense thread. What helps?",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "htwf-arguments-m1"
+                  "htwf-arguments-m2"
                 ],
                 "sourceRefs": [
                   "disagreement"
@@ -5843,7 +5818,7 @@
                     "feedback": "Hiding the error avoids a fight but leaves the fact wrong.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-arguments-m1"
+                      "htwf-arguments-m2"
                     ],
                     "sourceRefs": [
                       "disagreement"
@@ -5859,9 +5834,7 @@
                 "job": "edge",
                 "stem": "Spoken talks felt less tense in tests. What follows?",
                 "difficultySeed": 2,
-                "misconceptionTags": [
-                  "htwf-arguments-m2"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "disagreement"
                 ],
@@ -5880,9 +5853,6 @@
                     "text": "A call will settle any wrong claim.",
                     "feedback": "The tests showed less conflict, not that every wrong claim gets fixed.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "htwf-arguments-m2"
-                    ],
                     "sourceRefs": [
                       "disagreement"
                     ]
@@ -5936,7 +5906,7 @@
                 "stem": "In a college debate, two replies pause to check the disputed fact, one repeats an insult, and one talks louder. How many replies can slow the argument?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-arguments-m2"
+                  "htwf-arguments-m1"
                 ],
                 "sourceRefs": [
                   "correction"
@@ -5957,7 +5927,7 @@
                     "feedback": "An insult and louder speech are unlikely to cool the exchange.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-arguments-m2"
+                      "htwf-arguments-m1"
                     ],
                     "sourceRefs": [
                       "correction"
@@ -6236,7 +6206,7 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts in a college group chat. What can I try? Give me one card.",
+              "ask": "My college group chat is turning into a fight. What do I do? Give me one card.",
               "cards": [
                 {
                   "text": "Suggest a quiet talk about the issue.",
@@ -6252,7 +6222,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again at a Delhi office.",
+                "caption": "New day: a wrong figure sparks a clash at the office.",
                 "prop": "book",
                 "question": "Will Chiku step back from the fight?"
               },
@@ -6349,7 +6319,7 @@
                 "conceptId": "htwf-respect-opinions",
                 "step": "htwf-respect-opinions-s1",
                 "job": "transfer",
-                "stem": "Over a train booking, which reply would help this talk?",
+                "stem": "Your cousin is sure the train leaves later than it does. What could you say?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-respect-opinions-m1"
@@ -6484,10 +6454,10 @@
                 "conceptId": "htwf-respect-opinions",
                 "step": "htwf-respect-opinions-s2",
                 "job": "combine",
-                "stem": "At a classroom, what may help a talk move ahead?",
+                "stem": "In a classroom, a friend reads the wrong page for a sum. What can you do?",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "htwf-respect-opinions-m1"
+                  "htwf-respect-opinions-m2"
                 ],
                 "sourceRefs": [
                   "correction"
@@ -6508,7 +6478,7 @@
                     "feedback": "Agreeing with a wrong sum leaves it wrong.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-respect-opinions-m1"
+                      "htwf-respect-opinions-m2"
                     ],
                     "sourceRefs": [
                       "correction"
@@ -6601,7 +6571,7 @@
                 "stem": "At work, four colleagues disagree on a rota. Two ask why another shift suits a teammate, one calls the view foolish, and one cuts them off. How many replies respect the different view?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-respect-opinions-m2"
+                  "htwf-respect-opinions-m1"
                 ],
                 "sourceRefs": [
                   "disagreement"
@@ -6622,7 +6592,7 @@
                     "feedback": "A label and an interruption do not make space for the other view.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-respect-opinions-m2"
+                      "htwf-respect-opinions-m1"
                     ],
                     "sourceRefs": [
                       "disagreement"
@@ -6901,14 +6871,14 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts over a train booking. What can I try? Give me one card.",
+              "ask": "My cousin has the train time wrong. What do I say? Give me one card.",
               "cards": [
                 {
                   "text": "Look at the booking details together.",
                   "correct": true
                 },
                 {
-                  "text": "Call your cousin foolish.",
+                  "text": "Call my cousin foolish.",
                   "misconceptionId": "htwf-respect-opinions-m1"
                 },
                 {
@@ -6917,7 +6887,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again at a classroom.",
+                "caption": "New day: a classmate quotes the wrong sum in class.",
                 "prop": "book",
                 "question": "Will Chiku check the facts together?"
               },
@@ -7014,7 +6984,7 @@
                 "conceptId": "htwf-admit-error",
                 "step": "htwf-admit-error-s1",
                 "job": "transfer",
-                "stem": "In an exam hall, which reply would help this talk?",
+                "stem": "You sent a classmate to the wrong exam room. What could you say?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-admit-error-m1"
@@ -7090,7 +7060,7 @@
                 "conceptId": "htwf-admit-error",
                 "step": "htwf-admit-error-s2",
                 "job": "combine",
-                "stem": "At a family shop, what may help a talk move ahead?",
+                "stem": "At the family shop, a buyer spots a total you added wrong. What helps?",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "htwf-admit-error-m1"
@@ -7206,9 +7176,7 @@
                 "job": "recall",
                 "stem": "A shop bill has three wrong entries. You own two and another clerk wrote one. How many entries should you admit writing?",
                 "difficultySeed": 3,
-                "misconceptionTags": [
-                  "htwf-admit-error-m2"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "apologyForm"
                 ],
@@ -7227,9 +7195,6 @@
                     "text": "3 entries I wrote",
                     "feedback": "The clerk wrote one line, so saying you wrote it would blur the facts.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "htwf-admit-error-m2"
-                    ],
                     "sourceRefs": [
                       "apologyForm"
                     ]
@@ -7374,7 +7339,7 @@
                     }
                   ]
                 },
-                "teach": "An apology can help after a skill error, so name your part and fix the note.",
+                "teach": "An apology can help after an honest mistake, so name your part and fix the bill.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -7507,14 +7472,14 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts at an exam hall. What can I try? Give me one card.",
+              "ask": "I sent my classmate to the wrong exam room. What do I do? Give me one card.",
               "cards": [
                 {
                   "text": "Say I sent the wrong room number.",
                   "correct": true
                 },
                 {
-                  "text": "Blame the classmate for your message.",
+                  "text": "Blame the classmate for my message.",
                   "misconceptionId": "htwf-admit-error-m1"
                 },
                 {
@@ -7523,7 +7488,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again at a family shop.",
+                "caption": "New day: a buyer spots a wrong total at the family shop.",
                 "prop": "book",
                 "question": "Will Chiku own the mistake?"
               },
@@ -7620,7 +7585,7 @@
                 "conceptId": "htwf-friendly-start",
                 "step": "htwf-friendly-start-s1",
                 "job": "transfer",
-                "stem": "In a Mumbai market, which reply would help this talk?",
+                "stem": "A vendor at a Mumbai market gave you the wrong change. How do you start?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-friendly-start-m1"
@@ -7661,7 +7626,7 @@
                 "stem": "Which line explains a warm start to a friend?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "htwf-friendly-start-m1"
+                  "htwf-friendly-start-m2"
                 ],
                 "sourceRefs": [
                   "carnegie"
@@ -7682,7 +7647,7 @@
                     "feedback": "A friendly tone is not a tool that can force someone to agree.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-friendly-start-m1"
+                      "htwf-friendly-start-m2"
                     ],
                     "sourceRefs": [
                       "carnegie"
@@ -7696,10 +7661,10 @@
                 "conceptId": "htwf-friendly-start",
                 "step": "htwf-friendly-start-s2",
                 "job": "combine",
-                "stem": "At a Delhi office, what may help a talk move ahead?",
+                "stem": "At a Delhi office, a bill line looks wrong. What helps the talk?",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "htwf-friendly-start-m1"
+                  "htwf-friendly-start-m2"
                 ],
                 "sourceRefs": [
                   "conflict"
@@ -7720,7 +7685,7 @@
                     "feedback": "A smile does not fix a bill error.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-friendly-start-m1"
+                      "htwf-friendly-start-m2"
                     ],
                     "sourceRefs": [
                       "conflict"
@@ -7813,7 +7778,7 @@
                 "stem": "A neighbour raises a repair concern in four messages. Two open with a calm greeting and a clear question; two start with accusations. How many begin warmly?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-friendly-start-m2"
+                  "htwf-friendly-start-m1"
                 ],
                 "sourceRefs": [
                   "disagreement"
@@ -7834,7 +7799,7 @@
                     "feedback": "Two notes start with blame, so they may make the repair talk tense.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-friendly-start-m2"
+                      "htwf-friendly-start-m1"
                     ],
                     "sourceRefs": [
                       "disagreement"
@@ -8113,7 +8078,7 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts at a Mumbai market. What can I try? Give me one card.",
+              "ask": "The vendor gave me the wrong change. How do I start? Give me one card.",
               "cards": [
                 {
                   "text": "Start by asking about the change.",
@@ -8129,7 +8094,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again at a Delhi office.",
+                "caption": "New day: an office bill has a line that looks wrong.",
                 "prop": "book",
                 "question": "Will Chiku start calmly and check?"
               },
@@ -8226,7 +8191,7 @@
                 "conceptId": "htwf-yes-yes",
                 "step": "htwf-yes-yes-s1",
                 "job": "transfer",
-                "stem": "In a college event, which reply would help this talk?",
+                "stem": "Your team is planning a college event and views differ. Where can you start?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-yes-yes-m1"
@@ -8302,10 +8267,10 @@
                 "conceptId": "htwf-yes-yes",
                 "step": "htwf-yes-yes-s2",
                 "job": "combine",
-                "stem": "At a family shop, what may help a talk move ahead?",
+                "stem": "At a family shop, two of you disagree on a new plan. What comes first?",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "htwf-yes-yes-m1"
+                  "htwf-yes-yes-m2"
                 ],
                 "sourceRefs": [
                   "mi"
@@ -8326,7 +8291,7 @@
                     "feedback": "A polite yes does not mean yes to all of it.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-yes-yes-m1"
+                      "htwf-yes-yes-m2"
                     ],
                     "sourceRefs": [
                       "mi"
@@ -8351,7 +8316,7 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Its setting was care, not this club.",
+                    "text": "It studied health care, not clubs.",
                     "feedback": "Right. The review was about health care, not Carnegie's rule.",
                     "correct": true,
                     "sourceRefs": [
@@ -8419,7 +8384,7 @@
                 "stem": "A family tries to find common ground for a trip. Two needs are shared, one cost is assumed, and one transfer is hidden. How many are sound starting points?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-yes-yes-m2"
+                  "htwf-yes-yes-m1"
                 ],
                 "sourceRefs": [
                   "miGuide"
@@ -8440,7 +8405,7 @@
                     "feedback": "An assumed cost and a hidden transfer are not real agreement.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-yes-yes-m2"
+                      "htwf-yes-yes-m1"
                     ],
                     "sourceRefs": [
                       "miGuide"
@@ -8607,14 +8572,14 @@
                 },
                 "guided": [
                   {
-                    "stem": "At a family shop, two people disagree on a delivery plan. What first?",
-                    "hint": "What do both people already agree on?",
+                    "stem": "At a family shop, a partner doubts the new delivery plan. What can you ask?",
+                    "hint": "What would help you understand their doubt?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Confirm the date both have in mind.",
+                        "text": "Ask what worries them about it.",
                         "correct": true,
-                        "feedback": "Starting from the date both share is fair."
+                        "feedback": "Their reasons show what the plan must answer."
                       },
                       {
                         "id": "b",
@@ -8719,7 +8684,7 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts at a college event. What can I try? Give me one card.",
+              "ask": "My team can't agree on the college event. Where do I start? Give me one card.",
               "cards": [
                 {
                   "text": "Ask if we both want clear signs.",
@@ -8735,7 +8700,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again at a family shop.",
+                "caption": "New day: a family shop talks over a new plan.",
                 "prop": "book",
                 "question": "Will Chiku start from a real shared aim?"
               },
@@ -8832,7 +8797,7 @@
                 "conceptId": "htwf-let-them-talk",
                 "step": "htwf-let-them-talk-s1",
                 "job": "transfer",
-                "stem": "Over shared hostel costs, which reply would help this talk?",
+                "stem": "Your hostel mate is upset about shared costs. What could you say?",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "htwf-let-them-talk-m1"
@@ -8908,10 +8873,10 @@
                 "conceptId": "htwf-let-them-talk",
                 "step": "htwf-let-them-talk-s2",
                 "job": "combine",
-                "stem": "At a Chennai canteen, what may help a talk move ahead?",
+                "stem": "At a Chennai canteen, a friend explains why the bill is high. What helps?",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "htwf-let-them-talk-m1"
+                  "htwf-let-them-talk-m2"
                 ],
                 "sourceRefs": [
                   "questions"
@@ -8932,7 +8897,7 @@
                     "feedback": "Silence is not the goal. Share your view once they finish.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-let-them-talk-m1"
+                      "htwf-let-them-talk-m2"
                     ],
                     "sourceRefs": [
                       "questions"
@@ -8948,9 +8913,7 @@
                 "job": "edge",
                 "stem": "Listening built trust in a field test. What else was found?",
                 "difficultySeed": 2,
-                "misconceptionTags": [
-                  "htwf-let-them-talk-m2"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "questions"
                 ],
@@ -8969,9 +8932,6 @@
                     "text": "It made each listener win the point.",
                     "feedback": "The field test found listening did not add to the listener's sway.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "htwf-let-them-talk-m2"
-                    ],
                     "sourceRefs": [
                       "questions"
                     ]
@@ -9025,7 +8985,7 @@
                 "stem": "In an office check-in, two questions give a teammate room to talk, one cuts in, and one answers for them. How many leave room for their view?",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "htwf-let-them-talk-m2"
+                  "htwf-let-them-talk-m1"
                 ],
                 "sourceRefs": [
                   "listenField"
@@ -9046,7 +9006,7 @@
                     "feedback": "Interrupting and answering for someone close the space to speak.",
                     "correct": false,
                     "misconceptionIds": [
-                      "htwf-let-them-talk-m2"
+                      "htwf-let-them-talk-m1"
                     ],
                     "sourceRefs": [
                       "listenField"
@@ -9073,7 +9033,7 @@
               {
                 "id": "htwf-let-them-talk-m2",
                 "name": "Listening means staying silent",
-                "correction": "Good listening can help the listener seem better; it does not replace sharing your own view.",
+                "correction": "Good listening can make people like the listener more; it does not replace sharing your own view.",
                 "sourceRefs": [
                   "listenField"
                 ]
@@ -9325,7 +9285,7 @@
               ]
             },
             "chiku": {
-              "ask": "A talk starts over shared hostel costs. What can I try? Give me one card.",
+              "ask": "My hostel mate is upset about our shared costs. What do I do? Give me one card.",
               "cards": [
                 {
                   "text": "Ask them to explain each shared cost.",
@@ -9341,7 +9301,7 @@
                 }
               ],
               "newDay": {
-                "caption": "New day: the talk starts again at a Chennai canteen.",
+                "caption": "New day: a friend explains a high bill at a canteen.",
                 "prop": "book",
                 "question": "Will Chiku hear the full cost list?"
               },
