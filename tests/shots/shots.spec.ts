@@ -1298,6 +1298,9 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'm3-confirm', false);
     await record.getByRole('button', { name: 'Delete it' }).click();
     await expect(record.getByRole('status')).toBeVisible();
+    // What's kept is still open from m2, so the off state shows its words.
+    await expect(record.locator('details')).toHaveAttribute('open', '');
+    await record.scrollIntoViewIfNeeded();
     await shot(page, 'm4-deleted-off', false);
     await record.getByRole('button', { name: 'Keep a record again' }).click();
     await phone(false);

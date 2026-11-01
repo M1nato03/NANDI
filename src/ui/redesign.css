@@ -464,5 +464,7 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .agency-check .interest-chip { min-width: 44px; }
 /* Spec 46a: the daily minutes record's quiet line in Settings. */
 .minutes-record .minutes-record-line { margin: 0 0 4px; }
+/* Help text in Settings is 13px elsewhere; here it follows the person's text size (13px at 100%). */
+.you-settings .minutes-record .setting-help { font-size: .8125rem; }
 .minutes-record details > summary { display: list-item; padding: 10px 0; min-height: 44px; box-sizing: border-box; font-weight: 600; cursor: pointer; }
 .minutes-record > button, .minutes-record .actions button { min-height: 44px; }

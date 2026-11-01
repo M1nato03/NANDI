@@ -28,15 +28,17 @@ describe('spec 46a: the calendar day', () => {
     expect(calendarWeekday('2026-11-10')).toBe(2);
   });
   it('a clock-change day keeps its true length (23 or 25 hours) and both offsets', () => {
-    const zone = process.env.TZ;
-    process.env.TZ = 'Europe/London';
+    // Node reads TZ afresh when it changes; the app's own types have no `process`.
+    const env = (globalThis as unknown as { process: { env: Record<string, string | undefined> } }).process.env;
+    const zone = env.TZ;
+    env.TZ = 'Europe/London';
     try {
       const spring = calendarBounds('2026-03-29');
       expect(spring.toMs - spring.fromMs).toBe(23 * HOUR);
       expect([spring.offsetStartMin, spring.offsetEndMin]).toEqual([0, 60]);
       const autumn = calendarBounds('2026-10-25');
       expect(autumn.toMs - autumn.fromMs).toBe(25 * HOUR);
-    } finally { process.env.TZ = zone; if (zone === undefined) delete process.env.TZ; }
+    } finally { if (zone === undefined) delete env.TZ; else env.TZ = zone; }
   });
 });
 

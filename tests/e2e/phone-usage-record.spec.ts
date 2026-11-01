@@ -112,6 +112,7 @@ test('Stop and delete asks once, deletes every row, and stays off until turned o
   await record.getByRole('button', { name: 'Delete it' }).click();
   await expect(record.getByRole('status')).toHaveText('Record deleted. Nothing more is kept.');
   await expect(record).toContainText('Daily minutes record is off.');
+  await expect(record).not.toContainText('To end it');
   expect(await minutesRows(page)).toEqual([]);
   await page.clock.fastForward('11:00');
   await page.evaluate(() => window.dispatchEvent(new Event('nandi:night-pause')));
@@ -130,6 +131,8 @@ test('the Settings line reads at 200% text without spilling', async ({ page }) =
   await expect(record).toBeVisible();
   await textAt200(page);
   await record.getByText("What's kept").click();
+  // The help text follows the text size too (rem), not a fixed 13px.
+  expect(await record.locator('.setting-help').first().evaluate(node => parseFloat(getComputedStyle(node).fontSize))).toBeGreaterThanOrEqual(26);
   expect(await record.evaluate(node => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   for (const target of await record.getByRole('button').all()) expect((await target.boundingBox())!.height).toBeGreaterThanOrEqual(44);
