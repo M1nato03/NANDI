@@ -1316,6 +1316,25 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'm6-200pct', false);
   });
 
+  test('51 htwf games', async ({ page }) => {
+    test.setTimeout(240_000);
+    await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
+    const ideas = ['genuine-interest', 'smile', 'names', 'listening', 'others-interests', 'sincere-importance', 'arguments', 'respect-opinions', 'admit-error', 'friendly-start', 'yes-yes', 'let-them-talk'];
+    for (const [index, idea] of ideas.entries()) {
+      await page.goto(`/?e2e&concept=htwf-${idea}#learn/chiku-demo`);
+      const stage = page.getByRole('region', { name: 'Teach Chiku' });
+      await expect(stage).toBeVisible({ timeout: 15_000 });
+      const tag = `g${String(index + 1).padStart(2, '0')}-${idea}`;
+      await shot(page, `${tag}-1-cards`, false);
+      // The template's old m2 card ("Make them agree at once") is the one each idea now writes for itself.
+      const cards = page.getByRole('group', { name: 'Your cards' }).getByRole('button');
+      await cards.nth(2).click();
+      for (let i = 0; i < 5 && await stage.getAttribute('data-beat') !== 'done'; i++) await page.locator('.chiku-stage').click();
+      await expect(stage).toHaveAttribute('data-beat', 'done');
+      await shot(page, `${tag}-2-end`, false);
+    }
+  });
+
   test('park it', async ({ page }) => {
     // A moving clock, so the two lines are parked a moment apart and keep their order.
     await page.clock.install({ time: new Date('2026-10-26T22:30:00') });
