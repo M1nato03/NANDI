@@ -10,6 +10,8 @@ import { RESULT_SHOWN_PREFIX } from '../../core/economy/seasonResult';
 import { CONFIRMED_PREFIX, LONGEST_KEY, mergeConfirmed, mergeTargets, TARGET_KEY } from '../../core/economy/usefulDays';
 import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, fillHeldBonus, keptCandidates, mergeCloseMaps, refundReplaced, replayBonus, restoredPurchase, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { duringRestore } from '../restoreLock';
+import { PHONE_USAGE_PREFIX } from '../../core/phoneUsage/baseline';
+import type { PhoneUsageRow } from '../types';
 
 /** Classify parsed file-picker JSON before invoking the corresponding validator. */
 export function detectRestoreKind(json: unknown): 'backup' | 'legacy' | 'unknown' {
@@ -21,6 +23,8 @@ export function detectRestoreKind(json: unknown): 'backup' | 'legacy' | 'unknown
 }
 
 export const PP_FORMAT_VERSION = 2;
+/** Spec 46a: the daily minutes record's table, always empty in a backup file. */
+const PHONE_USAGE_TABLE = 'phoneUsageMinutes';
 export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.1.0';
 
 const dexieSchema = v.object({
@@ -110,6 +114,14 @@ export function migrateEnvelope(
       dexie.data.data.push({ tableName: 'privatePacks', inbound: true, rows: [] });
     }
     dexie.data.databaseVersion = 4;
+  }
+  // Dexie v5 (spec 46a) adds the daily minutes record, which a backup always carries empty.
+  if (dexie?.data && dexie.data.databaseVersion < 5) {
+    if (!dexie.data.tables.some(table => table.name === PHONE_USAGE_TABLE)) {
+      dexie.data.tables.push({ name: PHONE_USAGE_TABLE, schema: 'id, dayKey, packageName', rowCount: 0 });
+      dexie.data.data.push({ tableName: PHONE_USAGE_TABLE, inbound: true, rows: [] });
+    }
+    dexie.data.databaseVersion = 5;
   }
   return migrated;
 }
@@ -235,16 +247,25 @@ export function previewBackup(envelope: BackupEnvelope): BackupPreview {
 /**
  * One rule for this phone's own settings (Codex A item 61): they never leave it in a backup, and a restore keeps
  * this phone's values. The settings table's row count is kept in step so the file still validates.
+ * Spec 46a: the daily minutes record is this phone's too. Its table goes in the file empty, so the file still has
+ * every table, and its settings (phoneUsage.*) stay behind like the others: a backup copied to another phone must
+ * never carry app-use history or a starting week that phone did not measure.
  */
 function withoutDeviceLocal(dexie: unknown): unknown {
   const data = (dexie as { data?: { data?: { tableName: string; rows: unknown[] }[]; tables?: { name: string; rowCount: number }[] } })?.data;
   const settings = data?.data?.find(table => table.tableName === 'settings');
   if (!data || !settings || !Array.isArray(settings.rows)) return dexie;
-  settings.rows = settings.rows.filter(row => !deviceLocalKeys.has((row as SettingRow | null)?.key ?? ''));
+  settings.rows = settings.rows.filter(row => !isDeviceLocal((row as SettingRow | null)?.key ?? ''));
   const meta = data.tables?.find(table => table.name === 'settings');
   if (meta) meta.rowCount = settings.rows.length;
+  const minutes = data.data?.find(table => table.tableName === PHONE_USAGE_TABLE);
+  if (minutes) minutes.rows = [];
+  const minutesMeta = data.tables?.find(table => table.name === PHONE_USAGE_TABLE);
+  if (minutesMeta) minutesMeta.rowCount = 0;
   return dexie;
 }
+
+const isDeviceLocal = (key: string) => deviceLocalKeys.has(key) || key.startsWith(PHONE_USAGE_PREFIX);
 
 const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offlineReadyShown',
   'autoBackup.saved', 'autoBackup.failure',
@@ -278,8 +299,9 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
 async function restoreInto(db: NandiDb, restored: BackupEnvelope): Promise<void> {
   await trackWrite(() => duringRestore(async () => {
     const deviceId = await getOrCreateDeviceId(db, Date.now());
-    const localSettings = (await db.settings.bulkGet([...deviceLocalKeys]))
-      .filter((row): row is SettingRow => row !== undefined);
+    const localSettings = (await db.settings.toArray()).filter(row => isDeviceLocal(row.key));
+    // Spec 46a: this phone's daily minutes record survives the clear; a file's rows (there should be none) never land.
+    const localMinutes: PhoneUsageRow[] = await db.phoneUsageMinutes.toArray();
     const localCutoffs = (await db.settings.bulkGet(cutoffKeys)).filter((row): row is SettingRow => row !== undefined && !row.deleted);
     const localPeak = await db.settings.get(PEAK_KEY);
     // What this phone shows now, before the clear: XP a reconcile has not recorded yet still raises the peak (cj3 C4).
@@ -311,8 +333,9 @@ async function restoreInto(db: NandiDb, restored: BackupEnvelope): Promise<void>
       // The app keeps running during a restore: a write that lands between the clear and the re-add
       // (say economy.v2From from reconcileGamify) must not abort it, so rows are put, not added.
       overwriteValues: true,
-      filter: (table, value) => table !== 'settings' || !deviceLocalKeys.has((value as SettingRow).key),
+      filter: (table, value) => table === PHONE_USAGE_TABLE ? false : table !== 'settings' || !isDeviceLocal((value as SettingRow).key),
     });
+    if (localMinutes.length) await db.phoneUsageMinutes.bulkPut(localMinutes);
     // The batch 5 courtyard cutoff takes the LATER of the two: a later day puts fewer days under the new rule,
     // so no courtyard corner shrinks after a restore (Codex review of batch 5, item 53).
     const theirV5 = await db.settings.get('economy.v5From');

@@ -473,3 +473,19 @@ export function rulesFor(
   }
   return current;
 }
+
+/**
+ * Spec 46a: NOT a scoring rule (no RULES version, no XP). The fixed, versioned list of other scroll apps the daily
+ * minutes record keeps beside the apps the person picked, so a fall in a picked app is never read without the rise
+ * elsewhere. Browsers count as whole apps: Android does not say which site was open. A new id means a new list, and a
+ * comparison never spans two lists.
+ */
+export const PHONE_USAGE_CATALOG = {
+  id: 'scroll-2026-11-01',
+  packages: [
+    'com.google.android.youtube', 'com.snapchat.android',
+    'com.android.chrome', 'org.mozilla.firefox', 'com.microsoft.emmx', 'com.brave.browser',
+    'com.sec.android.app.sbrowser', 'com.opera.browser', 'com.opera.mini.native',
+    'in.mohalla.video', 'com.eterno.shortvideos', 'in.mohalla.sharechat',
+  ],
+} as const;

@@ -4,6 +4,7 @@ import { formatDayKey } from '../../core/time/formatDayKey';
 import { requestPersist } from '../../platform/storage';
 import { db } from '../../data/db';
 import { recordOpens, switchPauseToTen } from '../../data/repos/pause';
+import { capturePhoneUsageOnce } from '../../data/repos/phoneUsage';
 import { settleCalm } from '../yatra/calmKeeper';
 import { privateTopicPacks } from '../../data/packs/privateBooks';
 import { setPrivateTopics } from '../learn/flow';
@@ -211,6 +212,8 @@ export function AppShell() {
     let readAt = 0;
     const check = () => {
       if (Capacitor.isNativePlatform() && document.visibilityState === 'visible' && Date.now() - readAt > 600_000) { readAt = Date.now(); void recordOpens(db, readAt).catch(error => recordError('promise', error)); }
+      // Spec 46a: the daily minutes record reads finished days on the same opens (one read at a time, at most every 10 minutes).
+      if (nightPauseAvailable() && document.visibilityState === 'visible') void capturePhoneUsageOnce(db, Date.now())?.catch(error => recordError('promise', error));
       if (nightPauseAvailable() && document.visibilityState === 'visible') void nightPauseStatus().then(status => { if (status.pendingPackage) setPause({ packageName: status.pendingPackage, reason: status.pendingReason ?? 'night', minutes: Number(status.pendingMinutes ?? 0) }); }).catch(error => recordError('promise', error)).finally(() => setPauseCheckedAt(Date.now()));
       else setPauseCheckedAt(Date.now());
     };

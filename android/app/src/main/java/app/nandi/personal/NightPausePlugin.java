@@ -2,6 +2,7 @@ package app.nandi.personal;
 
 import android.app.AppOpsManager;
 import android.app.usage.UsageEvents;
+import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Process;
+import android.os.SystemClock;
 import android.os.Build;
 import android.provider.Settings;
 import android.net.Uri;
@@ -416,6 +418,110 @@ public class NightPausePlugin extends Plugin {
         }
         result.put("available", true);
         result.put("events", list);
+        call.resolve(result);
+    }
+
+    /**
+     * Spec 46a, the daily minutes record: Android's usage log from `from` to `to`, kept to what the record needs. The
+     * tracked packages' activity resumes and pauses, every screen change, lock, start-up and shutdown, and logStart
+     * (the first event the log still holds, of any app) so "nothing happened" is never mistaken for "no history". Also
+     * which tracked packages are installed, Android's own daily totals for buckets that sit inside one of the `bounds`
+     * days ("from:to,from:to"), and the boot count and boot wall time, so the app can see the clock moved. The minutes
+     * themselves are worked out in the app (core/phoneUsage), where they are unit tested. Android 10+ only. No Usage
+     * access returns reason no_access; a locked phone (null log) returns available false with no reason.
+     */
+    @PluginMethod
+    public void dailyForegroundLog(PluginCall call) {
+        JSObject result = new JSObject();
+        Long from = call.getLong("from");
+        Long to = call.getLong("to");
+        UsageStatsManager stats = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
+        if (Build.VERSION.SDK_INT < 29 || from == null || to == null || to <= from || stats == null) {
+            result.put("available", false);
+            call.resolve(result);
+            return;
+        }
+        if (!usageAllowed(getContext())) {
+            result.put("available", false);
+            result.put("reason", "no_access");
+            call.resolve(result);
+            return;
+        }
+        Set<String> packages = new HashSet<>();
+        for (String pkg : call.getString("packages", "").split(",")) {
+            String name = pkg.trim();
+            if (!name.isEmpty()) packages.add(name);
+        }
+        UsageEvents events = stats.queryEvents(from, Math.min(to, System.currentTimeMillis()));
+        if (events == null) {
+            result.put("available", false);
+            call.resolve(result);
+            return;
+        }
+        long logStart = -1;
+        JSArray list = new JSArray();
+        UsageEvents.Event event = new UsageEvents.Event();
+        while (events.hasNextEvent()) {
+            events.getNextEvent(event);
+            long at = event.getTimeStamp();
+            if (logStart < 0) logStart = at;
+            int type = event.getEventType();
+            String kind = null;
+            if (type == UsageEvents.Event.ACTIVITY_RESUMED) kind = "fg";
+            else if (type == UsageEvents.Event.ACTIVITY_PAUSED || type == UsageEvents.Event.ACTIVITY_STOPPED) kind = "bg";
+            else if (type == UsageEvents.Event.SCREEN_INTERACTIVE) kind = "on";
+            else if (type == UsageEvents.Event.SCREEN_NON_INTERACTIVE) kind = "off";
+            else if (type == UsageEvents.Event.KEYGUARD_SHOWN) kind = "lock";
+            else if (type == UsageEvents.Event.DEVICE_STARTUP) kind = "boot";
+            else if (type == UsageEvents.Event.DEVICE_SHUTDOWN) kind = "down";
+            if (kind == null) continue;
+            boolean screen = kind.equals("fg") || kind.equals("bg");
+            if (screen && !packages.contains(event.getPackageName())) continue;
+            JSObject item = new JSObject();
+            item.put("type", kind);
+            item.put("at", at);
+            if (screen) { item.put("pkg", event.getPackageName()); item.put("cls", event.getClassName() == null ? "" : event.getClassName()); }
+            list.put(item);
+        }
+        JSArray cross = new JSArray();
+        for (String bound : call.getString("bounds", "").split(",")) {
+            String[] ends = bound.split(":");
+            if (ends.length != 2) continue;
+            long dayFrom, dayTo;
+            try { dayFrom = Long.parseLong(ends[0]); dayTo = Long.parseLong(ends[1]); }
+            catch (NumberFormatException bad) { continue; }
+            List<UsageStats> buckets = stats.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, dayFrom, dayTo);
+            if (buckets == null) continue;
+            for (UsageStats bucket : buckets) {
+                // Only a bucket wholly inside the day: one that spills over would count another day's minutes.
+                if (!packages.contains(bucket.getPackageName()) || bucket.getFirstTimeStamp() < dayFrom || bucket.getLastTimeStamp() > dayTo) continue;
+                JSObject item = new JSObject();
+                item.put("from", dayFrom);
+                item.put("pkg", bucket.getPackageName());
+                item.put("ms", bucket.getTotalTimeInForeground());
+                cross.put(item);
+            }
+        }
+        PackageManager manager = getContext().getPackageManager();
+        JSArray installed = new JSArray();
+        for (String name : packages) {
+            try {
+                manager.getPackageInfo(name, 0);
+                installed.put(name);
+            } catch (PackageManager.NameNotFoundException missing) {
+                // Not installed, or not visible to NANDI.
+            }
+        }
+        int bootCount = -1;
+        try { bootCount = Settings.Global.getInt(getContext().getContentResolver(), Settings.Global.BOOT_COUNT); }
+        catch (Settings.SettingNotFoundException unknown) { /* the app then cannot tell a clock change from a restart */ }
+        result.put("available", true);
+        result.put("logStart", logStart);
+        result.put("events", list);
+        result.put("cross", cross);
+        result.put("installed", installed);
+        result.put("bootCount", bootCount);
+        result.put("bootWallMs", System.currentTimeMillis() - SystemClock.elapsedRealtime());
         call.resolve(result);
     }
 

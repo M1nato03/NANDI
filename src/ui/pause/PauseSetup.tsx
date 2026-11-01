@@ -173,7 +173,7 @@ export function PauseSetup() {
 function PhoneAccess({ access }: { access: { usage: boolean; overlay: boolean } }) {
   return <div className="card pause-step">
     <h2>Phone settings</h2>
-    <p>{access.usage ? '✓ Usage access is on: NANDI can see which app is in front. It keeps nothing but the app and the time.' : 'Usage access lets NANDI see which app comes to the front. The app names and times stay on this phone.'}</p>
+    <p>{access.usage ? '✓ Usage access is on: NANDI can see which app is in front. It keeps the app and the time, and a daily minutes record for your picked apps and similar ones, on this phone only.' : 'Usage access lets NANDI see which app comes to the front. It also keeps a daily minutes record for the apps you pick and similar ones. All of it stays on this phone.'}</p>
     {!access.usage && <button type="button" className="secondary" onClick={() => void openUsageSettings()}>Open Usage access</button>}
     <p>{access.overlay ? '✓ "Display over other apps" is on: the card can show over the app.' : '"Display over other apps" lets the card show over the app you opened.'}</p>
     {!access.overlay && <button type="button" className="secondary" onClick={() => void openOverlaySettings()}>Open Display over other apps</button>}

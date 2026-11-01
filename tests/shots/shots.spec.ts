@@ -1271,6 +1271,48 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'fix-2-get-fit-workout', false);
   });
 
+  test('46a minutes record', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-11-20T12:00:00') });
+    const phone = (allowed: boolean) => page.evaluate(ok => {
+      const day = new Date(2026, 10, 19).getTime();
+      sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ usageAllowed: ok, phoneLog: { logStart: day - 86_400_000, events: [{ type: 'off', at: day - 3_600_000 }], installed: [], cross: [], bootCount: 1, bootWallMs: 1 } }));
+    }, allowed);
+    await page.goto('/?e2e#you');
+    await expect(page.getByText(/XP in all$/)).toBeVisible();
+    await page.evaluate(async () => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction('settings', 'readwrite'); transaction.objectStore('settings').put({ key: 'night.pause.apps', value: ['com.instagram.android'], updatedAt: 1, deleted: 0, deviceId: 'shots' }); transaction.oncomplete = () => resolve(); });
+      database.close();
+    });
+    await phone(true);
+    await page.goto('/?e2e#you/settings');
+    await page.reload();
+    const record = page.getByRole('region', { name: 'Daily minutes record' });
+    await record.scrollIntoViewIfNeeded();
+    await shot(page, 'm1-settings-granted', false);
+    await record.getByText("What's kept").click();
+    await record.scrollIntoViewIfNeeded();
+    await shot(page, 'm2-whats-kept', false);
+    await record.getByRole('button', { name: 'Stop and delete the record' }).click();
+    await record.scrollIntoViewIfNeeded();
+    await shot(page, 'm3-confirm', false);
+    await record.getByRole('button', { name: 'Delete it' }).click();
+    await expect(record.getByRole('status')).toBeVisible();
+    await shot(page, 'm4-deleted-off', false);
+    await record.getByRole('button', { name: 'Keep a record again' }).click();
+    await phone(false);
+    await page.reload();
+    await record.scrollIntoViewIfNeeded();
+    await expect(record).toContainText('paused');
+    await shot(page, 'm5-settings-revoked', false);
+    await phone(true);
+    await page.reload();
+    await textAt200(page);
+    await record.getByText("What's kept").click();
+    await record.scrollIntoViewIfNeeded();
+    await shot(page, 'm6-200pct', false);
+  });
+
   test('park it', async ({ page }) => {
     // A moving clock, so the two lines are parked a moment apart and keep their order.
     await page.clock.install({ time: new Date('2026-10-26T22:30:00') });

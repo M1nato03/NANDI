@@ -15,6 +15,7 @@ import { go } from '../shell/router';
 import { ErrorRing } from './ErrorRing';
 import type { Appearance } from '../shell/useAppearance';
 import { NightPlanSetting } from './NightPlanSetting';
+import { MinutesRecord } from './MinutesRecord';
 import { ReminderSettings } from './ReminderSettings';
 import { nightPauseAvailable } from '../../platform/nightPause';
 import { BUSY_SHIFT_KEY, INTERESTS, INTERESTS_KEY, readInterests, type InterestId } from '../../core/adaptive/day';
@@ -102,6 +103,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   return <div className="you-settings"><NightPlanSetting />
     {nightPauseAvailable() && <button type="button" className="secondary ui-list-row" onClick={() => go('you/night')}>App pause</button>}
     <button type="button" className="secondary ui-list-row" onClick={() => go('you/backup')}>Backup and restore</button>
+    <MinutesRecord settings={settings} />
     <section className="card settings-group" aria-label="Plan settings"><h2>Plan</h2><label><input type="checkbox" checked={rewardToggleDraft ?? rewardOn} onChange={event => { const checked = event.target.checked; setRewardToggleDraft(checked); void save('planner.rewardEnabled', checked).then(ok => { if (!ok) setRewardToggleDraft(null); }); }} /> Reward after a focus block</label><label>Name your reward <input value={rewardDraft || rewardName} onChange={event => setRewardDraft(event.target.value)} placeholder="Chai or a short walk" /></label><button type="button" className="secondary" onClick={() => { const name = (rewardDraft || rewardName).trim(); if (!validReward(name)) { setMessage('Pick something away from the feed, like chai or a short walk.'); return; } void save('planner.reward', name).then(ok => { if (ok) setRewardDraft(''); }); }}>Save reward</button></section>
     <section className="card settings-group"><h2>Appearance</h2>
       <label>Theme <select value={theme} onChange={event => void setTheme(event.target.value)}><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></label>

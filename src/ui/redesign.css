@@ -462,3 +462,7 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .agency-check p { margin: 8px 0; }
 .agency-ends { display: flex; justify-content: space-between; max-width: 290px; margin-top: 4px; }
 .agency-check .interest-chip { min-width: 44px; }
+/* Spec 46a: the daily minutes record's quiet line in Settings. */
+.minutes-record .minutes-record-line { margin: 0 0 4px; }
+.minutes-record details > summary { display: list-item; padding: 10px 0; min-height: 44px; box-sizing: border-box; font-weight: 600; cursor: pointer; }
+.minutes-record > button, .minutes-record .actions button { min-height: 44px; }

@@ -22,8 +22,8 @@ function UsageDisclosure({ onContinue, onClose }: { onContinue: () => void; onCl
     <div className="ui-sheet-handle" aria-hidden="true" />
     <h2 id="usage-disclosure-title">Before you turn on Usage access</h2>
     <p>With Usage access, NANDI reads on this phone which app is on screen and when, and when the screen turns off or locks.</p>
-    <p>It uses this only for App pause and Phone ki chhutti: to offer a pause in the apps you choose, and to check a phone break you planned.</p>
-    <p>It never sees what you read or type in other apps. What it reads stays on this phone. It leaves only when you back up or share, like the rest of NANDI.</p>
+    <p>It uses this only for App pause, Phone ki chhutti and the focus check: to offer a pause in the apps you choose, to check a phone break you planned, and to see a focus was kept. Once you pick apps, it also keeps a daily minutes record for them and similar apps.</p>
+    <p>It never sees what you read or type in other apps. What it reads stays on this phone. The daily minutes record never leaves it, not even in a backup. Everything else leaves only when you back up or share, like the rest of NANDI.</p>
     <p>You can turn Usage access off any time in Android settings.</p>
     <div className="actions"><button type="button" onClick={onContinue}>Continue to Usage access</button><button type="button" className="secondary" onClick={onClose}>Not now</button></div>
   </section></div>;

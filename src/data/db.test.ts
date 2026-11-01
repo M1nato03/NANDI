@@ -35,6 +35,7 @@ const indexes: Record<string, string[]> = {
   learnItems: ['lastSeen'],
   learnDrops: [],
   privatePacks: [],
+  phoneUsageMinutes: ['dayKey', 'packageName'],
 };
 
 let sequence = 0;

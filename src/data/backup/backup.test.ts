@@ -215,6 +215,33 @@ describe('backup and restore', () => {
   });
 });
 
+describe('spec 46a: the daily minutes record and backups', () => {
+  it('a v4 backup (before the record) gains the table empty and restores; a file that carries rows never lands them', async () => {
+    const db = freshDb();
+    await db.tasks.add({ id: 'kept', title: 'Kept', status: 'open', dayKey: '2026-10-05', ...stamp });
+    const old = structuredClone(await exportBackup(db, 1000));
+    old.dexie.data.databaseVersion = 4;
+    old.dexie.data.tables = old.dexie.data.tables.filter(table => table.name !== 'phoneUsageMinutes');
+    old.dexie.data.data = old.dexie.data.data.filter(table => table.tableName !== 'phoneUsageMinutes');
+    const migrated = validateBackup(old);
+    expect(migrated.success).toBe(true);
+    expect(migrated.envelope!.dexie.data.databaseVersion).toBe(5);
+    expect(migrated.envelope!.dexie.data.tables.find(table => table.name === 'phoneUsageMinutes')).toMatchObject({ rowCount: 0 });
+    await importBackup(db, migrated.envelope!);
+    expect((await db.tasks.get('kept'))?.title).toBe('Kept');
+    // A file from elsewhere with rows in the table: the rows and its record settings stay out.
+    const crafted = structuredClone(await exportBackup(db, 2000));
+    const row = { id: '2026-11-01|com.instagram.android', dayKey: '2026-11-01', packageName: 'com.instagram.android', foregroundMs: 1, ...stamp };
+    crafted.dexie.data.data.find(table => table.tableName === 'phoneUsageMinutes')!.rows.push(row);
+    crafted.dexie.data.tables.find(table => table.name === 'phoneUsageMinutes')!.rowCount = 1;
+    crafted.dexie.data.data.find(table => table.tableName === 'settings')!.rows.push({ key: 'phoneUsage.baselines', value: [{ days: [], setId: 'x' }], ...stamp });
+    crafted.dexie.data.tables.find(table => table.name === 'settings')!.rowCount += 1;
+    await importBackup(db, crafted);
+    expect(await db.phoneUsageMinutes.count()).toBe(0);
+    expect(await db.settings.get('phoneUsage.baselines')).toBeUndefined();
+  });
+});
+
 describe('a11y audit C2: a damaged backup never costs the phone its data', () => {
   async function phoneWithData() {
     const db = freshDb();

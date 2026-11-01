@@ -13,6 +13,14 @@
         <package android:name="in.mohalla.video" />
         <package android:name="com.eterno.shortvideos" />
         <package android:name="in.mohalla.sharechat" />
+        <!-- Spec 46a: the browsers the daily minutes record keeps beside the picked apps. -->
+        <package android:name="com.android.chrome" />
+        <package android:name="org.mozilla.firefox" />
+        <package android:name="com.microsoft.emmx" />
+        <package android:name="com.brave.browser" />
+        <package android:name="com.sec.android.app.sbrowser" />
+        <package android:name="com.opera.browser" />
+        <package android:name="com.opera.mini.native" />
         <intent>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />

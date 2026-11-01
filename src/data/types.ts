@@ -315,3 +315,32 @@ export interface PrivatePackRow extends StateRow {
   importedAt: number;
   private: true;
 }
+
+/**
+ * Spec 46a: one app's foreground time on one local calendar day (midnight to midnight, not NANDI's 04:00 day), read
+ * afterwards from Android's usage log. `foregroundMs` null means unknown, with `reason`; 0 is a measured zero. These
+ * rows describe this phone only: they never leave it in a backup, a share or a notification.
+ */
+export interface PhoneUsageRow extends StateRow {
+  /** `${dayKey}|${packageName}`. */
+  id: string;
+  /** The local calendar date, YYYY-MM-DD. */
+  dayKey: string;
+  packageName: string;
+  group: 'picked' | 'substitute';
+  foregroundMs: number | null;
+  reason?: import('../core/phoneUsage/coverage').UnknownReason;
+  source: 'usage-events';
+  fromMs: number;
+  toMs: number;
+  /** Minutes east of UTC at the day's start and end (they differ on a clock-change day). */
+  offsetStartMin: number;
+  offsetEndMin: number;
+  catalogId: string;
+  /** The picked apps and catalog this day was measured with. */
+  setId: string;
+  installed: boolean | null;
+  /** Android's own daily total for a bucket inside the day, when one lines up; null otherwise. */
+  crossCheckMs: number | null;
+  measuredAt: number;
+}
