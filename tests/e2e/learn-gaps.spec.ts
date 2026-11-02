@@ -103,7 +103,8 @@ test('owner flag with a note updates the count and survives reload', async ({ pa
   await expect(page.getByText('1 flagged')).toBeVisible();
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Review content' })).toBeVisible({ timeout: 15_000 });
-  await expect(page.getByText('1 flagged')).toBeVisible();
+  // The count reads the settings table after the reload; on a slow CI runner that took over 5 s (CI 41430170831).
+  await expect(page.getByText('1 flagged')).toBeVisible({ timeout: 15_000 });
   await expect(page.locator('.content-review-item').first()).toContainText('Check the source and feedback.');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
