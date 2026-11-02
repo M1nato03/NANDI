@@ -726,9 +726,9 @@
       },
       {
         "id": "c9",
-        "t": "The late-night Maggi problem",
-        "scene": "Dinner at 8, study till 12, Maggi at 1 am. You wake up heavy, skip breakfast, eat a huge lunch, and do it all again.",
-        "q": "Which rule from the text does the 1 am Maggi break?",
+        "t": "The late-night snack problem",
+        "scene": "Dinner at 8, study till 12, a snack at 1 am. You wake up heavy, skip breakfast, eat a huge lunch, and do it all again.",
+        "q": "Which rule from the text does the 1 am snack break?",
         "o": [
           "None; a snack is a snack",
           "Eating at the proper time",
@@ -768,7 +768,7 @@
           "s": "You get hungry at midnight while studying.",
           "q": "Better option?",
           "o": [
-            "Maggi, every night",
+            "Instant noodles, every night",
             "Move dinner later (around 9:30) so you’re not starving; if hungry, a fruit or milk",
             "Ignore the hunger and stay up till 3",
             "Order biryani"
@@ -780,7 +780,7 @@
           "q": "Why does one late meal mess up the whole next day?",
           "o": [
             "It pushes hunger and sleep later, which pushes breakfast out and lunch bigger",
-            "Because Maggi is poison",
+            "Because snacks are poison",
             "It doesn’t"
           ],
           "a": 0,

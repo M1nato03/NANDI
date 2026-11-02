@@ -1021,15 +1021,15 @@
         "id": "mm-4",
         "t": "mystery",
         "d": 1200,
-        "title": "The midnight Maggi",
-        "text": "Someone finished the floor's shared Maggi stash at 1 am. Four roommates were awake, and each says one thing. Exactly one of them is lying, and the liar is the one who ate it.",
+        "title": "The midnight snack",
+        "text": "Someone finished the floor's shared snack stash at 1 am. Four roommates were awake, and each says one thing. Exactly one of them is lying, and the liar is the one who ate it.",
         "clues": [
           "Dev: “Ishaan ate it.”",
           "Ishaan: “Dev is lying.”",
           "Karan: “I didn't eat it.”",
           "Yash: “It wasn't Ishaan.”"
         ],
-        "q": "Who ate the Maggi?",
+        "q": "Who ate the snacks?",
         "opts": [
           "Dev",
           "Ishaan",
