@@ -131,8 +131,12 @@ test('the Settings line reads at 200% text without spilling', async ({ page }) =
   await expect(record).toBeVisible();
   await textAt200(page);
   await record.getByText("What's kept").click();
-  // The help text follows the text size too (rem), not a fixed 13px.
-  expect(await record.locator('.setting-help').first().evaluate(node => parseFloat(getComputedStyle(node).fontSize))).toBeGreaterThanOrEqual(26);
+  // The help text follows the text size too (rem), not a fixed 13px. Polled with the 200% style re-applied, since the
+  // first open's offline-ready reload can drop it after textAt200 returns (a 13px read in gate-snack2).
+  await expect.poll(async () => {
+    await textAt200(page);
+    return record.locator('.setting-help').first().evaluate(node => parseFloat(getComputedStyle(node).fontSize));
+  }).toBeGreaterThanOrEqual(26);
   expect(await record.evaluate(node => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   for (const target of await record.getByRole('button').all()) expect((await target.boundingBox())!.height).toBeGreaterThanOrEqual(44);
