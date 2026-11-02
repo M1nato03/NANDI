@@ -47,8 +47,10 @@ export function ChikuStage({ scene, seed, onPlayed, onDone }: { scene: ChikuScen
   const moment = beat === 'done' ? (matched ? 'right' : 'wrong') : beat === 'ask' ? 'stuck' : beat;
   const caption = beat === 'newday' ? scene.newDay.caption : beat === 'guess' ? guess?.why : beat === 'truth' ? scene.truth.caption : undefined;
   const cardText = card === null ? '' : scene.cards[card]!.text;
+  // Cards may end with a full stop (spec 51); Chiku's lines quote them without it, so neither `."` nor `..` appears.
+  const quoted = cardText.replace(/\.$/, '');
   // One polite live region reads each beat (Codex B item 110); the visible captions carry no roles of their own.
-  const said = beat === 'ask' ? (tried.length ? 'Got another card?' : scene.ask) : beat === 'take' ? `You gave Chiku: ${cardText}.` : beat === 'guess' ? `${scene.newDay.question} ${caption ?? ''}` : beat === 'done' ? (matched ? 'Got it, because your card named the real cause.' : `My card said "${cardText}", so I guessed ${guess?.answer}. It went the other way. Got another card?`) : caption ?? '';
+  const said = beat === 'ask' ? (tried.length ? 'Got another card?' : scene.ask) : beat === 'take' ? `You gave Chiku: ${quoted}.` : beat === 'guess' ? `${scene.newDay.question} ${caption ?? ''}` : beat === 'done' ? (matched ? 'Got it, because your card named the real cause.' : `My card said "${quoted}", so I guessed ${guess?.answer}. It went the other way. Got another card?`) : caption ?? '';
   // A tap anywhere in the scene, or Enter or Space on it, skips to the next beat; buttons keep their own job.
   const skipFrom = (target: EventTarget) => { if (!(target as HTMLElement).closest('button')) skipBeat(); };
   const timed = !!NEXT[beat];
@@ -69,7 +71,7 @@ export function ChikuStage({ scene, seed, onPlayed, onDone }: { scene: ChikuScen
       {caption && <p className="chiku-caption" key={beat}>{beat === 'guess' && <span className="chiku-question">{scene.newDay.question} </span>}{caption}</p>}
       {beat === 'done' && <div className="chiku-end">
         <p className="chiku-caption">{scene.truth.caption}</p>
-        <p className="chiku-say">{matched ? 'Got it, because your card named the real cause.' : `My card said "${cardText}", so I guessed ${guess?.answer}. It went the other way. Got another card?`}</p>
+        <p className="chiku-say">{matched ? 'Got it, because your card named the real cause.' : `My card said "${quoted}", so I guessed ${guess?.answer}. It went the other way. Got another card?`}</p>
         {matched ? <button type="button" onClick={onDone}>Done</button> : <div className="chiku-cards" role="group" aria-label="Your cards">{order.map(index => <button type="button" key={index} className={`chiku-card${tried.includes(index) ? ' tried' : ''}`} onClick={() => pick(index)}>{scene.cards[index]!.text}</button>)}</div>}
       </div>}
       {timed && <button type="button" className="text-button chiku-next" onClick={skipBeat}>Skip ahead</button>}

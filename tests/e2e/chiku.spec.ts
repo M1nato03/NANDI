@@ -116,3 +116,14 @@ test('focus starts on the scene, and at the end only the verdict is read, not th
   await expect(beat(page)).toHaveAttribute('data-beat', 'done');
   await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText('Got it, because your card named the real cause.');
 });
+
+test('a card that ends with a full stop is quoted without it (spec 51 HTWF cards)', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
+  await page.goto('/?e2e&concept=htwf-admit-error#learn/chiku-demo');
+  await page.getByRole('group', { name: 'Your cards' }).getByRole('button', { name: 'Blame the classmate for my message.' }).click();
+  await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText('You gave Chiku: Blame the classmate for my message.');
+  for (let i = 0; i < 4; i++) await stage(page).click();
+  await expect(beat(page)).toHaveAttribute('data-beat', 'done');
+  await expect(page.locator('.chiku-end .chiku-say')).toContainText('My card said "Blame the classmate for my message", so I guessed');
+  await expect(page.locator('.chiku-step')).not.toContainText(/\.",|\.\./);
+});
