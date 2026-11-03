@@ -46,7 +46,7 @@ export function GoalPicker({ value, onChange, onEverything }: { value: Picks; on
     <div className="welcome-goals" role="group" aria-label="What NANDI helps with">
       {GOALS.map(item => {
         const on = all || value.goals.includes(item.id);
-        return <button type="button" key={item.id} className={`welcome-goal${on ? ' picked' : ''}`} aria-pressed={on} onClick={() => tap(item.id)}>{item.label}</button>;
+        return <button type="button" key={item.id} className={`welcome-goal${on ? ' picked' : ''}`} aria-pressed={on} onClick={() => tap(item.id)}>{item.label}{on && <span className="goal-check" aria-hidden="true">✓</span>}</button>;
       })}
     </div>
     <p className="goal-refused" role="status">{refused}</p>

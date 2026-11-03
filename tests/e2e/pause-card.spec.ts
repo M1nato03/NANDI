@@ -74,7 +74,7 @@ test('spec 39b: "I did it" shows from the start of the act (the clock is a guide
   await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
   await phoneOpens(page);
   await expect(card(page).getByRole('heading')).toHaveText("If I open Instagram, I'll do 10 squats first.");
-  for (const name of ['Do it in NANDI', 'Not now', 'Open Instagram anyway']) await expect(card(page).getByRole('button', { name })).toBeVisible();
+  for (const name of [/^Read on: /, 'Not now', 'Open Instagram anyway']) await expect(card(page).getByRole('button', { name })).toBeVisible();
   await card(page).getByRole('button', { name: /^Start the 2 minutes: / }).click();
   await expect(card(page).getByRole('timer')).toHaveText('2:00');
   await expect(card(page).getByRole('button', { name: 'I did it' })).toBeVisible();
@@ -90,25 +90,26 @@ test('spec 39b: "I did it" shows from the start of the act (the clock is a guide
   await expect.poll(() => totalXp(page)).toBe(before + 2);
 });
 
-test('spec 39b: "Do it in NANDI" goes to the next move (a task for today, else the Read drop), pays nothing, and is logged', async ({ page }) => {
+test('spec 39b, spec 52 D: the in-app way names and opens Home\'s next move (a task for today, else the chapter), pays nothing, and is logged', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await setUp(page);
   const before = await totalXp(page);
   await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
-  // Nothing running, no Train programme, no task: today's Read drop.
+  // Nothing running, no Train programme, no task: the chapter Continue offers, at its next idea.
   await phoneOpens(page);
-  await card(page).getByRole('button', { name: 'Do it in NANDI' }).click();
+  await card(page).getByRole('button', { name: /^Read on: .+, ch\. 1$/ }).click();
   await expect(card(page)).toHaveCount(0);
-  await expect(page).toHaveURL(/#read\/drop$/);
+  await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
   // A task planned for today: its focus.
   await page.goto('/?e2e#plan/focus');
   await page.getByLabel('Add a task').fill('Email Riya the slides');
   await page.getByRole('button', { name: 'Add', exact: true }).click();
   await page.goto('/?e2e#you');
   await phoneOpens(page);
-  await card(page).getByRole('button', { name: 'Do it in NANDI' }).click();
-  await expect(page).toHaveURL(/#plan\/focus$/);
-  await expect(page.getByRole('region', { name: 'Focus task' })).toContainText('Email Riya the slides');
+  // A task planned for today: Plan, where its row has Start (the same route Home's card takes).
+  await card(page).getByRole('button', { name: 'Start: Email Riya the slides' }).click();
+  await expect(page).toHaveURL(/#plan$/);
+  await expect(page.locator('.plan-screen')).toContainText('Email Riya the slides');
   expect(await attempts(page)).toEqual(['in_app', 'in_app']);
   expect((await did(page)).filter(action => action === 'clear')).toHaveLength(2);
   expect(await totalXp(page)).toBe(before);

@@ -42,8 +42,9 @@ test('a new phone: no useful day yet, the camp, and one move to Read', async ({ 
   await expect(page.locator('.useful-days-list')).toHaveCount(0);
   await expect(page.locator('main')).not.toContainText(/\byet\b|\bnone\b/i);
   await page.goBack();
+  // Spec 52: the move lands in the thing itself, the chapter Continue offers, not the Read tab's front page.
   await move(page).click();
-  await expect(page).toHaveURL(/#read$/);
+  await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
 });
 
 test('useful days count marked dates this week (before Season 1), and one tap opens the record', async ({ page }) => {

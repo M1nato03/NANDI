@@ -1079,10 +1079,10 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'p39b-2-act-i-did-it-at-start', false);
     await card.getByRole('button', { name: 'Not now' }).click();
     await expect(card).toHaveCount(0);
-    // "Do it in NANDI" with nothing else on: today's Read drop.
+    // Spec 52 D: the in-app way names Home's next move; with nothing else on, the chapter Continue offers.
     await opens();
-    await card.getByRole('button', { name: 'Do it in NANDI' }).click();
-    await expect(page).toHaveURL(/#read\/drop$/);
+    await card.getByRole('button', { name: /^Read on: / }).click();
+    await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
     await shot(page, 'p39b-3-in-nandi-read-drop', false);
     // With a task planned for today: its focus.
     await page.goto('/?e2e#plan/focus');
@@ -1090,8 +1090,8 @@ for (const theme of themes) test.describe(theme, () => {
     await page.getByRole('button', { name: 'Add', exact: true }).click();
     await page.goto('/?e2e#you');
     await opens();
-    await card.getByRole('button', { name: 'Do it in NANDI' }).click();
-    await expect(page).toHaveURL(/#plan\/focus$/);
+    await card.getByRole('button', { name: 'Start: Email Riya the slides' }).click();
+    await expect(page).toHaveURL(/#plan$/);
     await shot(page, 'p39b-4-in-nandi-task-focus', false);
     // A card that was on "every open": moved once to after 10 min a day, and Plan says so.
     await page.evaluate(async () => {
@@ -1265,6 +1265,7 @@ for (const theme of themes) test.describe(theme, () => {
     await welcome.getByLabel("I'm 18 or older.").check();
     await welcome.getByRole('button', { name: "Let's start" }).click();
     await welcome.getByRole('button', { name: 'Get fit' }).click();
+    await welcome.getByRole('button', { name: 'Continue' }).click();
     await welcome.getByRole('button', { name: 'Start an easy first workout' }).click();
     await expect(page).toHaveURL(/#yatra\/train\/workout$/);
     await expect(page.getByText('Current exercise')).toBeVisible();

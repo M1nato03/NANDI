@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { textAt200 } from './helpers/text';
 
 // Spec 45c, decision 8: the Pause card is a paper slip. The plan, a quiet "Start the 2 minutes" link into the act, three
-// full-width ways of one weight ("I did it", "Do it in NANDI", "Open <app> anyway") and "Not now" as a small link.
+// full-width ways of one weight ("I did it", the named in-app move (spec 52 D), "Open <app> anyway") and "Not now" as a small link.
 // Routes, ledger outcomes and pay are spec 39b's. The phone's side is the e2e stand-in in platform/nightPause.ts.
 const NOON = new Date('2026-11-04T12:00:00');
 const slip = (page: Page) => page.getByRole('dialog', { name: 'Pause card' });
@@ -52,7 +52,8 @@ test('the slip: the plan, the Start link, three equal full-width ways and a smal
   await phoneOpens(page);
   await expect(slip(page).getByRole('heading')).toHaveText("If I open Instagram, I'll do 10 squats first.");
   const ways = slip(page).locator('.pause-ways > button');
-  await expect(ways).toHaveText(['I did it', 'Do it in NANDI', 'Open Instagram anyway']);
+  // Spec 52 D: the in-app way names Home's next move (here, the first chapter of the book Continue offers).
+  await expect(ways).toHaveText(['I did it', /^Read on: .+, ch\. 1$/, 'Open Instagram anyway']);
   const boxes = await ways.evaluateAll(nodes => nodes.map(node => { const r = node.getBoundingClientRect(); return { width: Math.round(r.width), height: Math.round(r.height), weight: getComputedStyle(node).fontWeight, size: getComputedStyle(node).fontSize }; }));
   expect(new Set(boxes.map(box => JSON.stringify(box))).size).toBe(1);
   const card = (await slip(page).locator('.pause-card').boundingBox())!;
@@ -66,9 +67,9 @@ test('the slip: the plan, the Start link, three equal full-width ways and a smal
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   // The slip is taller than the phone now: the top is reachable, and so is every way out below.
   await expect(slip(page).locator('.pause-card')).toHaveCSS('font-size', '32px');
-  for (const name of ['I did it', 'Do it in NANDI', 'Open Instagram anyway', 'Not now']) {
-    await slip(page).getByRole('button', { name, exact: true }).scrollIntoViewIfNeeded();
-    await expect(slip(page).getByRole('button', { name, exact: true })).toBeInViewport();
+  for (const way of [...await ways.all(), slip(page).getByRole('button', { name: 'Not now', exact: true })]) {
+    await way.scrollIntoViewIfNeeded();
+    await expect(way).toBeInViewport();
   }
   await slip(page).locator('.eyebrow').scrollIntoViewIfNeeded();
   await expect(slip(page).locator('.eyebrow')).toBeInViewport();
@@ -105,14 +106,14 @@ test('"Start the 2 minutes" opens the act with "I did it" at once and the clock 
   expect(await attempts(page)).toEqual(['act_done']);
 });
 
-test('"Do it in NANDI" goes to the next move; "Open anyway" opens the app; "Not now" goes Home and the app\'s own page stays', async ({ page }) => {
+test('the named in-app move goes where Home\'s next move goes; "Open anyway" opens the app; "Not now" goes Home and the app\'s own page stays', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await cardOn(page);
   const before = await totalXp(page);
   await phoneOpens(page);
-  await slip(page).getByRole('button', { name: 'Do it in NANDI' }).click();
+  await slip(page).getByRole('button', { name: /^Read on: / }).click();
   await expect(slip(page)).toHaveCount(0);
-  await expect(page).toHaveURL(/#read\/drop$/);
+  await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
   await page.goto('/?e2e#you');
   await phoneOpens(page);
   await slip(page).getByRole('button', { name: 'Open Instagram anyway' }).click();

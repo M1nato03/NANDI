@@ -21,15 +21,19 @@ async function hello(page: Page) {
   await welcome.getByRole('button', { name: "Let's start" }).click();
   return welcome;
 }
+// Spec 52: the areas are toggles; Continue shows once one or two are picked.
+async function pick(welcome: ReturnType<Page['getByRole']>, ...labels: string[]) {
+  for (const label of labels) await welcome.getByRole('button', { name: label, exact: true }).click();
+  await welcome.getByRole('button', { name: 'Continue' }).click();
+}
 
-test('a fresh install picks one goal and lands in its first lesson, with no topic picker, in under 90 seconds', async ({ page }) => {
+test('a fresh install picks one area and lands in its first lesson, with no topic picker, in under 90 seconds', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-21T12:00:00'));
   const started = Date.now();
   await page.goto('/?e2e&welcome');
   const welcome = await hello(page);
-  await expect(welcome.getByRole('heading', { name: 'Pick one to try first' })).toBeVisible();
-  // One tap chooses and moves on.
-  await welcome.getByRole('button', { name: 'Learn something' }).click();
+  await expect(welcome.getByRole('heading', { name: 'Pick two to start' })).toBeVisible();
+  await pick(welcome, 'Learn something');
   await expect(welcome).toContainText('From this time, NANDI turns calm');
   await welcome.getByLabel('Bedtime').fill('23:00');
   await welcome.getByRole('button', { name: 'Start your first chapter' }).click();
@@ -40,8 +44,8 @@ test('a fresh install picks one goal and lands in its first lesson, with no topi
   await walkIdea(page, 'psychology');
   await expect(page.locator('.idea-end')).toContainText('Idea done');
   expect(Date.now() - started).toBeLessThan(90_000);
-  const saved = await settingsOf(page, ['planner.bedtime', 'profile.goals', 'learn.selectedTopics', 'profile.adultConfirmedAt']);
-  expect(saved).toMatchObject({ 'planner.bedtime': '23:00', 'profile.goals': ['learn'], 'learn.selectedTopics': ['psychology'] });
+  const saved = await settingsOf(page, ['planner.bedtime', 'profile.goals', 'profile.size', 'learn.selectedTopics', 'profile.adultConfirmedAt']);
+  expect(saved).toMatchObject({ 'planner.bedtime': '23:00', 'profile.goals': ['learn'], 'profile.size': 'two', 'learn.selectedTopics': ['psychology'] });
   expect(typeof saved['profile.adultConfirmedAt']).toBe('string');
   await page.reload();
   await expect(page.getByRole('dialog', { name: 'Welcome to NANDI' })).toHaveCount(0);
@@ -51,14 +55,14 @@ test("Sharpen my mind opens today's board, and Get fit starts the easy first wor
   await page.clock.setFixedTime(new Date('2026-10-21T12:00:00'));
   await page.goto('/?e2e&welcome');
   let welcome = await hello(page);
-  await welcome.getByRole('button', { name: 'Sharpen my mind' }).click();
+  await pick(welcome, 'Sharpen my mind');
   await welcome.getByRole('button', { name: "Try today's puzzle" }).click();
   await expect(page.getByText(/Daily board (#\d+ )?· /)).toBeVisible({ timeout: 30_000 });
 
   await page.evaluate(() => indexedDB.deleteDatabase('nandi'));
   await page.goto('/?e2e&welcome');
   welcome = await hello(page);
-  await welcome.getByRole('button', { name: 'Get fit' }).click();
+  await pick(welcome, 'Get fit');
   await welcome.getByRole('button', { name: 'Start an easy first workout' }).click();
   // Straight into the first workout, on the easiest step of each move: no setup page and no second tap.
   await expect(page).toHaveURL(/#yatra\/train\/workout$/);
@@ -75,7 +79,7 @@ test("Sleep earlier opens tonight's plan; a cancelled restore brings the first r
   await page.reload(); // only the hash changed, so load the app again like a new visit
   await expect(page.getByRole('link', { name: 'Privacy notice' })).toHaveAttribute('href', 'privacy.html');
   welcome = await hello(page);
-  await welcome.getByRole('button', { name: 'Sleep earlier' }).click();
+  await pick(welcome, 'Sleep earlier');
   await welcome.getByRole('button', { name: 'Plan tonight' }).click();
   await expect(page).toHaveURL(/#you\/tonight$/);
   await expect(page.getByRole('region', { name: 'Night plan setting' })).toBeVisible();
@@ -85,7 +89,7 @@ test('after bedtime the first run ends on the night routine, whatever was picked
   await page.clock.setFixedTime(new Date('2026-10-21T23:45:00'));
   await page.goto('/?e2e&welcome');
   const welcome = await hello(page);
-  await welcome.getByRole('button', { name: 'Learn something' }).click();
+  await pick(welcome, 'Learn something');
   await welcome.getByLabel('Bedtime').fill('23:00');
   await expect(welcome.getByRole('button', { name: 'Start my night routine' })).toBeVisible();
 });

@@ -18,7 +18,8 @@
 .pause-slip .pause-line { font-size: 1.5rem; }
 /* Done's line is the first thing on the sheet, beside Mor: it keeps clear of the friend. */
 .pause-done .pause-line { padding-right: 48px; }
-.pause-ways { display: grid; gap: 10px; margin-top: 4px; }
+/* Spec 52 D: the in-app way names its move and can run to two lines; every way keeps one size, so none weighs more. */
+.pause-ways { display: grid; grid-auto-rows: 1fr; gap: 10px; margin-top: 4px; }
 .pause-not-now { justify-self: start; color: var(--ink-2); font-weight: 400; }
 .pause-clock { margin: 0; font: 800 56px 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; text-align: center; }
 .pause-earned { margin: 0; color: var(--accent); font-weight: 700; }
