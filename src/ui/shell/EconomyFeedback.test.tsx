@@ -14,7 +14,7 @@ import { EconomyFeedback } from './EconomyFeedback';
 // Economy review 32, F1 and F2: nothing celebrates after bedtime, and the count-up respects reduced motion.
 const settle = () => act(async () => { await new Promise(resolve => setTimeout(resolve, 80)); });
 /** Every finish toast that appeared, as text and class, so a toast that already closed is still seen. */
-async function finishTask(time: string) {
+async function finishTask(time: string, withBadge = false) {
   vi.setSystemTime(new Date(time));
   const seen: { text: string; className: string }[] = [];
   const observer = new MutationObserver(() => document.querySelectorAll('[role=status]').forEach(node => seen.push({ text: node.textContent ?? '', className: node.className })));
@@ -24,8 +24,10 @@ async function finishTask(time: string) {
   await waitFor(() => expect(mock.reconcileGamify).toHaveBeenCalled());
   await settle();
   const now = Date.now(), day = dayKey(now);
-  await act(async () => { await db.ledger.add({ id: `done:${day}`, mode: 'tasks', kind: 'done', refId: day, dayKey: day,
-    inputs: { plannedSize: 'M', isFirstDay: true, wasPlanned: true, postpones: 0 }, updatedAt: now, deleted: 0, deviceId: 'test' }); });
+  await act(async () => { await db.ledger.bulkAdd([{ id: `done:${day}`, mode: 'tasks', kind: 'done', refId: day, dayKey: day,
+    inputs: { plannedSize: 'M', isFirstDay: true, wasPlanned: true, postpones: 0 }, updatedAt: now, deleted: 0, deviceId: 'test' },
+    // The badge reconcile writes can land in the same update as the finish that earned it.
+    ...(withBadge ? [{ id: `badge-tier:first:${day}`, mode: 'gamify', kind: 'badge-tier', refId: 'first', dayKey: day, inputs: {}, updatedAt: now, deleted: 0 as const, deviceId: 'test' }] : [])]); });
   await settle();
   return seen;
 }
@@ -48,6 +50,10 @@ describe('economy feedback', () => {
     expect(mock.tapHaptic).toHaveBeenCalled();
   });
 
+  it('spec 52: a badge tier landing in the same update does not swallow the finish; it joins its line', async () => {
+    const seen = await finishTask('2026-10-22T12:00:00', true);
+    expect(seen.some(row => row.className.includes('finish-moment') && row.text.includes('A new badge tier'))).toBe(true);
+  });
   it('F1: after bedtime a finished task gets no buzz and no +XP overlay', async () => {
     const seen = await finishTask('2026-11-04T02:00:00');
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 300)); });

@@ -88,7 +88,11 @@ export function EconomyFeedback() {
     const added = source.facts.filter(row => !oldIds.has(row.id));
     // Bulk restore and historical imports are data operations, not a new check-off.
     if (added.length > 5 || added.some(row => Math.abs(Date.now() - row.updatedAt) > 5_000)) return;
-    const badge = added.find(row => row.kind === 'badge-tier' || row.kind === 'monthly-challenge');
+    const isBadge = (row: LedgerRow) => row.kind === 'badge-tier' || row.kind === 'monthly-challenge';
+    const badge = added.find(isBadge);
+    // A badge that lands in the same update as the finish that earned it must not swallow that finish (spec 52: the
+    // first idea's finish went missing about 1 run in 5 when reconcile's badge tier arrived with it).
+    const dropDone = !!source.drop && source.drop.drop.items.length > 0 && source.drop.drop.cursor >= source.drop.drop.items.length && (!previous.drop || previous.drop.drop.cursor < previous.drop.drop.items.length);
     if (badge) {
       // Badge tiers can arrive while someone is answering or planning; mark the moment without covering their controls.
       const label = badge.kind === 'monthly-challenge' ? 'Monthly challenge complete' : 'A new badge tier';
@@ -96,10 +100,11 @@ export function EconomyFeedback() {
       // With no finish on screen (say, mid-question) it waits for the next one rather than covering an explanation.
       if (noticeRef.current && !noticeRef.current.macro) setNotice(current => current && !current.macro ? { ...current, text: current.text.includes(label) ? current.text : `${current.text} · ${label}` } : current);
       else pendingBadge.current = label;
-      return;
+      // With a finish in the same update, go on: withBadge adds the label to that finish's line.
+      if (!dropDone && added.every(row => isBadge(row) || row.kind === 'daily-quest')) return;
     }
     const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session' && sessionCounts(row.inputs)) || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))) || (row.mode === 'read' && row.kind === 'chapter'));
-    const dropFinished = !!source.drop && source.drop.drop.items.length > 0 && source.drop.drop.cursor >= source.drop.drop.items.length && (!previous.drop || previous.drop.drop.cursor < previous.drop.drop.items.length);
+    const dropFinished = dropDone;
     const now = Date.now(), today = dayKey(now);
     // Spec 15 C: on the soft Home the tiny task ends in the calm soft finish; no count-up overlay over it.
     const softHome = softToday(source.facts, today).state !== null && !source.settings.some(row => row.key === softMoreKey(today) && row.value === true && !row.deleted);

@@ -341,7 +341,7 @@ test.describe('the first win: app time from first paint to the first finish mome
       }).observe(document, { childList: true, subtree: true });
     });
   });
-  const finishAt = async (page: Page) => (await page.waitForFunction(() => (window as Window & { firstFinish?: number }).firstFinish, undefined, { timeout: 30_000 })).jsonValue() as Promise<number>;
+  const finishAt = async (page: Page) => (await page.waitForFunction(() => (window as Window & { firstFinish?: number }).firstFinish, undefined, { timeout: 10_000 })).jsonValue() as Promise<number>;
   const record = (testInfo: TestInfo, pick: string, ms: number | string) => {
     testInfo.annotations.push({ type: 'first-win', description: `${pick}: ${ms}` });
     console.log(`spec 52 gate 7: ${pick} ${ms}`);
@@ -358,6 +358,8 @@ test.describe('the first win: app time from first paint to the first finish mome
   test('Learn something', async ({ page }, testInfo) => {
     await start(page, 'Learn something', 'Start your first chapter');
     await walkIdea(page, 'psychology');
+    await expect(page.locator('.idea-end')).toContainText('Idea done');
+    // The first idea's finish shows even when reconcile's first badge tier lands in the same update (it missed 3 in 16).
     const at = await finishAt(page);
     record(testInfo, 'learn', `${Math.round(at - await firstPaint(page))} ms`);
   });
