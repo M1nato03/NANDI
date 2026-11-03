@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import 'fake-indexeddb/auto';
-import { afterEach, expect, it } from 'vitest';
+import { afterEach, expect, it, onTestFinished, vi } from 'vitest';
 import { createDb, type NandiDb } from '../db';
 import { CLOSE_PREFIX, closeKey, deriveEconomy, mergeClose } from '../../core/economy/deriveEconomy';
 import { exportBackup, importBackup } from '../backup';
@@ -69,6 +69,12 @@ it('waits while a restore runs, then closes once it has finished', async () => {
 });
 
 it('a restore keeps the higher close for each day, field by field', async () => {
+  // The restore reads today from the clock; pinned to the evening of 2 Nov so the day is still open, as when it was
+  // written. On a real 3 Nov or later the restore also closes 2 Nov from the ledger, and this fixture's made-up
+  // close values (no ledger behind them) lost to that (found when the calendar reached 3 Nov 2026).
+  vi.useFakeTimers({ toFake: ['Date'] });
+  vi.setSystemTime(at('2026-11-02', '20:00'));
+  onTestFinished(() => { vi.useRealTimers(); });
   const db = createDb(`gamify-close-${++serial}`); opened.push(db);
   await db.ledger.add(done('2026-11-02'));
   await db.settings.put({ key: closeKey('2026-11-02'), value: { total: 40, sp: 40, streak: 1, shards: 2, owned: ['banner:dawn'] }, updatedAt: 1, deleted: 0, deviceId: 'test' });
