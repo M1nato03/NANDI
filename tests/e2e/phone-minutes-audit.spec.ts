@@ -36,6 +36,8 @@ async function seed(page: Page, days: number) {
     });
     database.close();
   }, [days, IG, CATALOG, NOON.getTime()] as const);
+  // Dexie's live queries do not see a raw IndexedDB write; a reload makes the app read it.
+  await page.reload();
 }
 
 async function openAudit(page: Page) {
