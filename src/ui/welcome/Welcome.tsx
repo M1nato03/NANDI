@@ -4,7 +4,8 @@ import { getOrCreateDeviceId } from '../../data/device';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time/dayKey';
 import { logHasActivity } from '../../core/guard';
-import { firstAction, GOALS, STARTER_TOPIC, WELCOME_BEDTIME, type Goal } from '../../core/welcome';
+import { firstAction, PICKS_KEY, STARTER_TOPIC, WELCOME_BEDTIME, type Goal, type Picks } from '../../core/welcome';
+import { GoalPicker } from './GoalPicker';
 import { isAfterBedtime } from '../../core/time/nightTimeline';
 import { Cast } from '../cast/Cast';
 import { recordError } from '../errorRing';
@@ -65,7 +66,11 @@ export function Welcome({ onDone }: { onDone: () => void }) {
   const dialog = useModalFocus<HTMLDivElement>();
   const [step, setStep] = useState(0);
   const [adult, setAdult] = useState(false);
-  const [goal, setGoal] = useState<Goal>();
+  // Spec 52: up to two picks by default, in tap order; the first pick's first action is still the first action.
+  const [picked, setPicked] = useState<Picks>({ goals: [], size: 'two' });
+  // Everything with nothing tapped first starts where a fresh install always has: the first chapter.
+  const [lead, setLead] = useState<Goal>();
+  const goal: Goal | undefined = picked.size === 'all' ? lead : picked.goals[0];
   const [bedtime, setBedtime] = useState(WELCOME_BEDTIME);
   const [saving, setSaving] = useState(false);
   const [openedAt] = useState(() => Date.now());
@@ -77,9 +82,9 @@ export function Welcome({ onDone }: { onDone: () => void }) {
     setSaving(true);
     const next = actionAt(goal, bedtime);
     try {
-      const extra: { key: string; value: unknown }[] = [{ key: 'profile.goals', value: goal ? [goal] : [] }, { key: 'profile.adultConfirmedAt', value: new Date(openedAt).toISOString() }, { key: 'planner.bedtime', value: bedtime }];
+      const extra: { key: string; value: unknown }[] = [{ key: PICKS_KEY.goals, value: picked.goals }, { key: PICKS_KEY.size, value: picked.size }, { key: 'profile.adultConfirmedAt', value: new Date(openedAt).toISOString() }, { key: 'planner.bedtime', value: bedtime }];
       // Learn opens straight on its first lesson; topics can be changed from Learn later.
-      if (goal === 'learn') extra.push({ key: 'learn.selectedTopics', value: [STARTER_TOPIC] });
+      if (picked.goals.includes('learn')) extra.push({ key: 'learn.selectedTopics', value: [STARTER_TOPIC] });
       await markDone(extra);
       onDone();
       go(next.route);
@@ -103,9 +108,10 @@ export function Welcome({ onDone }: { onDone: () => void }) {
         <button type="button" className="text-button" onClick={restore}>I have a backup to restore</button>
       </>}
       {step === 1 && <>
-        <h1>Pick one to try first</h1>
-        <p>Pick one to start. Everything else is one tap away later.</p>
-        <div className="welcome-goals">{GOALS.map(item => <button type="button" key={item.id} className="welcome-goal" onClick={() => { setGoal(item.id); setStep(2); }}>{item.label}</button>)}</div>
+        <h1>Pick two to start</h1>
+        <p>The rest is always there. You can change this any time in You.</p>
+        <GoalPicker value={picked} onChange={setPicked} onEverything={before => { setLead(before.goals[0]); setStep(2); }} />
+        {picked.goals.length > 0 && <button type="button" onClick={() => setStep(2)}>Continue</button>}
       </>}
       {step === 2 && <>
         <Cast name="Kachhua" pose="rest" size={96} title="Kachhua resting" moment="settle" at={1} breathe />

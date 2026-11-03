@@ -45,3 +45,15 @@ describe('daily nudges', () => {
     expect(rows.some(row => row.id.endsWith('2026-10-19'))).toBe(true);
   });
 });
+
+describe("spec 52: NANDI's own nudges follow the picks", () => {
+  const two = (...goals: string[]) => [setting('profile.goals', goals), setting('profile.size', 'two')];
+  it("the night deck is Sleep's and the morning step is Plan's; an install with no size keeps both", () => {
+    const ids = (settings: SettingRow[]) => [...new Set(wanted(settings).map(row => row.id.split(':')[1]))].sort();
+    expect(ids([])).toEqual(['morning', 'night']);
+    expect(ids(two('learn', 'mind'))).toEqual([]);
+    expect(ids(two('sleep', 'learn'))).toEqual(['night']);
+    expect(ids(two('plan'))).toEqual(['morning']);
+    expect(ids([setting('profile.goals', ['learn']), setting('profile.size', 'all')])).toEqual(['morning', 'night']);
+  });
+});

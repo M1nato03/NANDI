@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -22,6 +22,14 @@ export function Train({ entry }: { entry?: string }) {
   const [message, setMessage] = useState('');
   // The session just finished here: its "in progress" card goes at the tap, not when the next live query lands.
   const [finishedId, setFinishedId] = useState('');
+  // Spec 52: a rest beat's next move (train/rest) opens on the rest-day check itself, not the top of the page.
+  const loaded = !!data;
+  useEffect(() => {
+    if (entry !== 'rest' || !loaded) return;
+    const heading = document.querySelector<HTMLElement>('#train-rest-check h2');
+    heading?.scrollIntoView({ block: 'start' });
+    heading?.focus({ preventScroll: true });
+  }, [entry, loaded]);
   const page = entry === 'history' || entry === 'settings' || entry === 'finish' || entry === 'retest' ? entry : 'today';
   const setPage = (next: typeof page) => go(next === 'today' ? 'train' : `train/${next}`);
   async function act(action: (repos: Awaited<typeof reposPromise>, now: number) => Promise<unknown>, success: string): Promise<boolean> {

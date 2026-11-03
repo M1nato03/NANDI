@@ -15,6 +15,10 @@ import { reconcileGamify, recordShown } from '../../data/repos/gamify';
 import { todayDotStatus } from './TodayDots';
 import { finishEvent, pickFinishLine, shouldShowDoneForToday, type FinishActivity } from './finish';
 import { DoneForToday, FinishMoment } from './FinishMoment';
+import { PauseOffer } from '../pause/PauseOffer';
+import { pauseOfferDue, PAUSE_OFFER_KEY } from '../../core/pauseOffer';
+import { answerOffer } from '../../data/repos/picks';
+import { nightPauseAvailable } from '../../platform/nightPause';
 import { boundedSuggestion, readInterests } from '../../core/adaptive/day';
 import { Cast } from '../cast/Cast';
 import { playCastSound } from '../cast/sound';
@@ -157,9 +161,19 @@ export function EconomyFeedback() {
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
   }, [notice]);
+  // Spec 52 D: once the first finish moment has gone, the Pause card is offered once (where it works, before it is set up).
+  const [pauseOffer, setPauseOffer] = useState(false);
+  const settingsRef = useRef<SettingRow[]>([]);
+  useEffect(() => { settingsRef.current = source?.settings ?? []; }, [source]);
   useEffect(() => {
     if (!notice || notice.macro) return;
-    const timer = window.setTimeout(() => setNotice(null), RULES.juice.mesoMs[1] + 600);
+    const finish = !!notice.activity;
+    const timer = window.setTimeout(() => {
+      setNotice(null);
+      if (!finish || !pauseOfferDue(settingsRef.current, dayKey(Date.now()), nightPauseAvailable())) return;
+      setPauseOffer(true);
+      void answerOffer(db, PAUSE_OFFER_KEY, 'shown', Date.now()).catch(() => { /* shown again next finish at most */ });
+    }, RULES.juice.mesoMs[1] + 600);
     return () => window.clearTimeout(timer);
   }, [notice]);
   useEffect(() => {
@@ -167,6 +181,7 @@ export function EconomyFeedback() {
     const timer = window.setTimeout(() => { setNotice(null); setDoneCard(true); setPendingDone(false); }, RULES.juice.mesoMs[1] + 600);
     return () => window.clearTimeout(timer);
   }, [pendingDone]);
+  if (pauseOffer && !doneCard) return <PauseOffer close={() => setPauseOffer(false)} />;
   if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} suggestion={boundedSuggestion(readInterests(source?.settings ?? []), dayKey(Date.now()), false)} />; // eslint-disable-line react-hooks/purity
   if (!notice) return null;
   if (notice.macro && notice.level) return <LevelPage dialog={reveal} level={notice.level} totalXp={notice.totalXp ?? 0} reduced={reduced()} close={() => {

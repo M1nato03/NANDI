@@ -51,3 +51,16 @@ describe('reminder reconciliation', () => {
     expect(mock.cancel).not.toHaveBeenCalled();
   });
 });
+
+describe('spec 52: reminders the person set are never filtered by the picks', () => {
+  it('someone who picked Learn and Mind still gets their own task block and the Train rest timer', () => {
+    const now = new Date(2026, 9, 16, 12).getTime();
+    const meta = { deleted: 0 as const, updatedAt: now, deviceId: 'test' };
+    const picks = [{ key: 'profile.goals', value: ['learn', 'mind'], ...meta }, { key: 'profile.size', value: 'two', ...meta }];
+    const rows = wantedReminders([{ id: 'task-1', title: 'Start drafting', status: 'planned', dayKey: '2026-10-16', scheduledStart: now + 60_000, ...meta }],
+      [{ id: 'session-1', dayKey: '2026-10-16', status: 'active', restEndsAt: now + 90_000, ...meta }], now, picks);
+    expect(rows.map(row => row.id).sort()).toEqual(['rest:session-1', 'task:task-1']);
+    expect(rows).toEqual(wantedReminders([{ id: 'task-1', title: 'Start drafting', status: 'planned', dayKey: '2026-10-16', scheduledStart: now + 60_000, ...meta }],
+      [{ id: 'session-1', dayKey: '2026-10-16', status: 'active', restEndsAt: now + 90_000, ...meta }], now, []));
+  });
+});

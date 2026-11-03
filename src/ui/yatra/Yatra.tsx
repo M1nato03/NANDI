@@ -7,14 +7,16 @@ import { effectiveShutdown } from '../../core/tasks/planner';
 import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { phaseAt } from '../../core/courtyard/courtyard';
 import { deriveTrek, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Constellation, type Trek } from '../../core/yatra/trek';
-import { nextMove } from '../../core/yatra/nextMove';
-import { cleanWeeks, longestRun, usefulDays, usefulRecord } from '../../core/economy/usefulDays';
+import { moveWords } from '../../core/nextMove';
+import { readNextMove } from './nextMoveRows';
+import { cleanWeeks, longestRun, usefulDates, usefulDays, usefulRecord } from '../../core/economy/usefulDays';
+import { moreOffer, MORE_OFFER_KEY } from '../../core/moreOffer';
+import { ALL_PICKS, GOALS, PICK_LIMIT, type Picks } from '../../core/welcome';
+import { answerOffer, savePicks } from '../../data/repos/picks';
+import { recordError } from '../errorRing';
 import { finishedSeasons } from '../../core/economy/seasonResult';
-import { deriveEconomy, weekStart } from '../../core/economy/deriveEconomy';
-import { softToday } from '../../core/soft/soft';
-import { readBeatChanges, taalWeek, trainDays, TAAL_BEATS_KEY } from '../../core/train/taal';
-import { isFocusRunning, taskFocusMs } from '../../core/tasks/focus';
-import { bookCheckDue } from '../../core/learn/books';
+import { deriveEconomy } from '../../core/economy/deriveEconomy';
+import { taskFocusMs } from '../../core/tasks/focus';
 import { currentTrail } from '../../data/yatra/trails';
 import { CONSTELLATION_PREFIX, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
 import { go } from '../shell/router';
@@ -66,23 +68,9 @@ function narrative(trek: Trek, night: boolean): string {
   return `${trek.stretch} of ${STRETCHES_PER_LEG} stretches to ${next}. Every session lights one star.`;
 }
 
-/** Spec 45b: what Home reads for its top line and its one next move. Existing rows only; nothing is written. */
+/** Spec 45b, spec 52: what Home reads for its one next move, through the loader the Pause card shares. */
 function useHomeRows() {
-  return useLiveQuery(async () => {
-    const today = dayKey(Date.now());
-    const week = weekStart(today);
-    const focus = await db.focus.filter(row => !row.deleted).toArray();
-    const current = focus.filter(row => row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt)[0];
-    const task = current ? await db.tasks.get(current.taskId) : undefined;
-    return {
-      today, focus, current: current && task && !task.deleted ? { row: current, title: task.title } : null,
-      ledger: await db.ledger.where('dayKey').between(week, today, true, true).filter(row => !row.deleted).toArray(),
-      checks: await db.ledger.where('kind').anyOf('chapter', 'chapter-check').toArray(),
-      tasks: await db.tasks.where('dayKey').equals(today).toArray(),
-      program: await db.programs.get('train-program'),
-      beats: await db.settings.get(TAAL_BEATS_KEY(week)),
-    };
-  }, []);
+  return useLiveQuery(() => readNextMove(Date.now()), []);
 }
 type HomeRows = NonNullable<ReturnType<typeof useHomeRows>>;
 
@@ -106,34 +94,52 @@ function UsefulLine() {
   </button>;
 }
 
+/**
+ * Spec 52 C: on the tenth useful day since Welcome, once, under the next move: add one more thing, or "Not now",
+ * which is final. Only at sizes 'two' and 'more'; adding stays possible in You.
+ */
+function MoreOfferCard({ picks }: { picks: Picks }) {
+  const economy = useEconomyDays();
+  if (!economy || picks.size === 'all') return null;
+  const setting = (key: string) => economy.settings.find(row => row.key === key && !row.deleted)?.value;
+  const since = setting('profile.adultConfirmedAt');
+  const from = typeof since === 'string' && !Number.isNaN(Date.parse(since)) ? dayKey(Date.parse(since)) : null;
+  if (!from) return null;
+  const offer = moreOffer({ picks, answered: setting(MORE_OFFER_KEY) != null, usefulDays: usefulDates(economy.view.days, economy.settings, from, economy.today).length,
+    facts: economy.facts.filter(fact => fact.dayKey >= from) });
+  if (!offer) return null;
+  const now = () => Date.now();
+  const add = async () => {
+    const next: Picks = offer.add === 'all' ? ALL_PICKS : { goals: [...picks.goals, offer.add], size: picks.goals.length + 1 > PICK_LIMIT.two ? 'more' : 'two' };
+    await savePicks(db, next, now());
+    await answerOffer(db, MORE_OFFER_KEY, 'added', now());
+  };
+  const label = offer.add === 'all' ? 'Everything' : GOALS.find(goal => goal.id === offer.add)!.label;
+  return <section className="more-offer" aria-label="Add one more thing">
+    <p>Ten useful days. Add one more thing?</p>
+    <div className="more-offer-actions">
+      <button type="button" className="secondary" onClick={() => void add().catch(error => recordError('promise', error))}>{label}</button>
+      <button type="button" className="text-button" onClick={() => void answerOffer(db, MORE_OFFER_KEY, 'not-now', now()).catch(error => recordError('promise', error))}>Not now</button>
+    </div>
+  </section>;
+}
+
 /** Spec 45b: exactly one next move, one action. Its order is nextMove's. */
 function NextMoveCard({ rows }: { rows: HomeRows }) {
   const [now, setNow] = useState(() => Date.now());
-  const running = rows.current ? isFocusRunning(rows.current.row) : false;
+  const { move, current } = rows;
+  const running = move.kind === 'focus' && move.running;
   useEffect(() => { if (!running) return; const timer = window.setInterval(() => setNow(Date.now()), 1000); return () => window.clearInterval(timer); }, [running]);
-  const today = rows.today;
-  const program = rows.program;
-  const beat = program ? taalWeek({ today, programDays: program.days ?? [1, 3, 5], target: program.weeklyTarget ?? 3, days: trainDays(rows.ledger), changes: readBeatChanges(rows.beats && !rows.beats.deleted ? rows.beats.value : undefined) }).beats.find(row => row.today) : undefined;
-  const move = nextMove({
-    focus: rows.current ? { title: rows.current.title, running } : null,
-    bookCheck: bookCheckDue(rows.checks, today) ?? null,
-    trainToday: beat?.plan === 'clap' && !beat.filled,
-    tasks: rows.tasks, today,
-    softDay: !!softToday(rows.ledger, today).state,
-  });
-  let title: string, detail: ReactNode;
-  if (move.kind === 'focus') {
-    const seconds = Math.floor(taskFocusMs(rows.focus, rows.current!.row.taskId, Math.max(now, rows.current!.row.startedAt)) / 1000);
-    title = `${move.running ? 'Working on' : 'Paused'} '${move.title}'`;
+  const words = moveWords(move);
+  let detail: ReactNode = words.detail;
+  if (move.kind === 'focus' && current) {
+    const seconds = Math.floor(taskFocusMs(rows.focus, current.taskId, Math.max(now, current.startedAt)) / 1000);
     detail = <span className="next-move-clock">{Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, '0')} on the clock</span>;
-  } else if (move.kind === 'book-check') { title = 'Book check'; detail = 'Three questions on yesterday\'s chapter'; }
-  else if (move.kind === 'train') { title = 'Today\'s session with Nandi'; detail = 'A Train day'; }
-  else if (move.kind === 'task') { title = move.title; detail = move.at != null ? `Planned for ${new Date(move.at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}` : 'Planned for today'; }
-  else { title = 'Read one idea'; detail = 'A short sitting with Chiku'; }
+  }
   return <section className="next-move" aria-labelledby="next-move-eyebrow" data-kind={move.kind}>
     <p className="eyebrow" id="next-move-eyebrow">One next move</p>
     <button type="button" className="next-move-go" onClick={() => go(move.route)}>
-      <span className="next-move-text"><strong>{title}</strong><span>{detail}</span></span>
+      <span className="next-move-text"><strong>{words.title}</strong><span>{detail}</span></span>
       <span className="next-move-arrow" aria-hidden="true">↗</span>
     </button>
   </section>;
@@ -175,6 +181,7 @@ export function Yatra() {
     </header>
     {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} onFriend={spot => go(spot.route)} />}
     {rows && <NextMoveCard rows={rows} />}
+    {rows && <MoreOfferCard picks={rows.picks} />}
     {/* Below the move, a quiet note on the trail: information, never a second action. */}
     {trek && yatra && <div className="trek-journey">
       <div className="trek-journey-top"><strong>{trekLine(trek)}</strong></div>

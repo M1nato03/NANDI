@@ -104,3 +104,8 @@
 .useful-days-list > li { padding: 12px 14px; }
 .useful-days-list h2 { margin: 0 0 4px; font-size: 1.125rem; letter-spacing: 0; }
 .useful-days-list ul { margin: 0; padding-left: 18px; color: var(--ink-2); }
+/* Spec 52: the ten-day offer, one quiet line under the next move. */
+.more-offer { margin: 12px 0 0; display: grid; gap: 8px; }
+.more-offer p { margin: 0; }
+.more-offer-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.more-offer-actions .secondary { min-height: 44px; }

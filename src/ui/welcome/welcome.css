@@ -13,3 +13,8 @@
 .welcome-time { display: grid; gap: 6px; width: 100%; font-weight: 700; }
 .welcome-time { text-align: center; }
 .welcome-time input { width: 100%; box-sizing: border-box; font-size: 1.4rem; text-align: center; min-height: 52px; }
+/* Spec 52: the shared picker (Welcome and You). The size line is quiet: plain text with inline text buttons. */
+.goal-picker { display: grid; width: 100%; gap: 6px; }
+.goal-refused { min-height: 1.4em; color: var(--muted); font-size: .9375rem; }
+.goal-size { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 2px; color: var(--muted); font-size: .9375rem; }
+.goal-size .text-button { min-height: 44px; padding: 0 6px; font-size: inherit; }

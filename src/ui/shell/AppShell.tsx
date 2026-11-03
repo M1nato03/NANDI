@@ -50,6 +50,7 @@ import { MeetCast } from '../cast/MeetCast';
 import { OpenMoment } from '../cast/OpenMoment';
 import { CourtyardScreen } from '../courtyard/Courtyard';
 import { StorybookList, StorybookScreen, weekFromRoute } from '../courtyard/Storybook';
+import { HelpsWith } from '../screens/HelpsWith';
 import { useWelcomeNeeded, Welcome } from '../welcome/Welcome';
 
 const NightPlanSetting = lazy(() => import('../screens/NightPlanSetting').then(module => ({ default: module.NightPlanSetting })));
@@ -259,6 +260,7 @@ export function AppShell() {
   else if (path === 'you/cast') screen = <MeetCast />;
   else if (path === 'you/courtyard') screen = <CourtyardScreen />;
   else if (path === 'you/stories') screen = <StorybookList />;
+  else if (path === 'you/helps') screen = <HelpsWith />;
   else if (/^you\/story\/\d{8}$/.test(path)) screen = <StorybookScreen key={path} weekStart={weekFromRoute(path.slice(10))} />;
   else if (path === 'you/owner') screen = <OwnerPanel />;
   else if (path === 'you/night') screen = <Night />;

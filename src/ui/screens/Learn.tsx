@@ -12,7 +12,7 @@ import { dayKey, isAfterBedtime } from '../../core/time';
 import { effectiveBedtime } from '../../data/repos/night';
 import { RULES } from '../../core/rules.config';
 import { completedModuleKey, UnitScene } from '../cast/UnitScene';
-import { bookConcepts, bookDone, bookMinutes, bookTitle, bookUnitId, chapterRef, chapterState, currentBook, libraryOrder, libraryShelves, nextChapter, type ChapterState } from '../../core/learn/books';
+import { bookConcepts, bookDone, bookMinutes, bookTitle, bookUnitId, chapterRef, chapterState, currentBook, libraryOrder, libraryShelves, nextChapter, readingState, type ChapterState } from '../../core/learn/books';
 import { Cover } from '../learn/Cover';
 import '../learn/read.css';
 import { Cast } from '../cast/Cast';
@@ -133,14 +133,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
   if (entry === 'drop') return <section className="screen learn-screen"><p className="eyebrow">Today</p><h1>Today's drop</h1><LearnDrop daily itemCount={5} onDone={() => go('learn')} />{scene}</section>;
   if (practice) return <section className="screen learn-screen">{(practice.reviewDue || practice.goldReview) && <AreaScope area="review" />}<LearnDrop daily={false} itemCount={practice.goldReview ? 5 : 3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} goldReview={practice.goldReview} onDone={() => setPractice(undefined)} />{scene}</section>;
   // Spec 33: chapters done, books touched most recently, and each idea's place in the trail (Practice, Teach Chiku, Gold).
-  const chaptersDone = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'chapter' && !fact.deleted).map(fact => fact.refId));
-  const bookOf = new Map(topics.flatMap(pack => bookConcepts(pack).map(concept => [concept.id, pack.body.topic.id] as const)));
-  const lastTouched = new Map<string, number>();
-  for (const fact of data?.ledger ?? []) {
-    if (fact.deleted || (fact.kind !== 'learn-lesson' && fact.kind !== 'chapter')) continue;
-    const id = fact.kind === 'chapter' ? fact.refId.split(':')[0]! : bookOf.get(String(fact.inputs.conceptId));
-    if (id) lastTouched.set(id, Math.max(lastTouched.get(id) ?? 0, fact.updatedAt));
-  }
+  const { done: chaptersDone, lastTouched } = readingState(topics, data?.ledger ?? []);
   const taughtOn = Object.fromEntries((data?.ledger ?? []).filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => [fact.refId, fact.dayKey]));
   const gold = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'gold-review').map(fact => fact.refId));
   const stateOf = (topicId: string, module: (typeof topics)[number]['body']['modules'][number]) => chapterState({ topicId, module, taught: taughtSteps, done: chaptersDone, due: isDue });

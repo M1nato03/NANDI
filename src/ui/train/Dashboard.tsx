@@ -129,6 +129,6 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
     </div>
     <div className="card"><h2>Weekly hard sets</h2>{Object.entries(hardSets).length ? <ul className="train-metrics">{Object.entries(hardSets).map(([muscle, count]) => <li key={muscle}>{muscle} · {count}</li>)}</ul> : <p>Log a set to see this week's volume.</p>}</div>
     {completed[0] && <p className="small">Last session: {formatDayKey(completed[0].dayKey)} · {sessionWords[completed[0].status] ?? 'Finished'}</p>}
-    <div className="card"><h2>Rest-day check</h2><p>On a non-session day, take a 10-minute walk or mobility break, then check in.</p><button type="button" className="secondary" disabled={busy || ledger.some(row => row.id === `train-rest:${dayKey(now)}`)} onClick={() => { void act((repos, at) => repos.restDayCheck(at, 10), 'Rest-day check saved.'); }}>I moved for 10 minutes</button></div>
+    <div className="card train-rest-check" id="train-rest-check"><h2 tabIndex={-1}>Rest-day check</h2><p>On a non-session day, take a 10-minute walk or mobility break, then check in.</p><button type="button" className="secondary" disabled={busy || ledger.some(row => row.id === `train-rest:${dayKey(now)}`)} onClick={() => { void act((repos, at) => repos.restDayCheck(at, 10), 'Rest-day check saved.'); }}>I moved for 10 minutes</button></div>
   </>;
 }

@@ -13,6 +13,7 @@ import { dayKey } from '../../core/time/dayKey';
 import { softToday } from '../../core/soft/soft';
 import { PrivateBooks } from './PrivateBooks';
 import { LearningHolding } from './LearningHolding';
+import { HelpsWithRow } from './HelpsWith';
 
 export function You() {
   const sources = useLiveQuery(async () => {
@@ -43,6 +44,7 @@ export function You() {
     <BackupNudge />
     {/* Spec 33: private books are imported here. Train moved to Yatra (spec 34). */}
     <PrivateBooks />
+    <HelpsWithRow open={() => go('you/helps')} />
     <button type="button" className="card you-link deck-area-night settings-link" onClick={() => go('you/settings')}><DeckGlyph type="night" /><strong>Settings</strong><span>Night plan, day and night, notifications, appearance, backup and about</span></button>
   </section>;
 }

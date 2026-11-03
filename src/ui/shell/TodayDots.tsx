@@ -5,6 +5,7 @@ import type { DailyLogRow, LearnDropRow, LedgerRow, PuzzleRunRow, TaskRow } from
 import { dailyDropId, nightDropId } from '../learn/flow';
 import { go } from './router';
 import { featuredDailyDone } from '../../core/puzzles/shelf';
+import { picks, PICKS_KEY, readPicks, type Picks } from '../../core/welcome';
 
 type DotData = { tasks: TaskRow[]; ledger: LedgerRow[]; drop?: LearnDropRow; nightDrop?: LearnDropRow; runs: PuzzleRunRow[]; log?: DailyLogRow };
 const finished = (row?: LearnDropRow) => !!row && row.drop.items.length > 0 && row.drop.cursor >= row.drop.items.length;
@@ -20,6 +21,13 @@ export function todayDotStatus(now: number, data: DotData): Record<'plan' | 'rea
 }
 
 const DOT_AREA = { plan: 'do', read: 'learn', night: 'night' } as const;
+/**
+ * Spec 52: only the dots for picked areas (learn and mind share Read, where Games live; Train has no dot). At size 'all'
+ * all three show, as before; a person who picked only Train sees no dots row.
+ */
+export function todayDots(state: Picks): ('plan' | 'read' | 'night')[] {
+  return (['plan', 'read', 'night'] as const).filter(dot => dot === 'plan' ? picks(state, 'plan') : dot === 'read' ? picks(state, 'learn') || picks(state, 'mind') : picks(state, 'sleep'));
+}
 export function TodayDots({ now }: { now: number }) {
   // Only what today's dots need, read through the indexes (cj2 heavy data #6: this read 5 whole tables per write).
   const data = useLiveQuery(async () => {
@@ -31,8 +39,11 @@ export function TodayDots({ now }: { now: number }) {
       nightDrop: await db.learnDrops.get(nightDropId(now)),
       runs: await db.puzzleRuns.where('dayKey').equals(today).toArray(),
       log: await db.dailyLog.get(today),
+      picks: readPicks(await db.settings.where('key').anyOf(PICKS_KEY.goals, PICKS_KEY.size).toArray()),
     };
   }, [dayKey(now)]);
   const status = data && todayDotStatus(now, data);
-  return <nav className="today-dots" aria-label="Today status">{(['plan', 'read', 'night'] as const).map(area => <button key={area} type="button" className={`today-dot deck-area-${DOT_AREA[area]}`} aria-label={`${area[0]!.toUpperCase()}${area.slice(1)}: ${status?.[area] ? 'done' : 'not done'}`} onClick={() => go(area)}><span data-done={status?.[area] ? 'true' : 'false'} /><small className="today-dot-label" aria-hidden="true">{`${area[0]!.toUpperCase()}${area.slice(1)}`}</small></button>)}</nav>;
+  const dots = data ? todayDots(data.picks) : (['plan', 'read', 'night'] as const);
+  if (!dots.length) return null;
+  return <nav className="today-dots" aria-label="Today status">{dots.map(area => <button key={area} type="button" className={`today-dot deck-area-${DOT_AREA[area]}`} aria-label={`${area[0]!.toUpperCase()}${area.slice(1)}: ${status?.[area] ? 'done' : 'not done'}`} onClick={() => go(area)}><span data-done={status?.[area] ? 'true' : 'false'} /><small className="today-dot-label" aria-hidden="true">{`${area[0]!.toUpperCase()}${area.slice(1)}`}</small></button>)}</nav>;
 }

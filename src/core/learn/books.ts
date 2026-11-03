@@ -60,6 +60,30 @@ export function currentBook(packs: readonly TopicPack[], input: { done: Readonly
   return touched[0] ?? open[0];
 }
 
+/**
+ * Chapters done and when each book was last touched (its latest taught step or finished chapter), from the ledger:
+ * what Read's Continue and Home's next move both read (spec 52).
+ */
+export function readingState(packs: readonly TopicPack[], ledger: readonly { kind: string; refId: string; deleted: number; updatedAt: number; inputs: Record<string, unknown> }[]): { done: Set<string>; lastTouched: Map<string, number> } {
+  const done = new Set(ledger.filter(fact => fact.kind === 'chapter' && !fact.deleted).map(fact => fact.refId));
+  const bookOf = new Map(packs.flatMap(pack => bookConcepts(pack).map(concept => [concept.id, pack.body.topic.id] as const)));
+  const lastTouched = new Map<string, number>();
+  for (const fact of ledger) {
+    if (fact.deleted || (fact.kind !== 'learn-lesson' && fact.kind !== 'chapter')) continue;
+    const id = fact.kind === 'chapter' ? fact.refId.split(':')[0]! : bookOf.get(String(fact.inputs.conceptId));
+    if (id) lastTouched.set(id, Math.max(lastTouched.get(id) ?? 0, fact.updatedAt));
+  }
+  return { done, lastTouched };
+}
+
+/** The book Continue offers and its open chapter (1-based), or undefined when every book is finished. */
+export function readingNow(packs: readonly TopicPack[], ledger: Parameters<typeof readingState>[1]): { topicId: string; moduleId: string; book: string; chapter: number } | undefined {
+  const { done, lastTouched } = readingState(packs, ledger);
+  const book = currentBook(libraryOrder(packs), { done, lastTouched });
+  const chapter = book && nextChapter(book, done);
+  return book && chapter ? { topicId: book.body.topic.id, moduleId: chapter.id, book: bookTitle(book), chapter: book.body.modules.indexOf(chapter) + 1 } : undefined;
+}
+
 /** Library shelves, in the spec's order; a finished book moves to Finished. Empty shelves are left out. */
 export function libraryShelves(packs: readonly TopicPack[], done: ReadonlySet<string>): { shelf: Shelf; title: string; books: TopicPack[] }[] {
   const finished = packs.filter(pack => bookDone(pack, done));

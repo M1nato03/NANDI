@@ -31,3 +31,29 @@ export function firstAction(goal: Goal | undefined, afterBedtime = false): First
   if (afterBedtime) return NIGHT_ACTION;
   return ACTIONS[goal ?? 'learn'];
 }
+
+/**
+ * Spec 52: how many things NANDI offers at first. 'two' is the default; 'more' allows up to 4; 'all' is every area.
+ * The size picks what NANDI offers (the next move, the pause card's in-app button, the today dots, its own nudges);
+ * nothing is ever hidden or locked.
+ */
+export type PickSize = 'two' | 'more' | 'all';
+export const PICK_LIMIT: Record<PickSize, number> = { two: 2, more: 4, all: GOALS.length };
+export const PICKS_KEY = { goals: 'profile.goals', size: 'profile.size' } as const;
+export interface Picks { goals: Goal[]; size: PickSize }
+export const ALL_PICKS: Picks = { goals: GOALS.map(goal => goal.id), size: 'all' };
+
+const isGoal = (value: unknown): value is Goal => GOALS.some(goal => goal.id === value);
+/**
+ * The person's picks, in tap order. An install from before spec 52 has no size and reads as 'all', so nothing
+ * changes for it until the person chooses in You; a size with no valid pick also reads as 'all'.
+ */
+export function readPicks(settings: readonly { key: string; value: unknown; deleted?: number }[]): Picks {
+  const value = (key: string) => settings.find(row => row.key === key && !row.deleted)?.value;
+  const size = value(PICKS_KEY.size);
+  if (size !== 'two' && size !== 'more') return ALL_PICKS;
+  const stored = value(PICKS_KEY.goals);
+  const goals = [...new Set(Array.isArray(stored) ? stored.filter(isGoal) : [])].slice(0, PICK_LIMIT[size]);
+  return goals.length ? { goals, size } : ALL_PICKS;
+}
+export const picks = (state: Picks, area: Goal) => state.size === 'all' || state.goals.includes(area);

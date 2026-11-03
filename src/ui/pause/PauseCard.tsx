@@ -4,12 +4,13 @@ import { db } from '../../data/db';
 import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { actsToday, PAUSE_ACTS, pauseAppLabel, pauseLine, readPauseCard } from '../../core/pauseCard';
-import { pauseNextMove } from '../../core/pauseNextMove';
+import { moveLine } from '../../core/nextMove';
 import { recordPauseAttempt, type PauseOutcome } from '../../data/repos/pause';
 import { clearNightPause, goPhoneHome, openPausedApp } from '../../platform/nightPause';
 import { Mor } from '../cast/Cast';
 import { go } from '../shell/router';
 import { useModalFocus } from '../shell/useModalFocus';
+import { readNextMove } from '../yatra/nextMoveRows';
 import './pause.css';
 
 type Stage = { kind: 'card' } | { kind: 'act'; act: string; endsAt: number } | { kind: 'done'; act: string | null; paid: boolean };
@@ -19,7 +20,8 @@ type Stage = { kind: 'card' } | { kind: 'act'; act: string; endsAt: number } | {
  * with no countdown before it and no "are you sure". Spec 39b: "I did it" shows from the start of the act; the 2
  * minutes are a guide, never a gate, and the person's word is enough. Spec 45c (decision 8): a paper slip with the
  * person's plan, a quiet "Start the 2 minutes" link into the act, and three full-width ways of equal weight: "I did it"
- * (the act's own outcome and pay), "Do it in NANDI" and "Open <app> anyway"; "Not now" stays as a small link.
+ * (the act's own outcome and pay), the in-app move and "Open <app> anyway"; "Not now" stays as a small link. Spec 52 D: the
+ * in-app choice names Home's own next move (one loader, one nextMove), e.g. "Read on: <book>, ch. 2".
  * `demo` is the setup's "See it once": nothing is recorded or opened.
  */
 export function PauseCard({ packageName, close, demo, demoAct }: { packageName: string; close: () => void; demo?: boolean; demoAct?: string | null }) {
@@ -34,6 +36,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
   const [left, setLeft] = useState<number>(RULES.pause.actSeconds);
   const [message, setMessage] = useState('');
   const acting = useRef(false);
+  const next = useLiveQuery(() => readNextMove(Date.now()), []);
 
   // The clock is a guide only: it counts down to 0:00 and stays there; "I did it" is there the whole time.
   useEffect(() => {
@@ -68,14 +71,11 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
   }
   const openAnyway = () => answer('opened_anyway', () => openPausedApp(packageName, card.grace * 60_000));
   const notNow = () => answer('backed_out', async () => { await clearNightPause(); await goPhoneHome(); });
-  // Spec 39b: the next real thing in NANDI instead (focus, a Train day, a task, the Read drop). The card pays nothing.
+  // Spec 39b, spec 52 D: the next real thing in NANDI instead, the same move Home offers. The card pays nothing for it.
   async function inApp() {
     if (demo) { close(); return; }
-    const at = Date.now();
-    const today = dayKey(at);
     try {
-      const [focus, tasks, programs, sessions] = await Promise.all([db.focus.toArray(), db.tasks.where('dayKey').equals(today).toArray(), db.programs.toArray(), db.sessions.toArray()]);
-      const move = pauseNextMove({ focus, tasks, programs, sessions, today, weekday: new Date(at).getDay() });
+      const { move } = await readNextMove(Date.now());
       await answer('in_app', clearNightPause);
       go(move.route);
     } catch { setMessage('That did not work. You can leave NANDI normally.'); }
@@ -93,7 +93,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
           : <div className="pause-picks" role="group" aria-label="Pick a 2-minute thing">{PAUSE_ACTS.slice(0, 4).map(pick => <button type="button" key={pick} className="secondary" onClick={() => start(pick)}>{pick[0]!.toUpperCase() + pick.slice(1)}</button>)}</div>}
         <div className="pause-ways">
           <button type="button" className="paper-choice" onClick={() => void finish()}>I did it</button>
-          <button type="button" className="paper-choice" onClick={() => void inApp()}>Do it in NANDI</button>
+          <button type="button" className="paper-choice" onClick={() => void inApp()}>{next ? moveLine(next.move, next) : 'Do it in NANDI'}</button>
           <button type="button" className="paper-choice" onClick={() => void openAnyway()}>Open {label} anyway</button>
         </div>
         <button type="button" className="ink-link pause-not-now" onClick={() => void notNow()}>Not now</button>

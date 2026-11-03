@@ -46,3 +46,7 @@
 .pause-opens-list div { display: grid; gap: 2px; }
 .pause-opens-list dt { color: var(--secondary-ink); }
 .pause-opens-list dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+/* Spec 52 D: the one-time offer after the first finish. */
+.pause-offer { display: grid; gap: 12px; }
+.pause-offer-line { margin: 0; font-weight: 700; font-size: 1.0625rem; }
+.pause-offer-actions { display: grid; gap: 4px; }

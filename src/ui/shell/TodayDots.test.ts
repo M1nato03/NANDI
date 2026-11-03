@@ -1,7 +1,8 @@
-import { expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { ALL_PICKS } from '../../core/welcome';
 import { dayKey } from '../../core/time/dayKey';
 import type { LearnDropRow, LedgerRow, PuzzleRunRow, TaskRow } from '../../data/types';
-import { todayDotStatus } from './TodayDots';
+import { todayDots, todayDotStatus } from './TodayDots';
 
 // Spec 33: the dots are Plan, Read and Night.
 it('fills only the dots whose daily work is complete', () => {
@@ -34,4 +35,15 @@ it("Kapi's featured daily board fills Read too, the easy shelf daily included (s
   const easy = { id: `daily:${today}:crowns:easy`, type: 'crowns', dayKey: today, daily: true, diff: 'easy', result: 'solved', deleted: 0 } as PuzzleRunRow;
   expect(todayDotStatus(now, { tasks: [], ledger: [], runs: [easy] }).read).toBe(true);
   expect(todayDotStatus(now, { tasks: [], ledger: [], runs: [{ ...easy, type: 'sudoku', id: `daily:${today}:sudoku:easy` }] }).read).toBe(false);
+});
+
+describe('spec 52: the dots follow the picks', () => {
+  it('all three at size all; otherwise only picked areas, learn and mind sharing Read, and none for Train alone', () => {
+    expect(todayDots(ALL_PICKS)).toEqual(['plan', 'read', 'night']);
+    expect(todayDots({ goals: ['learn', 'mind'], size: 'two' })).toEqual(['read']);
+    expect(todayDots({ goals: ['train', 'plan'], size: 'two' })).toEqual(['plan']);
+    expect(todayDots({ goals: ['sleep'], size: 'two' })).toEqual(['night']);
+    expect(todayDots({ goals: ['mind', 'sleep', 'plan', 'train'], size: 'more' })).toEqual(['plan', 'read', 'night']);
+    expect(todayDots({ goals: ['train'], size: 'two' })).toEqual([]);
+  });
 });
