@@ -1458,4 +1458,87 @@ for (const theme of themes) test.describe(theme, () => {
     await words.getByRole('button', { name: 'That’s all' }).click();
     await shot(page, 'park-3-written');
   });
+
+  test('52 two to start', async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-11-04T12:00:00'));
+    const put = (rows: [string, unknown][]) => page.evaluate(async entries => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction('settings', 'readwrite'); for (const [key, value] of entries) transaction.objectStore('settings').put({ key, value, updatedAt: 1, deleted: 0, deviceId: 'shots' }); transaction.oncomplete = () => resolve(); });
+      database.close();
+    }, rows);
+    const facts = (rows: { day: string; mode?: string; kind?: string }[]) => page.evaluate(async list => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction('ledger', 'readwrite'); list.forEach((row, i) => transaction.objectStore('ledger').put({ id: `shots52:${i}`, dayKey: row.day, mode: row.mode ?? 'tasks', kind: row.kind ?? 'done', refId: `shots52-${i}`, inputs: { plannedSize: 'M', wasPlanned: true }, updatedAt: new Date(`${row.day}T12:00:00`).getTime() + i, deleted: 0, deviceId: 'shots' })); transaction.oncomplete = () => resolve(); });
+      database.close();
+    }, rows);
+    // Home as an install from before spec 52 sees it (size 'all'): compare with main's p45b home.
+    await page.goto('/?e2e#yatra');
+    await expect(page.locator('.next-move-go')).toBeVisible();
+    await shot(page, 'p52-01-home-existing-install', false);
+    // Welcome's pick screen at 0, 1 and 2 picks, at 3-4 things, and at 200% text.
+    await page.evaluate(() => indexedDB.deleteDatabase('nandi'));
+    await page.goto('/?e2e&welcome');
+    await page.reload();
+    const welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
+    await welcome.getByLabel("I'm 18 or older.").check();
+    await welcome.getByRole('button', { name: "Let's start" }).click();
+    await shot(page, 'p52-02-welcome-0-picks', false);
+    await welcome.getByRole('button', { name: 'Learn something', exact: true }).click();
+    await shot(page, 'p52-03-welcome-1-pick', false);
+    await welcome.getByRole('button', { name: 'Sharpen my mind', exact: true }).click();
+    await welcome.getByRole('button', { name: 'Get fit', exact: true }).click();
+    await shot(page, 'p52-04-welcome-2-picks-third-refused', false);
+    await welcome.getByRole('button', { name: '3-4 things' }).click();
+    await welcome.getByRole('button', { name: 'Get fit', exact: true }).click();
+    await welcome.getByRole('button', { name: 'Get things done', exact: true }).click();
+    await shot(page, 'p52-05-welcome-3-4-things', false);
+    await textAt200(page);
+    await shot(page, 'p52-06-welcome-200pct', false);
+    await page.getByRole('button', { name: 'Continue' }).scrollIntoViewIfNeeded();
+    await shot(page, 'p52-06b-welcome-200pct-end', false);
+    // Home for learn+mind, train+plan, sleep alone.
+    await page.goto('/?e2e#plan');
+    await page.reload();
+    await expect(page.locator('.plan-screen')).toBeVisible();
+    for (const [name, goals] of [['learn-mind', ['learn', 'mind']], ['train-plan', ['train', 'plan']], ['sleep', ['sleep']]] as const) {
+      await put([['profile.goals', goals], ['profile.size', 'two'], ['profile.adultConfirmedAt', '2026-10-20T12:00:00.000Z']]);
+      await page.goto('/?e2e#yatra');
+      await page.reload();
+      await expect(page.locator('.next-move-go')).toBeVisible();
+      await shot(page, `p52-07-home-${name}`, false);
+    }
+    // The ten-day offer (learn+mind, ten days of tasks done: Plan is offered).
+    await put([['profile.goals', ['learn', 'mind']], ['profile.size', 'two']]);
+    await facts(Array.from({ length: 10 }, (_, i) => ({ day: `2026-10-${21 + i}` })));
+    await page.reload();
+    await expect(page.getByRole('region', { name: 'Add one more thing' })).toBeVisible();
+    await shot(page, 'p52-08-ten-day-offer', false);
+    // You's row and its screen.
+    await page.goto('/?e2e#you');
+    await page.getByRole('button', { name: /^What NANDI helps with/ }).scrollIntoViewIfNeeded();
+    await shot(page, 'p52-09-you-row', false);
+    await page.getByRole('button', { name: /^What NANDI helps with/ }).click();
+    await shot(page, 'p52-10-you-helps', false);
+    // The pause card with a named move.
+    await put([['pause.card.on', true], ['pause.act', 'do 10 squats'], ['night.pause.apps', ['com.instagram.android']], ['night.pause.dayMode', 'open']]);
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+    await page.goto('/?e2e#yatra');
+    await page.reload();
+    await page.evaluate(() => { sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'open' })); window.dispatchEvent(new Event('nandi:night-pause')); });
+    await expect(page.getByRole('dialog', { name: 'Pause card' }).getByRole('button', { name: /^Read on: / })).toBeVisible();
+    await shot(page, 'p52-11-pause-card-named-move', false);
+    // The pause offer after the first finish (a new install on a phone, the card not set up).
+    await page.evaluate(() => indexedDB.deleteDatabase('nandi'));
+    await page.goto('/?e2e#plan');
+    await page.reload();
+    await expect(page.locator('.plan-screen')).toBeVisible();
+    await put([['profile.goals', ['plan']], ['profile.size', 'two']]);
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+    await page.reload();
+    await page.getByPlaceholder('Add a task', { exact: true }).fill('Call the bank');
+    await page.getByPlaceholder('Add a task', { exact: true }).press('Enter');
+    await page.getByRole('region', { name: 'Today' }).getByRole('button', { name: /^Done/ }).first().click();
+    await expect(page.getByRole('dialog', { name: 'Want NANDI to catch you when you open Instagram or YouTube?' })).toBeVisible({ timeout: 6000 });
+    await shot(page, 'p52-12-pause-offer-after-first-finish', false);
+  });
 });

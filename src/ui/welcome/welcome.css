@@ -8,9 +8,11 @@
 .welcome-steps span.on { background: var(--accent); }
 .welcome-goals { display: grid; width: 100%; gap: 8px; margin-top: 4px; }
 .welcome-goal { width: 100%; min-height: 48px; background: var(--surface); color: var(--ink); border: 1.5px solid var(--line); text-align: left; padding: 0 16px; }
+/* Spec 52: a toggle grows with the phone's text size, its tick kept on the same line as the words. */
+.welcome-goals .welcome-goal { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 3rem; padding: .5rem 1rem; line-height: 1.25; }
 .welcome-goal.picked { border-color: var(--accent); background: var(--raised); box-shadow: inset 0 0 0 1px var(--accent); }
 /* The tick is a hidden span, not ::after: generated content would join the button's name ("Get fit✓"). */
-.welcome-goal .goal-check { float: right; color: var(--accent); font-weight: 800; }
+.welcome-goal .goal-check { flex: none; color: var(--accent); font-weight: 800; }
 .welcome-time { display: grid; gap: 6px; width: 100%; font-weight: 700; }
 .welcome-time { text-align: center; }
 .welcome-time input { width: 100%; box-sizing: border-box; font-size: 1.4rem; text-align: center; min-height: 52px; }
@@ -19,3 +21,6 @@
 .goal-refused { min-height: 1.4em; color: var(--muted); font-size: .9375rem; }
 .goal-size { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 2px; color: var(--muted); font-size: .9375rem; }
 .goal-size .text-button { min-height: 44px; padding: 0 6px; font-size: inherit; }
+.goal-sep { padding: 0 4px; }
+/* The app's buttons are a fixed 16px; here the choices follow the phone's text size (1rem is 16px by default). */
+.welcome .welcome-goal, .you-helps .welcome-goal, .welcome-inner > button { font-size: 1rem; }
