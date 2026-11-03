@@ -122,4 +122,26 @@ test('reads at 360 and at 200% text without spilling, with 44px targets', async 
   await textAt200(page);
   await noSideScroll(page);
   for (const target of await screen.getByRole('radio').all()) expect((await target.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  // Stop for now has its own row: a full tap target, at least 12px clear of the main action above it.
+  const check = (await screen.getByRole('button', { name: 'Check' }).boundingBox())!;
+  const stop = (await screen.getByRole('button', { name: 'Stop for now' }).boundingBox())!;
+  expect(stop.height).toBeGreaterThanOrEqual(44);
+  expect(stop.y - (check.y + check.height)).toBeGreaterThanOrEqual(12);
+});
+
+test('the own-words box takes the theme field colours in dark mode', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
+  await open(page, '&variant=1');
+  const screen = practice(page);
+  await screen.getByRole('button', { name: 'Change one part' }).click();
+  await screen.getByRole('radio', { name: 'Could you send me Tuesday\'s notes?' }).click();
+  await screen.getByRole('button', { name: 'Check' }).click();
+  await screen.getByRole('button', { name: 'Try a fresh one' }).click();
+  const [box, field] = await Promise.all([screen.getByLabel('In your own words').evaluate(node => getComputedStyle(node).backgroundColor),
+    page.locator('body').evaluate(() => { const probe = document.createElement('input'); document.querySelector('.skill-practice')!.append(probe); const colour = getComputedStyle(probe).backgroundColor; probe.remove(); return colour; })]);
+  expect(box).toBe(field);
+  expect(box).not.toBe('rgb(255, 255, 255)');
+  // Full width of the screen's text column, like the prompt above it.
+  const [area, prompt] = await Promise.all([screen.getByLabel('In your own words').boundingBox(), screen.locator('p').filter({ hasText: 'neighbour' }).boundingBox()]);
+  expect(area!.width).toBeGreaterThanOrEqual(prompt!.width - 1);
 });
