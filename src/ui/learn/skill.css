@@ -5,13 +5,15 @@
 .skill-answer { font-weight: 600; overflow-wrap: anywhere; margin: 0; }
 .skill-why { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
 .skill-options { display: grid; gap: 8px; margin: 12px 0; }
-.skill-option { text-align: left; white-space: normal; min-height: 48px; }
+/* The app's buttons use a fixed 16px; an answer here follows the phone's text size. */
+.skill-practice .skill-option { text-align: left; white-space: normal; min-height: 48px; font-size: 1rem; line-height: 1.5; }
 .skill-option.chosen { outline: 3px solid var(--accent); outline-offset: 2px; }
 .skill-order-picked { margin: 8px 0; padding-left: 1.4em; display: grid; gap: 6px; min-height: 1em; }
 .skill-phrase, .skill-own { display: grid; gap: 6px; margin: 12px 0; }
 .skill-phrase input, .skill-own textarea { font: inherit; width: 100%; box-sizing: border-box; }
 .skill-feedback { margin: 12px 0; }
 .skill-checklist { display: grid; gap: 8px; border: 0; padding: 0; margin: 12px 0; }
-.skill-checklist label { display: flex; gap: 8px; align-items: flex-start; min-height: 44px; }
+.skill-practice .skill-checklist label { display: flex; justify-content: flex-start; gap: 12px; align-items: center; min-height: 44px; text-align: left; }
+.skill-practice .skill-checklist input[type='checkbox'] { width: 24px; height: 24px; min-width: 24px; min-height: 0; flex: 0 0 24px; margin: 0; padding: 0; accent-color: var(--accent); }
 .skill-actions { display: grid; gap: 8px; margin: 12px 0; }
 .skill-stop { margin-top: 16px; }
