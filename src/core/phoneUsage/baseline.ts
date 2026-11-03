@@ -18,6 +18,8 @@ export const PHONE_USAGE_KEYS = {
   clock: 'phoneUsage.clock',
   /** The set of apps in force now and the first day it covers (a change is dated the day it was seen). */
   set: 'phoneUsage.set',
+  /** The owner's audit pass (spec 46b): the 30 days checked against Digital Wellbeing, and what they were measured with. */
+  audit: 'phoneUsage.audit',
 } as const;
 /** Days read back when the record begins (Android keeps about ten); never further. */
 export const BACKFILL_DAYS = 9;

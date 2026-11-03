@@ -1,5 +1,7 @@
 import type { GuardEvent } from '../focusGuard';
 
+/** Names how minutes are measured (measureDay + judgeDay). Change it with either; it voids an owner audit pass (spec 46b). */
+export const MEASURE_VERSION = '46a-1';
 /** Read from this long before a day starts, so an app already in front at midnight is known. */
 export const LEAD_MS = 12 * 60 * 60 * 1000;
 /** An app in front with no event at all for this long (no screen change, no other screen): the log may have lost events. */

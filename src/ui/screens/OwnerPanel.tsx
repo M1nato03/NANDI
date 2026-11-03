@@ -8,6 +8,7 @@ import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { dayKey } from '../../core/time';
 import { lessonMetrics } from '../../core/learn/steps';
 import { catalogFor, topics } from '../learn/flow';
+import { PhoneMinutesAudit } from './PhoneMinutesAudit';
 import './owner.css';
 
 const UNLOCK_KEY = 'nandi.owner.unlocked';
@@ -39,10 +40,16 @@ export function OwnerPanel() {
     <button type="button" onClick={() => void submit()}>{saved === null ? 'Save PIN' : 'Open'}</button>
     {message && <p role="status">{message}</p>}
   </section>;
-  return <OwnerNumbers />;
+  return <OwnerUnlocked />;
 }
 
-function OwnerNumbers() {
+/** The audit is a view inside the unlocked panel, never a route of its own, so the PIN always stands in front of it. */
+function OwnerUnlocked() {
+  const [audit, setAudit] = useState(false);
+  return audit ? <PhoneMinutesAudit onBack={() => setAudit(false)} /> : <OwnerNumbers onAudit={() => setAudit(true)} />;
+}
+
+function OwnerNumbers({ onAudit }: { onAudit: () => void }) {
   const source = useLiveQuery(async () => ({ ledger: await db.ledger.toArray(), settings: await db.settings.toArray() }), []);
   if (!source) return <section className="screen"><p>Loading…</p></section>;
   const now = Date.now(); // eslint-disable-line react-hooks/purity
@@ -77,6 +84,7 @@ function OwnerNumbers() {
   return <section className="screen owner-panel" aria-label="Owner panel">
     <p className="eyebrow">Owner</p><h1>How NANDI is doing</h1>
     <p className="small">Worked out on this phone from your own data. Nothing leaves the device.</p>
+    <button type="button" className="secondary" onClick={onAudit}>Phone minutes audit</button>
     <div className="owner-tiles">{tiles.map(([label, value]) => <div className="card owner-tile" key={label}><span className="small">{label}</span><strong>{value}</strong></div>)}</div>
     <section className="card owner-chart" aria-label="Activity, last 30 days"><h2>Activity, last 30 days</h2>
       <div className="owner-bars">{m.days.map(point => <span key={point.day} title={`${point.day}: ${point.facts} actions`} style={{ height: `${Math.max(4, point.facts / maxFacts * 100)}%` }} className={point.facts ? 'on' : ''} />)}</div></section>

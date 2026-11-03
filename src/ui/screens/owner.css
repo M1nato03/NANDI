@@ -8,3 +8,12 @@
 .owner-bars { display: grid; grid-template-columns: repeat(30, minmax(0, 1fr)); align-items: end; gap: 2px; height: 96px; }
 .owner-bars span { display: block; border-radius: 2px; background: var(--input-line); }
 .owner-bars span.on { background: var(--accent); }
+/* Spec 46b: the owner's phone minutes audit. */
+.phone-audit-status { font-weight: 600; }
+.phone-audit-actions { display: grid; gap: 8px; margin: 12px 0; }
+.phone-audit-confirm { display: grid; gap: 8px; margin: 0 0 12px; }
+.phone-audit-days { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 8px; }
+.phone-audit-days > li { margin: 0; padding: 12px; min-width: 0; }
+.phone-audit-days summary { display: grid; gap: 2px; cursor: pointer; }
+.phone-audit-days ul { margin: 8px 0 0; padding-left: 1.2em; overflow-wrap: anywhere; }
+.phone-audit-reason { color: var(--muted); }
