@@ -1316,6 +1316,63 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'm6-200pct', false);
   });
 
+  test('46b phone audit', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-11-20T12:00:00') });
+    await page.goto('/?e2e#you');
+    await expect(page.getByText(/XP in all$/)).toBeVisible();
+    // 30 finished days: Instagram 12 min and YouTube 5 a day; 18 Nov unknown (the log went quiet); Usage access off 14-15 Nov.
+    await page.evaluate(async () => {
+      const ig = 'com.instagram.android';
+      const catalog = ['com.google.android.youtube', 'com.snapchat.android', 'com.android.chrome', 'org.mozilla.firefox', 'com.microsoft.emmx', 'com.brave.browser',
+        'com.sec.android.app.sbrowser', 'com.opera.browser', 'com.opera.mini.native', 'in.mohalla.video', 'com.eterno.shortvideos', 'in.mohalla.sharechat'];
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => {
+        const transaction = database.transaction(['settings', 'phoneUsageMinutes'], 'readwrite');
+        transaction.objectStore('settings').put({ key: 'night.pause.apps', value: [ig], updatedAt: 1, deleted: 0, deviceId: 'shots' });
+        for (let back = 30; back >= 1; back -= 1) {
+          const start = new Date(2026, 10, 20 - back), end = new Date(2026, 10, 21 - back);
+          const dayKey = `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}-${String(start.getDate()).padStart(2, '0')}`;
+          for (const packageName of [ig, ...catalog]) {
+            const reason = dayKey === '2026-11-14' || dayKey === '2026-11-15' ? 'no_access' : dayKey === '2026-11-18' && packageName === ig ? 'event_gap' : undefined;
+            transaction.objectStore('phoneUsageMinutes').put({ id: `${dayKey}|${packageName}`, dayKey, packageName, group: packageName === ig ? 'picked' : 'substitute',
+              foregroundMs: reason ? null : packageName === ig ? 12 * 60_000 : packageName === catalog[0] ? 5 * 60_000 : 0, ...(reason ? { reason } : {}),
+              source: 'usage-events', fromMs: start.getTime(), toMs: end.getTime(), offsetStartMin: 330, offsetEndMin: 330, catalogId: 'scroll-2026-11-01',
+              setId: `scroll-2026-11-01|${ig}`, installed: packageName === ig, crossCheckMs: null, measuredAt: end.getTime(), updatedAt: end.getTime(), deleted: 0, deviceId: 'shots' });
+          }
+        }
+        transaction.oncomplete = () => resolve();
+      });
+      database.close();
+    });
+    await page.goto('/?e2e#you/owner');
+    await page.getByLabel('PIN').fill('2468');
+    await page.getByRole('button', { name: 'Save PIN' }).click();
+    await page.getByRole('button', { name: 'Phone minutes audit' }).click();
+    const audit = page.getByRole('region', { name: 'Phone minutes audit' });
+    await expect(audit.locator('.phone-audit-days > li')).toHaveCount(30);
+    await shot(page, 'a1-top', false);
+    const gap = audit.locator('.phone-audit-days > li').filter({ hasText: '2026-11-18' });
+    await gap.locator('summary').click();
+    await gap.scrollIntoViewIfNeeded();
+    await shot(page, 'a2-unknown-day-open', false);
+    await audit.locator('.phone-audit-days > li').filter({ hasText: '2026-11-15' }).scrollIntoViewIfNeeded();
+    await shot(page, 'a3-access-off-days', false);
+    await audit.getByRole('button', { name: 'Export 30-day audit CSV' }).click();
+    await audit.getByRole('group', { name: 'Before the file is made' }).scrollIntoViewIfNeeded();
+    await shot(page, 'a4-export-warning', false);
+    await audit.getByRole('button', { name: 'Don’t make it' }).click();
+    await audit.getByRole('button', { name: 'Mark the audit passed' }).click();
+    await audit.getByRole('group', { name: 'Before marking the audit passed' }).scrollIntoViewIfNeeded();
+    await shot(page, 'a5-pass-confirm', false);
+    await audit.getByRole('button', { name: 'Mark passed' }).click();
+    await expect(audit).toContainText('Audit passed on');
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await shot(page, 'a6-passed', false);
+    await textAt200(page);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await shot(page, 'a7-200pct', false);
+  });
+
   test('51 htwf games', async ({ page }) => {
     test.setTimeout(240_000);
     await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
