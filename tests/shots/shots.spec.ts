@@ -1354,7 +1354,7 @@ for (const theme of themes) test.describe(theme, () => {
     await expect(audit.locator('.phone-audit-days > li')).toHaveCount(30);
     await shot(page, 'a1-top', false);
     const gap = audit.locator('.phone-audit-days > li').filter({ hasText: '2026-11-18' });
-    await gap.locator('summary').click();
+    await gap.locator(':scope > details > summary').click();
     await gap.scrollIntoViewIfNeeded();
     await shot(page, 'a2-unknown-day-open', false);
     await audit.locator('.phone-audit-days > li').filter({ hasText: '2026-11-15' }).scrollIntoViewIfNeeded();

@@ -19,3 +19,6 @@
 .phone-audit-days summary { display: grid; gap: 2px; cursor: pointer; }
 .phone-audit-days ul { margin: 8px 0 0; padding-left: 1.2em; overflow-wrap: anywhere; }
 .phone-audit-reason { color: var(--muted); }
+.phone-audit-date { white-space: nowrap; }
+.phone-audit-quiet { margin-top: 6px; }
+.phone-audit-quiet summary { display: list-item; }

@@ -7,8 +7,9 @@ import { trackWrite } from '../../core/pendingWrites';
 import { calendarDayKey, calendarWeekday } from '../../core/phoneUsage/calendarDay';
 import type { UnknownReason } from '../../core/phoneUsage/coverage';
 import { PHONE_USAGE_KEYS, pickedApps, setIdFor } from '../../core/phoneUsage/baseline';
-import { auditCsv, auditDays, auditState, canPass, deviceFromUserAgent, newAuditPass, readAuditPass, type AuditState } from '../../core/phoneUsage/audit';
+import { auditCsv, auditDays, auditState, canPass, deviceFromUserAgent, newAuditPass, readAuditPass, type AuditDay, type AuditState } from '../../core/phoneUsage/audit';
 import { shareOrDownload } from '../../platform/files';
+import { PAUSE_APP_CHOICES } from '../../core/pauseCard';
 
 const REASONS: Record<UnknownReason, string> = {
   no_access: 'Usage access was off',
@@ -28,6 +29,15 @@ const VOID: Record<Extract<AuditState, { state: 'void' }>['why'], string> = {
   mismatch: 'a later day showed Android counting more than the record',
 };
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+/** Names for the similar-app catalog, as Digital Wellbeing shows them (the picked apps' names come from the Pause card). */
+const CATALOG_NAMES: Record<string, string> = {
+  'com.android.chrome': 'Chrome', 'org.mozilla.firefox': 'Firefox', 'com.microsoft.emmx': 'Edge', 'com.brave.browser': 'Brave',
+  'com.sec.android.app.sbrowser': 'Samsung Internet', 'com.opera.browser': 'Opera', 'com.opera.mini.native': 'Opera Mini',
+  'in.mohalla.video': 'Moj', 'com.eterno.shortvideos': 'Josh', 'in.mohalla.sharechat': 'ShareChat',
+};
+const appName = (packageName: string) => PAUSE_APP_CHOICES.find(app => app.packageName === packageName)?.label ?? CATALOG_NAMES[packageName];
+/** A day key never breaks across lines ("2026-" / "11-19"). */
+const Day = ({ day }: { day: string }) => <span className="phone-audit-date">{day}</span>;
 const minutes = (ms: number | null) => ms === null ? 'unknown' : `${Math.round(ms / 60_000)} min`;
 const currentTime = () => Date.now();
 
@@ -54,6 +64,8 @@ export function PhoneMinutesAudit({ onBack }: { onBack: () => void }) {
   const passable = canPass(days, setId);
   const status = state.state === 'valid' ? `Audit passed on ${calendarDayKey(state.pass.at)} for ${state.pass.firstDay} to ${state.pass.lastDay}.`
     : state.state === 'void' ? `The audit pass no longer holds: ${VOID[state.why]}.` : 'Not audited yet.';
+  const statusLine = state.state === 'valid'
+    ? <>Audit passed on <Day day={calendarDayKey(state.pass.at)} /> for <Day day={state.pass.firstDay} /> to <Day day={state.pass.lastDay} />.</> : status;
 
   async function exportCsv() {
     setConfirm(null);
@@ -72,18 +84,17 @@ export function PhoneMinutesAudit({ onBack }: { onBack: () => void }) {
       const at = currentTime();
       const id = await getOrCreateDeviceId(db, at);
       await createSettingsRepos(db, id).settings.put({ key: PHONE_USAGE_KEYS.audit, value: newAuditPass(days, setId, id, at) }, at);
-      setMessage('Audit marked passed.');
     } catch { setMessage('Could not save the audit pass. Try again.'); }
   }
   async function clearPass() {
-    try { await trackWrite(() => db.settings.delete(PHONE_USAGE_KEYS.audit)); setMessage('Audit pass cleared.'); }
+    try { await trackWrite(() => db.settings.delete(PHONE_USAGE_KEYS.audit)); }
     catch { setMessage('Could not clear the audit pass. Try again.'); }
   }
 
   return <section className="screen owner-panel phone-audit" aria-label="Phone minutes audit">
     <p className="eyebrow">Owner</p><h1>Phone minutes audit</h1>
     <p className="small">The last 30 finished days of the daily minutes record on this phone. Unknown is never counted as zero.</p>
-    <p className="phone-audit-status">{status}</p>
+    <p className="phone-audit-status">{statusLine}</p>
     <p className="small">{complete} complete · {unknown} with unknowns · {missing} not recorded</p>
     <div className="phone-audit-actions">
       <button type="button" onClick={() => { setMessage(''); setConfirm('export'); }}>Export 30-day audit CSV</button>
@@ -105,15 +116,29 @@ export function PhoneMinutesAudit({ onBack }: { onBack: () => void }) {
     {message && <p role="status">{message}</p>}
     <ol className="phone-audit-days">{[...days].reverse().map(day => <li key={day.day} className="card">
       <details>
-        <summary><strong>{WEEKDAYS[calendarWeekday(day.day)]} {day.day}</strong>
+        <summary><strong>{WEEKDAYS[calendarWeekday(day.day)]} <Day day={day.day} /></strong>
           <span className="small">{!day.recorded ? 'Not recorded' : `Picked ${minutes(day.pickedMs)} · Similar apps ${minutes(day.substituteMs)}`}</span>
           {day.reasons.length > 0 && <span className="small phone-audit-reason">Unknown: {day.reasons.map(reason => REASONS[reason]).join('; ')}</span>}
         </summary>
-        {day.recorded && <ul className="small">{day.packages.map(item => <li key={item.packageName}>
-          {item.packageName} ({item.group === 'picked' ? 'picked' : 'similar'}): {minutes(item.foregroundMs)}{item.reason ? `, ${REASONS[item.reason]}` : ''}{item.installed === false ? ', not installed' : ''}{item.crossCheckMs !== null ? `, Android’s own total ${minutes(item.crossCheckMs)}` : ''}
-        </li>)}</ul>}
+        {day.recorded && <AppRows packages={day.packages} />}
       </details>
     </li>)}</ol>
     <button type="button" className="secondary" onClick={onBack}>Back to owner numbers</button>
   </section>;
+}
+
+/**
+ * The open day's apps by name, as Digital Wellbeing lists them: the picked apps, and any similar app that was used,
+ * is installed or is unknown. Similar apps not installed with 0 min fold into one line. Unknown is never shown as 0.
+ */
+function AppRows({ packages }: { packages: AuditDay['packages'] }) {
+  const quiet = packages.filter(item => item.group === 'substitute' && item.foregroundMs === 0 && item.installed === false);
+  const shown = packages.filter(item => !quiet.includes(item));
+  const line = (item: AuditDay['packages'][number]) => <li key={item.packageName}>
+    {appName(item.packageName) ? <>{appName(item.packageName)} · </> : null}<span className="phone-audit-package">{item.packageName}</span> ({item.group === 'picked' ? 'picked' : 'similar'}): {minutes(item.foregroundMs)}{item.reason ? `, ${REASONS[item.reason]}` : ''}{item.installed === false ? ', not installed' : ''}{item.crossCheckMs !== null ? `, Android’s own total ${minutes(item.crossCheckMs)}` : ''}
+  </li>;
+  return <>
+    <ul className="small">{shown.map(line)}</ul>
+    {quiet.length > 0 && <details className="phone-audit-quiet small"><summary>{quiet.length} similar apps not installed (0 min)</summary><ul>{quiet.map(line)}</ul></details>}
+  </>;
 }

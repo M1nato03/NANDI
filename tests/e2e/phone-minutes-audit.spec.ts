@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
+import { textAt200 } from './helpers/text';
 
 // Spec 46b: the owner's phone minutes audit. It sits behind the owner PIN inside the owner panel (no route of its own),
 // lists the last 30 finished days with unknown reasons, warns before the CSV is made, and gives a fail-closed pass.
@@ -40,6 +41,9 @@ async function seed(page: Page, days: number) {
   await page.reload();
 }
 
+/** Every day key sits on one line box: "2026-11-19", never "2026-" then "11-19". */
+const datesOnOneLine = (page: Page) => page.locator('.phone-audit-date').evaluateAll(nodes => nodes.filter(node => node.getClientRects().length !== 1).map(node => node.textContent));
+
 async function openAudit(page: Page) {
   await page.goto('/?e2e#you/owner');
   const entry = page.getByRole('button', { name: 'Phone minutes audit' });
@@ -79,8 +83,15 @@ test('behind the owner PIN only: 30 finished days, newest first, with the unknow
   const gap = days.filter({ hasText: '2026-11-18' });
   await expect(gap).toContainText('Picked unknown · Similar apps 5 min');
   await expect(gap).toContainText('Unknown: the log went quiet with an app open');
-  await gap.locator('summary').click();
-  await expect(gap).toContainText(`${IG} (picked): unknown, the log went quiet with an app open`);
+  await gap.locator(':scope > details > summary').click();
+  // Apps by name as Digital Wellbeing shows them; similar apps not installed with 0 min fold into one closed line.
+  await expect(gap).toContainText(`Instagram · ${IG} (picked): unknown, the log went quiet with an app open`);
+  await expect(gap).toContainText('YouTube · com.google.android.youtube (similar): 5 min, not installed');
+  const quiet = gap.locator('.phone-audit-quiet');
+  await expect(quiet.locator('summary')).toHaveText('11 similar apps not installed (0 min)');
+  await expect(gap.getByText('Chrome · com.android.chrome')).toBeHidden();
+  await quiet.locator('summary').click();
+  await expect(gap.getByText('Chrome · com.android.chrome')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await audit.getByRole('button', { name: 'Back to owner numbers' }).click();
   await expect(page.getByRole('heading', { name: 'How NANDI is doing' })).toBeVisible();
@@ -125,6 +136,13 @@ test('the pass needs 30 recorded days, is given only on confirm, and stops holdi
   await expect(confirm).toContainText('1 days here have unknowns');
   await confirm.getByRole('button', { name: 'Mark passed' }).click();
   await expect(audit).toContainText('Audit passed on 2026-11-20 for 2026-10-21 to 2026-11-19.');
+  // Said once: no second "passed" line under the buttons.
+  await expect(audit.getByRole('status')).toHaveCount(0);
+  expect(await datesOnOneLine(page)).toEqual([]);
+  await textAt200(page);
+  expect(await datesOnOneLine(page)).toEqual([]);
+  await page.reload();
+  await page.getByRole('button', { name: 'Phone minutes audit' }).click();
   await expect(audit.getByRole('button', { name: 'Clear the audit pass' })).toBeVisible();
   // A different set of picked apps voids it (fail-closed).
   await page.evaluate(async () => {
@@ -147,7 +165,7 @@ test('reads at 200% text without spilling', async ({ page }) => {
   await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
   // The audit's small text follows the phone's text size too (the app's .small is a fixed 13px).
   expect(await audit.locator('.small').first().evaluate(node => parseFloat(getComputedStyle(node).fontSize))).toBeGreaterThanOrEqual(26);
-  await audit.locator('.phone-audit-days > li').filter({ hasText: '2026-11-18' }).locator('summary').click();
+  await audit.locator('.phone-audit-days > li').filter({ hasText: '2026-11-18' }).locator(':scope > details > summary').click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
   for (const target of await audit.getByRole('button').all()) expect((await target.boundingBox())!.height).toBeGreaterThanOrEqual(44);
 });
