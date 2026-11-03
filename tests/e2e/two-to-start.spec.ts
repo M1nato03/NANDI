@@ -71,6 +71,9 @@ test.describe('Welcome: pick two to start', () => {
     await expect(welcome.getByRole('status')).toHaveText('Two to start. You can add more later.');
     await expect(welcome).toContainText('Want more?');
     await welcome.getByRole('button', { name: '3-4 things' }).click();
+    // The title follows the size; the size line drops back to "Just two".
+    await expect(welcome.getByRole('heading', { level: 1 })).toHaveText('Pick up to four');
+    await expect(welcome.locator('.goal-size')).toHaveText('Up to four·Just two·Everything');
     await area('Get fit').click();
     await area('Get things done').click();
     await area('Sleep earlier').click();

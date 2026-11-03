@@ -52,7 +52,7 @@ export function GoalPicker({ value, onChange, onEverything }: { value: Picks; on
     <p className="goal-refused" role="status">{refused}</p>
     <p className="goal-size">
       {value.size === 'two' && <><span>Want more?</span><span className="goal-sep" aria-hidden="true">·</span><button type="button" className="text-button" onClick={() => size('more')}>3-4 things</button></>}
-      {value.size !== 'two' && <><span>{all ? 'Everything is on.' : 'Up to four.'}</span><span className="goal-sep" aria-hidden="true">·</span><button type="button" className="text-button" onClick={() => size('two')}>Just two</button></>}
+      {value.size !== 'two' && <><span>{all ? 'Everything is on' : 'Up to four'}</span><span className="goal-sep" aria-hidden="true">·</span><button type="button" className="text-button" onClick={() => size('two')}>Just two</button></>}
       {value.size === 'all' && <><span className="goal-sep" aria-hidden="true">·</span><button type="button" className="text-button" onClick={() => size('more')}>3-4 things</button></>}
       {value.size !== 'all' && <><span className="goal-sep" aria-hidden="true">·</span><button type="button" className="text-button" onClick={() => size('all')}>Everything</button></>}
     </p>

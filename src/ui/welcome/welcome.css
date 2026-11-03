@@ -24,3 +24,6 @@
 .goal-sep { padding: 0 4px; }
 /* The app's buttons are a fixed 16px; here the choices follow the phone's text size (1rem is 16px by default). */
 .welcome .welcome-goal, .you-helps .welcome-goal, .welcome-inner > button { font-size: 1rem; }
+/* You's row reads like the Private books card above it: title, then its line, no tile gap; the line may wrap. */
+.you-screen button.you-link.you-helps-link { min-height: 0; justify-content: flex-start; gap: 8px; }
+.you-screen button.you-link.you-helps-link > span:last-child { white-space: normal; font-size: .8125rem; line-height: 1.4; }

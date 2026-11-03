@@ -23,7 +23,7 @@ export function HelpsWith() {
   const picks = usePicks();
   const change = (next: Picks) => { if (next.goals.length) void savePicks(db, next, Date.now()).catch(error => recordError('promise', error)); };
   return <section className="screen you-helps"><p className="eyebrow">You</p><h1>What NANDI helps with</h1>
-    <p>NANDI offers these first: the next move on Home, the Pause card's in-app choice, the dots at the top and its own reminders. Everything else is always there.</p>
+    <p>NANDI suggests these first. Everything else is always there.</p>
     {picks && <GoalPicker value={picks} onChange={change} />}
   </section>;
 }

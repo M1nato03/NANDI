@@ -108,7 +108,7 @@ export function Welcome({ onDone }: { onDone: () => void }) {
         <button type="button" className="text-button" onClick={restore}>I have a backup to restore</button>
       </>}
       {step === 1 && <>
-        <h1>Pick two to start</h1>
+        <h1>{picked.size === 'more' ? 'Pick up to four' : 'Pick two to start'}</h1>
         <p>The rest is always there. You can change this any time in You.</p>
         <GoalPicker value={picked} onChange={setPicked} onEverything={before => { setLead(before.goals[0]); setStep(2); }} />
         {picked.goals.length > 0 && <button type="button" onClick={() => setStep(2)}>Continue</button>}
