@@ -3,8 +3,9 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as v from 'valibot';
-import { isTrailFile, loadPackFiles, root } from './pack-files';
+import { isRightsFile, isTrailFile, loadPackFiles, root } from './pack-files';
 import { packSchema } from '../src/data/packs/schemas';
+import { skillTrackPackSchema } from '../src/data/packs/skillTrack';
 import { validateAll } from './validate-packs';
 
 export async function buildPacks(contentDir = resolve(root, 'content'), outputDir = resolve(root, 'dist/packs')) {
@@ -13,8 +14,9 @@ export async function buildPacks(contentDir = resolve(root, 'content'), outputDi
   await mkdir(join(outputDir, 'v'), { recursive: true });
   const packs = [];
   for (const { path, value } of await loadPackFiles(contentDir)) {
-    if (isTrailFile(path)) continue;
-    const pack = v.parse(packSchema, value);
+    if (isTrailFile(path) || isRightsFile(path)) continue;
+    const isSkillTrack = !!value && typeof value === 'object' && 'kind' in value && value.kind === 'skill-track';
+    const pack = isSkillTrack ? v.parse(skillTrackPackSchema, value) : v.parse(packSchema, value);
     const filename = `${pack.id}@${pack.version}.json`;
     const bytes = Buffer.from(`${JSON.stringify(pack)}\n`);
     await writeFile(join(outputDir, 'v', filename), bytes);

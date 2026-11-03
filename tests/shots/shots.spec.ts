@@ -1271,6 +1271,53 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'fix-2-get-fit-workout', false);
   });
 
+  test('43 skill practice', async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
+    const screen = page.getByRole('region', { name: 'Practice' });
+    const open = async (query: string) => { await page.goto(`/?e2e${query}#read/skill-demo`); await expect(screen).toBeVisible(); };
+    await open('');
+    await shot(page, 'p1-worked', false);
+    await screen.getByRole('button', { name: 'Change one part' }).click();
+    await screen.getByRole('radio', { name: 'I was not well on Monday and Tuesday.' }).click();
+    await screen.getByRole('button', { name: 'Check' }).click();
+    await shot(page, 'p2-change-near-miss', false);
+    await screen.getByRole('button', { name: 'Try a fresh one' }).click();
+    await screen.getByRole('radio', { name: 'Sorry to bother you.' }).click();
+    await shot(page, 'p3-fresh-choice', false);
+    await screen.getByRole('button', { name: 'Check' }).click();
+    await shot(page, 'p4-feedback-wrong', false);
+    await screen.getByRole('button', { name: 'Revise my answer' }).click();
+    await screen.getByRole('radio', { name: 'Could I borrow the lab key before 3 pm?' }).click();
+    await screen.getByRole('button', { name: 'Check' }).click();
+    await screen.getByLabel('The ask is in the first line.').check();
+    await shot(page, 'p5-feedback-right');
+    await screen.getByRole('button', { name: 'Save to My work' }).click();
+    await expect(screen.getByRole('heading', { name: 'Saved.' })).toBeVisible();
+    await shot(page, 'p6-saved', false);
+    await open('&lesson=say-2');
+    await screen.getByRole('button', { name: 'Change one part' }).click();
+    await screen.getByRole('button', { name: 'Walk out of the canteen.' }).click();
+    await shot(page, 'p7-order-half-built', false);
+    await open('&lesson=say-3');
+    await screen.getByRole('button', { name: 'Change one part' }).click();
+    await screen.getByLabel('Your answer').fill('12');
+    await screen.getByRole('button', { name: 'Check' }).click();
+    await shot(page, 'p8-phrase-near-miss', false);
+    await open('&variant=1');
+    await screen.getByRole('button', { name: 'Change one part' }).click();
+    await screen.getByRole('radio', { name: 'Could you send me Tuesday\'s notes?' }).click();
+    await screen.getByRole('button', { name: 'Check' }).click();
+    await screen.getByRole('button', { name: 'Try a fresh one' }).click();
+    await screen.getByLabel('In your own words').fill('Could you water my plants on Saturday and Sunday? I am away till Monday.');
+    await shot(page, 'p9-own-words', false);
+    await screen.getByRole('button', { name: 'Done writing' }).click();
+    await shot(page, 'p10-self-check');
+    await open('');
+    await screen.getByRole('button', { name: 'Change one part' }).click();
+    await textAt200(page);
+    await shot(page, 'p11-change-200pct');
+  });
+
   test('46a minutes record', async ({ page }) => {
     await page.clock.install({ time: new Date('2026-11-20T12:00:00') });
     const phone = (allowed: boolean) => page.evaluate(ok => {

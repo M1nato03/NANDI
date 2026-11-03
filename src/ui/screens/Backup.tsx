@@ -13,7 +13,7 @@ import { Capacitor } from '@capacitor/core';
 import { readAutoBackupState, runAutoBackup, setAutoBackupEnabled, type AutoBackupState } from '../../data/autoBackup';
 import { listAutoBackups } from '../../platform/files';
 
-type RestoreChoice = { kind: 'backup'; data: BackupEnvelope; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[] }
+type RestoreChoice = { kind: 'backup'; data: BackupEnvelope; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[]; privatePages?: number }
   | { kind: 'legacy'; data: LegacyExport; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[] };
 
 function legacyPreview(data: LegacyExport): RestoreChoice {
@@ -84,7 +84,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
         if (!checked.success || !checked.envelope) throw new Error(checked.errors.join('; '));
         const preview = previewBackup(checked.envelope);
         setChoice({ kind, data: checked.envelope, counts: preview.counts, first: preview.earliestDayKey, last: preview.latestDayKey,
-          retired: preview.retired, skipped: [] });
+          retired: preview.retired, skipped: [], privatePages: preview.privatePages });
       } else if (kind === 'legacy') {
         const checked = validateLegacy(parsed); if (!checked.success) throw new Error(checked.errors.join('; '));
         setChoice(legacyPreview(checked.data));
@@ -137,6 +137,8 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       {choice.retired > 0 && <p>{choice.retired} retired</p>}
       <ul className="count-list">{Object.entries(choice.counts).map(([name, count]) => <li key={name}><span>{name}</span><strong>{count}</strong></li>)}</ul>
       {choice.skipped.length > 0 && <p>Skipped keys: {choice.skipped.join(', ')}</p>}
+      {/* Spec 43: practice answers are the learner's own words; say plainly that the file carries them. */}
+      {choice.kind === 'backup' && !!choice.privatePages && <p className="restore-private">It holds {choice.privatePages} saved {choice.privatePages === 1 ? 'answer' : 'answers'} in your own words. Keep the file somewhere only you can open.</p>}
       <p>{choice.kind === 'backup' ? 'This replaces current app data.' : 'This adds legacy data to this device.'}</p>
       {/* Jenil 24 Oct: a restore replaces today too (cj3 clock fuzz C1), so say so before it happens. */}
       {choice.kind === 'backup' && <p className="restore-today">Today's activity, purchases, owned items, Shards and courtyard growth will be replaced by the backup's.</p>}

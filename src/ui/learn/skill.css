@@ -1,0 +1,17 @@
+/* Spec 43 (starter): one practice lesson, one stage per screen. */
+.skill-practice h1 { outline: none; }
+.skill-scenario { color: var(--muted); }
+.skill-worked { display: grid; gap: 8px; }
+.skill-answer { font-weight: 600; overflow-wrap: anywhere; margin: 0; }
+.skill-why { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.skill-options { display: grid; gap: 8px; margin: 12px 0; }
+.skill-option { text-align: left; white-space: normal; min-height: 48px; }
+.skill-option.chosen { outline: 3px solid var(--accent); outline-offset: 2px; }
+.skill-order-picked { margin: 8px 0; padding-left: 1.4em; display: grid; gap: 6px; min-height: 1em; }
+.skill-phrase, .skill-own { display: grid; gap: 6px; margin: 12px 0; }
+.skill-phrase input, .skill-own textarea { font: inherit; width: 100%; box-sizing: border-box; }
+.skill-feedback { margin: 12px 0; }
+.skill-checklist { display: grid; gap: 8px; border: 0; padding: 0; margin: 12px 0; }
+.skill-checklist label { display: flex; gap: 8px; align-items: flex-start; min-height: 44px; }
+.skill-actions { display: grid; gap: 8px; margin: 12px 0; }
+.skill-stop { margin-top: 16px; }

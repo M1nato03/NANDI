@@ -1,7 +1,8 @@
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { isTrailFile, loadPackFiles } from './pack-files';
+import { isRightsFile, isTrailFile, loadPackFiles } from './pack-files';
 import { validatePack } from '../src/data/packs/validate';
+import { validateSkillTrack, type RightsEntry } from '../src/data/packs/skillTrack';
 import { trailErrors, type Trail } from '../src/core/yatra/trail';
 
 export async function validateAll(contentDir?: string, options: { allowUnchecked?: boolean } = {}): Promise<string[]> {
@@ -9,7 +10,16 @@ export async function validateAll(contentDir?: string, options: { allowUnchecked
   const seen = new Set<string>();
   const arcIndexes = new Set<number>();
   const learnIds = new Map<string, string>();
-  for (const { path, value } of await loadPackFiles(contentDir)) {
+  const files = await loadPackFiles(contentDir);
+  const rights = files.filter(file => isRightsFile(file.path)).flatMap(file => Array.isArray(file.value) ? file.value as RightsEntry[] : []);
+  for (const { path, value } of files) {
+    if (isRightsFile(path)) continue;
+    // Spec 43: a skill track is checked with its rights register, not as one of the older packs.
+    if (value && typeof value === 'object' && 'kind' in value && value.kind === 'skill-track') {
+      for (const error of validateSkillTrack(value, rights)) errors.push(`${path}: ${error}`);
+      if ('id' in value && typeof value.id === 'string') { if (seen.has(value.id)) errors.push(`${path}: duplicate pack id ${value.id}`); seen.add(value.id); }
+      continue;
+    }
     // Spec 34: a Yatra trail is not a pack; it has its own rules (6-10 places, every postcard sourced).
     if (isTrailFile(path)) {
       for (const error of trailErrors(value as Trail)) errors.push(`${path}: ${error}`);

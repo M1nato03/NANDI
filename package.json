@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && npm run build-packs",
+    "build": "tsc -b && vite build && npm run build-packs && tsx scripts/check-release-bundle.ts",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.sw.json --noEmit",
     "lint": "eslint .",

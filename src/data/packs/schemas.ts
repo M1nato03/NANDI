@@ -181,7 +181,7 @@ const envelope = {
 };
 export const packEnvelopeSchema = v.strictObject({
   ...envelope,
-  kind: v.picklist(['lessons', 'deck', 'quests', 'winddown', 'track', 'puzzles', 'program', 'rules', 'mystery-arc', 'shop', 'topic']),
+  kind: v.picklist(['lessons', 'deck', 'quests', 'winddown', 'track', 'puzzles', 'program', 'rules', 'mystery-arc', 'shop', 'topic', 'skill-track']),
   body: v.unknown(),
 });
 export const lessonsPackSchema = v.strictObject({ ...envelope, kind: v.literal('lessons'), body: lessonsBodySchema });

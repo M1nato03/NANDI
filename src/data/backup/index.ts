@@ -25,6 +25,8 @@ export function detectRestoreKind(json: unknown): 'backup' | 'legacy' | 'unknown
 export const PP_FORMAT_VERSION = 2;
 /** Spec 46a: the daily minutes record's table, always empty in a backup file. */
 const PHONE_USAGE_TABLE = 'phoneUsageMinutes';
+/** Spec 43: practice runs and the private notebook. Unlike the minutes record, they travel in a backup. */
+const SKILL_TABLES = [['skillAttempts', 'id, trackId, lessonId, dayKey, status, retryDue'], ['notebookPages', 'id, trackId, createdAt'], ['notebookVersions', 'id, pageId, createdAt']] as const;
 export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.1.0';
 
 const dexieSchema = v.object({
@@ -123,6 +125,16 @@ export function migrateEnvelope(
     }
     dexie.data.databaseVersion = 5;
   }
+  // Dexie v6 (spec 43) adds practice runs and the private notebook; an older backup gains them empty.
+  if (dexie?.data && dexie.data.databaseVersion < 6) {
+    for (const [name, schema] of SKILL_TABLES) {
+      if (!dexie.data.tables.some(table => table.name === name)) {
+        dexie.data.tables.push({ name, schema, rowCount: 0 });
+        dexie.data.data.push({ tableName: name, inbound: true, rows: [] });
+      }
+    }
+    dexie.data.databaseVersion = 6;
+  }
   return migrated;
 }
 
@@ -217,6 +229,8 @@ export interface BackupPreview {
   earliestDayKey: string | null;
   latestDayKey: string | null;
   retired: number;
+  /** Spec 43: notebook pages still kept (not deleted), which hold the learner's own words. */
+  privatePages: number;
 }
 
 const dayPattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -228,10 +242,12 @@ export function previewBackup(envelope: BackupEnvelope): BackupPreview {
   let earliestDayKey: string | null = null;
   let latestDayKey: string | null = null;
   let retired = 0;
+  let privatePages = 0;
   for (const table of envelope.dexie.data.data) {
     counts[table.tableName] = table.rows.length;
     for (const row of table.rows) {
       if (table.tableName === 'deckProg' && row.b === 99) retired++;
+      if (table.tableName === 'notebookPages' && row.deleted !== 1) privatePages++;
       for (const [key, value] of Object.entries(row)) {
         if ((key === 'dayKey' || key.endsWith('DayKey') || key === 'due' || key === 'last')
           && isPreviewDay(value)) {
@@ -241,7 +257,7 @@ export function previewBackup(envelope: BackupEnvelope): BackupPreview {
       }
     }
   }
-  return { counts, earliestDayKey, latestDayKey, retired };
+  return { counts, earliestDayKey, latestDayKey, retired, privatePages };
 }
 
 /**

@@ -20,3 +20,5 @@ export async function loadPackFiles(contentDir = resolve(root, 'content')) {
 
 /** Spec 34: Yatra trails live in content/yatra but are not packs; they have their own rules (src/core/yatra/trail). */
 export const isTrailFile = (path: string) => /[\\/]yatra[\\/][^\\/]+\.json$/.test(path);
+/** Spec 43: a skill track's rights register (content/skill-tracks/rights) is not a pack; tracks are checked against it. */
+export const isRightsFile = (path: string) => /[\\/]skill-tracks[\\/]rights[\\/][^\\/]+\.json$/.test(path);

@@ -4,6 +4,7 @@ import { RULES } from '../../core/rules.config';
 import { freshPracticeErrors, repeatedAnswerErrors } from './fresh';
 import { askLineProblems } from '../../core/learn/askLine';
 import { chikuProblems, type ChikuScene } from '../../core/learn/chiku';
+import { validateSkillTrack } from './skillTrack';
 
 /** Flesch reading ease. A 0.5 point tolerance covers syllable heuristic rounding. */
 export function fleschReadingEase(value: string): number {
@@ -84,6 +85,8 @@ export function bookErrors(body: TopicBody, checkText: (where: string, value: st
 }
 
 export function validatePack(input: unknown, options: { allowUnchecked?: boolean; editorial?: boolean } = {}): string[] {
+  // Spec 43: a skill track has its own rules; its rights register is checked by validate-packs, which has the files.
+  if (input && typeof input === 'object' && 'kind' in input && input.kind === 'skill-track') return validateSkillTrack(input, null);
   const parsed = v.safeParse(packSchema, input);
   if (!parsed.success) return parsed.issues.map((issue) => `${v.getDotPath(issue) ?? 'pack'}: ${issue.message}`);
   const pack: Pack = parsed.output;

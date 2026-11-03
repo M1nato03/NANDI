@@ -61,6 +61,9 @@ const BookCheck = lazy(() => import('../learn/BookCheck').then(module => ({ defa
 const HaveliDemo = lazy(() => import('../learn/HaveliDemo').then(module => ({ default: module.HaveliDemo })));
 const KolamScreen = lazy(() => import('../night/KolamScreen').then(module => ({ default: module.KolamScreen })));
 const ChikuDemo = lazy(() => import('../learn/ChikuDemo').then(module => ({ default: module.ChikuDemo })));
+// Spec 43: the practice engine on its test fixture. Only the e2e build has this import at all, so no release chunk
+// carries the fixture (scripts/check-release-bundle.ts checks dist/).
+const SkillDemo = import.meta.env.VITE_E2E === '1' ? lazy(() => import('../learn/SkillDemo').then(module => ({ default: module.SkillDemo }))) : null;
 const Plan = lazy(() => import('../screens/Plan').then(module => ({ default: module.Plan })));
 const Planner = lazy(() => import('../screens/Planner').then(module => ({ default: module.Planner })));
 const Train = lazy(() => import('../screens/Train').then(module => ({ default: module.Train })));
@@ -273,6 +276,7 @@ export function AppShell() {
   else if (path === 'plan/focus') screen = <Today />;
   else if (path === 'plan/pause') screen = <PauseSetup />;
   else if (import.meta.env.VITE_E2E === '1' && path === 'read/chiku-demo') screen = <ChikuDemo />;
+  else if (SkillDemo && path === 'read/skill-demo') screen = <SkillDemo />;
   // Spec 33: Read (books, chapters, the old drop) and its Games (Kapi's shelf, the old Mind).
   else if (path === 'read' || path === 'read/drop') screen = <Learn entry={path.split('/')[1]} />;
   else if (/^read\/book\/[a-z0-9-]+$/.test(path)) screen = <Learn key={path} entry="book" book={path.split('/')[2]} />;

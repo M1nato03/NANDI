@@ -1,0 +1,166 @@
+{
+  "id": "skill-track.practice-fixture",
+  "kind": "skill-track",
+  "version": "0.1.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Say it clearly (test fixture)",
+  "author": "NANDI",
+  "createdAt": "2026-11-03T00:00:00.000Z",
+  "body": {
+    "trackId": "practice-fixture",
+    "title": "Say it clearly",
+    "status": "draft",
+    "competencies": [
+      { "id": "lead-with-ask", "name": "Put the ask first" },
+      { "id": "clear-order", "name": "Give steps in order" }
+    ],
+    "lessons": [
+      {
+        "lessonId": "say-1",
+        "position": 1,
+        "title": "Ask first",
+        "competencyIds": ["lead-with-ask"],
+        "prerequisites": [],
+        "estimatedMinutes": 3,
+        "scenario": "You need a classmate's notes from Monday's lecture.",
+        "worked": {
+          "prompt": "Write a message asking for Monday's notes.",
+          "answer": "Could you send me Monday's notes? I missed the lecture and want to catch up before Friday.",
+          "why": ["The ask comes first, so the reader knows what you need.", "The reason is short and comes after it."]
+        },
+        "change": {
+          "prompt": "Same message, but now you need Tuesday's notes. Which first line fits?",
+          "check": {
+            "kind": "choice",
+            "options": ["Could you send me Tuesday's notes?", "I was not well on Monday and Tuesday.", "Hope you are well!"],
+            "accepted": ["Could you send me Tuesday's notes?"],
+            "nearMisses": [{ "answer": "I was not well on Monday and Tuesday.", "feedback": "That is the reason, not the ask. Put the ask first, then the reason." }],
+            "feedback": { "right": "Yes. The ask leads, so the reader can act at once.", "wrong": "Start with what you need from them." },
+            "tests": { "accept": ["could you send me tuesday's notes"], "reject": ["Hope you are well!"] }
+          }
+        },
+        "fresh": [
+          {
+            "variantId": "say-1-a",
+            "prompt": "You need the lab key from the caretaker before 3 pm. Pick the best first line.",
+            "check": {
+              "kind": "choice",
+              "options": ["Could I borrow the lab key before 3 pm?", "The lab is locked again today.", "Sorry to bother you."],
+              "accepted": ["Could I borrow the lab key before 3 pm?"],
+              "nearMisses": [{ "answer": "The lab is locked again today.", "feedback": "That explains the problem but never asks. Lead with the ask." }],
+              "feedback": { "right": "Right. The caretaker knows what you need and by when.", "wrong": "A polite opener is fine later; the ask comes first." },
+              "tests": { "accept": ["could i borrow the lab key before 3 pm"], "reject": ["Sorry to bother you."] }
+            }
+          },
+          {
+            "variantId": "say-1-b",
+            "prompt": "Write the first line of a message asking your neighbour to water your plants this weekend."
+          }
+        ],
+        "checklist": ["The ask is in the first line.", "The reason is one short sentence.", "It says when."],
+        "useItToday": "Before you send your next message, move the ask to the first line.",
+        "rightsRef": "r-say-1"
+      },
+      {
+        "lessonId": "say-2",
+        "position": 2,
+        "title": "Steps in order",
+        "competencyIds": ["clear-order"],
+        "prerequisites": [],
+        "estimatedMinutes": 3,
+        "scenario": "You are telling a friend how to reach the library from the bus stop.",
+        "worked": {
+          "prompt": "Give the directions in three steps.",
+          "answer": "Get off at the main gate. Walk past the canteen. The library is the second building on the left.",
+          "why": ["Each step is one action.", "The steps follow the order your friend will walk them."]
+        },
+        "change": {
+          "prompt": "Now your friend starts at the canteen. Put the steps in order.",
+          "check": {
+            "kind": "order",
+            "parts": ["Walk out of the canteen.", "Turn left at the notice board.", "Enter the second building on the left."],
+            "nearMisses": [{ "answer": ["Turn left at the notice board.", "Walk out of the canteen.", "Enter the second building on the left."], "feedback": "They cannot turn at the board before they leave the canteen. Start where they stand." }],
+            "feedback": { "right": "Yes. Each step starts where the last one ended.", "wrong": "Follow the walk from where your friend stands now." },
+            "tests": {
+              "accept": [["Walk out of the canteen.", "Turn left at the notice board.", "Enter the second building on the left."]],
+              "reject": [["Enter the second building on the left.", "Turn left at the notice board.", "Walk out of the canteen."]]
+            }
+          }
+        },
+        "fresh": [
+          {
+            "variantId": "say-2-a",
+            "prompt": "Put the steps for starting the class projector in order.",
+            "check": {
+              "kind": "order",
+              "parts": ["Plug the projector in.", "Switch it on.", "Choose the laptop input."],
+              "nearMisses": [{ "answer": ["Switch it on.", "Plug the projector in.", "Choose the laptop input."], "feedback": "It cannot switch on before it has power. Plug it in first." }],
+              "feedback": { "right": "Right. Power, then on, then the input.", "wrong": "Think about what the projector needs before each step." },
+              "tests": {
+                "accept": [["Plug the projector in.", "Switch it on.", "Choose the laptop input."]],
+                "reject": [["Choose the laptop input.", "Switch it on.", "Plug the projector in."]]
+              }
+            }
+          },
+          {
+            "variantId": "say-2-b",
+            "prompt": "Write three short steps for making a cup of tea for a guest."
+          }
+        ],
+        "checklist": ["One action in each step.", "The steps follow the real order.", "Three steps or fewer."],
+        "useItToday": "Next time you give directions, say one action at a time.",
+        "rightsRef": "r-say-2"
+      },
+      {
+        "lessonId": "say-3",
+        "position": 3,
+        "title": "Name the detail",
+        "competencyIds": ["lead-with-ask", "clear-order"],
+        "prerequisites": ["say-1", "say-2"],
+        "estimatedMinutes": 4,
+        "scenario": "You are moving a study group meeting.",
+        "worked": {
+          "prompt": "Write a message moving today's meeting.",
+          "answer": "Can we move today's meeting to 5 pm? The room is booked until 4:30.",
+          "why": ["The ask comes first.", "It names the new time in full."]
+        },
+        "change": {
+          "prompt": "The new place is Room 12. Fill the gap: \"Can we meet in ___ at 5 pm?\"",
+          "check": {
+            "kind": "phrase",
+            "accepted": ["Room 12", "Room twelve"],
+            "nearMisses": [{ "answer": "12", "feedback": "Say \"Room 12\", so nobody wonders whether 12 is a time." }],
+            "feedback": { "right": "Clear. The place is named in full.", "wrong": "Name the place in full, like \"Room 12\"." },
+            "tests": { "accept": ["room 12"], "reject": ["Room 21"] }
+          }
+        },
+        "fresh": [
+          {
+            "variantId": "say-3-a",
+            "prompt": "The new time is 6 in the evening. Fill the gap: \"Can we move the meeting to ___?\"",
+            "check": {
+              "kind": "phrase",
+              "accepted": ["6 pm", "6 p.m.", "6:00 pm", "six pm"],
+              "nearMisses": [{ "answer": "6", "feedback": "Add \"pm\", so nobody reads it as 6 in the morning." }],
+              "feedback": { "right": "Right. The time cannot be misread.", "wrong": "Write the evening time with \"pm\", like \"6 pm\"." },
+              "tests": { "accept": ["6 PM", "6 p.m."], "reject": ["5 pm", "6 am"] }
+            }
+          },
+          {
+            "variantId": "say-3-b",
+            "prompt": "Write one message that moves your next meeting and names the new time."
+          }
+        ],
+        "checklist": ["The ask comes first.", "The new time or place is named in full.", "It reads in one glance."],
+        "useItToday": "When you change a plan, name the new time or place in full.",
+        "rightsRef": "r-say-3"
+      }
+    ],
+    "comparison": {
+      "promptId": "say-clearly-baseline",
+      "prompt": "Write a message asking someone for something you need this week.",
+      "rubric": ["The ask comes first.", "It says when.", "It fits in two lines."]
+    }
+  }
+}

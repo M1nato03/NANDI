@@ -344,3 +344,49 @@ export interface PhoneUsageRow extends StateRow {
   crossCheckMs: number | null;
   measuredAt: number;
 }
+
+/**
+ * Spec 43: one run of a practice lesson. Narrow (machine-checked) answers and their results live here; anything the
+ * learner wrote in their own words lives only in a notebook version. A retry is a new run that points at the one before.
+ */
+export interface SkillAttemptRow extends EntityRow {
+  trackId: string;
+  lessonId: string;
+  /** The fresh case used this run. */
+  variantId: string;
+  /** The 04:00 day the run started. */
+  dayKey: DayKey;
+  status: 'started' | 'finished';
+  change?: { answer: string | string[]; result: 'right' | 'near' | 'wrong' };
+  /** A narrow fresh answer and its result, or 'self' for a self-checked one (its words are on the page). */
+  fresh?: { answer?: string | string[]; result: 'right' | 'near' | 'wrong' | 'self' };
+  /** When this lesson comes back, or null for no more retries. Set when the run finishes. */
+  retryDue: DayKey | null;
+  /** Right retries in a row so far, which picks the next gap (3, 7, 14 days). */
+  rights: number;
+  retryOf?: string;
+  pageId?: string;
+  startedAt: number;
+  finishedAt?: number;
+}
+
+/** Spec 43: a private notebook page, one per saved lesson answer. Its text lives in its versions. */
+export interface NotebookPageRow extends EntityRow {
+  trackId: string;
+  lessonId: string;
+  title: string;
+  /** The first version, kept as the baseline; if it is deleted the then-and-now comparison says unavailable. */
+  baselineVersionId: string;
+  createdAt: number;
+}
+
+/** Spec 43: one version of a page. The prompt is a snapshot, so a later pack change never rewrites old work. */
+export interface NotebookVersionRow extends EntityRow {
+  pageId: string;
+  version: number;
+  prompt: string;
+  answer: string;
+  checklist: { text: string; ticked: boolean }[];
+  status: 'practised' | 'prepared' | 'used-unverified';
+  createdAt: number;
+}
