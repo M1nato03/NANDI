@@ -97,6 +97,8 @@ test('after a card, focus moves to the scene; one polite region reads each beat;
   await expect(page.getByRole('group', { name: "Chiku's scene" })).toBeFocused();
   await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveCount(1);
   await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText('You gave Chiku: Wanting to revise.');
+  // Read aloud but never seen, even on this route, which does not load learn.css (the rule lives in components.css).
+  expect((await page.locator('.chiku-step [aria-live="polite"]').boundingBox())!.width).toBeLessThanOrEqual(1);
   await page.getByRole('button', { name: 'Skip ahead' }).click();
   await expect(beat(page)).toHaveAttribute('data-beat', 'newday');
   await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText("New day: Kunal's train is cancelled, so he takes the bus.");

@@ -52,3 +52,6 @@ progress::-moz-progress-bar { background: var(--area-color, var(--teal)); border
 #main [tabindex="-1"]:focus:not(:focus-visible), #main:focus:not(:focus-visible) { outline: none; }
 @media (prefers-reduced-motion: reduce) { .ui-progress > span, .ui-toggle::after, button, .ui-button { transition: none; animation: none; } }
 :root[data-motion='reduce'] .ui-progress > span, :root[data-motion='reduce'] .ui-toggle::after, :root[data-motion='reduce'] button, :root[data-motion='reduce'] .ui-button { transition: none; animation: none; }
+
+/* Hidden from sight, still read aloud. Shared, so no screen depends on another screen's stylesheet for it. */
+.sr-only, .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

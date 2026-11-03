@@ -73,7 +73,6 @@
 .train-effort { border: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .train-effort legend { margin-bottom: 6px; }
 .train-finish button { margin-right: 8px; margin-bottom: 8px; }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
 /* Move uses the shared card and progress primitives. */
 .train-screen, .train-workout, .train-onboarding { --area-color: var(--area-move); }
