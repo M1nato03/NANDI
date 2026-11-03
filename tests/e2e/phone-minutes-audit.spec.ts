@@ -124,7 +124,7 @@ test('the pass needs 30 recorded days, is given only on confirm, and stops holdi
   await expect(confirm).toContainText('at least 25 of the 30 days');
   await expect(confirm).toContainText('1 days here have unknowns');
   await confirm.getByRole('button', { name: 'Mark passed' }).click();
-  await expect(audit).toContainText('for 2026-10-21 to 2026-11-19.');
+  await expect(audit).toContainText('Audit passed on 2026-11-20 for 2026-10-21 to 2026-11-19.');
   await expect(audit.getByRole('button', { name: 'Clear the audit pass' })).toBeVisible();
   // A different set of picked apps voids it (fail-closed).
   await page.evaluate(async () => {
@@ -145,6 +145,8 @@ test('reads at 200% text without spilling', async ({ page }) => {
   await seed(page, 30);
   const audit = await openAudit(page);
   await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+  // The audit's small text follows the phone's text size too (the app's .small is a fixed 13px).
+  expect(await audit.locator('.small').first().evaluate(node => parseFloat(getComputedStyle(node).fontSize))).toBeGreaterThanOrEqual(26);
   await audit.locator('.phone-audit-days > li').filter({ hasText: '2026-11-18' }).locator('summary').click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
   for (const target of await audit.getByRole('button').all()) expect((await target.boundingBox())!.height).toBeGreaterThanOrEqual(44);

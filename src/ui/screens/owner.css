@@ -9,6 +9,8 @@
 .owner-bars span { display: block; border-radius: 2px; background: var(--input-line); }
 .owner-bars span.on { background: var(--accent); }
 /* Spec 46b: the owner's phone minutes audit. */
+/* The app's .small is a fixed 13px; here it follows the phone's text size, as 46a's Settings help does. */
+.phone-audit .small { font-size: .8125rem; }
 .phone-audit-status { font-weight: 600; }
 .phone-audit-actions { display: grid; gap: 8px; margin: 12px 0; }
 .phone-audit-confirm { display: grid; gap: 8px; margin: 0 0 12px; }

@@ -52,7 +52,7 @@ export function PhoneMinutesAudit({ onBack }: { onBack: () => void }) {
   const unknown = days.filter(day => day.recorded && !day.complete).length;
   const missing = days.filter(day => !day.recorded).length;
   const passable = canPass(days, setId);
-  const status = state.state === 'valid' ? `Audit passed on ${new Date(state.pass.at).toLocaleDateString()} for ${state.pass.firstDay} to ${state.pass.lastDay}.`
+  const status = state.state === 'valid' ? `Audit passed on ${calendarDayKey(state.pass.at)} for ${state.pass.firstDay} to ${state.pass.lastDay}.`
     : state.state === 'void' ? `The audit pass no longer holds: ${VOID[state.why]}.` : 'Not audited yet.';
 
   async function exportCsv() {
@@ -93,7 +93,7 @@ export function PhoneMinutesAudit({ onBack }: { onBack: () => void }) {
       {state.state !== 'valid' && !passable && <p className="small">Marking it passed needs 30 recorded days in a row, all with today’s picked apps.</p>}
     </div>
     {confirm === 'export' && <div className="card phone-audit-confirm" role="group" aria-label="Before the file is made">
-      <p>This file holds your private app-use history: which apps, and for how long, on each of 30 days. It stays on this phone unless you send it on. Keep it out of backups and shares, and delete it when you are done.</p>
+      <p>This file holds your private app-use history: which apps, and for how long, on each of 30 days. It stays on this phone unless you send it on. Delete it when you are done.</p>
       <button type="button" onClick={() => void exportCsv()}>Make the file</button>
       <button type="button" className="secondary" onClick={() => setConfirm(null)}>Don’t make it</button>
     </div>}

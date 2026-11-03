@@ -1344,6 +1344,8 @@ for (const theme of themes) test.describe(theme, () => {
       });
       database.close();
     });
+    // Dexie's live queries do not see a raw IndexedDB write; the reload makes the app read the seeded days and apps.
+    await page.reload();
     await page.goto('/?e2e#you/owner');
     await page.getByLabel('PIN').fill('2468');
     await page.getByRole('button', { name: 'Save PIN' }).click();
