@@ -14,10 +14,10 @@ for (const scheme of ['light', 'dark'] as const) {
     await seedRecapWeek(page, '2026-10-15');
     const download = page.waitForEvent('download');
     await page.getByRole('region', { name: 'This week in words' }).getByRole('button', { name: 'Share my week' }).click();
-    const preview = page.getByRole('dialog', { name: 'Weekly recap preview' });
+    const preview = page.getByRole('dialog', { name: "Your week's receipt" });
     await expect(preview.getByRole('img')).toBeVisible({ timeout: 20_000 });
     await preview.getByRole('button', { name: 'Share' }).click();
-    expect((await download).suggestedFilename()).toBe('nandi-week-2026-10-12.png');
+    expect((await download).suggestedFilename()).toBe('nandi-receipt-2026-10-12.png');
     await page.getByRole('link', { name: 'You' }).click();
     await page.getByRole('button', { name: /Settings/ }).click();
     const setting = page.getByRole('region', { name: 'Night plan setting' });

@@ -22,12 +22,12 @@ export function You() {
     ]);
     return { tasks, focus, sessions, quests, concepts, logs, facts };
   }, []);
-  const recap = sources ? buildRecap(Date.now() + 7 * 86_400_000, sources) : null; // eslint-disable-line react-hooks/purity
+  const recap = sources ? buildRecap(Date.now() + 7 * 86_400_000, { ...sources, ledger: sources.facts }) : null; // eslint-disable-line react-hooks/purity
   const weekNumbers = recap ? [
     { value: recap.tasks, label: 'tasks finished' },
     { value: recap.workouts, label: 'workouts' },
     { value: recap.concepts, label: 'ideas learned' },
-    { value: recap.focusHours, label: 'focus hours' },
+    { value: Math.round(recap.focusMinutes / 6) / 10, label: 'focus hours' },
     { value: recap.nights, label: 'nights back on plan' },
     { value: recap.sideQuests, label: 'side quests completed' },
   ].filter(item => item.value > 0).slice(0, 4) : [];

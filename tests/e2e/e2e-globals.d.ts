@@ -24,6 +24,12 @@ declare global {
     __nandiMindTest?: {
       solveKnownSolution(): void;
     };
+    /** Spec 53: the receipt laid out with the real fonts (src/ui/screens/receipt-e2e-hook.ts). */
+    __nandiReceiptTest?: {
+      problems(week: Record<string, unknown>, now?: number): Promise<string[]>;
+      png(week: Record<string, unknown>, now?: number): Promise<{ dataUrl: string; width: number; height: number }>;
+      size: { width: number; height: number };
+    };
     __nandiCaseTest?: {
       solveKnownSolution(): void;
       solveTodaysCase(): void;

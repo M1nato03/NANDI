@@ -22,6 +22,7 @@ import { CONSTELLATION_PREFIX, ensureYatraStart, saveConstellationName, YATRA_ST
 import { go } from '../shell/router';
 import { useModalFocus } from '../shell/useModalFocus';
 import { campLine, TrekScene } from './TrekScene';
+import { WeekEndShare } from '../screens/WeekEndShare';
 import './yatra.css';
 import './trek.css';
 
@@ -182,6 +183,8 @@ export function Yatra() {
     {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} onFriend={spot => go(spot.route)} />}
     {rows && <NextMoveCard rows={rows} />}
     {rows && <MoreOfferCard picks={rows.picks} />}
+    {/* Spec 53: Sunday evening to Monday, the week's receipt; nothing on other days. */}
+    <WeekEndShare />
     {/* Below the move, a quiet note on the trail: information, never a second action. */}
     {trek && yatra && <div className="trek-journey">
       <div className="trek-journey-top"><strong>{trekLine(trek)}</strong></div>

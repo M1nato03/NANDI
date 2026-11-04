@@ -175,6 +175,9 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .recap-sheet img { display: block; width: min(100%, 330px); height: auto; max-height: 65dvh; object-fit: contain; margin: 0 auto; border-radius: 8px; }
 .recap-sheet-actions { display: flex; gap: 12px; margin-top: 16px; }
 .recap-sheet-actions button { flex: 1; }
+/* Spec 53: Share and Save image side by side, Not now on its own row below. */
+.recap-sheet-actions { flex-wrap: wrap; }
+.recap-sheet-actions > .text-button { flex-basis: 100%; min-height: 44px; }
 .you-links { gap: 10px; }
 .you-link { min-height: 128px; padding: 18px; }
 .you-link strong { font-size: 27px; }

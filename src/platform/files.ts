@@ -8,12 +8,7 @@ export interface ShareOptions { title?: string; dialogTitle?: string; /** A clos
 export async function shareOrDownload(file: File, text?: string, options: ShareOptions = {}): Promise<'shared' | 'downloaded' | 'cancelled'> {
   if (Capacitor.isNativePlatform()) {
     const image = file.type === 'image/png';
-    const data = image ? await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result).split(',')[1] ?? '');
-      reader.onerror = () => reject(reader.error);
-      reader.readAsDataURL(file);
-    }) : await file.text();
+    const data = image ? await base64(file) : await file.text();
     const saved = await Filesystem.writeFile({ path: file.name, data, directory: Directory.Documents, ...(!image ? { encoding: Encoding.UTF8 } : {}) });
     try {
       await Share.share({ title: options.title ?? (image ? text ? 'NANDI Mind' : 'What my week became' : 'NANDI backup'), ...(text ? { text } : {}), files: [saved.uri], dialogTitle: options.dialogTitle ?? (image ? text ? 'Share my solve' : 'Share my week' : 'Save a copy of your NANDI backup') });
@@ -36,6 +31,20 @@ export async function shareOrDownload(file: File, text?: string, options: ShareO
   if (text && typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
     try { await navigator.clipboard.writeText(text); } catch { /* The downloaded tile still carries the same details. */ }
   }
+  downloadFile(file);
+  return 'downloaded';
+}
+
+function base64(file: Blob): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(',')[1] ?? '');
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+function downloadFile(file: File): void {
   const url = URL.createObjectURL(file);
   try {
     const link = document.createElement('a');
@@ -48,6 +57,19 @@ export async function shareOrDownload(file: File, text?: string, options: ShareO
   } finally {
     setTimeout(() => URL.revokeObjectURL(url), 60_000);
   }
+}
+
+export const SAVED_IMAGE_FOLDER = 'NANDI';
+/**
+ * Spec 53: keeps an image without a share sheet. On Android it is written to Documents/NANDI through the Filesystem
+ * plugin the backups already use (a file there, not a gallery save); on the web it downloads.
+ */
+export async function saveImage(file: File): Promise<'saved' | 'downloaded'> {
+  if (Capacitor.isNativePlatform()) {
+    await Filesystem.writeFile({ path: `${SAVED_IMAGE_FOLDER}/${file.name}`, data: await base64(file), directory: Directory.Documents, recursive: true });
+    return 'saved';
+  }
+  downloadFile(file);
   return 'downloaded';
 }
 

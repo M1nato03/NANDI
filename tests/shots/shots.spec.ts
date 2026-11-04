@@ -1,7 +1,9 @@
+import { writeFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 import { openMore } from '../e2e/helpers/plan';
 import { answerRight, seedTaughtTopics, walkIdea } from '../e2e/learn-helpers';
 import { textAt200 } from '../e2e/helpers/text';
+import { seedRecapWeek } from '../e2e/recap-seed';
 
 // The 360x800 review set (item 140): each main screen with seeded data, reduced motion so a frame is stable.
 // Run with `npm run shots`; add a shot here when a change touches a screen that is not in the set.
@@ -1549,5 +1551,49 @@ for (const theme of themes) test.describe(theme, () => {
     await page.getByRole('region', { name: 'Today' }).getByRole('button', { name: /^Done/ }).first().click();
     await expect(page.getByRole('dialog', { name: 'Want NANDI to catch you when you open Instagram or YouTube?' })).toBeVisible({ timeout: 6000 });
     await shot(page, 'p52-12-pause-offer-after-first-finish', false);
+  });
+
+  // Spec 53: the week's receipt on Home (Sunday evening), its sheet (and at 200% text), You's card, and the cards at
+  // full size: a full week, a two-line week, a long-number week, and a full week still open ("so far").
+  test('53 receipt', async ({ page }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });
+      Object.defineProperty(navigator, 'canShare', { configurable: true, value: undefined });
+    });
+    await page.clock.setFixedTime(new Date('2026-11-08T18:05:00'));
+    await page.goto('/?e2e#yatra');
+    await seedRecapWeek(page, '2026-11-05');
+    const link = page.getByRole('button', { name: "Your week's receipt is ready" });
+    await expect(link).toBeVisible();
+    const move = await page.locator('.next-move').boundingBox();
+    console.log(`spec 53 shots [${theme}]: next-move card top y=${Math.round(move!.y)}, bottom y=${Math.round(move!.y + move!.height)}; receipt link y=${Math.round((await link.boundingBox())!.y)}`);
+    await shot(page, 'p53-01-home-sunday-link', false);
+    await link.scrollIntoViewIfNeeded();
+    await shot(page, 'p53-02-home-sunday-link-scrolled', false);
+    await link.click();
+    const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
+    await expect(sheet.getByRole('img')).toBeVisible({ timeout: 20_000 });
+    await shot(page, 'p53-03-sheet', false);
+    await textAt200(page);
+    await shot(page, 'p53-04-sheet-200pct', false);
+    await page.goto('/?e2e#you');
+    await page.reload();
+    const week = page.getByRole('region', { name: 'This week in words' });
+    await week.scrollIntoViewIfNeeded();
+    await shot(page, 'p53-05-you-week', false);
+    await page.waitForFunction(() => Boolean(window.__nandiReceiptTest));
+    const base = { from: '2026-11-02', to: '2026-11-09', tasks: 0, focusMinutes: 0, longestFocusMinutes: 0, workouts: 0, sideQuests: 0, concepts: 0, nights: 0, chapters: 0, realMs: 0 };
+    const full = { ...base, chapters: 2, concepts: 9, workouts: 3, focusMinutes: 250, tasks: 11, nights: 4, sideQuests: 1, longestFocusMinutes: 52, realMs: 400 * 60_000 };
+    const cards: [string, Record<string, unknown>, number | undefined][] = [
+      ['p53-card-1-full-week', full, undefined],
+      ['p53-card-2-two-lines', { ...base, tasks: 2, workouts: 1, realMs: 20 * 60_000 }, undefined],
+      ['p53-card-3-long-numbers', { ...base, chapters: 14, concepts: 128, workouts: 12, focusMinutes: 750, tasks: 312, nights: 7, longestFocusMinutes: 185, realMs: 9_999 * 60_000 }, undefined],
+      ['p53-card-4-full-week-so-far', full, new Date('2026-11-08T18:05:00').getTime()],
+    ];
+    for (const [name, data, now] of cards) {
+      const image = await page.evaluate(([week, at]) => window.__nandiReceiptTest!.png(week, at), [data, now] as const);
+      expect([image.width, image.height]).toEqual([1080, 1920]);
+      writeFileSync(`${out}/${theme}/${name}.png`, Buffer.from(image.dataUrl.split(',')[1]!, 'base64'));
+    }
   });
 });

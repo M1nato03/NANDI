@@ -4,7 +4,7 @@ import { shareWindow } from '../core/shareGate';
 import { dayKey } from '../core/time/dayKey';
 import { db } from '../data/db';
 import { canShareNow } from '../data/repos/night';
-import { shareLink, shareOrDownload, type ShareOptions } from '../platform/files';
+import { saveImage, shareLink, shareOrDownload, type ShareOptions } from '../platform/files';
 
 /**
  * Spec 19 share rules, in one place: the person taps to send, nothing is recorded (no XP, Shards, badge,
@@ -23,6 +23,12 @@ export async function shareTextNow(text: string, isDay: () => Promise<boolean> =
 export async function shareFileNow(file: File | (() => Promise<File>), text?: string, options: ShareOptions = {}, isDay: () => Promise<boolean> = dayNow): Promise<FileShareResult> {
   if (!await isDay()) return 'night';
   return shareOrDownload(typeof file === 'function' ? await file() : file, text, options);
+}
+
+/** Spec 53: keeps the image on the phone (Documents/NANDI on Android, a download on the web), in the day window only. */
+export async function saveFileNow(file: File, isDay: () => Promise<boolean> = dayNow): Promise<'saved' | 'downloaded' | 'night'> {
+  if (!await isDay()) return 'night';
+  return saveImage(file);
 }
 
 /** A short status line after a tap; nothing when it was shared or closed. */

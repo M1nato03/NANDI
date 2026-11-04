@@ -2,17 +2,18 @@ import { dayKey } from './time/dayKey';
 import { sessionCounts } from './train/counts';
 import { nightsBackOnPlan } from './nightPlan';
 import { focusElapsedMs } from './tasks/focus';
-import type { DailyLogRow, FocusRow, LearnConceptRow, QuestRow, SessionRow, TaskRow } from '../data/types';
+import type { DailyLogRow, FocusRow, LearnConceptRow, LedgerRow, QuestRow, SessionRow, TaskRow } from '../data/types';
 
-export type RecapSources = { tasks: TaskRow[]; focus: FocusRow[]; sessions: SessionRow[]; quests: QuestRow[]; concepts: LearnConceptRow[]; logs: DailyLogRow[] };
-export type WeeklyRecapData = { from: string; to: string; tasks: number; focusHours: number; longestFocusMinutes: number; workouts: number; sideQuests: number; concepts: number; nights: number };
+export type RecapSources = { tasks: TaskRow[]; focus: FocusRow[]; sessions: SessionRow[]; quests: QuestRow[]; concepts: LearnConceptRow[]; logs: DailyLogRow[]; ledger: LedgerRow[] };
+export type WeeklyRecapData = { from: string; to: string; tasks: number; focusMinutes: number; longestFocusMinutes: number; workouts: number; sideQuests: number; concepts: number; nights: number; chapters: number; realMs: number };
+export type RecapWindow = { from: string; to: string; start: number; end: number };
 
 function localKey(date: Date): string {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 }
 
 /** The latest complete week starts on the previous Monday at 04:00 local time. */
-export function recapWindow(now: number): { from: string; to: string; start: number; end: number } {
+export function recapWindow(now: number): RecapWindow {
   const planningDay = new Date(`${dayKey(now)}T12:00:00`);
   planningDay.setDate(planningDay.getDate() - ((planningDay.getDay() + 6) % 7));
   const currentMonday = localKey(planningDay);
@@ -21,44 +22,87 @@ export function recapWindow(now: number): { from: string; to: string; start: num
   return { from: previousMonday, to: currentMonday, start: new Date(`${previousMonday}T04:00:00`).getTime(), end: new Date(`${currentMonday}T04:00:00`).getTime() };
 }
 
+const live = (row: { deleted: number }) => !row.deleted;
+
+/** Each focus's paid time inside the week, clipped at both edges. */
+function focusSpans(week: RecapWindow, focus: FocusRow[]): number[] {
+  return focus.filter(live).map(row => {
+    const until = row.endedAt ?? week.start;
+    if (until <= week.start || row.startedAt >= week.end) return 0;
+    const running = { ...row, endedAt: undefined };
+    return Math.max(0, focusElapsedMs(running, Math.min(week.end, until)) - focusElapsedMs(running, Math.max(week.start, row.startedAt)));
+  });
+}
+
+/** Train sessions that count (the one session count used everywhere), by when they ended. */
+const countedSessions = (week: RecapWindow, sessions: SessionRow[]) => sessions.filter(row => live(row) && sessionCounts(row) && row.endedAt != null && row.endedAt >= week.start && row.endedAt < week.end);
+
+const SESSION_CAP_MS = 3 * 3_600_000;
+
+/**
+ * Spec 53: REAL THINGS is measured time only: focus (clipped to the week), Train sessions that count with both stamps
+ * (each capped at 3 h) and the minutes sat in Calm. Reading, self-reported acts and anything from phone usage never
+ * count. Every source uses the same week, Monday 04:00 to Monday 04:00: a Calm row's dayKey is that planning day.
+ */
+export function realThingsMs(week: RecapWindow, source: Pick<RecapSources, 'focus' | 'sessions' | 'ledger'>): number {
+  const focus = focusSpans(week, source.focus).reduce((total, ms) => total + ms, 0);
+  const train = countedSessions(week, source.sessions).reduce((total, row) => row.startedAt == null || row.endedAt == null || row.endedAt <= row.startedAt ? total : total + Math.min(SESSION_CAP_MS, row.endedAt - row.startedAt), 0);
+  const calm = source.ledger.filter(row => live(row) && row.mode === 'calm' && row.kind === 'session' && row.dayKey >= week.from && row.dayKey < week.to)
+    .reduce((total, row) => total + Math.max(0, Number(row.inputs.minutes) || 0) * 60_000, 0);
+  return focus + train + calm;
+}
+
 export function buildRecap(now: number, source: RecapSources): WeeklyRecapData {
-  const { from, to, start, end } = recapWindow(now);
+  const week = recapWindow(now);
+  const { from, to, start, end } = week;
   const inside = (at?: number) => at != null && at >= start && at < end;
-  const focusMs = source.focus.filter(row => !row.deleted).reduce((total, row) => {
-    const until = row.endedAt ?? start;
-    if (until <= start || row.startedAt >= end) return total;
-    const running = { ...row, endedAt: undefined };
-    return total + Math.max(0, focusElapsedMs(running, Math.min(end, until)) - focusElapsedMs(running, Math.max(start, row.startedAt)));
-  }, 0);
-  const longestFocusMinutes = Math.floor(source.focus.filter(row => !row.deleted).reduce((longest, row) => {
-    const until = row.endedAt ?? start;
-    if (until <= start || row.startedAt >= end) return longest;
-    const running = { ...row, endedAt: undefined };
-    return Math.max(longest, Math.max(0, focusElapsedMs(running, Math.min(end, until)) - focusElapsedMs(running, Math.max(start, row.startedAt))));
-  }, 0) / 60_000);
+  const spans = focusSpans(week, source.focus);
   return {
     from, to,
-    tasks: source.tasks.filter(row => !row.deleted && inside(row.doneAt)).length,
-    focusHours: Math.round(focusMs / 3_600_000 * 10) / 10,
-    longestFocusMinutes,
-    workouts: source.sessions.filter(row => !row.deleted && sessionCounts(row) && inside(row.endedAt)).length,
-    sideQuests: source.quests.filter(row => !row.deleted && row.status === 'done' && inside(row.updatedAt)).length,
-    concepts: source.concepts.filter(row => !row.deleted && inside(row.firstLearnedAt)).length,
+    tasks: source.tasks.filter(row => live(row) && inside(row.doneAt)).length,
+    focusMinutes: Math.floor(spans.reduce((total, ms) => total + ms, 0) / 60_000),
+    longestFocusMinutes: Math.floor(Math.max(0, ...spans) / 60_000),
+    workouts: countedSessions(week, source.sessions).length,
+    sideQuests: source.quests.filter(row => live(row) && row.status === 'done' && inside(row.updatedAt)).length,
+    concepts: source.concepts.filter(row => live(row) && inside(row.firstLearnedAt)).length,
     nights: nightsBackOnPlan(source.logs.filter(row => row.dayKey >= from && row.dayKey < to)),
+    // One ledger row per finished chapter (saveChapterDone); a re-read writes nothing.
+    chapters: source.ledger.filter(row => live(row) && row.mode === 'read' && row.kind === 'chapter' && row.dayKey >= from && row.dayKey < to).length,
+    realMs: realThingsMs(week, source),
   };
 }
 
-export type RecapCardContent = { dates: string; lines: string[]; highlight: string };
+/** The receipt's subline: "week of 2–8 Nov", with " · so far" while the week is still open. */
+export const receiptWeek = (content: ReceiptContent) => `week of ${content.dates}${content.soFar ? ' · so far' : ''}`;
 
-/** A share card contains only aggregate counts and a focus duration. */
-export function recapCardContent(recap: WeeklyRecapData): RecapCardContent {
-  const candidates: [number, string][] = [
-    [recap.tasks, `${recap.tasks} ${recap.tasks === 1 ? 'task' : 'tasks'} finished`],
-    [recap.workouts, `${recap.workouts} ${recap.workouts === 1 ? 'workout' : 'workouts'}`],
-    [recap.concepts, `${recap.concepts} ${recap.concepts === 1 ? 'idea' : 'ideas'} learned`],
-    [recap.nights, `${recap.nights} ${recap.nights === 1 ? 'night' : 'nights'} back on plan`],
-    [recap.sideQuests, `${recap.sideQuests} side ${recap.sideQuests === 1 ? 'quest' : 'quests'} completed`],
-    [recap.focusHours, `${recap.focusHours} focus hours`],
+/** "4 h 10 m", or "45 m" under an hour. */
+export function receiptDuration(minutes: number): string {
+  const hours = Math.floor(minutes / 60), rest = minutes % 60;
+  return hours ? `${hours} h ${rest} m` : `${rest} m`;
+}
+
+export type ReceiptLine = { label: string; value: string };
+/** Spec 53: the footer slots the crew and Baithak specs fill later; empty until then. */
+export type ReceiptSlots = { crew?: string; baithak?: string };
+/** `soFar`: the week has not closed yet (You's card, or Sunday evening), so the receipt never reads as a closed week. */
+export type ReceiptContent = { dates: string; soFar: boolean; lines: ReceiptLine[]; total?: string; highlight?: string; slots: ReceiptSlots };
+
+export const RECEIPT_MAX_LINES = 6;
+export const RECEIPT_TOTAL_MIN_MS = 30 * 60_000;
+
+/**
+ * The receipt holds only aggregate counts and durations: no task, book or topic title, no app name, no time of day.
+ * Nonzero lines in a fixed order, at most six; the total shows from 30 min, rounded down to 10 min. No filler line.
+ */
+export function receiptContent(recap: WeeklyRecapData, now = Number.POSITIVE_INFINITY): ReceiptContent {
+  const candidates: [number, ReceiptLine][] = [
+    [recap.chapters, { label: 'Chapters read', value: String(recap.chapters) }],
+    [recap.concepts, { label: 'Ideas learned', value: String(recap.concepts) }],
+    [recap.workouts, { label: 'Workouts', value: String(recap.workouts) }],
+    [recap.focusMinutes, { label: 'Focus', value: receiptDuration(recap.focusMinutes) }],
+    [recap.tasks, { label: 'Tasks done', value: String(recap.tasks) }],
+    [recap.nights, { label: 'Nights back on plan', value: String(recap.nights) }],
+    [recap.sideQuests, { label: 'Side quests', value: String(recap.sideQuests) }],
   ];
   const end = new Date(`${recap.to}T12:00:00`);
   end.setDate(end.getDate() - 1);
@@ -67,9 +111,17 @@ export function recapCardContent(recap: WeeklyRecapData): RecapCardContent {
   const dates = from.getMonth() === end.getMonth()
     ? `${from.getDate()}–${end.getDate()} ${month.format(end)}`
     : `${from.getDate()} ${month.format(from)}–${end.getDate()} ${month.format(end)}`;
-  const highlight = recap.longestFocusMinutes > 0 ? `Longest focus: ${recap.longestFocusMinutes} min`
-    : recap.concepts > 0 ? 'Ideas made room to grow'
-      : recap.workouts > 0 ? 'Movement made its way in'
-        : 'Small steps, made real';
-  return { dates, lines: candidates.filter(([count]) => count > 0).slice(0, 4).map(([, line]) => line), highlight };
+  return {
+    dates,
+    soFar: now < new Date(`${recap.to}T04:00:00`).getTime(),
+    lines: candidates.filter(([count]) => count > 0).slice(0, RECEIPT_MAX_LINES).map(([, line]) => line),
+    total: recap.realMs >= RECEIPT_TOTAL_MIN_MS ? receiptDuration(Math.floor(recap.realMs / 600_000) * 10) : undefined,
+    highlight: recap.longestFocusMinutes > 0 ? `Longest focus: ${recap.longestFocusMinutes} min` : undefined,
+    slots: {},
+  };
+}
+
+/** The share text carries the same lines as the image, and nothing else. */
+export function receiptShareLines(content: ReceiptContent): string[] {
+  return [...content.lines.map(line => `${line.label} ${line.value}`), ...(content.total ? [`Real things ${content.total}`] : [])];
 }

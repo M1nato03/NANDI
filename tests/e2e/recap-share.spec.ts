@@ -8,8 +8,8 @@ test('You previews a shareable week with seeded data', async ({ page }) => {
   const week = page.getByRole('region', { name: 'This week in words' });
   await expect(week.getByRole('button', { name: 'Share my week' })).toBeVisible();
   await week.getByRole('button', { name: 'Share my week' }).click();
-  const preview = page.getByRole('dialog', { name: 'Weekly recap preview' });
-  await expect(preview.getByRole('img')).toHaveAttribute('alt', /1 task finished, 1 workout/, { timeout: 20_000 });
+  const preview = page.getByRole('dialog', { name: "Your week's receipt" });
+  await expect(preview.getByRole('img')).toHaveAttribute('alt', /Workouts 1, Tasks done 1/, { timeout: 20_000 });
   await expect(preview.getByRole('button', { name: 'Share' })).toBeEnabled();
   await preview.getByRole('button', { name: 'Not now' }).click();
   await expect(preview).toHaveCount(0);
@@ -20,5 +20,5 @@ test('You opens the weekly preview', async ({ page }) => {
   await page.goto('/#you');
   await seedRecapWeek(page, '2026-10-20');
   await page.getByRole('region', { name: 'This week in words' }).getByRole('button', { name: 'Share my week' }).click();
-  await expect(page.getByRole('dialog', { name: 'Weekly recap preview' }).getByRole('img')).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByRole('dialog', { name: "Your week's receipt" }).getByRole('img')).toBeVisible({ timeout: 20_000 });
 });
