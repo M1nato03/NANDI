@@ -20,7 +20,7 @@ describe('spec 53: the receipt layout', () => {
   for (const [name, week] of Object.entries(weeks)) it(`${name} week: nothing clipped, nothing overlapping, all on the paper`, () => {
     for (const logo of [true, false]) {
       // The open-week subline (" · so far") is the longest one, so the layout is checked with it.
-      const layout = receiptLayout(receiptContent(week, new Date('2026-11-08T18:05:00').getTime()), measure, logo);
+      const layout = receiptLayout(receiptContent(week, new Date('2026-11-05T12:00:00').getTime()), measure, logo);
       expect(layout.paperTop).toBeGreaterThanOrEqual(0);
       expect(layout.paperBottom + 40).toBeLessThanOrEqual(RECAP_HEIGHT);
       const boxes = layout.texts.map(box);

@@ -1554,7 +1554,7 @@ for (const theme of themes) test.describe(theme, () => {
   });
 
   // Spec 53: the week's receipt on Home (Sunday evening), its sheet (and at 200% text), You's card, and the cards at
-  // full size: a full week, a two-line week, a long-number week, and a full week still open ("so far").
+  // full size: a full week, a two-line week, a long-number week, and a full week still open on a Thursday ("so far").
   test('53 receipt', async ({ page }) => {
     await page.addInitScript(() => {
       Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });
@@ -1568,8 +1568,6 @@ for (const theme of themes) test.describe(theme, () => {
     const move = await page.locator('.next-move').boundingBox();
     console.log(`spec 53 shots [${theme}]: next-move card top y=${Math.round(move!.y)}, bottom y=${Math.round(move!.y + move!.height)}; receipt link y=${Math.round((await link.boundingBox())!.y)}`);
     await shot(page, 'p53-01-home-sunday-link', false);
-    await link.scrollIntoViewIfNeeded();
-    await shot(page, 'p53-02-home-sunday-link-scrolled', false);
     await link.click();
     const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
     await expect(sheet.getByRole('img')).toBeVisible({ timeout: 20_000 });
@@ -1588,7 +1586,7 @@ for (const theme of themes) test.describe(theme, () => {
       ['p53-card-1-full-week', full, undefined],
       ['p53-card-2-two-lines', { ...base, tasks: 2, workouts: 1, realMs: 20 * 60_000 }, undefined],
       ['p53-card-3-long-numbers', { ...base, chapters: 14, concepts: 128, workouts: 12, focusMinutes: 750, tasks: 312, nights: 7, longestFocusMinutes: 185, realMs: 9_999 * 60_000 }, undefined],
-      ['p53-card-4-full-week-so-far', full, new Date('2026-11-08T18:05:00').getTime()],
+      ['p53-card-4-full-week-so-far-thursday', full, new Date('2026-11-05T12:00:00').getTime()],
     ];
     for (const [name, data, now] of cards) {
       const image = await page.evaluate(([week, at]) => window.__nandiReceiptTest!.png(week, at), [data, now] as const);

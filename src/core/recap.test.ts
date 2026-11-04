@@ -105,10 +105,12 @@ describe('spec 53: the receipt', () => {
     expect(receiptContent({ ...base, longestFocusMinutes: 52 }).highlight).toBe('Longest focus: 52 min');
     expect(receiptContent({ ...base, concepts: 3 }).highlight).toBeUndefined();
   });
-  it('says "so far" while the week is open, and never on a closed week', () => {
+  it('says "so far" until Sunday 18:00, and never from the Sunday receipt on', () => {
     const week = { ...base, tasks: 2, workouts: 1 };
-    expect(receiptWeek(receiptContent(week, at('2026-11-08T18:05:00')))).toBe('week of 2–8 Nov · so far');
-    expect(receiptWeek(receiptContent(week, at('2026-11-09T03:59:00')))).toBe('week of 2–8 Nov · so far');
+    expect(receiptWeek(receiptContent(week, at('2026-11-05T12:00:00')))).toBe('week of 2–8 Nov · so far');
+    expect(receiptWeek(receiptContent(week, at('2026-11-08T17:59:00')))).toBe('week of 2–8 Nov · so far');
+    expect(receiptWeek(receiptContent(week, at('2026-11-08T18:05:00')))).toBe('week of 2–8 Nov');
+    expect(receiptWeek(receiptContent(week, at('2026-11-09T03:59:00')))).toBe('week of 2–8 Nov');
     expect(receiptWeek(receiptContent(week, at('2026-11-09T04:00:00')))).toBe('week of 2–8 Nov');
     expect(receiptWeek(receiptContent(week))).toBe('week of 2–8 Nov');
   });

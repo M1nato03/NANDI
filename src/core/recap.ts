@@ -84,7 +84,7 @@ export function receiptDuration(minutes: number): string {
 export type ReceiptLine = { label: string; value: string };
 /** Spec 53: the footer slots the crew and Baithak specs fill later; empty until then. */
 export type ReceiptSlots = { crew?: string; baithak?: string };
-/** `soFar`: the week has not closed yet (You's card, or Sunday evening), so the receipt never reads as a closed week. */
+/** `soFar`: before Sunday 18:00 the week is still open (You's card mid-week), so the receipt never reads as a closed week. */
 export type ReceiptContent = { dates: string; soFar: boolean; lines: ReceiptLine[]; total?: string; highlight?: string; slots: ReceiptSlots };
 
 export const RECEIPT_MAX_LINES = 6;
@@ -113,7 +113,8 @@ export function receiptContent(recap: WeeklyRecapData, now = Number.POSITIVE_INF
     : `${from.getDate()} ${month.format(from)}–${end.getDate()} ${month.format(end)}`;
   return {
     dates,
-    soFar: now < new Date(`${recap.to}T04:00:00`).getTime(),
+    // From Sunday 18:00 it is the week's receipt (the Sunday link says so), even if a late act still lands before Monday 04:00.
+    soFar: now < new Date(`${recap.to}T04:00:00`).getTime() - 10 * 3_600_000,
     lines: candidates.filter(([count]) => count > 0).slice(0, RECEIPT_MAX_LINES).map(([, line]) => line),
     total: recap.realMs >= RECEIPT_TOTAL_MIN_MS ? receiptDuration(Math.floor(recap.realMs / 600_000) * 10) : undefined,
     highlight: recap.longestFocusMinutes > 0 ? `Longest focus: ${recap.longestFocusMinutes} min` : undefined,

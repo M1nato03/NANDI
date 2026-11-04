@@ -94,7 +94,7 @@ test('with the real fonts nothing on the receipt is clipped or overlaps: a full,
   ];
   for (const week of weeks) {
     // Checked with the open-week subline too, the longest one.
-    for (const now of [undefined, new Date('2026-11-08T18:05:00').getTime()]) {
+    for (const now of [undefined, new Date('2026-11-05T12:00:00').getTime()]) {
       expect(await page.evaluate(([data, at]) => window.__nandiReceiptTest!.problems(data, at), [week, now] as const)).toEqual([]);
     }
   }
