@@ -198,7 +198,7 @@ test.describe('lands in the thing in 2 s or less on the Low profile (median of 3
         await phone.close();
       }
       testInfo.annotations.push({ type: 'ms', description: `${land.area}: ${times.join(', ')} (median ${median(times)})` });
-      console.log(`spec 52 gate 5: ${land.area} ${times.join(', ')} ms, median ${median(times)}`);
+      console.log(`spec 52 gate 5 [${testInfo.project.name} r${testInfo.repeatEachIndex}]: ${land.area} ${times.join(', ')} ms, median ${median(times)}`);
       expect(median(times)).toBeLessThanOrEqual(2000);
     });
   }
@@ -224,7 +224,7 @@ test.describe('lands in the thing in 2 s or less on the Low profile (median of 3
       await phone.close();
     }
     testInfo.annotations.push({ type: 'ms', description: `pause card: ${times.join(', ')} (median ${median(times)})` });
-    console.log(`spec 52 gate 5: pause card ${times.join(', ')} ms, median ${median(times)}`);
+    console.log(`spec 52 gate 5 [${testInfo.project.name} r${testInfo.repeatEachIndex}]: pause card ${times.join(', ')} ms, median ${median(times)}`);
     expect(median(times)).toBeLessThanOrEqual(2000);
   });
 });
@@ -344,7 +344,7 @@ test.describe('the first win: app time from first paint to the first finish mome
   const finishAt = async (page: Page) => (await page.waitForFunction(() => (window as Window & { firstFinish?: number }).firstFinish, undefined, { timeout: 10_000 })).jsonValue() as Promise<number>;
   const record = (testInfo: TestInfo, pick: string, ms: number | string) => {
     testInfo.annotations.push({ type: 'first-win', description: `${pick}: ${ms}` });
-    console.log(`spec 52 gate 7: ${pick} ${ms}`);
+    console.log(`spec 52 gate 7 [${testInfo.project.name} r${testInfo.repeatEachIndex}]: ${pick} ${ms}`);
   };
   async function start(page: Page, label: string, action: string) {
     await page.clock.setFixedTime(NOON);
