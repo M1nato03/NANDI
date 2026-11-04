@@ -2,6 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { buildRecap } from '../../core/recap';
 import { RecapShare } from './RecapShare';
+import { youWeekNumbers } from '../../core/recap';
 import { go } from '../shell/router';
 import { DeckGlyph } from '../DeckGlyph';
 import { YourSeason } from './EconomyScreens';
@@ -23,14 +24,7 @@ export function You() {
     return { tasks, focus, sessions, quests, concepts, logs, facts };
   }, []);
   const recap = sources ? buildRecap(Date.now() + 7 * 86_400_000, { ...sources, ledger: sources.facts }) : null; // eslint-disable-line react-hooks/purity
-  const weekNumbers = recap ? [
-    { value: recap.tasks, label: 'tasks finished' },
-    { value: recap.workouts, label: 'workouts' },
-    { value: recap.concepts, label: 'ideas learned' },
-    { value: Math.round(recap.focusMinutes / 6) / 10, label: 'focus hours' },
-    { value: recap.nights, label: 'nights back on plan' },
-    { value: recap.sideQuests, label: 'side quests completed' },
-  ].filter(item => item.value > 0).slice(0, 4) : [];
+  const weekNumbers = recap ? youWeekNumbers(recap) : [];
   // Day one shows level, streak and the week; the rest appear once they mean something.
   const show = revealMeters(sources?.facts ?? [], dayKey(Date.now()), { start: '9999-12-31', active: false }, 0); // eslint-disable-line react-hooks/purity
   // Spec 15: season, ladder, shop and quests stay hidden on a soft day (until the person asks for more).

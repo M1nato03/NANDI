@@ -1,6 +1,6 @@
 import 'fake-indexeddb/auto';
 import { describe, expect, it } from 'vitest';
-import { buildRecap, realThingsMs, receiptContent, receiptWeek, recapWindow, type RecapSources, type WeeklyRecapData } from './recap';
+import { buildRecap, realThingsMs, receiptContent, receiptWeek, recapWindow, youWeekNumbers, type RecapSources, type WeeklyRecapData } from './recap';
 import { createDb } from '../data/db';
 import { saveChapterDone } from '../data/repos/books';
 import type { FocusRow, LedgerRow, SessionRow } from '../data/types';
@@ -116,5 +116,13 @@ describe('spec 53: the receipt', () => {
   });
   it('names both months when the week crosses one', () => {
     expect(receiptContent({ ...base, from: '2026-10-26', to: '2026-11-02' }).dates).toBe('26 Oct–1 Nov');
+  });
+});
+
+describe("You's week in words", () => {
+  it('is singular at 1 and plural otherwise', () => {
+    expect(youWeekNumbers({ ...base, tasks: 1, workouts: 1, concepts: 2, focusMinutes: 60 }).map(item => `${item.value} ${item.label}`))
+      .toEqual(['1 task finished', '1 workout', '2 ideas learned', '1 focus hour']);
+    expect(youWeekNumbers({ ...base, tasks: 2, workouts: 3, nights: 1 }).map(item => `${item.value} ${item.label}`)).toEqual(['2 tasks finished', '3 workouts', '1 night back on plan']);
   });
 });

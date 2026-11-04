@@ -126,3 +126,16 @@ export function receiptContent(recap: WeeklyRecapData, now = Number.POSITIVE_INF
 export function receiptShareLines(content: ReceiptContent): string[] {
   return [...content.lines.map(line => `${line.label} ${line.value}`), ...(content.total ? [`Real things ${content.total}`] : [])];
 }
+
+/** You's "This week in words": up to four nonzero numbers, each label singular at 1 ("1 task finished", "1 workout"). */
+export function youWeekNumbers(recap: WeeklyRecapData): { value: number; label: string }[] {
+  const hours = Math.round(recap.focusMinutes / 6) / 10;
+  return [
+    { value: recap.tasks, label: recap.tasks === 1 ? 'task finished' : 'tasks finished' },
+    { value: recap.workouts, label: recap.workouts === 1 ? 'workout' : 'workouts' },
+    { value: recap.concepts, label: recap.concepts === 1 ? 'idea learned' : 'ideas learned' },
+    { value: hours, label: hours === 1 ? 'focus hour' : 'focus hours' },
+    { value: recap.nights, label: recap.nights === 1 ? 'night back on plan' : 'nights back on plan' },
+    { value: recap.sideQuests, label: recap.sideQuests === 1 ? 'side quest completed' : 'side quests completed' },
+  ].filter(item => item.value > 0).slice(0, 4);
+}
