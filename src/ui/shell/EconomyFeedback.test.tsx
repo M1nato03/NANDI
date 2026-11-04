@@ -37,7 +37,7 @@ beforeEach(async () => {
   vi.useFakeTimers({ toFake: ['Date'] });
   Object.defineProperty(window, 'matchMedia', { configurable: true, value: () => ({ matches: false, addEventListener() {}, removeEventListener() {} }) });
   delete document.documentElement.dataset.motion;
-  await Promise.all([db.ledger.clear(), db.settings.clear()]);
+  await Promise.all([db.ledger.clear(), db.settings.clear(), db.learnDrops.clear()]);
   try { sessionStorage.clear(); localStorage.clear(); } catch { /* ignore */ }
 });
 afterEach(() => { cleanup(); vi.useRealTimers(); });
@@ -54,6 +54,49 @@ describe('economy feedback', () => {
     const seen = await finishTask('2026-10-22T12:00:00', true);
     expect(seen.some(row => row.className.includes('finish-moment') && row.text.includes('A new badge tier'))).toBe(true);
   });
+  it('spec 52: a first idea landing with its badge tiers, quest and drop fact (6 rows at once) still shows its finish', async () => {
+    vi.setSystemTime(new Date('2026-11-04T12:00:00'));
+    const now = Date.now(), day = dayKey(now);
+    const drop = (cursor: number) => ({ id: `drop:daily:${day}`, drop: { items: [{}, {}], cursor }, updatedAt: Date.now(), deleted: 0 as const, deviceId: 'test' }) as never;
+    await db.learnDrops.put(drop(1));
+    const seen: string[] = [];
+    const observer = new MutationObserver(() => document.querySelectorAll('.finish-moment').forEach(node => seen.push(node.textContent ?? '')));
+    observer.observe(document.body, { subtree: true, childList: true });
+    render(<EconomyFeedback />);
+    await waitFor(() => expect(mock.reconcileGamify).toHaveBeenCalled());
+    await settle();
+    const fact = (mode: string, kind: string, refId: string) => ({ id: `${kind}:${refId}`, mode, kind, refId, dayKey: day, inputs: {}, updatedAt: now, deleted: 0 as const, deviceId: 'test' });
+    // What the gate saw in 2 of 32 runs: the idea's own two facts and reconcile's four, in one live-query update.
+    await act(async () => { await db.transaction('rw', db.ledger, db.learnDrops, async () => {
+      await db.learnDrops.put(drop(2));
+      await db.ledger.bulkAdd([fact('learn', 'learn-lesson', 'l1'), fact('read', 'idea', 'i1'), fact('gamify', 'badge-tier', 'first:1'), fact('gamify', 'badge-tier', 'reader:1'), fact('gamify', 'daily-quest', `${day}:learn`), fact('gamify', 'learn-drop', day)]);
+    }); });
+    await settle();
+    observer.disconnect();
+    expect(seen.some(text => text.includes('A new badge tier'))).toBe(true);
+  });
+
+  it('spec 52: a restore stays quiet: old facts in bulk, reconcile rows alone, or a few old facts with fresh reconcile rows', async () => {
+    vi.setSystemTime(new Date('2026-11-04T12:00:00'));
+    const now = Date.now(), day = dayKey(now);
+    render(<EconomyFeedback />);
+    await waitFor(() => expect(mock.reconcileGamify).toHaveBeenCalled());
+    await settle();
+    // Restored facts keep their own (older) times; six fresh reconcile rows with no fact of the person's are not a finish.
+    await act(async () => { await db.ledger.bulkAdd(Array.from({ length: 8 }, (_, index) => ({ id: `done:${index}`, mode: 'tasks', kind: 'done', refId: String(index), dayKey: day, inputs: { plannedSize: 'M', wasPlanned: true, postpones: 0 }, updatedAt: now - 86_400_000, deleted: 0 as const, deviceId: 'test' }))); });
+    await settle();
+    await act(async () => { await db.ledger.bulkAdd(Array.from({ length: 6 }, (_, index) => ({ id: `badge-tier:b${index}:1`, mode: 'gamify', kind: 'badge-tier', refId: `b${index}:1`, dayKey: day, inputs: {}, updatedAt: now, deleted: 0 as const, deviceId: 'test' }))); });
+    await settle();
+    // A small restore: 3 of the person's facts (importInto keeps their own times) and 4 fresh reconcile rows, one update.
+    await act(async () => { await db.ledger.bulkAdd([
+      ...[1, 2, 3].map(index => ({ id: `done:small${index}`, mode: 'tasks', kind: 'done', refId: `small${index}`, dayKey: '2026-11-01', inputs: { plannedSize: 'M', wasPlanned: true, postpones: 0 }, updatedAt: now - 3 * 86_400_000, deleted: 0 as const, deviceId: 'old-phone' })),
+      ...['badge-tier', 'daily-quest', 'learn-drop', 'welcome-back'].map(kind => ({ id: `${kind}:small`, mode: 'gamify', kind, refId: 'small', dayKey: day, inputs: {}, updatedAt: now, deleted: 0 as const, deviceId: 'test' })),
+    ]); });
+    await settle();
+    expect(document.querySelector('.finish-moment')).toBeNull();
+    expect(mock.tapHaptic).not.toHaveBeenCalled();
+  });
+
   it('F1: after bedtime a finished task gets no buzz and no +XP overlay', async () => {
     const seen = await finishTask('2026-11-04T02:00:00');
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 300)); });

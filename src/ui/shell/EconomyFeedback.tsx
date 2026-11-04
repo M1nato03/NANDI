@@ -13,6 +13,7 @@ import type { LedgerRow, SettingRow, TaskRow, LearnDropRow, SessionRow, PuzzleRu
 import { dailyDropId } from '../learn/dropIds';
 import { reconcileGamify, recordShown } from '../../data/repos/gamify';
 import { todayDotStatus } from './TodayDots';
+import { RECONCILE_KINDS } from '../../core/reconcileKinds';
 import { finishEvent, pickFinishLine, shouldShowDoneForToday, type FinishActivity } from './finish';
 import { DoneForToday, FinishMoment } from './FinishMoment';
 import { PauseOffer } from '../pause/PauseOffer';
@@ -86,8 +87,12 @@ export function EconomyFeedback() {
     }
     const oldIds = new Set(previous.facts.map(row => row.id));
     const added = source.facts.filter(row => !oldIds.has(row.id));
-    // Bulk restore and historical imports are data operations, not a new check-off.
-    if (added.length > 5 || added.some(row => Math.abs(Date.now() - row.updatedAt) > 5_000)) return;
+    // Bulk restore and historical imports are data operations, not a new check-off (a restore keeps each fact's own
+    // older time). Reconcile's rows (badge tiers, quests, the drop fact) that land with a fresh fact of the person's are
+    // its consequences, so only the person's facts count toward the limit (spec 52: a first idea plus its badges and
+    // quest made 6 rows and lost its finish); more than five reconcile rows alone stay quiet, as before.
+    const own = added.filter(row => !RECONCILE_KINDS.has(row.kind));
+    if (own.length > 5 || (!own.length && added.length > 5) || added.some(row => Math.abs(Date.now() - row.updatedAt) > 5_000)) return;
     const isBadge = (row: LedgerRow) => row.kind === 'badge-tier' || row.kind === 'monthly-challenge';
     const badge = added.find(isBadge);
     // A badge that lands in the same update as the finish that earned it must not swallow that finish (spec 52: the
