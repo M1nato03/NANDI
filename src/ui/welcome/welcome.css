@@ -1,6 +1,6 @@
 .welcome { position: fixed; inset: 0; z-index: 38; overflow-y: auto; background: var(--bg); color: var(--ink); display: grid; place-items: center; padding: 24px 16px; }
 .welcome-inner { width: min(100%, 420px); display: grid; justify-items: center; gap: 12px; text-align: center; }
-.welcome-inner h1 { margin: 4px 0 0; font-size: 1.6rem; }
+.welcome-inner h1 { margin: 4px 0 0; font-size: 1.6rem; line-height: 1.1; }
 .welcome-inner p { margin: 0; }
 .welcome-inner > button:not(.text-button) { width: 100%; margin-top: 8px; }
 .welcome-steps { display: flex; gap: 6px; }
