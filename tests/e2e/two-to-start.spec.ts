@@ -86,6 +86,23 @@ test.describe('Welcome: pick two to start', () => {
     expect(await settingsOf(page, ['profile.goals', 'profile.size'])).toEqual({ 'profile.goals': ['mind', 'learn', 'train', 'plan'], 'profile.size': 'more' });
   });
 
+  test('the rows hold still under the finger: the first pick, the second and a refused third move nothing', async ({ page }) => {
+    await page.clock.setFixedTime(NOON);
+    await page.goto('/?e2e&welcome');
+    const welcome = await hello(page);
+    const area = (name: string) => welcome.getByRole('button', { name, exact: true });
+    const top = async () => (await area('Sleep earlier').boundingBox())!.y;
+    const before = await top();
+    await area('Learn something').click();
+    await expect(welcome.getByRole('button', { name: 'Continue' })).toBeVisible();
+    expect(await top()).toBe(before);
+    await area('Get fit').click();
+    expect(await top()).toBe(before);
+    await area('Sharpen my mind').click();
+    await expect(welcome.getByRole('status')).toHaveText('Two to start. You can add more later.');
+    expect(await top()).toBe(before);
+  });
+
   test('Everything picks all five and goes on; with nothing tapped first, the first win is the first chapter', async ({ page }) => {
     await page.clock.setFixedTime(NOON);
     await page.goto('/?e2e&welcome');

@@ -1482,19 +1482,28 @@ for (const theme of themes) test.describe(theme, () => {
     const welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
     await welcome.getByLabel("I'm 18 or older.").check();
     await welcome.getByRole('button', { name: "Let's start" }).click();
+    // Reduced motion gives every property a 0.01 ms transition (theme.css), so a shot taken in the click's own frame can
+    // catch a step dash still on its old colour: wait two frames before each Welcome shot.
+    const settled = () => page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await settled();
     await shot(page, 'p52-02-welcome-0-picks', false);
     await welcome.getByRole('button', { name: 'Learn something', exact: true }).click();
+    await settled();
     await shot(page, 'p52-03-welcome-1-pick', false);
     await welcome.getByRole('button', { name: 'Sharpen my mind', exact: true }).click();
     await welcome.getByRole('button', { name: 'Get fit', exact: true }).click();
+    await settled();
     await shot(page, 'p52-04-welcome-2-picks-third-refused', false);
     await welcome.getByRole('button', { name: '3-4 things' }).click();
     await welcome.getByRole('button', { name: 'Get fit', exact: true }).click();
     await welcome.getByRole('button', { name: 'Get things done', exact: true }).click();
+    await settled();
     await shot(page, 'p52-05-welcome-3-4-things', false);
     await textAt200(page);
+    await settled();
     await shot(page, 'p52-06-welcome-200pct', false);
     await page.getByRole('button', { name: 'Continue' }).scrollIntoViewIfNeeded();
+    await settled();
     await shot(page, 'p52-06b-welcome-200pct-end', false);
     // Home for learn+mind, train+plan, sleep alone.
     await page.goto('/?e2e#plan');

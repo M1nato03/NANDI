@@ -3,6 +3,7 @@
 .welcome-inner h1 { margin: 4px 0 0; font-size: 1.6rem; line-height: 1.1; }
 .welcome-inner p { margin: 0; }
 .welcome-inner > button:not(.text-button) { width: 100%; margin-top: 8px; }
+.welcome-inner > button.welcome-reserve { visibility: hidden; }
 .welcome-steps { display: flex; gap: 6px; }
 .welcome-steps span { width: 28px; height: 4px; border-radius: 2px; background: var(--line); }
 .welcome-steps span.on { background: var(--accent); }
@@ -18,7 +19,7 @@
 .welcome-time input { width: 100%; box-sizing: border-box; font-size: 1.4rem; text-align: center; min-height: 52px; }
 /* Spec 52: the shared picker (Welcome and You). The size line is quiet: plain text with inline text buttons. */
 .goal-picker { display: grid; width: 100%; gap: 6px; }
-.goal-refused { min-height: 1.4em; color: var(--muted); font-size: .9375rem; }
+.goal-refused { min-height: 1.4em; line-height: 1.4; color: var(--muted); font-size: .9375rem; }
 .goal-size { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 2px; color: var(--muted); font-size: .9375rem; }
 .goal-size .text-button { min-height: 44px; padding: 0 6px; font-size: inherit; }
 .goal-sep { padding: 0 4px; }
