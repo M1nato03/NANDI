@@ -75,10 +75,10 @@ export function buildRecap(now: number, source: RecapSources): WeeklyRecapData {
 /** The receipt's subline: "week of 2–8 Nov", with " · so far" while the week is still open. */
 export const receiptWeek = (content: ReceiptContent) => `week of ${content.dates}${content.soFar ? ' · so far' : ''}`;
 
-/** "4 h 10 m", or "45 m" under an hour. */
+/** "4 h 10 m", "1 h", or "45 m" under an hour; no zero parts. */
 export function receiptDuration(minutes: number): string {
   const hours = Math.floor(minutes / 60), rest = minutes % 60;
-  return hours ? `${hours} h ${rest} m` : `${rest} m`;
+  return hours && rest ? `${hours} h ${rest} m` : hours ? `${hours} h` : `${rest} m`;
 }
 
 export type ReceiptLine = { label: string; value: string };

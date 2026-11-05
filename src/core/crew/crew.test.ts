@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { cleanText, decodeCrewLink, encodeCrewLink, LINK_KEYS, type AddLink, type JoinLink, type JoinedLink } from './links';
-import { addLink, addText, applyLink, asOfLine, crewDuration, crewFilled, crewTotal, joinCrew, makeCrew, myCrewMinutes, plausibleMax, unsent } from './crew';
+import { addLink, addText, applyLink, asOfLine, crewFilled, crewTotal, joinCrew, makeCrew, myCrewMinutes, plausibleMax, unsent } from './crew';
 import type { JarEntry } from '../yatra/jar';
 
 const at = (text: string) => new Date(text).getTime();
@@ -100,9 +100,8 @@ describe('spec 55: what this phone sends', () => {
   });
 });
 
-describe('spec 55: one duration format in the crew', () => {
-  it('drops zero parts: "4 h", "4 h 10 m", "45 m", and never "4 h 0 m"', () => {
-    expect([crewDuration(240), crewDuration(250), crewDuration(45), crewDuration(0)]).toEqual(['4 h', '4 h 10 m', '45 m', '0 m']);
+describe('spec 55: the crew\'s texts use the jar\'s duration format', () => {
+  it('reads "4 h", never "4 h 0 m" or "min"', () => {
     const text = addText({ ...crew0, me: { ...crew0.me, first: 'Dev' } }, 240, 240, 'https://x/#crew/add/a');
     expect(text).toBe('Dev added 4 h to Sunday chai at the hill point · 4 h of 15 h · https://x/#crew/add/a');
     expect(text).not.toMatch(/ 0 m|\bmin\b/);

@@ -3,9 +3,9 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time/dayKey';
 import { WEB_APP } from '../../core/puzzles/challenge';
-import { addLink, addText, asOfLine, crewDuration, crewFilled, crewTotal, inviteText, joinedText, makeCrew, myCrewMinutes, todaysAdds, unsent, CREW_KEY, readCrew, type Crew } from '../../core/crew/crew';
+import { addLink, addText, asOfLine, crewFilled, crewTotal, inviteText, joinedText, makeCrew, myCrewMinutes, todaysAdds, unsent, CREW_KEY, readCrew, type Crew } from '../../core/crew/crew';
 import { cleanText, CREW_MAX, CREW_SIZES, decodeCrewLink, encodeCrewLink, NAME_MAX, PLAN_MAX, type CrewSize, type JoinLink } from '../../core/crew/links';
-import { deriveJar, jarActs, JAR_FROM_KEY, JAR_KINDS, type JarEntry } from '../../core/yatra/jar';
+import { deriveJar, jarActs, jarDuration, JAR_FROM_KEY, JAR_KINDS, type JarEntry } from '../../core/yatra/jar';
 import { acceptJoin, crewId, receiveCrewLink, saveCrew } from '../../data/repos/crew';
 import { inBrowser } from '../../platform/links';
 import { saveFileNow, shareFileNow, shareTextNow, shareNote } from '../shareActions';
@@ -59,9 +59,9 @@ export function CrewBar() {
   return <section className="crew-bar" aria-label={`${crew.plan} crew`}>
     <button type="button" className="crew-bar-go" onClick={() => go('yatra/crew')}>
       <Dots crew={crew} />
-      <span><strong>{crewDuration(Math.min(total, crew.size * 60))} of {crew.size} h</strong> · next camp: {crew.plan}</span>
+      <span><strong>{jarDuration(Math.min(total, crew.size * 60))} of {crew.size} h</strong> · next camp: {crew.plan}</span>
     </button>
-    {offer && <p className="crew-send">{send.onlyToday ? `Send today's ${crewDuration(send.minutes)}` : `Send your ${crewDuration(send.minutes)}`} to the {crew.plan} crew?
+    {offer && <p className="crew-send">{send.onlyToday ? `Send today's ${jarDuration(send.minutes)}` : `Send your ${jarDuration(send.minutes)}`} to the {crew.plan} crew?
       <span className="crew-send-actions">
         <button type="button" className="text-button" onClick={() => void sendAdd(crew, entries, today).then(setMessage)}>Send</button>
         <button type="button" className="text-button" onClick={() => void saveCrew(db, { ...crew, me: { ...crew.me, skipDay: today } }, Date.now())}>Not today</button>
@@ -99,7 +99,7 @@ export function CrewScreen() {
     <p className="eyebrow">Your crew</p>
     <h1>{crew.plan}</h1>
     <div className="crew-meter" role="progressbar" aria-label="Crew jar" aria-valuemin={0} aria-valuemax={crew.size * 60} aria-valuenow={Math.min(total, crew.size * 60)}><i style={{ width: `${Math.min(100, total / (crew.size * 60) * 100)}%` }} /></div>
-    <p><strong>{crewDuration(Math.min(total, crew.size * 60))} of {crew.size} h</strong></p>
+    <p><strong>{jarDuration(Math.min(total, crew.size * 60))} of {crew.size} h</strong></p>
     {asOf && <p className="small">{asOf}</p>}
     <p><Dots crew={crew} /> {crew.members.length + 1} walking</p>
     {filled && <div className="card crew-filled"><h2>The crew filled {crew.size} h: {crew.plan}</h2><div className="crew-filled-actions"><button type="button" className="secondary" onClick={() => setSharing(true)}>Share</button><button type="button" onClick={() => void leave(crew)}>Plan the next one</button></div></div>}

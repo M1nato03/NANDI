@@ -100,6 +100,8 @@ describe('spec 53: the receipt', () => {
     expect(receiptContent({ ...base, realMs: 29 * 60_000 }).total).toBeUndefined();
     expect(receiptContent({ ...base, realMs: 30 * 60_000 }).total).toBe('30 m');
     expect(receiptContent({ ...base, realMs: (6 * 60 + 49) * 60_000 }).total).toBe('6 h 40 m');
+    // Exact hours read "1 h", never "1 h 0 m" (the receipt, and Home's real-things line).
+    expect(receiptContent({ ...base, realMs: 65 * 60_000 }).total).toBe('1 h');
   });
   it('moves the longest focus under the total and drops the filler', () => {
     expect(receiptContent({ ...base, longestFocusMinutes: 52 }).highlight).toBe('Longest focus: 52 min');

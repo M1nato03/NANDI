@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deriveJar, jarActs, jarDay, jarFinishLine } from './jar';
+import { deriveJar, jarActs, jarDay, jarDuration, jarFinishLine } from './jar';
 import { deriveTrek, STRETCHES_PER_LEG } from './trek';
 import { deriveEconomy } from '../economy/deriveEconomy';
 import { lightsOutNightKey } from '../time/dayKey';
@@ -137,5 +137,11 @@ describe('spec 54: pause reasons stay private and move nothing', () => {
     expect(jarActs(withReasons, [])).toEqual(jarActs(base, []));
     const trek = (facts: LedgerRow[]) => deriveTrek(facts, trail, day, day, {}, { from: day, focus: [] });
     expect(JSON.stringify(trek(withReasons))).toBe(JSON.stringify(trek(base)));
+  });
+});
+
+describe('the jar\'s duration text (spec 55 review)', () => {
+  it('drops zero parts: exact hours read "2 h", never "2 h 0 m"', () => {
+    expect([240, 250, 45, 0, 120, 300].map(jarDuration)).toEqual(['4 h', '4 h 10 m', '45 m', '0 m', '2 h', '5 h']);
   });
 });
