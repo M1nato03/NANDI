@@ -76,20 +76,20 @@ test('two phones: make, invite, join, joined back, add, the same add twice, an i
   await dev.goto('/?e2e#yatra');
   await dev.getByRole('button', { name: 'Send' }).click();
   const add = await lastSent(dev);
-  expect(add).toMatch(/^Dev added 240 min to Sunday chai at the hill point · 4 h 0 m of 5 h · https:\/\/\S+#crew\/add\//);
+  expect(add).toMatch(/^Dev added 4 h to Sunday chai at the hill point · 4 h of 5 h · https:\/\/\S+#crew\/add\//);
 
   await riya.clock.setFixedTime(LATER);
   await paste(riya, add);
-  await expect(riya.getByText('4 h 0 m of 5 h')).toBeVisible();
+  await expect(riya.getByText('4 h of 5 h')).toBeVisible();
   // The same link again changes nothing.
   await paste(riya, add);
-  await expect(riya.getByText('4 h 0 m of 5 h')).toBeVisible();
+  await expect(riya.getByText('4 h of 5 h')).toBeVisible();
   // An edited link with an impossible total is ignored quietly: no crash, no message about anyone.
   const payload = linkIn(add).split('/').at(-1)!;
   const edited = JSON.parse(Buffer.from(payload.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8')) as Record<string, unknown>;
   const forged = Buffer.from(JSON.stringify({ ...edited, u: 9000 })).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   await paste(riya, `https://nandi.nandi11.workers.dev/#crew/add/${forged}`);
-  await expect(riya.getByText('4 h 0 m of 5 h')).toBeVisible();
+  await expect(riya.getByText('4 h of 5 h')).toBeVisible();
   await expect(riya.locator('main')).not.toContainText(/cheat|fake|invalid|wrong/i);
 
   // Riya walks her own hour; the crew fills on her phone, then on Dev's once her add arrives.

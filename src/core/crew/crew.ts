@@ -113,6 +113,11 @@ export function joinedText(crew: Crew, url: string): string {
   return `${crew.me.first} joined the ${crew.plan} crew on NANDI. ${url}`;
 }
 export function addText(crew: Crew, minutes: number, total: number, url: string): string {
-  const hours = Math.floor(total / 60), rest = total % 60;
-  return `${crew.me.first} added ${minutes} min to ${crew.plan} · ${hours ? `${hours} h ${rest} m` : `${rest} m`} of ${crew.size} h · ${url}`;
+  return `${crew.me.first} added ${crewDuration(minutes)} to ${crew.plan} · ${crewDuration(total)} of ${crew.size} h · ${url}`;
+}
+
+/** The crew's one duration format, everywhere (bar, Send line, chat texts): "4 h", "4 h 10 m", "45 m"; no zero parts. */
+export function crewDuration(minutes: number): string {
+  const hours = Math.floor(minutes / 60), rest = minutes % 60;
+  return hours && rest ? `${hours} h ${rest} m` : hours ? `${hours} h` : `${rest} m`;
 }

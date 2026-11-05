@@ -1782,7 +1782,7 @@ for (const theme of themes) test.describe(theme, () => {
 
     await riya.clock.setFixedTime(later);
     await paste(riya, add);
-    await expect(riya.getByText('4 h 0 m of 5 h')).toBeVisible();
+    await expect(riya.getByText('4 h of 5 h')).toBeVisible();
     await snap(riya, 'p55-03-crew-screen');
     await seed(riya, ['2026-11-05'], 6);
     await riya.goto('/?e2e#yatra/crew');
