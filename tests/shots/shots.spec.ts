@@ -1635,19 +1635,21 @@ for (const theme of themes) test.describe(theme, () => {
     await page.getByRole('dialog', { name: 'A plan for a camp ahead' }).getByRole('button', { name: 'Save' }).click();
     await page.getByRole('region', { name: 'Your plan on the trail' }).scrollIntoViewIfNeeded();
     await shot(page, 'p54-05-home-with-plan', false);
-    await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
-    await walkIdea(page, 'how-things-work');
-    await expect(page.locator('.finish-jar')).toBeVisible({ timeout: 8000 });
-    await shot(page, 'p54-06-finish-line-plus-5', false);
-    // The cap: six sessions today, then an idea.
+    // The cap: six sessions today, then the day's first idea (only the day's first idea ends in a finish moment).
     await page.goto('/?e2e#yatra');
-    await seed([], [2, 3, 4, 5, 6, 7].map(session));
-    // The chapter's next idea, read past the cap.
+    await seed([], [2, 3, 4, 5, 6].map(session));
     await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
     await page.reload();
     await walkIdea(page, 'how-things-work');
     await expect.poll(() => page.evaluate(() => (window as Window & { jarLines?: string[] }).jarLines ?? [])).toContain('Trail done for today.');
     await shot(page, 'p54-07-finish-line-cap', false);
+    // +5 on the next day's first idea.
+    await page.clock.setFixedTime(new Date('2026-11-06T12:00:00'));
+    await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+    await page.reload();
+    await walkIdea(page, 'how-things-work');
+    await expect.poll(() => page.evaluate(() => (window as Window & { jarLines?: string[] }).jarLines ?? [])).toContain('+5 min into the jar · idea read');
+    await shot(page, 'p54-06-finish-line-plus-5', false);
     // The payout card.
     await page.goto('/?e2e#yatra');
     await seed([['yatra.plan', { line: 'movie night with Dev', camp: 1, setAt: noon.getTime() - 86_400_000, needMinutes: 30 }]]);
@@ -1671,12 +1673,17 @@ for (const theme of themes) test.describe(theme, () => {
     await card.getByRole('button', { name: 'Open Instagram anyway' }).click();
     await card.getByRole('group', { name: /^Why\?/ }).getByRole('button', { name: 'Quick check' }).click();
     await shot(page, 'p54-10-pause-taps', false);
-    await textAt200(page);
-    await shot(page, 'p54-11-pause-taps-200pct', false);
     await card.getByRole('button', { name: 'Open for 10 min' }).click();
+    await expect(card).toHaveCount(0);
     await page.goto('/?e2e#you');
     await page.reload();
+    await expect(page.locator('.you-reasons')).toBeVisible();
     await page.locator('.you-reasons').scrollIntoViewIfNeeded();
     await shot(page, 'p54-12-you-reasons', false);
+    // The two taps again at 200% text (nothing opened this time).
+    await page.evaluate(() => { sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'open' })); window.dispatchEvent(new Event('nandi:night-pause')); });
+    await card.getByRole('button', { name: 'Open Instagram anyway' }).click();
+    await textAt200(page);
+    await shot(page, 'p54-11-pause-taps-200pct', false);
   });
 });

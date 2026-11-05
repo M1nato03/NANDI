@@ -43,11 +43,12 @@ const complete = (source: Source, now: number) => { const status = todayDotStatu
  * finish on screen also takes the line when that row arrives a moment later. Only from jarFrom; never phone use.
  */
 const JAR_LINE_MS = 10_000;
-function jarLine(source: Source, today: string, now: number): string | undefined {
+function jarLine(source: Source, today: string, now: number, added: readonly LedgerRow[]): string | undefined {
   const from = source.settings.find(row => row.key === JAR_FROM_KEY && !row.deleted)?.value;
   if (typeof from !== 'string') return undefined;
   const entries = deriveJar(jarActs(source.facts.filter(row => row.dayKey === today), source.focus), from, today);
-  const entry = entries.filter(row => row.kind !== 'focus' && row.at >= now - JAR_LINE_MS && row.at <= now + JAR_LINE_MS).at(-1);
+  // The act that just landed when it is in this update; else the newest counted act from the last few seconds.
+  const entry = entries.find(row => added.some(fact => fact.id === row.id)) ?? entries.filter(row => row.kind !== 'focus' && row.at >= now - JAR_LINE_MS && row.at <= now + JAR_LINE_MS).at(-1);
   return jarFinishLine(entry, jarDay(entries, today).capped) ?? undefined;
 }
 
@@ -111,9 +112,7 @@ export function EconomyFeedback() {
     const isBadge = (row: LedgerRow) => row.kind === 'badge-tier' || row.kind === 'monthly-challenge';
     // Spec 54: a finish already on screen takes its jar line when the act's own row lands just after it.
     if (noticeRef.current && !noticeRef.current.macro && noticeRef.current.activity && !noticeRef.current.jar) {
-      const late = jarLine(source, dayKey(Date.now()), Date.now());
-      // A live-query change is the external update here, as for the badge line below.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+      const late = jarLine(source, dayKey(Date.now()), Date.now(), added);
       if (late) setNotice(current => current && !current.macro && !current.jar ? { ...current, jar: late } : current);
     }
     const badge = added.find(isBadge);
@@ -177,7 +176,7 @@ export function EconomyFeedback() {
     store.set(sessionStorage, 'finish.lastLine', line);
     setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Nandi' : undefined,
       // Spec 45c: a real level rise opens the level page in place of the reveal; a tier change keeps the reveal.
-      level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp, jar: macro ? undefined : jarLine(source, today, now) }));
+      level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp, jar: macro ? undefined : jarLine(source, today, now, added) }));
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;

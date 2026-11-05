@@ -51,3 +51,8 @@
 .pause-offer { display: grid; gap: 12px; }
 .pause-offer-line { margin: 0; font-weight: 700; font-size: 1.0625rem; }
 .pause-offer-actions { display: grid; gap: 4px; }
+
+/* Spec 54: "Open anyway" asks how long and why; the chosen chip reads as chosen, and chips sit in rows, not a column. */
+.pause-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.pause-chips > button { flex: 1 1 auto; min-height: 44px; }
+.pause-chips > button[aria-pressed='true'] { background: var(--button, var(--accent)); color: var(--button-ink, #1b140c); border-color: var(--button, var(--accent)); }
