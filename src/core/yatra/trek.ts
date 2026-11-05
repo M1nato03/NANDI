@@ -1,7 +1,7 @@
-import type { LedgerRow } from '../../data/types';
-import { sessionCounts } from '../train/counts';
+import type { FocusRow, LedgerRow } from '../../data/types';
 import type { Trail } from './trail';
 import { dayKey } from '../time/dayKey';
+import { deriveJar, JAR, JAR_KINDS, jarActs, sessionKind, type JarEntry, type JarKind, type SessionKind } from './jar';
 
 /**
  * Spec 34: the trek and the sky, derived from the ledger like the courtyard (nothing new is stored but the start day
@@ -9,25 +9,22 @@ import { dayKey } from '../time/dayKey';
  * session: it moves the group one stretch and lights one star. Three stretches reach the next place; reaching a place
  * ends that day's walk (later sessions that day still light stars over that camp). The trek never goes backwards,
  * and a day with no session is a camp day, never a gap.
+ *
+ * Spec 54: from the jar's first day (jarFrom) the trail walks in jar minutes instead (10 a stretch, at most 60 a day,
+ * see jar.ts); the days before keep the walk they had, so no install moves back and none leaps ahead on the update day.
  */
-export type SessionKind = 'train' | 'mind' | 'calm';
+export type { SessionKind } from './jar';
+export { sessionKind } from './jar';
 export const STRETCHES_PER_LEG = 3;
 export const STAR_COLOURS: Record<SessionKind, string> = { train: '#FF6A1A', mind: '#55c1ba', calm: '#f6dc9a' };
 
-export function sessionKind(fact: LedgerRow): SessionKind | null {
-  if (fact.deleted) return null;
-  if (fact.mode === 'train' && fact.kind === 'session') return sessionCounts(fact.inputs ?? {}) ? 'train' : null;
-  if (fact.mode === 'mind' && (fact.kind === 'board' || fact.kind === 'mystery')) return 'mind';
-  if (fact.mode === 'calm' && fact.kind === 'session') return 'calm';
-  return null;
-}
-/** Ledger kinds worth reading for Yatra (indexed query). */
-export const YATRA_KINDS = ['session', 'board', 'mystery'];
+/** Ledger kinds worth reading for Yatra (indexed query): the sessions, and from spec 54 everything the jar reads. */
+export const YATRA_KINDS = JAR_KINDS;
 
 export interface Star { id: string; kind: SessionKind; dayKey: string; leg: number; stretch: boolean }
 export interface LegState {
   index: number;
-  stretches: { kind: SessionKind; dayKey: string }[];
+  stretches: { kind: JarKind; dayKey: string }[];
   doneOn?: string;
   /** The first Mind session that walked this leg opened its landmark gate (item 192 h). */
   gateOn?: string;
@@ -44,6 +41,8 @@ export interface Trek {
   stars: Star[];
   constellations: Constellation[];
   today: { stars: Star[]; campDay: boolean; atPlace: boolean };
+  /** Spec 54: what each act put in the jar from jarFrom (after the cap), and today's minutes. */
+  jar: { from?: string; entries: JarEntry[]; todayMinutes: number; capped: boolean; carry: number };
 }
 
 const addDays = (day: string, days: number) => { const date = new Date(`${day}T12:00:00`); date.setDate(date.getDate() + days); return dayKey(date); };
@@ -51,10 +50,11 @@ const daysBetween = (from: string, to: string) => Math.round((new Date(`${to}T12
 const WEEK = 7;
 const ordinal = ['', ' II', ' III', ' IV', ' V', ' VI'];
 
-export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: string, today: string, names: Readonly<Record<string, string>> = {}): Trek {
+export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: string, today: string, names: Readonly<Record<string, string>> = {}, jar?: { from: string; focus: readonly FocusRow[] }): Trek {
+  // Before jarFrom (or without a jar): one stretch per session, one place a day.
   const sessions = facts
     .map(fact => ({ fact, kind: sessionKind(fact) }))
-    .filter((row): row is { fact: LedgerRow; kind: SessionKind } => row.kind !== null && row.fact.dayKey >= startDay && row.fact.dayKey <= today)
+    .filter((row): row is { fact: LedgerRow; kind: SessionKind } => row.kind !== null && row.fact.dayKey >= startDay && row.fact.dayKey <= today && (!jar || row.fact.dayKey < jar.from))
     .sort((a, b) => a.fact.dayKey.localeCompare(b.fact.dayKey) || a.fact.updatedAt - b.fact.updatedAt || a.fact.id.localeCompare(b.fact.id));
   const legs: LegState[] = trail.legs.map((_, index) => ({ index, stretches: [] }));
   const stars: Star[] = [];
@@ -74,6 +74,25 @@ export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: 
     }
     stars.push({ id: fact.id, kind, dayKey: day, leg: starLeg, stretch: walks });
   }
+  // From jarFrom: jar minutes, 10 a stretch, at most 60 a day; the minutes left over carry to the next act.
+  const entries = jar ? deriveJar(jarActs(facts, jar.focus), jar.from > startDay ? jar.from : startDay, today) : [];
+  let carry = 0;
+  for (const entry of entries) {
+    const legBefore = Math.min(leg, legs.length - 1);
+    const overCamp = complete() ? Math.max(0, leg - 1) : stretch === 0 ? Math.max(0, leg - 1) : leg;
+    if (!complete()) carry += entry.counted;
+    while (carry >= JAR.stretchMinutes && !complete()) {
+      carry -= JAR.stretchMinutes;
+      const state = legs[leg]!;
+      state.stretches.push({ kind: entry.kind, dayKey: entry.dayKey });
+      if (entry.kind === 'mind' && !state.gateOn) state.gateOn = entry.dayKey;
+      stretch++;
+      if (stretch === STRETCHES_PER_LEG) { state.doneOn = entry.dayKey; leg++; stretch = 0; }
+    }
+    // Only sessions light stars, as before; one past the cap shines over tonight's camp.
+    if (entry.kind === 'train' || entry.kind === 'mind' || entry.kind === 'calm') stars.push({ id: entry.id, kind: entry.kind, dayKey: entry.dayKey, leg: entry.counted > 0 ? legBefore : overCamp, stretch: entry.counted > 0 });
+  }
+  const todayMinutes = entries.filter(entry => entry.dayKey === today).reduce((total, entry) => total + entry.counted, 0);
   // A leg's stars join into a constellation when the leg ends, or when a week of it has passed, whichever is first
   // (two or more stars make one; a lone star stays a star).
   const constellations: Constellation[] = [];
@@ -97,7 +116,9 @@ export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: 
   const todayStars = stars.filter(star => star.dayKey === today);
   return {
     trail, place: leg, stretch, complete: complete(), legs, stars, constellations,
-    today: { stars: todayStars, campDay: todayStars.length === 0, atPlace: stretch === 0 },
+    // A day with real things in the jar but no session still walked: not a camp day.
+    today: { stars: todayStars, campDay: todayStars.length === 0 && todayMinutes === 0, atPlace: stretch === 0 },
+    jar: { from: jar?.from, entries, todayMinutes, capped: todayMinutes >= JAR.dayCap, carry },
   };
 }
 

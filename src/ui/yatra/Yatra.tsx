@@ -18,7 +18,9 @@ import { finishedSeasons } from '../../core/economy/seasonResult';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { taskFocusMs } from '../../core/tasks/focus';
 import { currentTrail } from '../../data/yatra/trails';
-import { CONSTELLATION_PREFIX, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
+import { CONSTELLATION_PREFIX, ensureJarFrom, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
+import { JAR_FROM_KEY } from '../../core/yatra/jar';
+import { JarPlanArea, RealThingsLine } from './JarPlan';
 import { go } from '../shell/router';
 import { useModalFocus } from '../shell/useModalFocus';
 import { campLine, TrekScene } from './TrekScene';
@@ -38,11 +40,13 @@ export function useYatra(): { trek: Trek; night: boolean; dusk: boolean } | null
   const trail = currentTrail();
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
-  useEffect(() => { if (trail) void ensureYatraStart(db, Date.now()); }, [trail]);
+  useEffect(() => { if (trail) void ensureYatraStart(db, Date.now()).then(() => ensureJarFrom(db, Date.now())); }, [trail]);
   const source = useLiveQuery(async () => trail ? {
     facts: await db.ledger.where('kind').anyOf(YATRA_KINDS).toArray(),
     settings: await db.settings.filter(row => row.deleted === 0).toArray(),
     tasks: await db.tasks.filter(row => row.deleted === 0).toArray(),
+    // Spec 54: focus fills the jar too (each full 30 min in a day).
+    focus: await db.focus.filter(row => row.deleted === 0).toArray(),
   } : null, [trail?.id]);
   if (!trail) return null;
   if (!source) return undefined;
@@ -51,7 +55,9 @@ export function useYatra(): { trek: Trek; night: boolean; dusk: boolean } | null
   const night = adaptiveNight(source.settings, source.tasks, today);
   const shutdown = shiftClock(effectiveShutdown(read('planner.shutdown', RULES.night.defaultShutdown), read('planner.bedtime', RULES.night.defaultBedtime)), night.shift);
   const names = Object.fromEntries(source.settings.filter(row => row.key.startsWith(CONSTELLATION_PREFIX) && typeof row.value === 'string').map(row => [row.key.slice(CONSTELLATION_PREFIX.length), row.value as string]));
-  const trek = deriveTrek(source.facts, trail, read(YATRA_START, today), today, names);
+  // Spec 54: from jarFrom the trail walks in jar minutes; until it is written (the first run), the old walk.
+  const jarFrom = source.settings.find(row => row.key === JAR_FROM_KEY)?.value;
+  const trek = deriveTrek(source.facts, trail, read(YATRA_START, today), today, names, typeof jarFrom === 'string' ? { from: jarFrom, focus: source.focus } : undefined);
   const phase = phaseAt(now, shutdown, night.bedtime);
   // The planning day turns at 04:00, so the small hours are still tonight.
   const hour = new Date(now).getHours();
@@ -125,13 +131,18 @@ function MoreOfferCard({ picks }: { picks: Picks }) {
   </section>;
 }
 
+const JAR_ADDS: Partial<Record<string, string>> = { read: '+5 min', board: '+10 min', train: '+10 min', 'train-easy': '+10 min' };
+export const jarAdds = (kind: string, capped?: boolean) => capped ? undefined : JAR_ADDS[kind];
+
 /** Spec 45b: exactly one next move, one action. Its order is nextMove's. */
-function NextMoveCard({ rows }: { rows: HomeRows }) {
+function NextMoveCard({ rows, capped }: { rows: HomeRows; capped?: boolean }) {
   const [now, setNow] = useState(() => Date.now());
   const { move, current } = rows;
   const running = move.kind === 'focus' && move.running;
   useEffect(() => { if (!running) return; const timer = window.setInterval(() => setNow(Date.now()), 1000); return () => window.clearInterval(timer); }, [running]);
   const words = moveWords(move);
+  // Spec 54: what the move adds to the jar, only for acts in its table and not once today's trail is done.
+  const adds = jarAdds(move.kind, capped);
   let detail: ReactNode = words.detail;
   if (move.kind === 'focus' && current) {
     const seconds = Math.floor(taskFocusMs(rows.focus, current.taskId, Math.max(now, current.startedAt)) / 1000);
@@ -140,7 +151,7 @@ function NextMoveCard({ rows }: { rows: HomeRows }) {
   return <section className="next-move" aria-labelledby="next-move-eyebrow" data-kind={move.kind}>
     <p className="eyebrow" id="next-move-eyebrow">One next move</p>
     <button type="button" className="next-move-go" onClick={() => go(move.route)}>
-      <span className="next-move-text"><strong>{words.title}</strong><span>{detail}</span></span>
+      <span className="next-move-text"><strong>{words.title}{adds && <span className="next-move-adds"> · {adds}</span>}</strong><span>{detail}</span></span>
       <span className="next-move-arrow" aria-hidden="true">↗</span>
     </button>
   </section>;
@@ -172,6 +183,7 @@ export function Yatra() {
     {/* Spec 45b: Home is a paper page. The week's recorded time and where the camp is, the camp, then one next move. */}
     <header className="home-notes">
       <UsefulLine />
+      <RealThingsLine />
       <div className="home-title">
         <h1>{trek && yatra ? campLine(trek, yatra.night) : 'Field notes'}</h1>
         {/* From the first postcard on: a 0 stamp on a new phone reads as a score. */}
@@ -181,7 +193,7 @@ export function Yatra() {
       </div>
     </header>
     {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} onFriend={spot => go(spot.route)} />}
-    {rows && <NextMoveCard rows={rows} />}
+    {rows && <NextMoveCard rows={rows} capped={trek?.jar.capped} />}
     {rows && <MoreOfferCard picks={rows.picks} />}
     {/* Spec 53: Sunday evening to Monday, the week's receipt; nothing on other days. */}
     <WeekEndShare />
@@ -191,6 +203,7 @@ export function Yatra() {
       {!trek.complete && <div className="trek-rail" aria-hidden="true">{Array.from({ length: STRETCHES_PER_LEG }, (_, i) => <i key={i} className={i < trek.stretch ? 'filled' : undefined} />)}</div>}
       <p className="trek-narrative" role="status">{narrative(trek, yatra.night)}</p>
     </div>}
+    {trek && <JarPlanArea trek={trek} />}
     {leg && <div className="sheet-backdrop" onClick={closePostcard}><section ref={postcardDialog} tabIndex={-1} className="task-sheet trek-postcard" role="dialog" aria-modal="true" aria-label={`${leg.landmark.name} postcard`} onClick={event => event.stopPropagation()}>
       <p className="eyebrow">A gate on the trail · {leg.landmark.kind}</p><h2>{leg.postcard.title ?? leg.landmark.name}</h2>
       {leg.postcard.lines.map(line => <p key={line}>{line}</p>)}

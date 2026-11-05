@@ -6,9 +6,11 @@ import { PAUSE_KEYS, PAUSE_LIMIT_DEFAULT, readPauseCard } from '../../core/pause
 import { dayBounds, daysToRead, keptDays, LEAD_MS, opensDay, OPENS_KEY, readOpensLog } from '../../core/pauseOpens';
 import type { GuardEvent } from '../../core/focusGuard';
 import { readUsageEvents } from '../../platform/nightPause';
+import type { PauseReason } from '../../core/pauseReasons';
 
 /** Spec 39b adds 'in_app': the person went on to the next thing in NANDI instead (it pays nothing on the card). */
 export type PauseOutcome = 'act_done' | 'backed_out' | 'opened_anyway' | 'in_app';
+export type { PauseReason } from '../../core/pauseReasons';
 
 /**
  * Spec 39: one ledger row per time the Pause card was answered (an attempt): the app's package, the time and the
@@ -23,6 +25,19 @@ export async function recordPauseAttempt(db: NandiDb, packageName: string, outco
     await db.ledger.add({ id, dayKey: dayKey(now), mode: 'pause', kind: 'attempt', refId: String(now), inputs: { packageName, outcome }, updatedAt: now, deleted: 0, deviceId });
   }));
   return id;
+}
+
+/**
+ * Spec 54: why the person opened the app anyway, if they said (it is optional). One private ledger row beside the
+ * attempt: it stays on this phone and in its backup, pays nothing, moves nothing, and is only counted in You.
+ */
+export async function recordPauseReason(db: NandiDb, attemptId: string, why: PauseReason, now: number): Promise<void> {
+  const id = `pause-reason:${now}`;
+  const deviceId = await getOrCreateDeviceId(db, now);
+  await trackWrite(() => db.transaction('rw', db.ledger, async () => {
+    if (await db.ledger.get(id)) return;
+    await db.ledger.add({ id, dayKey: dayKey(now), mode: 'pause', kind: 'reason', refId: attemptId, inputs: { attemptId, why }, updatedAt: now, deleted: 0, deviceId });
+  }));
 }
 
 /** Saves the Pause card's settings in one go; `undefined` leaves a key as it is. */

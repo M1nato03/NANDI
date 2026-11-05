@@ -155,10 +155,28 @@ test('"Not now" goes Home and pays nothing; "Open anyway" opens the app with the
   expect(await did(page)).toEqual(['clear', 'home']);
   await phoneOpens(page);
   await card(page).getByRole('button', { name: 'Open Instagram anyway' }).click();
+  // Spec 54: the setup's quiet time is chosen; a why is optional and skipped here.
+  await expect(card(page).getByRole('group', { name: 'How long?' }).getByRole('button', { name: '10 min' })).toHaveAttribute('aria-pressed', 'true');
+  await card(page).getByRole('button', { name: 'Open for 10 min' }).click();
   await expect(card(page)).toHaveCount(0);
   expect((await did(page)).at(-1)).toBe('open:com.instagram.android:600000');
   expect(await attempts(page)).toEqual(['backed_out', 'opened_anyway']);
   expect(await totalXp(page)).toBe(before);
+});
+
+test('spec 54: "Open anyway" asks how long and why; the chosen time goes to the phone, the why stays private in You', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await setUp(page);
+  await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+  await phoneOpens(page);
+  await card(page).getByRole('button', { name: 'Open Instagram anyway' }).click();
+  await card(page).getByRole('group', { name: 'How long?' }).getByRole('button', { name: '20 min' }).click();
+  await card(page).getByRole('group', { name: /^Why\?/ }).getByRole('button', { name: 'Just scrolling' }).click();
+  await card(page).getByRole('button', { name: 'Open for 20 min' }).click();
+  await expect(card(page)).toHaveCount(0);
+  expect((await did(page)).at(-1)).toBe('open:com.instagram.android:1200000');
+  await page.goto('/?e2e#you');
+  await expect(page.locator('.you-reasons')).toHaveText('Your reasons this week: 1 just scrolling');
 });
 
 test('off for today from Plan, and on again', async ({ page }) => {
@@ -195,6 +213,7 @@ test('the old day pause is kept and asks once for a line; until then the card of
   await expect(card(page).getByRole('heading')).toHaveText('Take 2 minutes first.');
   await expect(card(page).getByRole('group', { name: 'Pick a 2-minute thing' }).getByRole('button')).toHaveCount(4);
   await card(page).getByRole('button', { name: 'Open Instagram anyway' }).click();
+  await card(page).getByRole('button', { name: 'Open for 10 min' }).click();
   await page.goto('/?e2e#plan/pause');
   await expect(page.getByRole('heading', { name: 'Write your line' })).toBeVisible();
   await page.getByRole('group', { name: 'Quick picks' }).getByRole('button', { name: 'step outside for 2 minutes' }).click();

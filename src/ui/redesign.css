@@ -471,3 +471,6 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .you-settings .minutes-record .setting-help { font-size: .8125rem; }
 .minutes-record details > summary { display: list-item; padding: 10px 0; min-height: 44px; box-sizing: border-box; font-weight: 600; cursor: pointer; }
 .minutes-record > button, .minutes-record .actions button { min-height: 44px; }
+
+/* Spec 54: the person's own pause reasons this week, counts only. */
+.you-reasons { margin: 8px 0 0; color: var(--ink-2); font-size: .9375rem; }

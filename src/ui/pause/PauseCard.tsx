@@ -3,9 +3,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
-import { actsToday, PAUSE_ACTS, pauseAppLabel, pauseLine, readPauseCard } from '../../core/pauseCard';
+import { actsToday, GRACE_CHOICES, PAUSE_ACTS, pauseAppLabel, pauseLine, readPauseCard } from '../../core/pauseCard';
+import { PAUSE_REASONS, type PauseReason } from '../../core/pauseReasons';
 import { moveLine } from '../../core/nextMove';
-import { recordPauseAttempt, type PauseOutcome } from '../../data/repos/pause';
+import { recordPauseAttempt, recordPauseReason, type PauseOutcome } from '../../data/repos/pause';
 import { clearNightPause, goPhoneHome, openPausedApp } from '../../platform/nightPause';
 import { Mor } from '../cast/Cast';
 import { go } from '../shell/router';
@@ -13,7 +14,7 @@ import { useModalFocus } from '../shell/useModalFocus';
 import { readNextMove } from '../yatra/nextMoveRows';
 import './pause.css';
 
-type Stage = { kind: 'card' } | { kind: 'act'; act: string; endsAt: number } | { kind: 'done'; act: string | null; paid: boolean };
+type Stage = { kind: 'card' } | { kind: 'act'; act: string; endsAt: number } | { kind: 'done'; act: string | null; paid: boolean } | { kind: 'anyway'; minutes: number; why: PauseReason | null };
 
 /**
  * Spec 39, the Pause card: shown when a picked app comes to the front inside the window. Every way out is one tap,
@@ -69,7 +70,21 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
     }
     setStage({ kind: 'done', act: stage.kind === 'act' ? stage.act : act, paid });
   }
-  const openAnyway = () => answer('opened_anyway', () => openPausedApp(packageName, card.grace * 60_000));
+  // Spec 54: "Open anyway" asks two quiet things first: how long to stay quiet (the setup's time chosen), and why
+  // (optional, private, counted only in You). The phone's quiet time is per open already (openPausedApp's snooze).
+  const openAnyway = () => { setMessage(''); setStage({ kind: 'anyway', minutes: card.grace, why: null }); };
+  async function openFor(minutes: number, why: PauseReason | null) {
+    if (demo) { close(); return; }
+    if (acting.current) return;
+    acting.current = true;
+    try {
+      const at = Date.now();
+      const attempt = await recordPauseAttempt(db, packageName, 'opened_anyway', at);
+      if (why) await recordPauseReason(db, attempt, why, at + 1);
+    } catch { acting.current = false; setMessage('That did not work. You can leave NANDI normally.'); return; }
+    try { await openPausedApp(packageName, minutes * 60_000); } catch { /* the app can be opened from the phone as usual */ }
+    close();
+  }
   const notNow = () => answer('backed_out', async () => { await clearNightPause(); await goPhoneHome(); });
   // Spec 39b, spec 52 D: the next real thing in NANDI instead, the same move Home offers. The card pays nothing for it.
   async function inApp() {
@@ -108,6 +123,16 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
           <button type="button" className="text-button" onClick={() => void notNow()}>Not now</button>
           <button type="button" className="text-button" onClick={() => void openAnyway()}>Open {label} anyway</button>
         </div>
+      </>}
+      {stage.kind === 'anyway' && <>
+        <p className="eyebrow">{label}</p>
+        <h1 className="pause-line">Open {label}</h1>
+        <p className="pause-plan-label" id="pause-how-long">How long?</p>
+        <div className="pause-picks pause-chips" role="group" aria-labelledby="pause-how-long">{GRACE_CHOICES.map(minutes => <button type="button" key={minutes} className="secondary" aria-pressed={stage.minutes === minutes} onClick={() => setStage({ ...stage, minutes })}>{minutes} min</button>)}</div>
+        <p className="pause-plan-label" id="pause-why">Why? <span className="small">Only you see this. You can skip it.</span></p>
+        <div className="pause-picks pause-chips" role="group" aria-labelledby="pause-why">{PAUSE_REASONS.map(reason => <button type="button" key={reason.id} className="secondary" aria-pressed={stage.why === reason.id} onClick={() => setStage({ ...stage, why: stage.why === reason.id ? null : reason.id })}>{reason.label}</button>)}</div>
+        <button type="button" className="pause-do" onClick={() => void openFor(stage.minutes, stage.why)}>Open for {stage.minutes} min</button>
+        <button type="button" className="ink-link pause-not-now" onClick={() => setStage({ kind: 'card' })}>Back</button>
       </>}
       {stage.kind === 'done' && <>
         {/* What was done, in the person's words; the XP on its own line. No claim of time given back. */}

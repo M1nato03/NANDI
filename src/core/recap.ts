@@ -85,7 +85,8 @@ export type ReceiptLine = { label: string; value: string };
 /** Spec 53: the footer slots the crew and Baithak specs fill later; empty until then. */
 export type ReceiptSlots = { crew?: string; baithak?: string };
 /** `soFar`: before Sunday 18:00 the week is still open (You's card mid-week), so the receipt never reads as a closed week. */
-export type ReceiptContent = { dates: string; soFar: boolean; lines: ReceiptLine[]; total?: string; highlight?: string; slots: ReceiptSlots };
+/** `heading` and `subline` let another card (spec 54's payout) use the same paper; the receipt leaves them unset. */
+export type ReceiptContent = { dates: string; soFar: boolean; lines: ReceiptLine[]; total?: string; highlight?: string; slots: ReceiptSlots; heading?: string; subline?: string };
 
 export const RECEIPT_MAX_LINES = 6;
 export const RECEIPT_TOTAL_MIN_MS = 30 * 60_000;

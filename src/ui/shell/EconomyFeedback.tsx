@@ -9,7 +9,8 @@ import { RULES } from '../../core/rules.config';
 import { shutdownAt } from '../../core/tasks/planner';
 import { isAfterBedtime } from '../../core/time';
 import { tapHaptic } from '../../platform/haptics';
-import type { LedgerRow, SettingRow, TaskRow, LearnDropRow, SessionRow, PuzzleRunRow, DailyLogRow } from '../../data/types';
+import type { LedgerRow, SettingRow, TaskRow, LearnDropRow, SessionRow, PuzzleRunRow, DailyLogRow, FocusRow } from '../../data/types';
+import { deriveJar, JAR_FROM_KEY, jarActs, jarDay, jarFinishLine } from '../../core/yatra/jar';
 import { dailyDropId } from '../learn/dropIds';
 import { reconcileGamify, recordShown } from '../../data/repos/gamify';
 import { todayDotStatus } from './TodayDots';
@@ -32,12 +33,26 @@ const store = {
   set: (area: Storage, key: string, value: string): void => { try { area.setItem(key, value); } catch { /* ignore */ } },
 };
 
-type Notice = { text: string; macro: boolean; gain?: number; detail?: string; activity?: FinishActivity; character?: 'Nandi' | 'Kachhua'; level?: number; totalXp?: number };
-type Source = { facts: LedgerRow[]; settings: SettingRow[]; tasks: TaskRow[]; sessions: SessionRow[]; runs: PuzzleRunRow[]; drop?: LearnDropRow; log?: DailyLogRow };
+type Notice = { text: string; macro: boolean; gain?: number; detail?: string; activity?: FinishActivity; character?: 'Nandi' | 'Kachhua'; level?: number; totalXp?: number; jar?: string };
+type Source = { facts: LedgerRow[]; settings: SettingRow[]; tasks: TaskRow[]; sessions: SessionRow[]; runs: PuzzleRunRow[]; drop?: LearnDropRow; log?: DailyLogRow; focus: FocusRow[] };
 // Spec 33: the day's two areas are Plan and Read (Night comes after the day closes; Train is parked).
 const complete = (source: Source, now: number) => { const status = todayDotStatus(now, { tasks: source.tasks, ledger: source.facts, runs: source.runs, drop: source.drop, log: source.log }); return status.plan && status.read; };
+/**
+ * Spec 54: what this finish put in the jar ("+5 min into the jar · chapter done"), or "Trail done for today." at the
+ * cap: the newest act the jar counts from the last few seconds. A finished drop can land before its idea row, so a
+ * finish on screen also takes the line when that row arrives a moment later. Only from jarFrom; never phone use.
+ */
+const JAR_LINE_MS = 10_000;
+function jarLine(source: Source, today: string, now: number): string | undefined {
+  const from = source.settings.find(row => row.key === JAR_FROM_KEY && !row.deleted)?.value;
+  if (typeof from !== 'string') return undefined;
+  const entries = deriveJar(jarActs(source.facts.filter(row => row.dayKey === today), source.focus), from, today);
+  const entry = entries.filter(row => row.kind !== 'focus' && row.at >= now - JAR_LINE_MS && row.at <= now + JAR_LINE_MS).at(-1);
+  return jarFinishLine(entry, jarDay(entries, today).capped) ?? undefined;
+}
+
 export function EconomyFeedback() {
-  const source = useLiveQuery(async () => { const now = Date.now(); await db.learnConcepts.toArray(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)) }; }, []);
+  const source = useLiveQuery(async () => { const now = Date.now(); await db.learnConcepts.toArray(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)), focus: await db.focus.where('startedAt').above(now - 36 * 3_600_000).toArray() }; }, []);
   const prior = useRef<Source | null>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
   const reveal = useModalFocus<HTMLDivElement>(() => setNotice(null));
@@ -94,6 +109,13 @@ export function EconomyFeedback() {
     const own = added.filter(row => !RECONCILE_KINDS.has(row.kind));
     if (own.length > 5 || (!own.length && added.length > 5) || added.some(row => Math.abs(Date.now() - row.updatedAt) > 5_000)) return;
     const isBadge = (row: LedgerRow) => row.kind === 'badge-tier' || row.kind === 'monthly-challenge';
+    // Spec 54: a finish already on screen takes its jar line when the act's own row lands just after it.
+    if (noticeRef.current && !noticeRef.current.macro && noticeRef.current.activity && !noticeRef.current.jar) {
+      const late = jarLine(source, dayKey(Date.now()), Date.now());
+      // A live-query change is the external update here, as for the badge line below.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (late) setNotice(current => current && !current.macro && !current.jar ? { ...current, jar: late } : current);
+    }
     const badge = added.find(isBadge);
     // A badge that lands in the same update as the finish that earned it must not swallow that finish (spec 52: the
     // first idea's finish went missing about 1 run in 5 when reconcile's badge tier arrived with it).
@@ -155,7 +177,7 @@ export function EconomyFeedback() {
     store.set(sessionStorage, 'finish.lastLine', line);
     setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Nandi' : undefined,
       // Spec 45c: a real level rise opens the level page in place of the reveal; a tier change keeps the reveal.
-      level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp }));
+      level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp, jar: macro ? undefined : jarLine(source, today, now) }));
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;
@@ -202,7 +224,7 @@ export function EconomyFeedback() {
     requestAnimationFrame(toHeading);
     window.setTimeout(toHeading, 500);
   }} />;
-  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Nandi" pose="cheer" size={80} moment="hop" at={1} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p><button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
+  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Nandi" pose="cheer" size={80} moment="hop" at={1} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p><button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} jar={notice.jar} />;
 }
 
 const ARRIVING = ['Mor', 'Chiku', 'Nandi', 'Kapi', 'Kachhua'] as const;

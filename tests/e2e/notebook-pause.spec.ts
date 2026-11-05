@@ -117,6 +117,8 @@ test('the named in-app move goes where Home\'s next move goes; "Open anyway" ope
   await page.goto('/?e2e#you');
   await phoneOpens(page);
   await slip(page).getByRole('button', { name: 'Open Instagram anyway' }).click();
+  // Spec 54: how long (the setup's 10 min chosen) and an optional why, then open.
+  await slip(page).getByRole('button', { name: 'Open for 10 min' }).click();
   await expect(slip(page)).toHaveCount(0);
   expect((await did(page)).at(-1)).toBe('open:com.instagram.android:600000');
   await phoneOpens(page);

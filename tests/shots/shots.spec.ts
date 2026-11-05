@@ -1594,4 +1594,86 @@ for (const theme of themes) test.describe(theme, () => {
       writeFileSync(`${out}/${theme}/${name}.png`, Buffer.from(image.dataUrl.split(',')[1]!, 'base64'));
     }
   });
+
+  // Spec 54: the jar on Home (no plan, a plan, the payout), the plan sheet (and at 200%), the finish line at +5 and at
+  // the cap, the pause card's two taps (and at 200%), You's reasons line, and the payout image at full size.
+  test('54 jar', async ({ page }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });
+      Object.defineProperty(navigator, 'canShare', { configurable: true, value: undefined });
+      const seen: string[] = [];
+      (window as Window & { jarLines?: string[] }).jarLines = seen;
+      new MutationObserver(() => document.querySelectorAll('.finish-jar').forEach(node => { if (!seen.includes(node.textContent ?? '')) seen.push(node.textContent ?? ''); })).observe(document, { childList: true, subtree: true, characterData: true });
+    });
+    const noon = new Date('2026-11-05T12:00:00');
+    await page.clock.setFixedTime(noon);
+    const seed = (settings: [string, unknown][], ledger: Record<string, unknown>[] = []) => page.evaluate(async ([rows, facts]) => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction(['settings', 'ledger'], 'readwrite'); for (const [key, value] of rows) transaction.objectStore('settings').put({ key, value, updatedAt: 1, deleted: 0, deviceId: 'shots' }); for (const fact of facts) transaction.objectStore('ledger').put(fact); transaction.oncomplete = () => resolve(); });
+      database.close();
+    }, [settings, ledger] as const);
+    const session = (n: number) => ({ id: `shots54-${n}`, mode: 'train', kind: 'session', refId: `s${n}`, dayKey: '2026-11-05', inputs: { workingSets: 6, status: 'completed' }, updatedAt: noon.getTime() - 3_600_000 + n, deleted: 0, deviceId: 'shots' });
+    await page.goto('/?e2e#yatra');
+    await seed([['yatra.startDay', '2026-11-03'], ['yatra.jarFrom', '2026-11-03']], [session(1)]);
+    await page.reload();
+    await expect(page.locator('.next-move-go')).toBeVisible();
+    await shot(page, 'p54-01-home-no-plan', false);
+    await page.getByRole('button', { name: 'Add a plan to a camp ahead' }).scrollIntoViewIfNeeded();
+    await shot(page, 'p54-02-home-no-plan-scrolled', false);
+    await page.getByRole('button', { name: 'Add a plan to a camp ahead' }).click();
+    const sheet = page.getByRole('dialog', { name: 'A plan for a camp ahead' });
+    await sheet.getByLabel("What it's for").fill('movie night with Dev');
+    await shot(page, 'p54-03-plan-sheet', false);
+    await textAt200(page);
+    await shot(page, 'p54-04-plan-sheet-200pct', false);
+    await page.reload();
+    await page.getByRole('button', { name: 'Add a plan to a camp ahead' }).click();
+    await page.getByRole('dialog', { name: 'A plan for a camp ahead' }).getByLabel("What it's for").fill('movie night with Dev');
+    await page.getByRole('dialog', { name: 'A plan for a camp ahead' }).getByRole('button', { name: 'Save' }).click();
+    await page.getByRole('region', { name: 'Your plan on the trail' }).scrollIntoViewIfNeeded();
+    await shot(page, 'p54-05-home-with-plan', false);
+    await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+    await walkIdea(page, 'how-things-work');
+    await expect(page.locator('.finish-jar')).toBeVisible({ timeout: 8000 });
+    await shot(page, 'p54-06-finish-line-plus-5', false);
+    // The cap: six sessions today, then an idea.
+    await page.goto('/?e2e#yatra');
+    await seed([], [2, 3, 4, 5, 6, 7].map(session));
+    // The chapter's next idea, read past the cap.
+    await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+    await page.reload();
+    await walkIdea(page, 'how-things-work');
+    await expect.poll(() => page.evaluate(() => (window as Window & { jarLines?: string[] }).jarLines ?? [])).toContain('Trail done for today.');
+    await shot(page, 'p54-07-finish-line-cap', false);
+    // The payout card.
+    await page.goto('/?e2e#yatra');
+    await seed([['yatra.plan', { line: 'movie night with Dev', camp: 1, setAt: noon.getTime() - 86_400_000, needMinutes: 30 }]]);
+    await page.reload();
+    const payout = page.getByRole('region', { name: 'Plan reached' });
+    await payout.scrollIntoViewIfNeeded();
+    await shot(page, 'p54-08-payout-card', false);
+    await payout.getByRole('button', { name: 'Share' }).click();
+    const share = page.getByRole('dialog', { name: 'Share this camp' });
+    await expect(share.getByRole('img')).toBeVisible({ timeout: 20_000 });
+    await shot(page, 'p54-09-payout-share-sheet', false);
+    const saved = page.waitForEvent('download');
+    await share.getByRole('button', { name: 'Save image' }).click();
+    await (await saved).saveAs(`${out}/${theme}/p54-card-payout.png`);
+    // The pause card's two taps after "Open anyway".
+    await seed([['pause.card.on', true], ['pause.act', 'do 10 squats'], ['night.pause.apps', ['com.instagram.android']], ['night.pause.dayMode', 'open']]);
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+    await page.reload();
+    await page.evaluate(() => { sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'open' })); window.dispatchEvent(new Event('nandi:night-pause')); });
+    const card = page.getByRole('dialog', { name: 'Pause card' });
+    await card.getByRole('button', { name: 'Open Instagram anyway' }).click();
+    await card.getByRole('group', { name: /^Why\?/ }).getByRole('button', { name: 'Quick check' }).click();
+    await shot(page, 'p54-10-pause-taps', false);
+    await textAt200(page);
+    await shot(page, 'p54-11-pause-taps-200pct', false);
+    await card.getByRole('button', { name: 'Open for 10 min' }).click();
+    await page.goto('/?e2e#you');
+    await page.reload();
+    await page.locator('.you-reasons').scrollIntoViewIfNeeded();
+    await shot(page, 'p54-12-you-reasons', false);
+  });
 });

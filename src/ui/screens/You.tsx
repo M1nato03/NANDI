@@ -3,6 +3,7 @@ import { db } from '../../data/db';
 import { buildRecap } from '../../core/recap';
 import { RecapShare } from './RecapShare';
 import { youWeekNumbers } from '../../core/recap';
+import { reasonsLine } from '../../core/pauseReasons';
 import { go } from '../shell/router';
 import { DeckGlyph } from '../DeckGlyph';
 import { YourSeason } from './EconomyScreens';
@@ -24,6 +25,8 @@ export function You() {
     return { tasks, focus, sessions, quests, concepts, logs, facts };
   }, []);
   const recap = sources ? buildRecap(Date.now() + 7 * 86_400_000, { ...sources, ledger: sources.facts }) : null; // eslint-disable-line react-hooks/purity
+  // Spec 54: the person's own reasons after "Open anyway" this week, counts only, seen by nobody else.
+  const reasons = recap ? reasonsLine(sources?.facts ?? [], recap.from, recap.to) : null;
   const weekNumbers = recap ? youWeekNumbers(recap) : [];
   // Day one shows level, streak and the week; the rest appear once they mean something.
   const show = revealMeters(sources?.facts ?? [], dayKey(Date.now()), { start: '9999-12-31', active: false }, 0); // eslint-disable-line react-hooks/purity
@@ -33,7 +36,7 @@ export function You() {
   const softDay = !!softToday(sources?.facts ?? [], today).state && softMore?.value !== true;
   return <section className="screen you-screen"><p className="eyebrow">Your space</p><h1>You</h1><button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/courtyard')}><strong>Courtyard</strong><span>Your six friends and how each corner is growing</span></button>{show.storybooks && <button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/stories')}><strong>Storybooks</strong><span>Each week, told as a short story</span></button>}{!softDay && <YourSeason />}<LearningHolding />
     {show.quests && !softDay && <DailyQuests />}{show.badges && <button type="button" className="card you-link" onClick={() => go('you/badges')}><strong>Badges</strong><span>See the ideas and habits taking shape</span></button>}
-    <section className="card you-week" aria-label="This week in words"><span className="eyebrow">This week in words</span><h2>What your time became</h2>{weekNumbers.length ? <div className="you-week-numbers">{weekNumbers.map(item => <div className="you-week-number" key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div> : <p>Your week is just beginning. One small step counts.</p>}{recap && <RecapShare recap={recap} />}</section>
+    <section className="card you-week" aria-label="This week in words"><span className="eyebrow">This week in words</span><h2>What your time became</h2>{weekNumbers.length ? <div className="you-week-numbers">{weekNumbers.map(item => <div className="you-week-number" key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div> : <p>Your week is just beginning. One small step counts.</p>}{recap && <RecapShare recap={recap} />}{reasons && <p className="you-reasons">{reasons}</p>}</section>
     <HexagonCard now={Date.now()} />{/* eslint-disable-line react-hooks/purity */}
     <BackupNudge />
     {/* Spec 33: private books are imported here. Train moved to Yatra (spec 34). */}

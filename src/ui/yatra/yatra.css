@@ -109,3 +109,21 @@
 .more-offer p { margin: 0; }
 .more-offer-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
 .more-offer-actions .secondary { min-height: 44px; }
+
+/* Spec 54: this week's real things (the receipt's measured time), the plan on the trail and its payout. */
+.home-real { margin: 2px 0 0; color: var(--ink-2); font-size: .9375rem; }
+.home-real b { color: var(--ink); }
+.next-move-adds { color: var(--ink-2); font-weight: 600; }
+.jar-plan, .jar-plan-add { margin-top: 12px; }
+.jar-plan-line { margin: 0 0 6px; }
+.jar-plan-bar { height: 8px; border-radius: 999px; background: var(--surface-3, var(--line)); overflow: hidden; }
+.jar-plan-bar i { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
+.jar-plan-minutes { margin: 6px 0 0; color: var(--ink-2); font-size: .9375rem; }
+.jar-plan-sheet label { display: grid; gap: 6px; margin-top: 12px; }
+.jar-plan-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.jar-plan-actions > button { flex: 1; min-height: 44px; }
+.jar-plan-actions > .text-button { flex-basis: 100%; }
+.jar-payout { margin-top: 12px; }
+.jar-payout h2 { margin: 4px 0 12px; font-size: 1.25rem; }
+.jar-payout-actions { display: flex; gap: 8px; }
+.jar-payout-actions > button { flex: 1; min-height: 44px; }

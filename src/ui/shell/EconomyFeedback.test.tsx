@@ -97,6 +97,21 @@ describe('economy feedback', () => {
     expect(mock.tapHaptic).not.toHaveBeenCalled();
   });
 
+  it('spec 54: pause reasons never fire a finish: a restored burst, or one fresh reason', async () => {
+    vi.setSystemTime(new Date('2026-11-05T12:00:00'));
+    const now = Date.now(), day = dayKey(now);
+    render(<EconomyFeedback />);
+    await waitFor(() => expect(mock.reconcileGamify).toHaveBeenCalled());
+    await settle();
+    const reason = (id: string, at: number) => ({ id, mode: 'pause', kind: 'reason', refId: id, dayKey: day, inputs: { why: 'scrolling' }, updatedAt: at, deleted: 0 as const, deviceId: 'test' });
+    await act(async () => { await db.ledger.bulkAdd(Array.from({ length: 8 }, (_, index) => reason(`pause-reason:old${index}`, now - 86_400_000))); });
+    await settle();
+    await act(async () => { await db.ledger.add(reason('pause-reason:fresh', now)); });
+    await settle();
+    expect(document.querySelector('.finish-moment')).toBeNull();
+    expect(mock.tapHaptic).not.toHaveBeenCalled();
+  });
+
   it('F1: after bedtime a finished task gets no buzz and no +XP overlay', async () => {
     const seen = await finishTask('2026-11-04T02:00:00');
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 300)); });

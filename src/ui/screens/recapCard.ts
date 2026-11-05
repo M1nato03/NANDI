@@ -21,6 +21,17 @@ export type ReceiptLayout = { paperTop: number; paperBottom: number; logo?: { x:
 /** Text width at a size; the canvas's measureText on the phone, a fixed estimate in unit tests. */
 export type Measure = (text: string, size: number, font: 'display' | 'body', weight: number) => number;
 
+/** Words onto lines no wider than `width`; a single word longer than the width keeps its own line (centre() shrinks it). */
+function wrapText(text: string, width: number, measure: (text: string) => number): string[] {
+  const lines: string[] = [];
+  let line = '';
+  for (const word of text.split(/\s+/).filter(Boolean)) {
+    const next = line ? `${line} ${word}` : word;
+    if (line && measure(next) > width) { lines.push(line); line = word; } else line = next;
+  }
+  return line ? [...lines, line] : lines;
+}
+
 const fontOf = (size: number, font: 'display' | 'body', weight: number) => `${weight} ${size}px ${font === 'display' ? DISPLAY : BODY}`;
 
 /**
@@ -38,9 +49,9 @@ export function receiptLayout(card: ReceiptContent, measure: Measure, hasLogo: b
   let y = 0;
   const logo = hasLogo ? { x: (RECAP_WIDTH - LOGO_SIZE) / 2, y: 70, size: LOGO_SIZE } : undefined;
   y = logo ? logo.y + logo.size + 90 : 140;
-  centre('NANDI · RECEIPT', y, 68, 'display', 800, 'ink');
+  centre(card.heading ?? 'NANDI · RECEIPT', y, 68, 'display', 800, 'ink');
   y += 62;
-  centre(receiptWeek(card), y, 38, 'body', 500, 'muted');
+  centre(card.subline ?? receiptWeek(card), y, 38, 'body', 500, 'muted');
   y += 56;
   rules.push({ y, dashed: true });
   y += 96;
@@ -60,7 +71,12 @@ export function receiptLayout(card: ReceiptContent, measure: Measure, hasLogo: b
     y += 50;
     rules.push({ y, dashed: false });
   }
-  if (card.highlight) { y += 70; centre(card.highlight, y, 34, 'body', 500, 'muted'); }
+  if (card.highlight) {
+    // A long line (spec 54's own plan words, up to 60 characters) wraps onto a second line before it gets smaller.
+    let size = 34, lines = [card.highlight];
+    for (; size >= 24; size -= 2) { lines = wrapText(card.highlight, width, word => measure(word, size, 'body', 500)); if (lines.length <= 2) break; }
+    for (const [index, line] of lines.slice(0, 2).entries()) { y += index ? size + 12 : 70; centre(line, y, size, 'body', 500, 'muted'); }
+  }
   y += 120;
   centre('Paid in real life.', y, 52, 'display', 700, 'accent');
   for (const slot of [card.slots.crew, card.slots.baithak]) if (slot) { y += 64; centre(slot, y, 34, 'body', 500, 'ink'); }
