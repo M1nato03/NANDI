@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time/dayKey';
 import { WEB_APP } from '../../core/puzzles/challenge';
-import { addLink, addText, asOfLine, crewFilled, crewTotal, inviteText, joinedText, makeCrew, myCrewMinutes, todaysAdds, unsent, CREW_KEY, readCrew, type Crew } from '../../core/crew/crew';
+import { addLink, addText, asOfLine, joinOrder, crewFilled, crewTotal, inviteText, joinedText, makeCrew, myCrewMinutes, todaysAdds, unsent, CREW_KEY, readCrew, type Crew } from '../../core/crew/crew';
 import { cleanText, CREW_MAX, CREW_SIZES, decodeCrewLink, encodeCrewLink, NAME_MAX, PLAN_MAX, type CrewSize, type JoinLink } from '../../core/crew/links';
 import { deriveJar, jarActs, jarDuration, JAR_FROM_KEY, JAR_KINDS, type JarEntry } from '../../core/yatra/jar';
 import { acceptJoin, crewId, receiveCrewLink, saveCrew } from '../../data/repos/crew';
@@ -43,11 +43,11 @@ function useCrewData() {
 }
 
 function Dots({ crew }: { crew: Crew }) {
-  const people = [{ first: crew.me.first, colour: crew.me.colour }, ...crew.members];
+  const people = joinOrder(crew);
   return <span className="crew-dots" aria-hidden="true">{people.map((person, index) => <i key={index} style={{ background: COLOURS[person.colour % COLOURS.length] }}>{person.first.slice(0, 1).toUpperCase()}</i>)}</span>;
 }
 
-/** Home: the crew bar under the trail, and once a day the quiet "Send today's 45 min" line when there is something. */
+/** Home: the crew bar under the trail, and once a day the quiet "Send today's 45 m" line when there is something. */
 export function CrewBar() {
   const data = useCrewData();
   const [message, setMessage] = useState('');

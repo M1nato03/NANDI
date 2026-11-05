@@ -13,8 +13,8 @@ export const CREW_SEEN_KEY = 'crew.seen';
 export interface CrewMember { id: string; first: string; colour: number; cum: number; date: string; last?: number; src?: CrewSource }
 export interface Crew {
   id: string; plan: string; size: CrewSize; made: string;
-  /** This phone's own member; `joinedAt` starts its minutes, `sentCum`/`sentDay` are what its last add link carried. */
-  me: { id: string; first: string; colour: number; joinedAt: number; sentCum: number; sentDay?: string; skipDay?: string };
+  /** This phone's own member; `joinedAt` starts its minutes, `sentCum`/`sentDay` are what its last add link carried, `at` its place in join order. */
+  me: { id: string; first: string; colour: number; joinedAt: number; sentCum: number; sentDay?: string; skipDay?: string; at?: number };
   /** The other members, in join order. */
   members: CrewMember[];
 }
@@ -32,12 +32,12 @@ export function readCrew(value: unknown): Crew | null {
 }
 
 export function makeCrew(input: { id: string; plan: string; size: CrewSize; me: { id: string; first: string; colour: number }; now: number; today: string }): Crew {
-  return { id: input.id, plan: input.plan, size: input.size, made: input.today, me: { ...input.me, joinedAt: input.now, sentCum: 0 }, members: [] };
+  return { id: input.id, plan: input.plan, size: input.size, made: input.today, me: { ...input.me, joinedAt: input.now, sentCum: 0, at: 0 }, members: [] };
 }
 
 /** Joining from an invite: the maker is the first other member. */
 export function joinCrew(link: JoinLink, me: { id: string; first: string; colour: number }, now: number): Crew {
-  return { id: link.c, plan: link.p, size: link.s, made: link.mk, me: { ...me, joinedAt: now, sentCum: 0 }, members: [{ id: link.m, first: link.n, colour: link.k, cum: 0, date: link.mk }] };
+  return { id: link.c, plan: link.p, size: link.s, made: link.mk, me: { ...me, joinedAt: now, sentCum: 0, at: 1 }, members: [{ id: link.m, first: link.n, colour: link.k, cum: 0, date: link.mk }] };
 }
 
 /**
@@ -82,7 +82,7 @@ export function asOfLine(crew: Crew, today: string): string | null {
 
 const SOURCE: Record<JarKind, CrewSource> = { train: 'workout', mind: 'puzzle', calm: 'Calm', focus: 'focus', read: 'chapter', lesson: 'lesson', lightsout: 'lights out' };
 
-/** The minutes not yet sent and whether they reach back before today ("Send your 45 min" vs "Send today's 45 min"). */
+/** The minutes not yet sent and whether they reach back before today ("Send your 45 m" vs "Send today's 45 m"). */
 export function unsent(crew: Crew, entries: readonly JarEntry[], today: string): { minutes: number; onlyToday: boolean; top: CrewSource } {
   const mine = myCrewMinutes(crew, entries);
   const minutes = Math.max(0, mine - crew.me.sentCum);
@@ -98,6 +98,12 @@ export function unsent(crew: Crew, entries: readonly JarEntry[], today: string):
 export function addLink(crew: Crew, entries: readonly JarEntry[], today: string): AddLink {
   const { top } = unsent(crew, entries, today);
   return { v: 1, t: 'add', c: crew.id, m: crew.me.id, n: crew.me.first, k: crew.me.colour, u: myCrewMinutes(crew, entries), d: today, src: top };
+}
+
+/** Everyone in join order, the same on every phone: the maker first, this phone at its own place (never put first). */
+export function joinOrder(crew: Crew): { first: string; colour: number }[] {
+  const at = Math.min(crew.me.at ?? 0, crew.members.length);
+  return [...crew.members.slice(0, at), { first: crew.me.first, colour: crew.me.colour }, ...crew.members.slice(at)];
 }
 
 /** The crew screen's "today's adds only": "Riya +10 · workout" for members whose newest add is dated today. */

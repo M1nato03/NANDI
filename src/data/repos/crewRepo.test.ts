@@ -46,3 +46,15 @@ it('spec 55: joining from an invite stores the crew with its maker as the first 
   expect(joined).toMatchObject({ id: 'crew0001', plan: 'Sunday chai', size: 15, made: '2026-11-05', members: [{ id: 'aaaaaa1', first: 'Riya', cum: 0 }] });
   expect((await loadCrew(db))!.me.first).toBe('Dev');
 });
+
+it('spec 55: leaving clears this phone\'s crew row; joining again later is a fresh member id', async () => {
+  const db = fresh();
+  const invite = encodeCrewLink({ v: 1, t: 'join', c: 'crew0001', p: 'Sunday chai', s: 15, mk: '2026-11-05', m: 'aaaaaa1', n: 'Riya', k: 0 });
+  const first = await acceptJoin(db, invite, { first: 'Dev', colour: 2 }, at('2026-11-05T11:00:00'));
+  await saveCrew(db, null, at('2026-11-06T09:00:00'));
+  expect(await loadCrew(db)).toBeNull();
+  expect((await db.settings.get(CREW_KEY))?.deleted).toBe(1);
+  const again = await acceptJoin(db, invite, { first: 'Dev', colour: 2 }, at('2026-11-07T09:00:00'));
+  expect(again!.me.id).not.toBe(first!.me.id);
+  expect(again!.me.sentCum).toBe(0);
+});

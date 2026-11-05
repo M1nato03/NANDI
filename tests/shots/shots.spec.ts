@@ -1784,6 +1784,8 @@ for (const theme of themes) test.describe(theme, () => {
     await paste(riya, add);
     await expect(riya.getByText('4 h of 5 h')).toBeVisible();
     await snap(riya, 'p55-03-crew-screen');
+    await riya.getByRole('button', { name: 'Leave crew' }).scrollIntoViewIfNeeded();
+    await snap(riya, 'p55-03b-crew-screen-leave');
     await seed(riya, ['2026-11-05'], 6);
     await riya.goto('/?e2e#yatra/crew');
     await riya.reload();

@@ -64,4 +64,8 @@ describe('spec 55: crew link routes', () => {
     expect(location.hash).toBe('#crew/add/AbC-_9');
     expect(() => go('Plan/Evil')).toThrow('Invalid route');
   });
+  it('a crew link screen sits under Yatra in the tab bar', () => {
+    expect(tabOf('crew/join/AbC')).toBe('Yatra');
+    expect(tabOf('yatra/crew')).toBe('Yatra');
+  });
 });

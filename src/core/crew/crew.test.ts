@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { cleanText, decodeCrewLink, encodeCrewLink, LINK_KEYS, type AddLink, type JoinLink, type JoinedLink } from './links';
-import { addLink, addText, applyLink, asOfLine, crewFilled, todaysAdds, crewTotal, joinCrew, makeCrew, myCrewMinutes, plausibleMax, unsent } from './crew';
+import { addLink, addText, applyLink, asOfLine, crewFilled, joinOrder, todaysAdds, crewTotal, joinCrew, makeCrew, myCrewMinutes, plausibleMax, unsent } from './crew';
 import type { JarEntry } from '../yatra/jar';
 
 const at = (text: string) => new Date(text).getTime();
@@ -115,5 +115,17 @@ describe("spec 55: today's adds", () => {
     crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, u: 60, d: '2026-11-05', src: 'workout' }, '2026-11-05');
     crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'cccccc3', n: 'Asha', k: 3, u: 10, d: '2026-11-05', src: 'Calm' }, '2026-11-05');
     expect(todaysAdds(crew, '2026-11-05')).toEqual(['Dev +1 h · workout', 'Asha +10 m · Calm']);
+  });
+});
+
+describe('spec 55: join order is the same on every phone', () => {
+  it('maker first on the maker\'s phone and on the joiner\'s phone; later joiners after', () => {
+    const invite = { v: 1, t: 'join', c: 'crew0001', p: 'Sunday chai', s: 15, mk: '2026-11-05', m: 'aaaaaa1', n: 'Riya', k: 0 } as const;
+    const riyaPhone = applyLink(crew0, { v: 1, t: 'joined', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, d: '2026-11-05' }, '2026-11-05');
+    const devPhone = joinCrew(invite, joiner, at('2026-11-05T10:00:00'));
+    expect(joinOrder(riyaPhone).map(person => person.first)).toEqual(['Riya', 'Dev']);
+    expect(joinOrder(devPhone).map(person => person.first)).toEqual(['Riya', 'Dev']);
+    const later = applyLink(devPhone, { v: 1, t: 'joined', c: 'crew0001', m: 'cccccc3', n: 'Asha', k: 3, d: '2026-11-05' }, '2026-11-05');
+    expect(joinOrder(later).map(person => person.first)).toEqual(['Riya', 'Dev', 'Asha']);
   });
 });

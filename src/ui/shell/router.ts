@@ -64,6 +64,8 @@ export function initializeHistory(): void {
 }
 export function tabOf(path: string): Tab {
   const root = canonicalRoute(path).split('/')[0];
+  // Spec 55: a crew link belongs to Yatra, where the crew lives.
+  if (root === 'crew') return 'Yatra';
   return tabs.find(tab => tab.toLowerCase() === root) ?? 'Plan';
 }
 export function go(path: string): void {
