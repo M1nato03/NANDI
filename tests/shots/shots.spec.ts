@@ -1444,6 +1444,22 @@ for (const theme of themes) test.describe(theme, () => {
     }
   });
 
+  // Polish 570 (b): the review count comes from the saved row, shown after "Flag saved.".
+  test('570 content review count', async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-11-05T12:00:00'));
+    await page.goto('/?e2e#you/contentreview');
+    await expect(page.getByText('0 flagged')).toBeVisible({ timeout: 15_000 });
+    const first = page.locator('.content-review-item').first();
+    await first.getByRole('button', { name: 'Flag', exact: true }).click();
+    await first.getByRole('textbox', { name: 'What needs a look?' }).fill('Check the source.');
+    await first.getByRole('button', { name: 'Save flag' }).click();
+    await expect(page.getByText('Flag saved.')).toBeVisible();
+    await expect(page.getByText('1 flagged')).toBeVisible();
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await shot(page, 'p570-01-content-review-1-flagged', false);
+  });
+
   test('566 side quests on plan', async ({ page }) => {
     await page.clock.setFixedTime(new Date('2026-11-05T11:00:00'));
     await page.goto('/?e2e#plan');

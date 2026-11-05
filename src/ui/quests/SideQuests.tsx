@@ -24,6 +24,9 @@ const hints: Record<string, { why: string; time: string }> = {
   literature: { why: 'Spend time with a story or place.', time: '15 min' },
 };
 
+/** A quest whose category line does not fit it gets its own (the sound walk is listening, not making). */
+const whyById: Record<string, string> = { sound: 'Notice how the world sounds.' };
+
 function useQuestWeek() {
   const [now, setNow] = useState(() => Date.now());
   const [message, setMessage] = useState('');
@@ -84,7 +87,8 @@ export function SideQuests({ selectedId }: { selectedId?: string }) {
     <div className="quest-heading"><div className="ui-section-header"><p className="eyebrow">This week</p><h2>{selectedId ? 'Side quest' : 'Side quests'}</h2><span className="quest-count">{visible.filter(row => row.status === 'done').length} of {visible.length || 3} done</span></div>
       {!selectedId && <div className="quest-heading-actions"><button type="button" className="secondary" disabled={busy || rows.some(row => row.status === 'swapped')} aria-label="Swap one suggestion" onClick={() => void run(() => repo.swap(Date.now()))}>Swap</button><button type="button" className="secondary" onClick={() => setShowForm(value => !value)}>Add your own</button></div>}</div>
     <div className="quest-list">{shown.map(row => {
-      const hint = hints[categories.get(row.sourceId) ?? ''] ?? { why: 'Make space for something you chose.', time: 'Your pace' };
+      const base = hints[categories.get(row.sourceId) ?? ''] ?? { why: 'Make space for something you chose.', time: 'Your pace' };
+      const hint = row.sourceId && whyById[row.sourceId] ? { ...base, why: whyById[row.sourceId]! } : base;
       const expanded = expandedId?.toLowerCase() === row.id.toLowerCase();
       return <article className={row.status === 'done' ? 'quest-row quest-done ui-list-row' : 'quest-row ui-list-row'} key={row.id}>
         <div className="quest-row-main"><button type="button" className="quest-disclosure" aria-expanded={expanded} aria-controls={`quest-detail-${row.id}`} onClick={() => setExpandedId(expanded ? null : row.id)}>

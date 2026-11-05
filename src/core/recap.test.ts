@@ -104,7 +104,7 @@ describe('spec 53: the receipt', () => {
     expect(receiptContent({ ...base, realMs: 65 * 60_000 }).total).toBe('1 h');
   });
   it('moves the longest focus under the total and drops the filler', () => {
-    expect(receiptContent({ ...base, longestFocusMinutes: 52 }).highlight).toBe('Longest focus: 52 min');
+    expect(receiptContent({ ...base, longestFocusMinutes: 52 }).highlight).toBe('Longest focus: 52 m');
     expect(receiptContent({ ...base, concepts: 3 }).highlight).toBeUndefined();
   });
   it('says "so far" until Sunday 18:00, and never from the Sunday receipt on', () => {
@@ -124,8 +124,12 @@ describe('spec 53: the receipt', () => {
 describe("You's week in words", () => {
   it('is singular at 1 and plural otherwise', () => {
     expect(youWeekNumbers({ ...base, tasks: 1, workouts: 1, concepts: 2, focusMinutes: 60 }).map(item => `${item.value} ${item.label}`))
-      .toEqual(['1 task finished', '1 workout', '2 ideas learned', '1 focus hour']);
-    expect(youWeekNumbers({ ...base, tasks: 2, workouts: 3, nights: 1 }).map(item => `${item.value} ${item.label}`)).toEqual(['2 tasks finished', '3 workouts', '1 night back on plan']);
+      .toEqual(['1 task done', '1 workout', '2 ideas learned', '1 h focus']);
+    expect(youWeekNumbers({ ...base, tasks: 2, workouts: 3, nights: 1 }).map(item => `${item.value} ${item.label}`)).toEqual(['2 tasks done', '3 workouts', '1 night back on plan']);
+    // Item 554: focus in h m like Home, and the receipt's words for each number.
+    expect(youWeekNumbers({ ...base, focusMinutes: 50 }).map(item => `${item.value} ${item.label}`)).toEqual(['50 m focus']);
+    expect(youWeekNumbers({ ...base, focusMinutes: 130, sideQuests: 1 }).map(item => `${item.value} ${item.label}`)).toEqual(['2 h 10 m focus', '1 side quest']);
+    expect(receiptContent({ ...base, focusMinutes: 130, longestFocusMinutes: 75 }).highlight).toBe('Longest focus: 1 h 15 m');
   });
 });
 

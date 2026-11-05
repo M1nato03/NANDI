@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useLiveQuery } from 'dexie-react-hooks';
+import { useEffect, useState } from 'react';
 import { weeklyContentSample, contentReviewKey } from '../../core/learn/contentReview';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -15,21 +14,25 @@ const currentTime = () => Date.now();
 export function ContentReview() {
   const [openedAt] = useState(currentTime);
   const sample = weeklyContentSample(bundledTopicPacks, openedAt);
-  const settings = useLiveQuery(() => db.settings.toArray(), []) ?? [];
+  // The count and the verdicts come from committed rows only: a plain read after each save, never a live query (which
+  // shows a write before it commits, so a reload in that moment would have shown a flag that was not kept).
+  const [settings, setSettings] = useState<{ key: string; value: unknown; deleted: number }[] | null>(null);
+  const [saves, setSaves] = useState(0);
+  useEffect(() => { let live = true; void db.settings.where('key').startsWith('learn.contentReview:').toArray().then(rows => { if (live) setSettings(rows); }); return () => { live = false; }; }, [saves]);
   const [flagging, setFlagging] = useState<string>();
   const [note, setNote] = useState('');
   const [message, setMessage] = useState('');
-  const verdicts = new Map(settings.filter(row => !row.deleted && row.key.startsWith('learn.contentReview:')).map(row => [row.key, row.value as Verdict]));
+  const verdicts = new Map((settings ?? []).filter(row => !row.deleted && row.key.startsWith('learn.contentReview:')).map(row => [row.key, row.value as Verdict]));
   const flagged = [...verdicts.values()].filter(row => row?.verdict === 'flag').length;
   async function save(itemId: string, value: Verdict) {
     try {
       const at = currentTime();
       const deviceId = await getOrCreateDeviceId(db, at);
       await trackWrite(() => createSettingsRepos(db, deviceId).settings.put({ key: contentReviewKey(itemId), value }, at));
-      setFlagging(undefined); setNote(''); setMessage(value.verdict === 'flag' ? 'Flag saved.' : 'Review saved.');
+      setFlagging(undefined); setNote(''); setMessage(value.verdict === 'flag' ? 'Flag saved.' : 'Review saved.'); setSaves(count => count + 1);
     } catch { setMessage('Could not save this review. Try again.'); }
   }
-  return <section className="screen content-review"><p className="eyebrow">About</p><h1>Review content</h1><p>{flagged} flagged</p><p>Five items from each module stay here for the week.</p>
+  return <section className="screen content-review"><p className="eyebrow">About</p><h1>Review content</h1>{settings && <p>{flagged} flagged</p>}<p>Five items from each module stay here for the week.</p>
     {sample.map(row => {
       const verdict = verdicts.get(contentReviewKey(row.item.id));
       return <article className="card content-review-item" key={row.item.id}><p className="eyebrow">{row.topic} · {row.module}</p><h2>{row.item.stem}</h2>

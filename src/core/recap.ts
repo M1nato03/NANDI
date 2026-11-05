@@ -118,7 +118,7 @@ export function receiptContent(recap: WeeklyRecapData, now = Number.POSITIVE_INF
     soFar: now < new Date(`${recap.to}T04:00:00`).getTime() - 10 * 3_600_000,
     lines: candidates.filter(([count]) => count > 0).slice(0, RECEIPT_MAX_LINES).map(([, line]) => line),
     total: recap.realMs >= RECEIPT_TOTAL_MIN_MS ? receiptDuration(Math.floor(recap.realMs / 600_000) * 10) : undefined,
-    highlight: recap.longestFocusMinutes > 0 ? `Longest focus: ${recap.longestFocusMinutes} min` : undefined,
+    highlight: recap.longestFocusMinutes > 0 ? `Longest focus: ${receiptDuration(recap.longestFocusMinutes)}` : undefined,
     slots: {},
   };
 }
@@ -129,14 +129,14 @@ export function receiptShareLines(content: ReceiptContent): string[] {
 }
 
 /** You's "This week in words": up to four nonzero numbers, each label singular at 1 ("1 task finished", "1 workout"). */
-export function youWeekNumbers(recap: WeeklyRecapData): { value: number; label: string }[] {
-  const hours = Math.round(recap.focusMinutes / 6) / 10;
-  return [
-    { value: recap.tasks, label: recap.tasks === 1 ? 'task finished' : 'tasks finished' },
-    { value: recap.workouts, label: recap.workouts === 1 ? 'workout' : 'workouts' },
-    { value: recap.concepts, label: recap.concepts === 1 ? 'idea learned' : 'ideas learned' },
-    { value: hours, label: hours === 1 ? 'focus hour' : 'focus hours' },
-    { value: recap.nights, label: recap.nights === 1 ? 'night back on plan' : 'nights back on plan' },
-    { value: recap.sideQuests, label: recap.sideQuests === 1 ? 'side quest completed' : 'side quests completed' },
-  ].filter(item => item.value > 0).slice(0, 4);
+/** Item 554: one label per number across You and the receipt, and focus in "h m" like Home ("50 m focus"). */
+export function youWeekNumbers(recap: WeeklyRecapData): { value: string; label: string }[] {
+  return ([
+    [recap.tasks, String(recap.tasks), recap.tasks === 1 ? 'task done' : 'tasks done'],
+    [recap.workouts, String(recap.workouts), recap.workouts === 1 ? 'workout' : 'workouts'],
+    [recap.concepts, String(recap.concepts), recap.concepts === 1 ? 'idea learned' : 'ideas learned'],
+    [recap.focusMinutes, receiptDuration(recap.focusMinutes), 'focus'],
+    [recap.nights, String(recap.nights), recap.nights === 1 ? 'night back on plan' : 'nights back on plan'],
+    [recap.sideQuests, String(recap.sideQuests), recap.sideQuests === 1 ? 'side quest' : 'side quests'],
+  ] as const).filter(([count]) => count > 0).slice(0, 4).map(([, value, label]) => ({ value, label }));
 }

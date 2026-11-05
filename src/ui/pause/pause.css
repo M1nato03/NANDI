@@ -55,4 +55,5 @@
 /* Spec 54: "Open anyway" asks how long and why; the chosen chip reads as chosen, and chips sit in rows, not a column. */
 .pause-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .pause-chips > button { flex: 1 1 auto; min-height: 44px; }
-.pause-chips > button[aria-pressed='true'] { background: var(--button, var(--accent)); color: var(--button-ink, #1b140c); border-color: var(--button, var(--accent)); }
+/* A chosen chip is tinted and outlined; the solid fill stays for the one main button. */
+.pause-chips > button[aria-pressed='true'] { background: color-mix(in srgb, var(--button, var(--accent)) 18%, var(--surface-1, var(--surface))); color: var(--ink); border: 2px solid var(--button, var(--accent)); font-weight: 700; }
