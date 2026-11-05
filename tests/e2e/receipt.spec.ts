@@ -10,7 +10,11 @@ async function homeAt(page: Page, time: string) {
   await page.clock.setFixedTime(new Date(time));
   await page.goto('/?e2e#yatra');
   await page.reload();
-  // Late in the evening the night deck opens over Home; Home is one tap behind it.
+  await toHome(page);
+}
+
+// Late in the evening the night deck can open over Home (after shutdown it may, on any reload); Home is one tap behind it.
+async function toHome(page: Page) {
   const deck = page.getByRole('button', { name: 'Leave night deck' });
   await expect(page.locator('.next-move-go').or(deck).first()).toBeVisible();
   if (await deck.isVisible()) { await deck.click(); await page.getByRole('link', { name: 'Yatra' }).click(); }
@@ -79,7 +83,7 @@ test('after shutdown the receipt hides (spec 19)', async ({ page }) => {
   await expect(link(page)).toBeVisible();
   await setting(page, 'planner.bedtime', '20:00');
   await page.reload();
-  await expect(page.locator('.yatra-home')).toBeVisible();
+  await toHome(page);
   await expect(link(page)).toHaveCount(0);
 });
 
