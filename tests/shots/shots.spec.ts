@@ -1618,8 +1618,16 @@ for (const theme of themes) test.describe(theme, () => {
     const session = (n: number) => ({ id: `shots54-${n}`, mode: 'train', kind: 'session', refId: `s${n}`, dayKey: '2026-11-05', inputs: { workingSets: 6, status: 'completed' }, updatedAt: noon.getTime() - 3_600_000 + n, deleted: 0, deviceId: 'shots' });
     await page.goto('/?e2e#yatra');
     await seed([['yatra.startDay', '2026-11-03'], ['yatra.jarFrom', '2026-11-03']], [session(1)]);
+    // One 50-minute focus this week, so Home's top line (the receipt's measured time) shows.
+    await page.evaluate(async () => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction('focus', 'readwrite'); transaction.objectStore('focus').put({ id: 'shots54-focus', taskId: 'shots54-task', startedAt: new Date('2026-11-05T09:00:00').getTime(), endedAt: new Date('2026-11-05T09:50:00').getTime(), updatedAt: 1, deleted: 0, deviceId: 'shots' }); transaction.oncomplete = () => resolve(); });
+      database.close();
+    });
     await page.reload();
     await expect(page.locator('.next-move-go')).toBeVisible();
+    await expect(page.locator('.home-real')).toHaveText('This week: 50 m of real things');
+    await shot(page, 'p54-00-home-header', false);
     await shot(page, 'p54-01-home-no-plan', false);
     await page.getByRole('button', { name: 'Add a plan to a camp ahead' }).scrollIntoViewIfNeeded();
     await shot(page, 'p54-02-home-no-plan-scrolled', false);
@@ -1672,6 +1680,9 @@ for (const theme of themes) test.describe(theme, () => {
     const card = page.getByRole('dialog', { name: 'Pause card' });
     await card.getByRole('button', { name: 'Open Instagram anyway' }).click();
     await card.getByRole('group', { name: /^Why\?/ }).getByRole('button', { name: 'Quick check' }).click();
+    await expect(card.getByRole('group', { name: /^Why\?/ }).getByRole('button', { name: 'Quick check' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(card.getByRole('group', { name: 'How long?' }).getByRole('button', { name: '10 min' })).toHaveAttribute('aria-pressed', 'true');
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     await shot(page, 'p54-10-pause-taps', false);
     await card.getByRole('button', { name: 'Open for 10 min' }).click();
     await expect(card).toHaveCount(0);

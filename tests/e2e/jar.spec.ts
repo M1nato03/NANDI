@@ -62,7 +62,9 @@ test('reaching the plan camp shows the payout card; Share shows the image first,
   await expect(payout).toContainText(/You reached .+: movie night with Dev/);
   await payout.getByRole('button', { name: 'Share' }).click();
   const sheet = page.getByRole('dialog', { name: 'Share this camp' });
-  await expect(sheet.getByRole('img')).toHaveAttribute('alt', /movie night with Dev/, { timeout: 20_000 });
+  // The share shows the camp only; the plan line stays on the person's own card.
+  await expect(sheet.getByRole('img')).toHaveAttribute('alt', /^Camp reached: /, { timeout: 20_000 });
+  await expect(sheet.getByRole('img')).not.toHaveAttribute('alt', /movie night/);
   const shared = page.waitForEvent('download');
   await sheet.getByRole('button', { name: 'Share' }).click();
   expect((await shared).suggestedFilename()).toBe('nandi-trail-camp.png');

@@ -119,7 +119,9 @@
 .jar-plan-bar { height: 8px; border-radius: 999px; background: var(--surface-3, var(--line)); overflow: hidden; }
 .jar-plan-bar i { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
 .jar-plan-minutes { margin: 6px 0 0; color: var(--ink-2); font-size: .9375rem; }
-.jar-plan-sheet label { display: grid; gap: 6px; margin-top: 12px; }
+.jar-plan-sheet label { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; margin-top: 12px; }
+.jar-plan-sheet select, .jar-plan-sheet input { width: 100%; min-width: 0; }
+.jar-plan-far { margin: 6px 0 0; color: var(--ink-2); font-size: .9375rem; }
 .jar-plan-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .jar-plan-actions > button { flex: 1; min-height: 44px; }
 .jar-plan-actions > .text-button { flex-basis: 100%; }

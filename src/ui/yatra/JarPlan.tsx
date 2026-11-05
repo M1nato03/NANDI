@@ -33,10 +33,16 @@ export function RealThingsLine() {
 /** Minutes still to walk to a camp from where the trek stands. */
 const minutesTo = (trek: Trek, camp: number) => Math.max(0, (camp * STRETCHES_PER_LEG - (trek.place * STRETCHES_PER_LEG + trek.stretch)) * JAR.stretchMinutes - trek.jar.carry);
 
-/** The payout card's image: the receipt's paper with the camp and the person's own line, nothing else. */
-export function payoutContent(place: string, line: string): ReceiptContent {
-  return { dates: '', soFar: false, lines: [{ label: 'Reached', value: place }], highlight: `“${line}”`, slots: {}, heading: 'NANDI · TRAIL', subline: 'a camp reached' };
+/**
+ * The payout share's image: the receipt's paper with the camp reached, nothing else. The person's own plan line stays
+ * on their screen; the share carries no titles (spec 54).
+ */
+export function payoutContent(place: string): ReceiptContent {
+  return { dates: '', soFar: false, lines: [{ label: 'Reached', value: place }], slots: {}, heading: 'NANDI · TRAIL', subline: 'a camp reached' };
 }
+
+/** The one line that travels with the payout image: the camp, never the plan line. */
+export const payoutShareText = (place: string) => `I reached ${place} on my NANDI trail.\n${WEB_APP}`;
 
 /**
  * Spec 54: one open plan for a camp ahead ("Add a plan to a camp ahead"), its bar in jar minutes (no deadline), and
@@ -87,8 +93,9 @@ function PlanSheet({ trek, plan, ahead, close }: { trek: Trek; plan: JarPlan | n
   return <div className="sheet-backdrop" onClick={close}><section ref={dialog} tabIndex={-1} className="task-sheet jar-plan-sheet" role="dialog" aria-modal="true" aria-label="A plan for a camp ahead" onClick={event => event.stopPropagation()}>
     <h2>A plan for a camp ahead</h2>
     <label>Camp<select value={camp} onChange={event => setCamp(Number(event.target.value))}>
-      {ahead.map(({ place, index }) => <option key={index} value={index}>{place.name} · about {jarDuration(minutesTo(trek, index))}</option>)}
+      {ahead.map(({ place, index }) => <option key={index} value={index}>{place.name}</option>)}
     </select></label>
+    <p className="jar-plan-far">About {jarDuration(minutesTo(trek, camp))} on the trail from here</p>
     <label>What it's for<input value={line} maxLength={PLAN_MAX} placeholder="the new book, movie night…" onChange={event => setLine(event.target.value)} /></label>
     <div className="jar-plan-actions">
       <button type="button" disabled={busy || !line.trim()} onClick={() => void save()}>Save</button>
@@ -98,7 +105,7 @@ function PlanSheet({ trek, plan, ahead, close }: { trek: Trek; plan: JarPlan | n
   </section></div>;
 }
 
-function PayoutCard({ trek, plan, done }: { trek: Trek; plan: JarPlan; done: () => void }) {
+export function PayoutCard({ trek, plan, done }: { trek: Trek; plan: JarPlan; done: () => void }) {
   const place = trek.trail.places[plan.camp]?.name ?? '';
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
@@ -110,13 +117,13 @@ function PayoutCard({ trek, plan, done }: { trek: Trek; plan: JarPlan; done: () 
       {day && <button type="button" className="secondary" onClick={() => { setMessage(''); setOpen(true); }}>Share</button>}
       <button type="button" onClick={done}>Done</button>
     </div>
-    {open && day && <PayoutShare place={place} line={plan.line} close={result => { setOpen(false); if (result) setMessage(result); }} />}
+    {open && day && <PayoutShare place={place} close={result => { setOpen(false); if (result) setMessage(result); }} />}
     {message && <p role="status">{message}</p>}
   </section>;
 }
 
 /** The person sees the exact image before it goes anywhere; Share sends it with one line and the app's link. */
-function PayoutShare({ place, line, close }: { place: string; line: string; close: (message?: string) => void }) {
+export function PayoutShare({ place, close }: { place: string; close: (message?: string) => void }) {
   const dialog = useModalFocus<HTMLElement>(() => close());
   const logo = useRef<HTMLDivElement>(null);
   const [blob, setBlob] = useState<Blob | null>(null);
@@ -124,13 +131,13 @@ function PayoutShare({ place, line, close }: { place: string; line: string; clos
   const [busy, setBusy] = useState(false);
   useEffect(() => {
     let active = true, url = '';
-    void recapPng(payoutContent(place, line), logo.current?.querySelector('svg')).then(image => { if (!active) return; url = URL.createObjectURL(image); setBlob(image); setPreview(url); }).catch(() => undefined);
+    void recapPng(payoutContent(place), logo.current?.querySelector('svg')).then(image => { if (!active) return; url = URL.createObjectURL(image); setBlob(image); setPreview(url); }).catch(() => undefined);
     return () => { active = false; if (url) URL.revokeObjectURL(url); };
-  }, [place, line]);
+  }, [place]);
   const file = () => new File([blob!], 'nandi-trail-camp.png', { type: 'image/png' });
   const share = async () => {
     setBusy(true);
-    try { const result = await shareFileNow(file(), `I reached ${place} on my NANDI trail: ${line}.\n${WEB_APP}`, { title: 'A camp reached', dialogTitle: 'Share my camp' }); close(result === 'shared' ? 'Shared.' : result === 'downloaded' ? 'Image downloaded.' : shareNote(result)); }
+    try { const result = await shareFileNow(file(), payoutShareText(place), { title: 'A camp reached', dialogTitle: 'Share my camp' }); close(result === 'shared' ? 'Shared.' : result === 'downloaded' ? 'Image downloaded.' : shareNote(result)); }
     catch { close('Could not share it.'); }
   };
   const save = async () => {
@@ -142,7 +149,7 @@ function PayoutShare({ place, line, close }: { place: string; line: string; clos
     <div ref={logo} hidden aria-hidden="true"><Kachhua pose="cheer" size={170} /></div>
     <div className="ui-sheet-handle" aria-hidden="true" />
     <h2>Share this camp</h2>
-    {preview ? <img src={preview} width="1080" height="1920" alt={`Camp reached: ${place}. ${line}`} /> : <p>Making your card…</p>}
+    {preview ? <img src={preview} width="1080" height="1920" alt={`Camp reached: ${place}`} /> : <p>Making your card…</p>}
     <div className="recap-sheet-actions">
       <button type="button" onClick={() => void share()} disabled={!blob || busy}>Share</button>
       <button type="button" className="secondary" onClick={() => void save()} disabled={!blob || busy}>Save image</button>
