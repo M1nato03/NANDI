@@ -8,17 +8,19 @@ const row = (kind: Kind, n: number, day = '2026-10-28') => {
   const [mode, k] = kind === 'train' ? ['train', 'session'] : kind === 'mind' ? ['mind', 'board'] : ['calm', 'session'];
   return { id: `yatra-e2e-${kind}-${n}-${day}`, dayKey: day, mode, kind: k, refId: `r${n}`, inputs: kind === 'train' ? { xp: 60, workingSets: 6 } : {}, updatedAt: new Date(`${day}T09:00:00`).getTime() + n * 60_000, deleted: 0, deviceId: 'e2e' };
 };
-async function seed(page: Page, facts: ReturnType<typeof row>[], startDay = '2026-10-28') {
-  await page.evaluate(async ({ facts, startDay }) => {
+async function seed(page: Page, facts: ReturnType<typeof row>[], startDay = '2026-10-28', jarFrom?: string) {
+  await page.evaluate(async ({ facts, startDay, jarFrom }) => {
     const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
     await new Promise<void>((resolve, reject) => {
       const transaction = database.transaction(['ledger', 'settings'], 'readwrite');
       for (const fact of facts) transaction.objectStore('ledger').put(fact);
       transaction.objectStore('settings').put({ key: 'yatra.startDay', value: startDay, updatedAt: 1, deleted: 0, deviceId: 'e2e' });
+      // Spec 54: the jar's first day; days before it keep the old walk (one place a day).
+      if (jarFrom) transaction.objectStore('settings').put({ key: 'yatra.jarFrom', value: jarFrom, updatedAt: 1, deleted: 0, deviceId: 'e2e' });
       transaction.oncomplete = () => resolve(); transaction.onerror = () => reject(transaction.error);
     });
     database.close();
-  }, { facts, startDay });
+  }, { facts, startDay, jarFrom });
   await page.reload(); // raw IndexedDB writes are not seen by Dexie's live queries
 }
 async function openYatra(page: Page) {
@@ -71,15 +73,25 @@ test('a Train, a Mind and a Calm session each walk one stretch and light one sta
   await expect(page.getByRole('button', { name: 'Our kite, a constellation. Rename it' })).toBeVisible();
 });
 
-test('reaching a camp ends the day\'s walk; later sessions only light stars there', async ({ page }) => {
+test('before the jar\'s first day, reaching a camp ended the day\'s walk; later sessions only lit stars there', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await page.goto('/?e2e#plan');
-  await seed(page, [row('train', 1), row('train', 2), row('train', 3), row('calm', 4), row('mind', 5)]);
+  await seed(page, [row('train', 1), row('train', 2), row('train', 3), row('calm', 4), row('mind', 5)], '2026-10-28', '2026-10-29');
   await openYatra(page);
   await expect(line(page)).toHaveText('At Chika. Next: Balu Ka Ghera');
   await expect(page.locator('.trek-narrative')).toHaveText('Three stretches, one camp. Tonight, your stars gather overhead.');
   // The Mind session came after camp, so it walked nothing and opened no gate.
   await expect(page.locator('.trek-gate.open')).toHaveCount(0);
+});
+
+test('spec 54: from the jar\'s first day the walk is minutes, up to 60 a day, so the same five sessions walk five stretches', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await page.goto('/?e2e#plan');
+  await seed(page, [row('train', 1), row('train', 2), row('train', 3), row('calm', 4), row('mind', 5)], '2026-10-28', '2026-10-28');
+  await openYatra(page);
+  await expect(line(page)).toHaveText('Stretch 2 of 3 to Balu Ka Ghera');
+  // The Mind session walked this time, so it opened the second leg's gate.
+  await expect(page.locator('.trek-gate.open')).toHaveCount(1);
 });
 
 test('a day with no session is a warm camp day, never a miss', async ({ page }) => {
