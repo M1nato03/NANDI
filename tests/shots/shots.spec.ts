@@ -1444,6 +1444,19 @@ for (const theme of themes) test.describe(theme, () => {
     }
   });
 
+  test('566 side quests on plan', async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-11-05T11:00:00'));
+    await page.goto('/?e2e#plan');
+    const quests = page.getByRole('region', { name: 'Side quests' });
+    await quests.scrollIntoViewIfNeeded();
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await shot(page, 'p566-01-plan-side-quests', false);
+    await page.locator('details.plan-more > summary').click();
+    await page.locator('details.plan-more > summary').scrollIntoViewIfNeeded();
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await shot(page, 'p566-02-more-open', false);
+  });
+
   test('park it', async ({ page }) => {
     // A moving clock, so the two lines are parked a moment apart and keep their order.
     await page.clock.install({ time: new Date('2026-10-26T22:30:00') });

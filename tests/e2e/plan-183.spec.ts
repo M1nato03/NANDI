@@ -45,8 +45,13 @@ test("Plan's first screen is Mor, the add field and the three lists; everything 
   const more = page.locator('details.plan-more');
   await expect(more).not.toHaveAttribute('open');
   expect(await page.locator('.plan-screen > *').evaluateAll(nodes => nodes.filter(node => !node.matches('.sheet-backdrop')).at(-1)?.matches('details.plan-more'))).toBe(true);
-  for (const name of ['Side quests', 'Planning routines', "Tonight's kolam"]) await expect(page.getByRole('region', { name })).toBeHidden();
+  for (const name of ['Planning routines', "Tonight's kolam"]) await expect(page.getByRole('region', { name })).toBeHidden();
+  // Item 566: side quests are on Plan itself, without opening More, and More no longer holds them.
+  await expect(page.getByRole('region', { name: 'Side quests' })).toBeVisible();
+  await expect(more.getByRole('region', { name: 'Side quests' })).toHaveCount(0);
+  await expect(more.locator(':scope > summary')).not.toContainText('quests');
   await openMore(page);
-  for (const name of ['Side quests', 'Planning routines', "Tonight's kolam", 'Phone ki chhutti']) await expect(page.getByRole('region', { name })).toBeVisible();
+  for (const name of ['Planning routines', "Tonight's kolam", 'Phone ki chhutti']) await expect(page.getByRole('region', { name })).toBeVisible();
+  await expect(more.getByRole('region', { name: 'Side quests' })).toHaveCount(0);
   await expect(more.getByLabel('Add with details')).toBeVisible();
 });
