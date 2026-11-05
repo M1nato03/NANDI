@@ -109,10 +109,11 @@ describe('spec 55: the crew\'s texts use the jar\'s duration format', () => {
 });
 
 describe("spec 55: today's adds", () => {
-  it('reads in the one duration format: "Dev +4 h · workout", "Asha +10 m · Calm"', () => {
+  it('reads in the one duration format: "Dev +1 h · workout", "Asha +10 m · Calm"', () => {
+    // A crew made today: at most 60 a member so far.
     let crew = applyLink(crew0, { v: 1, t: 'joined', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, d: '2026-11-05' }, '2026-11-05');
-    crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, u: 240, d: '2026-11-05', src: 'workout' }, '2026-11-05');
+    crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, u: 60, d: '2026-11-05', src: 'workout' }, '2026-11-05');
     crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'cccccc3', n: 'Asha', k: 3, u: 10, d: '2026-11-05', src: 'Calm' }, '2026-11-05');
-    expect(todaysAdds(crew, '2026-11-05')).toEqual(['Dev +4 h · workout', 'Asha +10 m · Calm']);
+    expect(todaysAdds(crew, '2026-11-05')).toEqual(['Dev +1 h · workout', 'Asha +10 m · Calm']);
   });
 });
