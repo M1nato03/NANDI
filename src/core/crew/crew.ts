@@ -102,7 +102,7 @@ export function addLink(crew: Crew, entries: readonly JarEntry[], today: string)
 
 /** The crew screen's "today's adds only": "Riya +10 · workout" for members whose newest add is dated today. */
 export function todaysAdds(crew: Crew, today: string): string[] {
-  return crew.members.filter(member => member.date === today && (member.last ?? 0) > 0).map(member => `${member.first} +${member.last} · ${member.src ?? 'jar'}`);
+  return crew.members.filter(member => member.date === today && (member.last ?? 0) > 0).map(member => `${member.first} +${jarDuration(member.last ?? 0)} · ${member.src ?? 'jar'}`);
 }
 
 /** The words that travel in chats: they must read well for someone without the app (Jenil sees them at the preview). */

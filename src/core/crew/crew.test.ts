@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { cleanText, decodeCrewLink, encodeCrewLink, LINK_KEYS, type AddLink, type JoinLink, type JoinedLink } from './links';
-import { addLink, addText, applyLink, asOfLine, crewFilled, crewTotal, joinCrew, makeCrew, myCrewMinutes, plausibleMax, unsent } from './crew';
+import { addLink, addText, applyLink, asOfLine, crewFilled, todaysAdds, crewTotal, joinCrew, makeCrew, myCrewMinutes, plausibleMax, unsent } from './crew';
 import type { JarEntry } from '../yatra/jar';
 
 const at = (text: string) => new Date(text).getTime();
@@ -105,5 +105,14 @@ describe('spec 55: the crew\'s texts use the jar\'s duration format', () => {
     const text = addText({ ...crew0, me: { ...crew0.me, first: 'Dev' } }, 240, 240, 'https://x/#crew/add/a');
     expect(text).toBe('Dev added 4 h to Sunday chai at the hill point · 4 h of 15 h · https://x/#crew/add/a');
     expect(text).not.toMatch(/ 0 m|\bmin\b/);
+  });
+});
+
+describe("spec 55: today's adds", () => {
+  it('reads in the one duration format: "Dev +4 h · workout", "Asha +10 m · Calm"', () => {
+    let crew = applyLink(crew0, { v: 1, t: 'joined', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, d: '2026-11-05' }, '2026-11-05');
+    crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, u: 240, d: '2026-11-05', src: 'workout' }, '2026-11-05');
+    crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'cccccc3', n: 'Asha', k: 3, u: 10, d: '2026-11-05', src: 'Calm' }, '2026-11-05');
+    expect(todaysAdds(crew, '2026-11-05')).toEqual(['Dev +4 h · workout', 'Asha +10 m · Calm']);
   });
 });
