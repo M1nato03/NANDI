@@ -1,6 +1,7 @@
 import type { NandiDb } from '../db';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
+import { dayKey } from '../../core/time/dayKey';
 import { applyLink, CREW_KEY, CREW_SEEN_KEY, joinCrew, readCrew, type Crew } from '../../core/crew/crew';
 import { decodeCrewLink, type CrewLink } from '../../core/crew/links';
 
@@ -53,7 +54,7 @@ export async function receiveCrewLink(db: NandiDb, route: string, now: number, t
 export async function acceptJoin(db: NandiDb, route: string, me: { first: string; colour: number }, now: number): Promise<Crew | null> {
   const link = decodeCrewLink(route);
   if (!link || link.t !== 'join') return null;
-  const crew = joinCrew(link, { id: crewId(), ...me }, now);
+  const crew = joinCrew(link, { id: crewId(), ...me }, now, dayKey(now));
   await saveCrew(db, crew, now);
   return crew;
 }

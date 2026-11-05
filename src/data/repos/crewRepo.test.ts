@@ -36,7 +36,7 @@ it('spec 55: the same add link twice counts once, and an impossible one is ignor
   expect((await receiveCrewLink(db, add, at('2026-11-05T10:02:00'), '2026-11-05')).outcome).toBe('ignored');
   expect((await receiveCrewLink(db, fake, at('2026-11-05T10:03:00'), '2026-11-05')).outcome).toBe('ignored');
   expect((await receiveCrewLink(db, 'crew/add/!!!', at('2026-11-05T10:04:00'), '2026-11-05')).outcome).toBe('invalid');
-  expect((await loadCrew(db))!.members).toEqual([{ id: 'bbbbbb2', first: 'Dev', colour: 2, cum: 45, date: '2026-11-05', last: 45, src: 'workout' }]);
+  expect((await loadCrew(db))!.members).toEqual([{ id: 'bbbbbb2', first: 'Dev', colour: 2, cum: 45, date: '2026-11-05', joined: '2026-11-05', last: 45, src: 'workout' }]);
 });
 
 it('spec 55: joining from an invite stores the crew with its maker as the first member', async () => {

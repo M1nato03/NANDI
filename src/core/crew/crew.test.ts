@@ -89,7 +89,7 @@ describe('spec 55: a crew on one phone', () => {
 });
 
 describe('spec 55: what this phone sends', () => {
-  const crew = { ...joinCrew({ v: 1, t: 'join', c: 'crew0001', p: 'Sunday chai', s: 15, mk: '2026-11-04', m: 'aaaaaa1', n: 'Riya', k: 1 }, joiner, at('2026-11-05T09:00:00')) };
+  const crew = { ...joinCrew({ v: 1, t: 'join', c: 'crew0001', p: 'Sunday chai', s: 15, mk: '2026-11-04', m: 'aaaaaa1', n: 'Riya', k: 1 }, joiner, at('2026-11-05T09:00:00'), '2026-11-05') };
   it('counts jar minutes only from joining, and says "today\'s" only when they are all from today', () => {
     const entries = [entry(10, '2026-11-05', '08:00:00'), entry(10, '2026-11-05', '10:00:00'), entry(5, '2026-11-06', '09:00:00', 'focus')];
     expect(myCrewMinutes(crew, entries)).toBe(15);
@@ -123,7 +123,7 @@ describe('spec 55: join order is the same on every phone', () => {
   it('maker first on the maker\'s phone and on the joiner\'s phone; later joiners after', () => {
     const invite = { v: 1, t: 'join', c: 'crew0001', p: 'Sunday chai', s: 15, mk: '2026-11-05', m: 'aaaaaa1', n: 'Riya', k: 0 } as const;
     const riyaPhone = applyLink(crew0, { v: 1, t: 'joined', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, d: '2026-11-05' }, '2026-11-05');
-    const devPhone = joinCrew(invite, joiner, at('2026-11-05T10:00:00'));
+    const devPhone = joinCrew(invite, joiner, at('2026-11-05T10:00:00'), '2026-11-05');
     expect(joinOrder(riyaPhone).map(person => person.first)).toEqual(['Riya', 'Dev']);
     expect(joinOrder(devPhone).map(person => person.first)).toEqual(['Riya', 'Dev']);
     const later = applyLink(devPhone, { v: 1, t: 'joined', c: 'crew0001', m: 'cccccc3', n: 'Asha', k: 3, d: '2026-11-05' }, '2026-11-05');
@@ -142,16 +142,18 @@ describe('spec 55: the plan travels in the invite only', () => {
 });
 
 describe('spec 55: every dot in a crew has its own colour, the same on every phone', () => {
-  it('five members who all send colour 0 get five distinct colours, in the same order on two phones', () => {
+  it('five members who all send colour 0, arriving in different orders, get five distinct colours in the same order on two phones', () => {
     const invite = { v: 1, t: 'join', c: 'crew0001', p: 'Sunday chai', s: 15, mk: '2026-11-05', m: 'aaaaaa1', n: 'Riya', k: 0 } as const;
     const joined = (m: string, n: string) => ({ v: 1, t: 'joined', c: 'crew0001', m, n, k: 0, d: '2026-11-05' }) as const;
+    // The links reach the two phones in different orders.
     let riya = { ...crew0, me: { ...crew0.me, colour: 0 } };
-    for (const [m, n] of [['bbbbbb2', 'Dev'], ['cccccc3', 'Asha'], ['dddddd4', 'Kabir'], ['eeeeee5', 'Meera']] as const) riya = applyLink(riya, joined(m, n), '2026-11-05');
-    let dev = joinCrew(invite, { ...joiner, colour: 0 }, at('2026-11-05T10:00:00'));
-    for (const [m, n] of [['cccccc3', 'Asha'], ['dddddd4', 'Kabir'], ['eeeeee5', 'Meera']] as const) dev = applyLink(dev, joined(m, n), '2026-11-05');
+    for (const [m, n] of [['eeeeee5', 'Meera'], ['bbbbbb2', 'Dev'], ['dddddd4', 'Kabir'], ['cccccc3', 'Asha']] as const) riya = applyLink(riya, joined(m, n), '2026-11-05');
+    let dev = joinCrew(invite, { ...joiner, colour: 0 }, at('2026-11-05T10:00:00'), '2026-11-05');
+    for (const [m, n] of [['dddddd4', 'Kabir'], ['cccccc3', 'Asha'], ['eeeeee5', 'Meera']] as const) dev = applyLink(dev, joined(m, n), '2026-11-05');
     const onRiya = joinOrder(riya), onDev = joinOrder(dev);
     expect(new Set(onRiya.map(person => person.colour)).size).toBe(5);
     expect(onRiya.map(person => [person.first, person.colour])).toEqual(onDev.map(person => [person.first, person.colour]));
+    expect(onRiya.map(person => person.first)).toEqual(['Riya', 'Dev', 'Asha', 'Kabir', 'Meera']);
   });
   it('a joiner never takes the maker\'s colour', () => {
     for (let k = 0; k < 8; k++) expect(joinerColour(k)).not.toBe(k);

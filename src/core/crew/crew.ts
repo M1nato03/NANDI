@@ -10,11 +10,14 @@ export const CREW_KEY = 'crew.current';
 export const CREW_SEEN_KEY = 'crew.seen';
 
 /** `last` and `src`: what the newest add link added and its top source, for the crew screen's "today's adds". */
-export interface CrewMember { id: string; first: string; colour: number; cum: number; date: string; last?: number; src?: CrewSource }
+/** `joined`: the member's join day (from their "joined" link), the stable key for join order on every phone. */
+export interface CrewMember { id: string; first: string; colour: number; cum: number; date: string; joined?: string; last?: number; src?: CrewSource }
 export interface Crew {
   id: string; plan: string; size: CrewSize; made: string;
   /** This phone's own member; `joinedAt` starts its minutes, `sentCum`/`sentDay` are what its last add link carried, `at` its place in join order. */
-  me: { id: string; first: string; colour: number; joinedAt: number; sentCum: number; sentDay?: string; skipDay?: string; at?: number };
+  me: { id: string; first: string; colour: number; joinedAt: number; sentCum: number; sentDay?: string; skipDay?: string; at?: number; day?: string };
+  /** The maker's member id: first in join order on every phone. */
+  maker?: string;
   /** The other members, in join order. */
   members: CrewMember[];
 }
@@ -32,12 +35,12 @@ export function readCrew(value: unknown): Crew | null {
 }
 
 export function makeCrew(input: { id: string; plan: string; size: CrewSize; me: { id: string; first: string; colour: number }; now: number; today: string }): Crew {
-  return { id: input.id, plan: input.plan, size: input.size, made: input.today, me: { ...input.me, joinedAt: input.now, sentCum: 0, at: 0 }, members: [] };
+  return { id: input.id, plan: input.plan, size: input.size, made: input.today, me: { ...input.me, joinedAt: input.now, sentCum: 0, at: 0, day: input.today }, maker: input.me.id, members: [] };
 }
 
 /** Joining from an invite: the maker is the first other member. */
-export function joinCrew(link: JoinLink, me: { id: string; first: string; colour: number }, now: number): Crew {
-  return { id: link.c, plan: link.p, size: link.s, made: link.mk, me: { ...me, joinedAt: now, sentCum: 0, at: 1 }, members: [{ id: link.m, first: link.n, colour: link.k, cum: 0, date: link.mk }] };
+export function joinCrew(link: JoinLink, me: { id: string; first: string; colour: number }, now: number, today: string): Crew {
+  return { id: link.c, plan: link.p, size: link.s, made: link.mk, me: { ...me, joinedAt: now, sentCum: 0, at: 1, day: today }, maker: link.m, members: [{ id: link.m, first: link.n, colour: link.k, cum: 0, date: link.mk, joined: link.mk }] };
 }
 
 /**
@@ -50,8 +53,8 @@ export function applyLink(crew: Crew, link: CrewLink, today: string): Crew {
   const known = crew.members.find(member => member.id === link.m);
   if (!known && crew.members.length + 1 >= CREW_MAX) return crew;
   if (link.t === 'joined') {
-    if (known) return { ...crew, members: crew.members.map(member => member.id === link.m ? { ...member, first: link.n, colour: link.k } : member) };
-    return { ...crew, members: [...crew.members, { id: link.m, first: link.n, colour: link.k, cum: 0, date: link.d }] };
+    if (known) return { ...crew, members: crew.members.map(member => member.id === link.m ? { ...member, first: link.n, colour: link.k, joined: member.joined && member.joined < link.d ? member.joined : link.d } : member) };
+    return { ...crew, members: [...crew.members, { id: link.m, first: link.n, colour: link.k, cum: 0, date: link.d, joined: link.d }] };
   }
   if (link.u > plausibleMax(crew.made, link.d)) return crew;
   if (known) {
@@ -60,7 +63,7 @@ export function applyLink(crew: Crew, link: CrewLink, today: string): Crew {
     if (!newer) return crew;
     return { ...crew, members: crew.members.map(member => member.id === link.m ? { ...member, first: link.n, colour: link.k, cum: link.u, date: link.d, last: link.u - known.cum, src: link.src } : member) };
   }
-  return { ...crew, members: [...crew.members, { id: link.m, first: link.n, colour: link.k, cum: link.u, date: link.d, last: link.u, src: link.src }] };
+  return { ...crew, members: [...crew.members, { id: link.m, first: link.n, colour: link.k, cum: link.u, date: link.d, joined: link.d, last: link.u, src: link.src }] };
 }
 
 /** This phone's minutes for the crew: jar minutes counted (after the daily cap) since joining. */
@@ -101,8 +104,11 @@ export function addLink(crew: Crew, entries: readonly JarEntry[], today: string)
 
 /** Everyone in join order, the same on every phone: the maker first, this phone at its own place (never put first). */
 export function joinOrder(crew: Crew): { first: string; colour: number }[] {
-  const at = Math.min(crew.me.at ?? 0, crew.members.length);
-  const people = [...crew.members.slice(0, at), { first: crew.me.first, colour: crew.me.colour }, ...crew.members.slice(at)];
+  // A key every phone has, whatever order the links arrived in: the maker first, then join day, then member id.
+  const everyone = [{ id: crew.me.id, first: crew.me.first, colour: crew.me.colour, joined: crew.me.day ?? crew.made }, ...crew.members.map(member => ({ id: member.id, first: member.first, colour: member.colour, joined: member.joined ?? member.date }))];
+  const maker = crew.maker ?? (crew.me.at === 0 ? crew.me.id : crew.members[0]?.id);
+  const people = everyone.sort((a, b) => Number(b.id === maker) - Number(a.id === maker) || a.joined.localeCompare(b.joined) || a.id.localeCompare(b.id))
+    .map(({ first, colour }) => ({ first, colour }));
   // No two dots in a crew share a colour: walking in join order, a colour already used moves to the next free one,
   // so every phone (same join order) shows the same colours.
   const used = new Set<number>();
