@@ -1577,7 +1577,10 @@ for (const theme of themes) test.describe(theme, () => {
     await page.goto('/?e2e#you');
     await page.reload();
     const week = page.getByRole('region', { name: 'This week in words' });
+    // Wait for You's week card before scrolling to it (dark p53-05 once caught the top of You instead).
+    await expect(week.getByRole('button', { name: 'Share my week' })).toBeVisible();
     await week.scrollIntoViewIfNeeded();
+    await expect(week).toBeInViewport();
     await shot(page, 'p53-05-you-week', false);
     await page.waitForFunction(() => Boolean(window.__nandiReceiptTest));
     const base = { from: '2026-11-02', to: '2026-11-09', tasks: 0, focusMinutes: 0, longestFocusMinutes: 0, workouts: 0, sideQuests: 0, concepts: 0, nights: 0, chapters: 0, realMs: 0 };
