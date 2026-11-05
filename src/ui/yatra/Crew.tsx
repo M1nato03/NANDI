@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time/dayKey';
 import { WEB_APP } from '../../core/puzzles/challenge';
-import { addLink, addText, asOfLine, joinOrder, crewFilled, crewTotal, inviteText, joinedText, latestAdds, makeCrew, myCrewMinutes, unsent, CREW_KEY, readCrew, type Crew } from '../../core/crew/crew';
+import { addLink, addText, asOfLine, joinOrder, joinerColour, crewFilled, crewTotal, inviteText, joinedText, latestAdds, makeCrew, myCrewMinutes, unsent, CREW_KEY, readCrew, type Crew } from '../../core/crew/crew';
 import { cleanText, CREW_MAX, CREW_SIZES, decodeCrewLink, encodeCrewLink, NAME_MAX, PLAN_MAX, type CrewSize, type JoinLink } from '../../core/crew/links';
 import { deriveJar, jarActs, jarDuration, JAR_FROM_KEY, JAR_KINDS, type JarEntry } from '../../core/yatra/jar';
 import { acceptJoin, crewId, receiveCrewLink, saveCrew } from '../../data/repos/crew';
@@ -227,7 +227,7 @@ export function CrewLinkScreen({ route }: { route: string }) {
     <p>{link.n} made it: when you fill {link.s} h together, it's {link.p}.</p>
     <p className="small">Crews hold up to {CREW_MAX}.</p>
     <label>Your first name<input value={first} maxLength={NAME_MAX} onChange={event => setFirst(event.target.value)} /></label>
-    <button type="button" disabled={!cleanText(first, NAME_MAX)} onClick={() => void acceptJoin(db, route, { first: cleanText(first, NAME_MAX), colour: 1 + Math.floor(Math.random() * 7) }, Date.now()).then(() => setDone('joined'))}>Join</button>
+    <button type="button" disabled={!cleanText(first, NAME_MAX)} onClick={() => void acceptJoin(db, route, { first: cleanText(first, NAME_MAX), colour: joinerColour(link.k) }, Date.now()).then(() => setDone('joined'))}>Join</button>
   </section>;
 }
 

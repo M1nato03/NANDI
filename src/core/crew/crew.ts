@@ -102,8 +102,21 @@ export function addLink(crew: Crew, entries: readonly JarEntry[], today: string)
 /** Everyone in join order, the same on every phone: the maker first, this phone at its own place (never put first). */
 export function joinOrder(crew: Crew): { first: string; colour: number }[] {
   const at = Math.min(crew.me.at ?? 0, crew.members.length);
-  return [...crew.members.slice(0, at), { first: crew.me.first, colour: crew.me.colour }, ...crew.members.slice(at)];
+  const people = [...crew.members.slice(0, at), { first: crew.me.first, colour: crew.me.colour }, ...crew.members.slice(at)];
+  // No two dots in a crew share a colour: walking in join order, a colour already used moves to the next free one,
+  // so every phone (same join order) shows the same colours.
+  const used = new Set<number>();
+  return people.map(person => {
+    let colour = ((person.colour % CREW_COLOURS) + CREW_COLOURS) % CREW_COLOURS;
+    while (used.has(colour)) colour = (colour + 1) % CREW_COLOURS;
+    used.add(colour);
+    return { ...person, colour };
+  });
 }
+/** The palette size (Crew.tsx's COLOURS); a crew holds at most 5, so a free colour always exists. */
+export const CREW_COLOURS = 8;
+/** A joiner's own colour: never the maker's (the invite carries it), and the same for the same invite. */
+export const joinerColour = (makerColour: number) => (makerColour + 1) % CREW_COLOURS;
 
 /**
  * The crew screen's "Latest": each member's newest add, in join order, with the day of its link ("Dev +4 h · workout ·

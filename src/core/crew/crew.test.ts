@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { cleanText, decodeCrewLink, encodeCrewLink, LINK_KEYS, type AddLink, type JoinLink, type JoinedLink } from './links';
-import { addLink, addText, applyLink, asOfLine, crewFilled, joinOrder, latestAdds, inviteText, joinedText, crewTotal, joinCrew, makeCrew, myCrewMinutes, plausibleMax, unsent } from './crew';
+import { addLink, addText, applyLink, asOfLine, crewFilled, joinOrder, joinerColour, latestAdds, inviteText, joinedText, crewTotal, joinCrew, makeCrew, myCrewMinutes, plausibleMax, unsent } from './crew';
 import type { JarEntry } from '../yatra/jar';
 
 const at = (text: string) => new Date(text).getTime();
@@ -138,5 +138,22 @@ describe('spec 55: the plan travels in the invite only', () => {
     expect(joinedText(dev, 'U')).toBe('Dev joined our NANDI crew. U');
     expect(addText(dev, 45, 100, 'U')).toBe('Dev added 45 m to our crew jar · 1 h 40 m of 15 h · U');
     for (const text of [joinedText(dev, 'U'), addText(dev, 45, 100, 'U')]) expect(text).not.toContain('chai');
+  });
+});
+
+describe('spec 55: every dot in a crew has its own colour, the same on every phone', () => {
+  it('five members who all send colour 0 get five distinct colours, in the same order on two phones', () => {
+    const invite = { v: 1, t: 'join', c: 'crew0001', p: 'Sunday chai', s: 15, mk: '2026-11-05', m: 'aaaaaa1', n: 'Riya', k: 0 } as const;
+    const joined = (m: string, n: string) => ({ v: 1, t: 'joined', c: 'crew0001', m, n, k: 0, d: '2026-11-05' }) as const;
+    let riya = { ...crew0, me: { ...crew0.me, colour: 0 } };
+    for (const [m, n] of [['bbbbbb2', 'Dev'], ['cccccc3', 'Asha'], ['dddddd4', 'Kabir'], ['eeeeee5', 'Meera']] as const) riya = applyLink(riya, joined(m, n), '2026-11-05');
+    let dev = joinCrew(invite, { ...joiner, colour: 0 }, at('2026-11-05T10:00:00'));
+    for (const [m, n] of [['cccccc3', 'Asha'], ['dddddd4', 'Kabir'], ['eeeeee5', 'Meera']] as const) dev = applyLink(dev, joined(m, n), '2026-11-05');
+    const onRiya = joinOrder(riya), onDev = joinOrder(dev);
+    expect(new Set(onRiya.map(person => person.colour)).size).toBe(5);
+    expect(onRiya.map(person => [person.first, person.colour])).toEqual(onDev.map(person => [person.first, person.colour]));
+  });
+  it('a joiner never takes the maker\'s colour', () => {
+    for (let k = 0; k < 8; k++) expect(joinerColour(k)).not.toBe(k);
   });
 });

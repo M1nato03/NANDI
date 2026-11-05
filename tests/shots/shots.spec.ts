@@ -1737,7 +1737,8 @@ for (const theme of themes) test.describe(theme, () => {
       await new Promise<void>(resolve => { const transaction = database.transaction(['ledger', 'settings'], 'readwrite'); transaction.objectStore('settings').put({ key: 'yatra.jarFrom', value: '2026-11-01', updatedAt: 1, deleted: 0, deviceId: 'shots' }); for (const day of list) for (let n = 0; n < count; n++) transaction.objectStore('ledger').put({ id: `shots55-${day}-${n}`, mode: 'train', kind: 'session', refId: `${day}-${n}`, dayKey: day, inputs: { workingSets: 6, status: 'completed' }, updatedAt: new Date(`${day}T15:00:00`).getTime() + n, deleted: 0, deviceId: 'shots' }); transaction.oncomplete = () => resolve(); });
       database.close();
     }, [days, perDay] as const);
-    const snap = (p: Page, name: string) => p.screenshot({ path: `${out}/${theme}/${name}.png` });
+    // Two frames first, so a focus ring or a colour is never caught mid-transition (reduced motion's 0.01 ms).
+    const snap = async (p: Page, name: string) => { await p.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))); await p.screenshot({ path: `${out}/${theme}/${name}.png` }); };
     const texts: string[] = [];
 
     const riya = await phone(made);
