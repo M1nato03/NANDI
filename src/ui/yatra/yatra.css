@@ -129,3 +129,23 @@
 .jar-payout h2 { margin: 4px 0 12px; font-size: 1.25rem; }
 .jar-payout-actions { display: flex; gap: 8px; }
 .jar-payout-actions > button { flex: 1; min-height: 44px; }
+
+/* Spec 55: the crew. Members are initial dots in join order; nothing is ranked. */
+.crew-bar { margin-top: 12px; }
+.crew-bar-go { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 8px 12px; text-align: left; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 14px; }
+.crew-dots { display: inline-flex; gap: 2px; vertical-align: middle; }
+.crew-dots i { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; color: #fff; font: 700 .75rem/1 'DM Sans', sans-serif; font-style: normal; }
+.crew-send { margin: 8px 0 0; color: var(--ink-2); }
+.crew-send-actions { display: flex; gap: 12px; margin-top: 4px; }
+.crew-meter { height: 10px; border-radius: 999px; background: var(--surface-3, var(--line)); overflow: hidden; margin-top: 12px; }
+.crew-meter i { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
+.crew-screen label { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; margin-top: 12px; }
+.crew-screen label input { width: 100%; min-width: 0; }
+.crew-sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+.crew-sizes > button { flex: 1 1 auto; min-height: 44px; }
+.crew-sizes > button[aria-pressed='true'] { background: var(--button, var(--accent)); color: var(--button-ink, #1b140c); border-color: var(--button, var(--accent)); }
+.crew-make, .crew-filled, .crew-paste { margin-top: 16px; }
+.crew-make > button, .crew-paste > button { width: 100%; margin-top: 12px; }
+.crew-filled-actions { display: flex; gap: 8px; margin-top: 12px; }
+.crew-filled-actions > button { flex: 1; min-height: 44px; }
+.crew-adds { padding-left: 18px; }

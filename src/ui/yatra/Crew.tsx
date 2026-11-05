@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time/dayKey';
@@ -8,9 +8,14 @@ import { cleanText, CREW_MAX, CREW_SIZES, decodeCrewLink, encodeCrewLink, NAME_M
 import { deriveJar, jarActs, jarDuration, JAR_FROM_KEY, JAR_KINDS, type JarEntry } from '../../core/yatra/jar';
 import { acceptJoin, crewId, receiveCrewLink, saveCrew } from '../../data/repos/crew';
 import { inBrowser } from '../../platform/links';
-import { shareTextNow, shareNote } from '../shareActions';
+import { saveFileNow, shareFileNow, shareTextNow, shareNote } from '../shareActions';
+import { recapPng } from '../screens/recapCard';
+import { useModalFocus } from '../shell/useModalFocus';
+import { Kachhua } from '../cast/Cast';
+import type { ReceiptContent } from '../../core/recap';
 import { go } from '../shell/router';
 import { recordError } from '../errorRing';
+import './yatra.css';
 
 /**
  * Spec 55: a crew is a shared jar by chat links. Members show as coloured initial dots in join order (never ranked);
@@ -18,7 +23,6 @@ import { recordError } from '../errorRing';
  * newest minutes it has seen from each member.
  */
 const COLOURS = ['#c2410c', '#0f766e', '#7c3aed', '#b45309', '#2563eb', '#be185d', '#4d7c0f', '#475569'];
-const UPDATES = 'https://nandi-updates.nandi11.workers.dev/version.json';
 const linkUrl = (route: string) => `${WEB_APP}/#${route}`;
 let pastedRoute = '';
 
@@ -79,6 +83,7 @@ async function sendAdd(crew: Crew, entries: readonly JarEntry[], today: string):
 export function CrewScreen() {
   const data = useCrewData();
   const [message, setMessage] = useState('');
+  const [sharing, setSharing] = useState(false);
   if (!data) return <section className="screen" role="status">Opening the crew…</section>;
   const { crew, entries, today } = data;
   if (!crew) return <section className="screen crew-screen"><h1>A crew</h1><p>Fill one jar together with up to four friends. Each of you walks your own trail; your minutes add up here when you send them.</p><MakeCrew /><PasteLink /></section>;
@@ -97,7 +102,8 @@ export function CrewScreen() {
     <p><strong>{jarDuration(Math.min(total, crew.size * 60))} of {crew.size} h</strong></p>
     {asOf && <p className="small">{asOf}</p>}
     <p><Dots crew={crew} /> {crew.members.length + 1} walking</p>
-    {filled && <div className="card crew-filled"><h2>The crew filled {crew.size} h: {crew.plan}</h2><button type="button" onClick={() => void leave(crew)}>Plan the next one</button></div>}
+    {filled && <div className="card crew-filled"><h2>The crew filled {crew.size} h: {crew.plan}</h2><div className="crew-filled-actions"><button type="button" className="secondary" onClick={() => setSharing(true)}>Share</button><button type="button" onClick={() => void leave(crew)}>Plan the next one</button></div></div>}
+    {sharing && <CrewShare size={crew.size} close={result => { setSharing(false); if (result) setMessage(result); }} />}
     {adds.length > 0 && <><h2>Today</h2><ul className="crew-adds">{adds.map(line => <li key={line}>{line}</li>)}</ul></>}
     {crew.members.length + 1 < CREW_MAX && <button type="button" className="secondary" onClick={() => void invite()}>Invite a friend</button>}
     <NameEdit crew={crew} />
@@ -181,7 +187,8 @@ export function CrewLinkScreen({ route }: { route: string }) {
     <p><strong>Have the app?</strong> Copy this link, then paste it in NANDI → Yatra → Paste a crew link.</p>
     <button type="button" onClick={() => void copy()}>Copy this link</button>
     {copied && <p role="status">{copied}</p>}
-    <p className="small">No app yet? <a href={UPDATES.replace('version.json', '')}>Get NANDI for Android</a></p>
+    {/* No install page exists yet (the updates site serves version.json and APKs only), so no link that would 404. */}
+    <p className="small">No app yet? You can join here in the browser.</p>
     <button type="button" className="text-button" onClick={() => setBrowserJoin(true)}>{link.t === 'join' ? 'Join here in the browser' : 'Use it here in the browser'}</button>
   </section>;
   if (link.t !== 'join') return <section className="screen" role="status">Adding to the crew…</section>;
@@ -194,4 +201,38 @@ export function CrewLinkScreen({ route }: { route: string }) {
     <label>Your first name<input value={first} maxLength={NAME_MAX} onChange={event => setFirst(event.target.value)} /></label>
     <button type="button" disabled={!cleanText(first, NAME_MAX)} onClick={() => void acceptJoin(db, route, { first: cleanText(first, NAME_MAX), colour: 1 + Math.floor(Math.random() * 7) }, Date.now()).then(() => setDone('joined'))}>Join</button>
   </section>;
+}
+
+/** The crew's filled jar as an image: the size only, no member, no per-person number and no plan words. */
+export function crewFilledContent(size: number): ReceiptContent {
+  return { dates: '', soFar: false, lines: [{ label: 'Filled together', value: `${size} h` }], slots: {}, heading: 'NANDI · CREW', subline: 'a crew jar filled' };
+}
+export const crewFilledText = (size: number) => `Our NANDI crew filled ${size} h together.\n${WEB_APP}`;
+
+/** The person sees the exact image first; Share sends it with one line, Save keeps it. */
+function CrewShare({ size, close }: { size: number; close: (message?: string) => void }) {
+  const dialog = useModalFocus<HTMLElement>(() => close());
+  const logo = useRef<HTMLDivElement>(null);
+  const [blob, setBlob] = useState<Blob | null>(null);
+  const [preview, setPreview] = useState('');
+  const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    let active = true, url = '';
+    void recapPng(crewFilledContent(size), logo.current?.querySelector('svg')).then(image => { if (!active) return; url = URL.createObjectURL(image); setBlob(image); setPreview(url); }).catch(() => undefined);
+    return () => { active = false; if (url) URL.revokeObjectURL(url); };
+  }, [size]);
+  const file = () => new File([blob!], 'nandi-crew-filled.png', { type: 'image/png' });
+  const share = async () => { setBusy(true); try { close(shareNote(await shareFileNow(file(), crewFilledText(size), { title: 'Our crew filled', dialogTitle: 'Share the crew jar' })) || 'Shared.'); } catch { close('Could not share it.'); } };
+  const save = async () => { setBusy(true); try { const result = await saveFileNow(file()); close(result === 'saved' ? 'Saved in Documents/NANDI' : result === 'downloaded' ? 'Image saved.' : shareNote(result)); } catch { close('Could not save it.'); } };
+  return <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => close()}><section ref={dialog} tabIndex={-1} className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Share the crew jar" onClick={event => event.stopPropagation()}>
+    <div ref={logo} hidden aria-hidden="true"><Kachhua pose="cheer" size={170} /></div>
+    <div className="ui-sheet-handle" aria-hidden="true" />
+    <h2>Share the crew jar</h2>
+    {preview ? <img src={preview} width="1080" height="1920" alt={`A crew jar filled: ${size} h`} /> : <p>Making your card…</p>}
+    <div className="recap-sheet-actions">
+      <button type="button" onClick={() => void share()} disabled={!blob || busy}>Share</button>
+      <button type="button" className="secondary" onClick={() => void save()} disabled={!blob || busy}>Save image</button>
+      <button type="button" className="text-button" onClick={() => close()}>Not now</button>
+    </div>
+  </section></div>;
 }

@@ -1710,4 +1710,92 @@ for (const theme of themes) test.describe(theme, () => {
     await textAt200(page);
     await shot(page, 'p54-11-pause-taps-200pct', false);
   });
+
+  // Spec 55: a crew on two phones (two contexts), the texts that travel in chats (saved as plain text, as a chat shows
+  // them), Home's crew bar with the daily send line, the crew screen, the filled jar and its image, and the browser page.
+  test('55 crew', async ({ browser }, info) => {
+    test.setTimeout(180_000);
+    const made = new Date('2026-11-01T10:00:00'), later = new Date('2026-11-05T12:00:00');
+    const phone = async (at: Date) => {
+      const use = info.project.use;
+      const context = await browser.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, baseURL: use.baseURL, storageState: use.storageState, colorScheme: theme, reducedMotion: 'reduce' });
+      const p = await context.newPage();
+      await p.addInitScript(() => {
+        Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });
+        const outbox: string[] = [];
+        (window as Window & { outbox?: string[] }).outbox = outbox;
+        Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (text: string) => { outbox.push(text); } } });
+      });
+      await p.clock.setFixedTime(at);
+      await p.goto('/?e2e#yatra/crew');
+      return p;
+    };
+    const sent = async (p: Page) => { await expect.poll(async () => (await p.evaluate(() => (window as Window & { outbox?: string[] }).outbox ?? [])).length).toBeGreaterThan(0); return (await p.evaluate(() => (window as Window & { outbox?: string[] }).outbox ?? [])).at(-1)!; };
+    const paste = async (p: Page, text: string) => { await p.goto('/?e2e#yatra/crew'); await p.getByLabel('Paste a crew link').fill(text); await p.getByRole('button', { name: 'Use this link' }).click(); };
+    const seed = (p: Page, days: string[], perDay: number) => p.evaluate(async ([list, count]) => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction(['ledger', 'settings'], 'readwrite'); transaction.objectStore('settings').put({ key: 'yatra.jarFrom', value: '2026-11-01', updatedAt: 1, deleted: 0, deviceId: 'shots' }); for (const day of list) for (let n = 0; n < count; n++) transaction.objectStore('ledger').put({ id: `shots55-${day}-${n}`, mode: 'train', kind: 'session', refId: `${day}-${n}`, dayKey: day, inputs: { workingSets: 6, status: 'completed' }, updatedAt: new Date(`${day}T15:00:00`).getTime() + n, deleted: 0, deviceId: 'shots' }); transaction.oncomplete = () => resolve(); });
+      database.close();
+    }, [days, perDay] as const);
+    const snap = (p: Page, name: string) => p.screenshot({ path: `${out}/${theme}/${name}.png` });
+    const texts: string[] = [];
+
+    const riya = await phone(made);
+    await riya.getByLabel('What the crew fills up for').fill('Sunday chai at the hill point');
+    await riya.getByRole('group', { name: 'How big a jar' }).getByRole('button', { name: '5 h', exact: true }).click();
+    await riya.getByLabel('Your first name').fill('Riya');
+    await snap(riya, 'p55-01-make-crew');
+    await textAt200(riya);
+    await snap(riya, 'p55-01b-make-crew-200pct');
+    await riya.reload();
+    await riya.getByLabel('What the crew fills up for').fill('Sunday chai at the hill point');
+    await riya.getByRole('group', { name: 'How big a jar' }).getByRole('button', { name: '5 h', exact: true }).click();
+    await riya.getByLabel('Your first name').fill('Riya');
+    await riya.getByRole('button', { name: 'Make the crew' }).click();
+    await riya.getByRole('button', { name: 'Invite a friend' }).click();
+    const invite = await sent(riya); texts.push(`Invite (Riya → chat):\n${invite}`);
+
+    const visitor = await phone(made);
+    await visitor.goto(invite.match(/https:\/\/\S+#crew\/\S+/)![0].replace('https://nandi.nandi11.workers.dev/', '/?e2e'));
+    await expect(visitor.getByText('Have the app?')).toBeVisible();
+    await snap(visitor, 'p55-08-browser-copy-first');
+
+    const dev = await phone(made);
+    await paste(dev, invite);
+    await expect(dev.getByRole('heading', { name: /^Join the / })).toBeVisible();
+    await dev.getByLabel('Your first name').fill('Dev');
+    await snap(dev, 'p55-02-join');
+    await dev.getByRole('button', { name: 'Join' }).click();
+    await dev.getByRole('button', { name: 'Send it to the crew' }).click();
+    const joined = await sent(dev); texts.push(`Joined (Dev → chat):\n${joined}`);
+    await paste(riya, joined);
+    await expect(riya.getByText('2 walking')).toBeVisible();
+
+    await dev.clock.setFixedTime(later);
+    await seed(dev, ['2026-11-02', '2026-11-03', '2026-11-04', '2026-11-05'], 6);
+    await dev.goto('/?e2e#yatra');
+    await dev.reload();
+    await dev.locator('.crew-bar').scrollIntoViewIfNeeded();
+    await snap(dev, 'p55-04-home-crew-bar-send-line');
+    await dev.getByRole('button', { name: 'Send' }).click();
+    const add = await sent(dev); texts.push(`Add (Dev → chat):\n${add}`);
+
+    await riya.clock.setFixedTime(later);
+    await paste(riya, add);
+    await expect(riya.getByText('4 h 0 m of 5 h')).toBeVisible();
+    await snap(riya, 'p55-03-crew-screen');
+    await seed(riya, ['2026-11-05'], 6);
+    await riya.goto('/?e2e#yatra/crew');
+    await riya.reload();
+    await expect(riya.getByRole('heading', { name: /^The crew filled 5 h/ })).toBeVisible();
+    await snap(riya, 'p55-05-crew-filled');
+    await riya.getByRole('button', { name: 'Share' }).click();
+    const sheet = riya.getByRole('dialog', { name: 'Share the crew jar' });
+    await expect(sheet.getByRole('img')).toBeVisible({ timeout: 20_000 });
+    await snap(riya, 'p55-06-crew-share-sheet');
+    const saved = riya.waitForEvent('download');
+    await sheet.getByRole('button', { name: 'Save image' }).click();
+    await (await saved).saveAs(`${out}/${theme}/p55-card-crew-filled.png`);
+    writeFileSync(`${out}/${theme}/p55-chat-texts.txt`, `${texts.join('\n\n')}\n`);
+  });
 });
