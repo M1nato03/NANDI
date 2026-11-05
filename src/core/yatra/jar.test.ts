@@ -140,8 +140,8 @@ describe('spec 54: pause reasons stay private and move nothing', () => {
   });
 });
 
-describe('the jar\'s duration text (spec 55 review)', () => {
-  it('drops zero parts: exact hours read "2 h", never "2 h 0 m"', () => {
-    expect([240, 250, 45, 0, 120, 300].map(jarDuration)).toEqual(['4 h', '4 h 10 m', '45 m', '0 m', '2 h', '5 h']);
+describe('the jar\'s duration text', () => {
+  it('is the receipt\'s one duration function (no second copy)', async () => {
+    expect(jarDuration).toBe((await import('../recap')).receiptDuration);
   });
 });

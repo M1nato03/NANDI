@@ -1,6 +1,6 @@
 import 'fake-indexeddb/auto';
 import { describe, expect, it } from 'vitest';
-import { buildRecap, realThingsMs, receiptContent, receiptWeek, recapWindow, youWeekNumbers, type RecapSources, type WeeklyRecapData } from './recap';
+import { buildRecap, realThingsMs, receiptContent, receiptDuration, receiptWeek, recapWindow, youWeekNumbers, type RecapSources, type WeeklyRecapData } from './recap';
 import { createDb } from '../data/db';
 import { saveChapterDone } from '../data/repos/books';
 import type { FocusRow, LedgerRow, SessionRow } from '../data/types';
@@ -100,7 +100,7 @@ describe('spec 53: the receipt', () => {
     expect(receiptContent({ ...base, realMs: 29 * 60_000 }).total).toBeUndefined();
     expect(receiptContent({ ...base, realMs: 30 * 60_000 }).total).toBe('30 m');
     expect(receiptContent({ ...base, realMs: (6 * 60 + 49) * 60_000 }).total).toBe('6 h 40 m');
-    // Exact hours read "1 h", never "1 h 0 m" (the receipt, and Home's real-things line).
+    // 65 min rounds down to 60 (the 10-minute floor), and an exact hour reads "1 h", never "1 h 0 m".
     expect(receiptContent({ ...base, realMs: 65 * 60_000 }).total).toBe('1 h');
   });
   it('moves the longest focus under the total and drops the filler', () => {
@@ -126,5 +126,11 @@ describe("You's week in words", () => {
     expect(youWeekNumbers({ ...base, tasks: 1, workouts: 1, concepts: 2, focusMinutes: 60 }).map(item => `${item.value} ${item.label}`))
       .toEqual(['1 task finished', '1 workout', '2 ideas learned', '1 focus hour']);
     expect(youWeekNumbers({ ...base, tasks: 2, workouts: 3, nights: 1 }).map(item => `${item.value} ${item.label}`)).toEqual(['2 tasks finished', '3 workouts', '1 night back on plan']);
+  });
+});
+
+describe('the one duration format (receipt, Home, the jar\'s plan bar, the crew)', () => {
+  it('drops zero parts: exact hours read "2 h", never "2 h 0 m"', () => {
+    expect([240, 250, 45, 0, 120, 300, 65].map(receiptDuration)).toEqual(['4 h', '4 h 10 m', '45 m', '0 m', '2 h', '5 h', '1 h 5 m']);
   });
 });

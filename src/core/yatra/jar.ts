@@ -112,9 +112,5 @@ export function jarLineFor(rows: { facts: readonly LedgerRow[]; settings: readon
   return jarFinishLine(entry, jarDay(entries, today).capped) ?? undefined;
 }
 
-/** "9 h 15 m", "2 h", "45 m". */
-export function jarDuration(minutes: number): string {
-  // No zero parts (spec 55 review): "2 h", "4 h 10 m", "45 m", "0 m"; never "2 h 0 m".
-  const hours = Math.floor(minutes / 60), rest = minutes % 60;
-  return hours && rest ? `${hours} h ${rest} m` : hours ? `${hours} h` : `${rest} m`;
-}
+/** "9 h 15 m", "2 h", "45 m": the receipt's one duration format (core/recap), under the jar's name. */
+export { receiptDuration as jarDuration } from '../recap';
