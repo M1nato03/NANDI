@@ -1,4 +1,4 @@
-import type { FocusRow, LedgerRow } from '../../data/types';
+import type { FocusRow, LedgerRow, SettingRow } from '../../data/types';
 import { sessionCounts } from '../train/counts';
 import { focusElapsedMs } from '../tasks/focus';
 import { dayKey } from '../time/dayKey';
@@ -97,6 +97,19 @@ export function jarFinishLine(entry: JarEntry | undefined, dayCapped: boolean): 
   if (!entry) return null;
   if (entry.counted === 0) return dayCapped ? 'Trail done for today.' : null;
   return dayCapped ? `+${entry.counted} min into the jar · ${entry.label}. Trail done for today.` : `+${entry.counted} min into the jar · ${entry.label}`;
+}
+
+/**
+ * The finish moment's jar line: the act whose row came in this update first (two acts can share a timestamp), else the
+ * newest counted act from the last few seconds (a finished drop can land just before its idea row). Only from jarFrom.
+ */
+export const JAR_LINE_MS = 10_000;
+export function jarLineFor(rows: { facts: readonly LedgerRow[]; settings: readonly SettingRow[]; focus: readonly FocusRow[] }, today: string, now: number, added: readonly LedgerRow[]): string | undefined {
+  const from = rows.settings.find(row => row.key === JAR_FROM_KEY && !row.deleted)?.value;
+  if (typeof from !== 'string') return undefined;
+  const entries = deriveJar(jarActs(rows.facts.filter(row => row.dayKey === today), rows.focus), from, today);
+  const entry = entries.find(row => added.some(fact => fact.id === row.id)) ?? entries.filter(row => row.kind !== 'focus' && row.at >= now - JAR_LINE_MS && row.at <= now + JAR_LINE_MS).at(-1);
+  return jarFinishLine(entry, jarDay(entries, today).capped) ?? undefined;
 }
 
 /** "9 h 15 m", "45 m". */

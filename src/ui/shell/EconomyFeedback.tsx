@@ -10,7 +10,7 @@ import { shutdownAt } from '../../core/tasks/planner';
 import { isAfterBedtime } from '../../core/time';
 import { tapHaptic } from '../../platform/haptics';
 import type { LedgerRow, SettingRow, TaskRow, LearnDropRow, SessionRow, PuzzleRunRow, DailyLogRow, FocusRow } from '../../data/types';
-import { deriveJar, JAR_FROM_KEY, jarActs, jarDay, jarFinishLine } from '../../core/yatra/jar';
+import { jarLineFor } from '../../core/yatra/jar';
 import { dailyDropId } from '../learn/dropIds';
 import { reconcileGamify, recordShown } from '../../data/repos/gamify';
 import { todayDotStatus } from './TodayDots';
@@ -37,21 +37,6 @@ type Notice = { text: string; macro: boolean; gain?: number; detail?: string; ac
 type Source = { facts: LedgerRow[]; settings: SettingRow[]; tasks: TaskRow[]; sessions: SessionRow[]; runs: PuzzleRunRow[]; drop?: LearnDropRow; log?: DailyLogRow; focus: FocusRow[] };
 // Spec 33: the day's two areas are Plan and Read (Night comes after the day closes; Train is parked).
 const complete = (source: Source, now: number) => { const status = todayDotStatus(now, { tasks: source.tasks, ledger: source.facts, runs: source.runs, drop: source.drop, log: source.log }); return status.plan && status.read; };
-/**
- * Spec 54: what this finish put in the jar ("+5 min into the jar · chapter done"), or "Trail done for today." at the
- * cap: the newest act the jar counts from the last few seconds. A finished drop can land before its idea row, so a
- * finish on screen also takes the line when that row arrives a moment later. Only from jarFrom; never phone use.
- */
-const JAR_LINE_MS = 10_000;
-function jarLine(source: Source, today: string, now: number, added: readonly LedgerRow[]): string | undefined {
-  const from = source.settings.find(row => row.key === JAR_FROM_KEY && !row.deleted)?.value;
-  if (typeof from !== 'string') return undefined;
-  const entries = deriveJar(jarActs(source.facts.filter(row => row.dayKey === today), source.focus), from, today);
-  // The act that just landed when it is in this update; else the newest counted act from the last few seconds.
-  const entry = entries.find(row => added.some(fact => fact.id === row.id)) ?? entries.filter(row => row.kind !== 'focus' && row.at >= now - JAR_LINE_MS && row.at <= now + JAR_LINE_MS).at(-1);
-  return jarFinishLine(entry, jarDay(entries, today).capped) ?? undefined;
-}
-
 export function EconomyFeedback() {
   const source = useLiveQuery(async () => { const now = Date.now(); await db.learnConcepts.toArray(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)), focus: await db.focus.where('startedAt').above(now - 36 * 3_600_000).toArray() }; }, []);
   const prior = useRef<Source | null>(null);
@@ -112,7 +97,7 @@ export function EconomyFeedback() {
     const isBadge = (row: LedgerRow) => row.kind === 'badge-tier' || row.kind === 'monthly-challenge';
     // Spec 54: a finish already on screen takes its jar line when the act's own row lands just after it.
     if (noticeRef.current && !noticeRef.current.macro && noticeRef.current.activity && !noticeRef.current.jar) {
-      const late = jarLine(source, dayKey(Date.now()), Date.now(), added);
+      const late = jarLineFor(source, dayKey(Date.now()), Date.now(), added);
       if (late) setNotice(current => current && !current.macro && !current.jar ? { ...current, jar: late } : current);
     }
     const badge = added.find(isBadge);
@@ -176,7 +161,7 @@ export function EconomyFeedback() {
     store.set(sessionStorage, 'finish.lastLine', line);
     setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Nandi' : undefined,
       // Spec 45c: a real level rise opens the level page in place of the reveal; a tier change keeps the reveal.
-      level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp, jar: macro ? undefined : jarLine(source, today, now, added) }));
+      level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp, jar: macro ? undefined : jarLineFor(source, today, now, added) }));
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;
