@@ -100,7 +100,10 @@ test('owner flag with a note updates the count and survives reload', async ({ pa
   await first.getByRole('button', { name: 'Flag', exact: true }).click();
   await first.getByRole('textbox', { name: 'What needs a look?' }).fill('Check the source and feedback.');
   await first.getByRole('button', { name: 'Save flag' }).click();
-  await expect(page.getByText('1 flagged')).toBeVisible();
+  await expect(page.getByText('1 flagged')).toBeVisible({ timeout: 15_000 });
+  // Dexie's live query shows the flag before its write commits; reloading in that window drops the write (5 Nov: the row
+  // was gone after the reload in 2 of 40 runs at 4x CPU throttle). "Flag saved." appears only after the commit.
+  await expect(page.getByText('Flag saved.')).toBeVisible({ timeout: 15_000 });
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Review content' })).toBeVisible({ timeout: 15_000 });
   // The count reads the settings table after the reload; on a slow CI runner that took over 5 s (CI 41430170831).

@@ -341,7 +341,8 @@ test.describe('the pause offer after the first finish', () => {
     await doTask(page, 'Call home');
     await offer(page).getByRole('button', { name: 'Set it up' }).click();
     await expect(page).toHaveURL(/#plan\/pause$/);
-    expect(await settingsOf(page, ['pause.offer'])).toEqual({ 'pause.offer': 'set-up' });
+    // The answer is saved without holding up the move to setup, so it can land just after the URL changes.
+    await expect.poll(() => settingsOf(page, ['pause.offer'])).toEqual({ 'pause.offer': 'set-up' });
   });
 });
 
