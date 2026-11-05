@@ -109,13 +109,13 @@ describe('spec 55: the crew\'s texts use the jar\'s duration format', () => {
 });
 
 describe('spec 55: the latest adds', () => {
-  it('read in the one duration format with the day of each link: "Dev +1 h · workout · today"', () => {
+  it('read in the one duration format with the day each was sent: "Dev +1 h · workout · sent today"', () => {
     // A crew made today: at most 60 a member so far.
     let crew = applyLink(crew0, { v: 1, t: 'joined', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, d: '2026-11-05' }, '2026-11-05');
     crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, u: 60, d: '2026-11-05', src: 'workout' }, '2026-11-05');
     crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'cccccc3', n: 'Asha', k: 3, u: 10, d: '2026-11-05', src: 'Calm' }, '2026-11-05');
-    expect(latestAdds(crew, '2026-11-05')).toEqual(['Dev +1 h · workout · today', 'Asha +10 m · Calm · today']);
-    expect(latestAdds(crew, '2026-11-06')).toEqual(['Dev +1 h · workout · yesterday', 'Asha +10 m · Calm · yesterday']);
+    expect(latestAdds(crew, '2026-11-05')).toEqual(['Dev +1 h · workout · sent today', 'Asha +10 m · Calm · sent today']);
+    expect(latestAdds(crew, '2026-11-06')).toEqual(['Dev +1 h · workout · sent yesterday', 'Asha +10 m · Calm · sent yesterday']);
   });
 });
 

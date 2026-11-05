@@ -107,10 +107,10 @@ export function joinOrder(crew: Crew): { first: string; colour: number }[] {
 
 /**
  * The crew screen's "Latest": each member's newest add, in join order, with the day of its link ("Dev +4 h · workout ·
- * today"). An add carries everything since that member's last link, so it is named by its day, never as "today's".
+ * sent today"). An add carries everything since that member's last link, so it is named by its day, never as "today's".
  */
 export function latestAdds(crew: Crew, today: string): string[] {
-  return crew.members.filter(member => (member.last ?? 0) > 0).map(member => `${member.first} +${jarDuration(member.last ?? 0)} · ${member.src ?? 'jar'} · ${dayWord(member.date, today)}`);
+  return crew.members.filter(member => (member.last ?? 0) > 0).map(member => `${member.first} +${jarDuration(member.last ?? 0)} · ${member.src ?? 'jar'} · sent ${dayWord(member.date, today)}`);
 }
 const dayWord = (date: string, today: string) => { const gap = days(date, today); return gap <= 0 ? 'today' : gap === 1 ? 'yesterday' : `${gap} days ago`; };
 

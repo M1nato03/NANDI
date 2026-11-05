@@ -90,6 +90,7 @@ export function CrewScreen({ paste = false }: { paste?: boolean }) {
   const data = useCrewData();
   const [message, setMessage] = useState('');
   const [sharing, setSharing] = useState(false);
+  const [leaving, setLeaving] = useState(false);
   if (!data) return <section className="screen" role="status">Opening the crew…</section>;
   const { crew, entries, today } = data;
   if (!crew) return <section className="screen crew-screen"><h1>A crew</h1><p>Fill one jar together with up to four friends. Each of you walks your own trail; your minutes add up here when you send them.</p><MakeCrew /><PasteLink open={paste} /></section>;
@@ -114,9 +115,23 @@ export function CrewScreen({ paste = false }: { paste?: boolean }) {
     {crew.members.length + 1 < CREW_MAX && <button type="button" className="secondary" onClick={() => void invite()}>Invite a friend</button>}
     <NameEdit crew={crew} />
     <PasteLink open={paste} />
-    <button type="button" className="text-button" onClick={() => void leave(crew)}>Leave crew</button>
+    <button type="button" className="text-button" onClick={() => setLeaving(true)}>Leave crew</button>
+    {leaving && <LeaveConfirm crew={crew} close={() => setLeaving(false)} />}
     {message && <p role="status">{message}</p>}
   </section>;
+}
+
+/** Leaving is never one tap: Stay is the main, safe choice; Leave clears this phone's crew (the others keep its minutes). */
+function LeaveConfirm({ crew, close }: { crew: Crew; close: () => void }) {
+  const dialog = useModalFocus<HTMLElement>(close);
+  return <div className="sheet-backdrop" onClick={close}><section ref={dialog} tabIndex={-1} className="task-sheet crew-leave" role="dialog" aria-modal="true" aria-label="Leave the crew?" onClick={event => event.stopPropagation()}>
+    <h2>Leave the {crew.plan} crew?</h2>
+    <p>The crew keeps your minutes.</p>
+    <div className="crew-leave-actions">
+      <button type="button" autoFocus onClick={close}>Stay</button>
+      <button type="button" className="text-button" onClick={() => { close(); void leave(crew); }}>Leave</button>
+    </div>
+  </section></div>;
 }
 
 async function leave(crew: Crew) {

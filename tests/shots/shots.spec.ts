@@ -1791,6 +1791,10 @@ for (const theme of themes) test.describe(theme, () => {
     await snap(riya, 'p55-03-crew-screen');
     await riya.getByRole('button', { name: 'Leave crew' }).scrollIntoViewIfNeeded();
     await snap(riya, 'p55-03b-crew-screen-leave');
+    await riya.getByRole('button', { name: 'Leave crew' }).click();
+    await expect(riya.getByRole('dialog', { name: 'Leave the crew?' })).toBeVisible();
+    await snap(riya, 'p55-03c-leave-confirm');
+    await riya.getByRole('button', { name: 'Stay' }).click();
     await seed(riya, ['2026-11-05'], 6);
     await riya.goto('/?e2e#yatra/crew');
     await riya.reload();

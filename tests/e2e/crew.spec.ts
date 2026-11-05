@@ -144,3 +144,20 @@ test('from Yatra with no crew: a row leads to making a crew, and "Paste a crew l
   await riya.getByRole('button', { name: 'Paste a crew link' }).click();
   await expect(riya.getByLabel('Crew link')).toBeFocused();
 });
+
+test('leaving asks first: Stay keeps the crew, Leave clears it', async ({ browser }, info) => {
+  const riya = await phone(browser, MADE, info);
+  await riya.getByLabel('What the crew fills up for').fill('Sunday chai');
+  await riya.getByLabel('Your first name').fill('Riya');
+  await riya.getByRole('button', { name: 'Make the crew' }).click();
+  await riya.getByRole('button', { name: 'Leave crew' }).click();
+  const confirm = riya.getByRole('dialog', { name: 'Leave the crew?' });
+  await expect(confirm).toContainText('Leave the Sunday chai crew?');
+  await expect(confirm).toContainText('The crew keeps your minutes.');
+  await expect(confirm.getByRole('button', { name: 'Stay' })).toBeFocused();
+  await confirm.getByRole('button', { name: 'Stay' }).click();
+  await expect(riya.getByRole('heading', { name: 'Sunday chai' })).toBeVisible();
+  await riya.getByRole('button', { name: 'Leave crew' }).click();
+  await riya.getByRole('dialog', { name: 'Leave the crew?' }).getByRole('button', { name: 'Leave' }).click();
+  await expect(riya.getByRole('button', { name: 'Make the crew' })).toBeVisible();
+});
