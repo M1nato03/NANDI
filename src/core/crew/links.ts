@@ -29,7 +29,7 @@ export const LINK_KEYS: Record<CrewLinkKind, readonly string[]> = {
 
 /** Control characters, bidi overrides and isolates, and zero-width joiners never survive into a shown name or plan. */
 export function cleanText(text: string, max: number): string {
-  return text.normalize('NFC').replace(/[\p{Cc}؜​-‏‪-‮⁠-⁩﻿]/gu, '').replace(/\s+/g, ' ').trim().slice(0, max);
+  return text.normalize('NFC').replace(/[\p{Cc}\u061C\u200B-\u200F\u202A-\u202E\u2060-\u2069\uFEFF]/gu, '').replace(/\s+/g, ' ').trim().slice(0, max);
 }
 
 const ID = /^[a-z0-9]{6,24}$/;
