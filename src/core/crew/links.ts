@@ -2,7 +2,7 @@
  * Spec 55: crew links travel through chat apps, so anyone can edit them. Every link, whether it arrives in the app
  * (App Links, a paste) or in the browser, goes through this one validator: base64url JSON, version 1, the exact keys
  * of its kind, and bounded values. Anything else is ignored quietly. Links carry first names, colours, ids, the plan
- * and cumulative jar minutes only: never a surname, phone number, app name, time of day, title or phone-usage figure.
+ * and cumulative jar minutes only: never a surname, phone number, app name, time of day, title or figure from the phone's own usage log.
  */
 export const CREW_LINK_VERSION = 1;
 export const CREW_SIZES = [5, 10, 15, 25] as const;

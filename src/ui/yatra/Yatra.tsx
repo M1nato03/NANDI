@@ -21,6 +21,7 @@ import { currentTrail } from '../../data/yatra/trails';
 import { CONSTELLATION_PREFIX, ensureJarFrom, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
 import { JAR_FROM_KEY } from '../../core/yatra/jar';
 import { JarPlanArea, RealThingsLine } from './JarPlan';
+import { CrewBar } from './Crew';
 import { go } from '../shell/router';
 import { useModalFocus } from '../shell/useModalFocus';
 import { campLine, TrekScene } from './TrekScene';
@@ -204,6 +205,8 @@ export function Yatra() {
       <p className="trek-narrative" role="status">{narrative(trek, yatra.night)}</p>
     </div>}
     {trek && <JarPlanArea trek={trek} />}
+    {/* Spec 55: the crew bar, only when this phone is in a crew. */}
+    <CrewBar />
     {leg && <div className="sheet-backdrop" onClick={closePostcard}><section ref={postcardDialog} tabIndex={-1} className="task-sheet trek-postcard" role="dialog" aria-modal="true" aria-label={`${leg.landmark.name} postcard`} onClick={event => event.stopPropagation()}>
       <p className="eyebrow">A gate on the trail · {leg.landmark.kind}</p><h2>{leg.postcard.title ?? leg.landmark.name}</h2>
       {leg.postcard.lines.map(line => <p key={line}>{line}</p>)}

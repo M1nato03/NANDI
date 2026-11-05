@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.nandi.personal",
+      "sha256_cert_fingerprints": ["57:05:88:32:31:B1:0B:DB:9A:59:BF:B9:6A:E5:AA:09:D3:8C:F7:AC:CF:61:9B:82:4F:07:4D:16:CD:42:00:AA"]
+    }
+  }
+]

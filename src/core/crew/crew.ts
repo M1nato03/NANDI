@@ -9,11 +9,12 @@ import { JAR, type JarEntry, type JarKind } from '../yatra/jar';
 export const CREW_KEY = 'crew.current';
 export const CREW_SEEN_KEY = 'crew.seen';
 
-export interface CrewMember { id: string; first: string; colour: number; cum: number; date: string }
+/** `last` and `src`: what the newest add link added and its top source, for the crew screen's "today's adds". */
+export interface CrewMember { id: string; first: string; colour: number; cum: number; date: string; last?: number; src?: CrewSource }
 export interface Crew {
   id: string; plan: string; size: CrewSize; made: string;
   /** This phone's own member; `joinedAt` starts its minutes, `sentCum`/`sentDay` are what its last add link carried. */
-  me: { id: string; first: string; colour: number; joinedAt: number; sentCum: number; sentDay?: string };
+  me: { id: string; first: string; colour: number; joinedAt: number; sentCum: number; sentDay?: string; skipDay?: string };
   /** The other members, in join order. */
   members: CrewMember[];
 }
@@ -57,9 +58,9 @@ export function applyLink(crew: Crew, link: CrewLink, today: string): Crew {
     // By date first; on the same date the higher total wins; a newer date with a lower total is ignored (never back).
     const newer = link.d > known.date ? link.u >= known.cum : link.d === known.date && link.u > known.cum;
     if (!newer) return crew;
-    return { ...crew, members: crew.members.map(member => member.id === link.m ? { ...member, first: link.n, colour: link.k, cum: link.u, date: link.d } : member) };
+    return { ...crew, members: crew.members.map(member => member.id === link.m ? { ...member, first: link.n, colour: link.k, cum: link.u, date: link.d, last: link.u - known.cum, src: link.src } : member) };
   }
-  return { ...crew, members: [...crew.members, { id: link.m, first: link.n, colour: link.k, cum: link.u, date: link.d }] };
+  return { ...crew, members: [...crew.members, { id: link.m, first: link.n, colour: link.k, cum: link.u, date: link.d, last: link.u, src: link.src }] };
 }
 
 /** This phone's minutes for the crew: jar minutes counted (after the daily cap) since joining. */
@@ -97,4 +98,21 @@ export function unsent(crew: Crew, entries: readonly JarEntry[], today: string):
 export function addLink(crew: Crew, entries: readonly JarEntry[], today: string): AddLink {
   const { top } = unsent(crew, entries, today);
   return { v: 1, t: 'add', c: crew.id, m: crew.me.id, n: crew.me.first, k: crew.me.colour, u: myCrewMinutes(crew, entries), d: today, src: top };
+}
+
+/** The crew screen's "today's adds only": "Riya +10 · workout" for members whose newest add is dated today. */
+export function todaysAdds(crew: Crew, today: string): string[] {
+  return crew.members.filter(member => member.date === today && (member.last ?? 0) > 0).map(member => `${member.first} +${member.last} · ${member.src ?? 'jar'}`);
+}
+
+/** The words that travel in chats: they must read well for someone without the app (Jenil sees them at the preview). */
+export function inviteText(crew: Crew, url: string): string {
+  return `Join my NANDI crew: when we fill ${crew.size} h together, it's ${crew.plan}. ${url}`;
+}
+export function joinedText(crew: Crew, url: string): string {
+  return `${crew.me.first} joined the ${crew.plan} crew on NANDI. ${url}`;
+}
+export function addText(crew: Crew, minutes: number, total: number, url: string): string {
+  const hours = Math.floor(total / 60), rest = total % 60;
+  return `${crew.me.first} added ${minutes} min to ${crew.plan} · ${hours ? `${hours} h ${rest} m` : `${rest} m`} of ${crew.size} h · ${url}`;
 }

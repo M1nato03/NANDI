@@ -69,6 +69,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- Spec 55: crew links open the app once the web app serves assetlinks.json (Jenil deploys it). -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="nandi.nandi11.workers.dev" android:pathPrefix="/" />
+            </intent-filter>
+
         </activity>
 
         <provider

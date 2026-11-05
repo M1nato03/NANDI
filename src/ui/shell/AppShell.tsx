@@ -51,8 +51,11 @@ import { OpenMoment } from '../cast/OpenMoment';
 import { CourtyardScreen } from '../courtyard/Courtyard';
 import { StorybookList, StorybookScreen, weekFromRoute } from '../courtyard/Storybook';
 import { HelpsWith } from '../screens/HelpsWith';
+import { takeLaunchLink } from '../../platform/links';
 import { useWelcomeNeeded, Welcome } from '../welcome/Welcome';
 
+const CrewScreen = lazy(() => import('../yatra/Crew').then(module => ({ default: module.CrewScreen })));
+const CrewLinkScreen = lazy(() => import('../yatra/Crew').then(module => ({ default: module.CrewLinkScreen })));
 const NightPlanSetting = lazy(() => import('../screens/NightPlanSetting').then(module => ({ default: module.NightPlanSetting })));
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
@@ -202,6 +205,12 @@ export function AppShell() {
     return () => { disposed = true; void remove?.(); };
   }, []);
   useEffect(() => startNightPauseSync(error => recordError('promise', error)), []);
+  // Spec 55: a crew link that opened the app (App Links) is taken as a string and routed like any hash.
+  useEffect(() => {
+    const take = () => { void takeLaunchLink().then(route => { if (route) go(route); }).catch(error => recordError('promise', error)); };
+    take(); window.addEventListener('nandi:link', take); document.addEventListener('visibilitychange', take);
+    return () => { window.removeEventListener('nandi:link', take); document.removeEventListener('visibilitychange', take); };
+  }, []);
   // Spec 38: a Calm sit the phone's player ended while NANDI was away is saved on return (once).
   useEffect(() => {
     const settle = () => { if (document.visibilityState === 'visible') void settleCalm(Date.now()).catch(error => recordError('promise', error)); };
@@ -261,6 +270,9 @@ export function AppShell() {
   else if (path === 'you/courtyard') screen = <CourtyardScreen />;
   else if (path === 'you/stories') screen = <StorybookList />;
   else if (path === 'you/helps') screen = <HelpsWith />;
+  // Spec 55: the crew screen, and where crew links land (every one goes through the one link validator).
+  else if (path === 'yatra/crew') screen = <CrewScreen />;
+  else if (path.startsWith('crew/')) screen = <CrewLinkScreen key={path} route={path} />;
   else if (/^you\/story\/\d{8}$/.test(path)) screen = <StorybookScreen key={path} weekStart={weekFromRoute(path.slice(10))} />;
   else if (path === 'you/owner') screen = <OwnerPanel />;
   else if (path === 'you/night') screen = <Night />;
