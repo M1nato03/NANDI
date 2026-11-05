@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { cleanText, decodeCrewLink, encodeCrewLink, LINK_KEYS, type AddLink, type JoinLink, type JoinedLink } from './links';
-import { addLink, addText, applyLink, asOfLine, crewFilled, joinOrder, todaysAdds, crewTotal, joinCrew, makeCrew, myCrewMinutes, plausibleMax, unsent } from './crew';
+import { addLink, addText, applyLink, asOfLine, crewFilled, joinOrder, latestAdds, inviteText, joinedText, crewTotal, joinCrew, makeCrew, myCrewMinutes, plausibleMax, unsent } from './crew';
 import type { JarEntry } from '../yatra/jar';
 
 const at = (text: string) => new Date(text).getTime();
@@ -103,18 +103,19 @@ describe('spec 55: what this phone sends', () => {
 describe('spec 55: the crew\'s texts use the jar\'s duration format', () => {
   it('reads "4 h", never "4 h 0 m" or "min"', () => {
     const text = addText({ ...crew0, me: { ...crew0.me, first: 'Dev' } }, 240, 240, 'https://x/#crew/add/a');
-    expect(text).toBe('Dev added 4 h to Sunday chai at the hill point · 4 h of 15 h · https://x/#crew/add/a');
+    expect(text).toBe('Dev added 4 h to our crew jar · 4 h of 15 h · https://x/#crew/add/a');
     expect(text).not.toMatch(/ 0 m|\bmin\b/);
   });
 });
 
-describe("spec 55: today's adds", () => {
-  it('reads in the one duration format: "Dev +1 h · workout", "Asha +10 m · Calm"', () => {
+describe('spec 55: the latest adds', () => {
+  it('read in the one duration format with the day of each link: "Dev +1 h · workout · today"', () => {
     // A crew made today: at most 60 a member so far.
     let crew = applyLink(crew0, { v: 1, t: 'joined', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, d: '2026-11-05' }, '2026-11-05');
     crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'bbbbbb2', n: 'Dev', k: 2, u: 60, d: '2026-11-05', src: 'workout' }, '2026-11-05');
     crew = applyLink(crew, { v: 1, t: 'add', c: 'crew0001', m: 'cccccc3', n: 'Asha', k: 3, u: 10, d: '2026-11-05', src: 'Calm' }, '2026-11-05');
-    expect(todaysAdds(crew, '2026-11-05')).toEqual(['Dev +1 h · workout', 'Asha +10 m · Calm']);
+    expect(latestAdds(crew, '2026-11-05')).toEqual(['Dev +1 h · workout · today', 'Asha +10 m · Calm · today']);
+    expect(latestAdds(crew, '2026-11-06')).toEqual(['Dev +1 h · workout · yesterday', 'Asha +10 m · Calm · yesterday']);
   });
 });
 
@@ -127,5 +128,15 @@ describe('spec 55: join order is the same on every phone', () => {
     expect(joinOrder(devPhone).map(person => person.first)).toEqual(['Riya', 'Dev']);
     const later = applyLink(devPhone, { v: 1, t: 'joined', c: 'crew0001', m: 'cccccc3', n: 'Asha', k: 3, d: '2026-11-05' }, '2026-11-05');
     expect(joinOrder(later).map(person => person.first)).toEqual(['Riya', 'Dev', 'Asha']);
+  });
+});
+
+describe('spec 55: the plan travels in the invite only', () => {
+  it('invite names the plan; joined and add say "our crew"', () => {
+    const dev = { ...crew0, me: { ...crew0.me, first: 'Dev' } };
+    expect(inviteText(crew0, 'U')).toBe("Join my NANDI crew: when we fill 15 h together, it's Sunday chai at the hill point. U");
+    expect(joinedText(dev, 'U')).toBe('Dev joined our NANDI crew. U');
+    expect(addText(dev, 45, 100, 'U')).toBe('Dev added 45 m to our crew jar · 1 h 40 m of 15 h · U');
+    for (const text of [joinedText(dev, 'U'), addText(dev, 45, 100, 'U')]) expect(text).not.toContain('chai');
   });
 });

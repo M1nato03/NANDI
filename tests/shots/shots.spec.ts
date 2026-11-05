@@ -1731,7 +1731,7 @@ for (const theme of themes) test.describe(theme, () => {
       return p;
     };
     const sent = async (p: Page) => { await expect.poll(async () => (await p.evaluate(() => (window as Window & { outbox?: string[] }).outbox ?? [])).length).toBeGreaterThan(0); return (await p.evaluate(() => (window as Window & { outbox?: string[] }).outbox ?? [])).at(-1)!; };
-    const paste = async (p: Page, text: string) => { await p.goto('/?e2e#yatra/crew'); await p.getByLabel('Paste a crew link').fill(text); await p.getByRole('button', { name: 'Use this link' }).click(); };
+    const paste = async (p: Page, text: string) => { await p.goto('/?e2e#yatra/crew'); await p.getByRole('button', { name: 'Paste a crew link' }).click(); await p.getByLabel('Crew link').fill(text); await p.getByRole('button', { name: 'Use this link' }).click(); };
     const seed = (p: Page, days: string[], perDay: number) => p.evaluate(async ([list, count]) => {
       const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
       await new Promise<void>(resolve => { const transaction = database.transaction(['ledger', 'settings'], 'readwrite'); transaction.objectStore('settings').put({ key: 'yatra.jarFrom', value: '2026-11-01', updatedAt: 1, deleted: 0, deviceId: 'shots' }); for (const day of list) for (let n = 0; n < count; n++) transaction.objectStore('ledger').put({ id: `shots55-${day}-${n}`, mode: 'train', kind: 'session', refId: `${day}-${n}`, dayKey: day, inputs: { workingSets: 6, status: 'completed' }, updatedAt: new Date(`${day}T15:00:00`).getTime() + n, deleted: 0, deviceId: 'shots' }); transaction.oncomplete = () => resolve(); });
@@ -1741,6 +1741,11 @@ for (const theme of themes) test.describe(theme, () => {
     const texts: string[] = [];
 
     const riya = await phone(made);
+    // Yatra with no crew: the quiet way in.
+    await riya.goto('/?e2e#yatra');
+    await riya.getByRole('button', { name: 'Fill a jar with friends' }).scrollIntoViewIfNeeded();
+    await snap(riya, 'p55-00-yatra-no-crew');
+    await riya.getByRole('button', { name: 'Fill a jar with friends' }).click();
     await riya.getByLabel('What the crew fills up for').fill('Sunday chai at the hill point');
     await riya.getByRole('group', { name: 'How big a jar' }).getByRole('button', { name: '5 h', exact: true }).click();
     await riya.getByLabel('Your first name').fill('Riya');

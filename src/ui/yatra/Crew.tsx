@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time/dayKey';
 import { WEB_APP } from '../../core/puzzles/challenge';
-import { addLink, addText, asOfLine, joinOrder, crewFilled, crewTotal, inviteText, joinedText, makeCrew, myCrewMinutes, todaysAdds, unsent, CREW_KEY, readCrew, type Crew } from '../../core/crew/crew';
+import { addLink, addText, asOfLine, joinOrder, crewFilled, crewTotal, inviteText, joinedText, latestAdds, makeCrew, myCrewMinutes, unsent, CREW_KEY, readCrew, type Crew } from '../../core/crew/crew';
 import { cleanText, CREW_MAX, CREW_SIZES, decodeCrewLink, encodeCrewLink, NAME_MAX, PLAN_MAX, type CrewSize, type JoinLink } from '../../core/crew/links';
 import { deriveJar, jarActs, jarDuration, JAR_FROM_KEY, JAR_KINDS, type JarEntry } from '../../core/yatra/jar';
 import { acceptJoin, crewId, receiveCrewLink, saveCrew } from '../../data/repos/crew';
@@ -51,7 +51,12 @@ function Dots({ crew }: { crew: Crew }) {
 export function CrewBar() {
   const data = useCrewData();
   const [message, setMessage] = useState('');
-  if (!data?.crew) return null;
+  if (!data) return null;
+  // With no crew, one quiet row in, styled like "Add a plan to a camp ahead"; pasting a link is one tap either way.
+  if (!data.crew) return <div className="crew-entry">
+    <button type="button" className="text-button" onClick={() => go('yatra/crew')}>Fill a jar with friends</button>
+    <button type="button" className="text-button" onClick={() => go('yatra/crew/paste')}>Paste a crew link</button>
+  </div>;
   const { crew, entries, today } = data;
   const mine = myCrewMinutes(crew, entries), total = crewTotal(crew, mine);
   const send = unsent(crew, entries, today);
@@ -59,13 +64,14 @@ export function CrewBar() {
   return <section className="crew-bar" aria-label={`${crew.plan} crew`}>
     <button type="button" className="crew-bar-go" onClick={() => go('yatra/crew')}>
       <Dots crew={crew} />
-      <span><strong>{jarDuration(Math.min(total, crew.size * 60))} of {crew.size} h</strong> · next camp: {crew.plan}</span>
+      <span><strong>{jarDuration(Math.min(total, crew.size * 60))} of {crew.size} h</strong> for {crew.plan}</span>
     </button>
     {offer && <p className="crew-send">{send.onlyToday ? `Send today's ${jarDuration(send.minutes)}` : `Send your ${jarDuration(send.minutes)}`} to the {crew.plan} crew?
       <span className="crew-send-actions">
         <button type="button" className="text-button" onClick={() => void sendAdd(crew, entries, today).then(setMessage)}>Send</button>
         <button type="button" className="text-button" onClick={() => void saveCrew(db, { ...crew, me: { ...crew.me, skipDay: today } }, Date.now())}>Not today</button>
       </span></p>}
+    <button type="button" className="text-button crew-paste-go" onClick={() => go('yatra/crew/paste')}>Paste a crew link</button>
     {message && <p role="status">{message}</p>}
   </section>;
 }
@@ -80,16 +86,16 @@ async function sendAdd(crew: Crew, entries: readonly JarEntry[], today: string):
 }
 
 /** The crew screen: the plan, the bar, who is walking, today's adds only, invite, paste a link, leave. */
-export function CrewScreen() {
+export function CrewScreen({ paste = false }: { paste?: boolean }) {
   const data = useCrewData();
   const [message, setMessage] = useState('');
   const [sharing, setSharing] = useState(false);
   if (!data) return <section className="screen" role="status">Opening the crew…</section>;
   const { crew, entries, today } = data;
-  if (!crew) return <section className="screen crew-screen"><h1>A crew</h1><p>Fill one jar together with up to four friends. Each of you walks your own trail; your minutes add up here when you send them.</p><MakeCrew /><PasteLink /></section>;
+  if (!crew) return <section className="screen crew-screen"><h1>A crew</h1><p>Fill one jar together with up to four friends. Each of you walks your own trail; your minutes add up here when you send them.</p><MakeCrew /><PasteLink open={paste} /></section>;
   const mine = myCrewMinutes(crew, entries), total = crewTotal(crew, mine);
   const filled = crewFilled(crew, mine);
-  const adds = todaysAdds(crew, today);
+  const adds = latestAdds(crew, today);
   const asOf = asOfLine(crew, today);
   const invite = async () => {
     const link: JoinLink = { v: 1, t: 'join', c: crew.id, p: crew.plan, s: crew.size, mk: crew.made, m: crew.me.id, n: crew.me.first, k: crew.me.colour };
@@ -104,10 +110,10 @@ export function CrewScreen() {
     <p><Dots crew={crew} /> {crew.members.length + 1} walking</p>
     {filled && <div className="card crew-filled"><h2>The crew filled {crew.size} h: {crew.plan}</h2><div className="crew-filled-actions"><button type="button" className="secondary" onClick={() => setSharing(true)}>Share</button><button type="button" onClick={() => void leave(crew)}>Plan the next one</button></div></div>}
     {sharing && <CrewShare size={crew.size} close={result => { setSharing(false); if (result) setMessage(result); }} />}
-    {adds.length > 0 && <><h2>Today</h2><ul className="crew-adds">{adds.map(line => <li key={line}>{line}</li>)}</ul></>}
+    {adds.length > 0 && <><h2>Latest</h2><ul className="crew-adds">{adds.map(line => <li key={line}>{line}</li>)}</ul></>}
     {crew.members.length + 1 < CREW_MAX && <button type="button" className="secondary" onClick={() => void invite()}>Invite a friend</button>}
     <NameEdit crew={crew} />
-    <PasteLink />
+    <PasteLink open={paste} />
     <button type="button" className="text-button" onClick={() => void leave(crew)}>Leave crew</button>
     {message && <p role="status">{message}</p>}
   </section>;
@@ -119,13 +125,17 @@ async function leave(crew: Crew) {
   void crew;
 }
 
+/** One quiet line, "You're Riya · Change"; Change opens the field. The next add link carries the new name. */
 function NameEdit({ crew }: { crew: Crew }) {
+  const [editing, setEditing] = useState(false);
   const [name, setName] = useState(crew.me.first);
-  return <label className="crew-name">Your first name<input value={name} maxLength={NAME_MAX} onChange={event => setName(event.target.value)} onBlur={() => {
+  const save = () => {
     const first = cleanText(name, NAME_MAX);
-    // The next add link carries the new name.
     if (first && first !== crew.me.first) void saveCrew(db, { ...crew, me: { ...crew.me, first } }, Date.now());
-  }} /></label>;
+    setEditing(false);
+  };
+  if (!editing) return <p className="crew-name">You're {crew.me.first} · <button type="button" className="text-button" onClick={() => setEditing(true)}>Change</button></p>;
+  return <div className="crew-name-edit"><label>Your first name<input autoFocus value={name} maxLength={NAME_MAX} onChange={event => setName(event.target.value)} /></label><button type="button" className="secondary" onClick={save}>Save</button></div>;
 }
 
 function MakeCrew() {
@@ -147,7 +157,8 @@ function MakeCrew() {
 }
 
 /** Until App Links are live, a link tapped in a chat opens the browser: paste it here instead. The clipboard is never read. */
-function PasteLink() {
+function PasteLink({ open: start = false }: { open?: boolean }) {
+  const [open, setOpen] = useState(start);
   const [text, setText] = useState('');
   const [note, setNote] = useState('');
   const use = () => {
@@ -159,8 +170,10 @@ function PasteLink() {
     pastedRoute = route;
     go(route);
   };
+  // A button first; the field opens focused, so the keyboard's own Paste is one tap. The clipboard is never read.
+  if (!open) return <div className="crew-paste"><button type="button" className="secondary" onClick={() => setOpen(true)}>Paste a crew link</button></div>;
   return <div className="crew-paste">
-    <label>Paste a crew link<input value={text} onChange={event => setText(event.target.value)} placeholder="https://…#crew/…" /></label>
+    <label>Crew link<input autoFocus value={text} onChange={event => setText(event.target.value)} placeholder="https://…#crew/…" /></label>
     <button type="button" className="secondary" disabled={!text.trim()} onClick={use}>Use this link</button>
     {note && <p role="status">{note}</p>}
   </div>;
@@ -184,7 +197,7 @@ export function CrewLinkScreen({ route }: { route: string }) {
   const copy = async () => { try { await navigator.clipboard.writeText(`${WEB_APP}/#${route}`); setCopied('Copied.'); } catch { setCopied('Copy it from the address bar instead.'); } };
   if (outside) return <section className="screen crew-screen">
     <h1>{link.t === 'join' ? `Join the ${link.p} crew?` : 'A crew link'}</h1>
-    <p><strong>Have the app?</strong> Copy this link, then paste it in NANDI → Yatra → Paste a crew link.</p>
+    <p><strong>Have the app?</strong> Copy this link, open NANDI, and tap Paste a crew link on Yatra.</p>
     <button type="button" onClick={() => void copy()}>Copy this link</button>
     {copied && <p role="status">{copied}</p>}
     {/* No install page exists yet (the updates site serves version.json and APKs only), so no link that would 404. */}

@@ -149,3 +149,7 @@
 .crew-filled-actions { display: flex; gap: 8px; margin-top: 12px; }
 .crew-filled-actions > button { flex: 1; min-height: 44px; }
 .crew-adds { padding-left: 18px; }
+.crew-entry { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; margin-top: 12px; }
+.crew-paste-go { margin-top: 4px; }
+.crew-name { margin: 12px 0 0; }
+.crew-name-edit > button { width: 100%; margin-top: 8px; }

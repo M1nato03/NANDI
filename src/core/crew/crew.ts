@@ -76,8 +76,7 @@ export const crewFilled = (crew: Crew, mine: number) => crewTotal(crew, mine) >=
 /** "as of Riya today, Dev yesterday", in day words from the link dates; no clock times. */
 export function asOfLine(crew: Crew, today: string): string | null {
   if (!crew.members.length) return null;
-  const word = (date: string) => { const gap = days(date, today); return gap <= 0 ? 'today' : gap === 1 ? 'yesterday' : `${gap} days ago`; };
-  return `as of ${crew.members.map(member => `${member.first} ${word(member.date)}`).join(', ')}`;
+  return `as of ${crew.members.map(member => `${member.first} ${dayWord(member.date, today)}`).join(', ')}`;
 }
 
 const SOURCE: Record<JarKind, CrewSource> = { train: 'workout', mind: 'puzzle', calm: 'Calm', focus: 'focus', read: 'chapter', lesson: 'lesson', lightsout: 'lights out' };
@@ -106,19 +105,24 @@ export function joinOrder(crew: Crew): { first: string; colour: number }[] {
   return [...crew.members.slice(0, at), { first: crew.me.first, colour: crew.me.colour }, ...crew.members.slice(at)];
 }
 
-/** The crew screen's "today's adds only": "Riya +10 · workout" for members whose newest add is dated today. */
-export function todaysAdds(crew: Crew, today: string): string[] {
-  return crew.members.filter(member => member.date === today && (member.last ?? 0) > 0).map(member => `${member.first} +${jarDuration(member.last ?? 0)} · ${member.src ?? 'jar'}`);
+/**
+ * The crew screen's "Latest": each member's newest add, in join order, with the day of its link ("Dev +4 h · workout ·
+ * today"). An add carries everything since that member's last link, so it is named by its day, never as "today's".
+ */
+export function latestAdds(crew: Crew, today: string): string[] {
+  return crew.members.filter(member => (member.last ?? 0) > 0).map(member => `${member.first} +${jarDuration(member.last ?? 0)} · ${member.src ?? 'jar'} · ${dayWord(member.date, today)}`);
 }
+const dayWord = (date: string, today: string) => { const gap = days(date, today); return gap <= 0 ? 'today' : gap === 1 ? 'yesterday' : `${gap} days ago`; };
 
 /** The words that travel in chats: they must read well for someone without the app (Jenil sees them at the preview). */
 export function inviteText(crew: Crew, url: string): string {
   return `Join my NANDI crew: when we fill ${crew.size} h together, it's ${crew.plan}. ${url}`;
 }
+/** After the invite the plan never travels again: these two read as "our crew" (jenil-a9's wording, Jenil's at the preview). */
 export function joinedText(crew: Crew, url: string): string {
-  return `${crew.me.first} joined the ${crew.plan} crew on NANDI. ${url}`;
+  return `${crew.me.first} joined our NANDI crew. ${url}`;
 }
 export function addText(crew: Crew, minutes: number, total: number, url: string): string {
-  return `${crew.me.first} added ${jarDuration(minutes)} to ${crew.plan} · ${jarDuration(total)} of ${crew.size} h · ${url}`;
+  return `${crew.me.first} added ${jarDuration(minutes)} to our crew jar · ${jarDuration(total)} of ${crew.size} h · ${url}`;
 }
 
