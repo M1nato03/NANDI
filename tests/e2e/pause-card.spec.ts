@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { textAt200 } from './helpers/text';
 
 // Spec 39 and 39b, the Pause card. The phone's side (Home, opening the app, the usage log) is the e2e stand-in
 // in platform/nightPause.ts: sessionStorage 'nandi.e2ePause' says what the phone reports and logs what NANDI asked.
@@ -177,6 +178,20 @@ test('spec 54: "Open anyway" asks how long and why; the chosen time goes to the 
   expect((await did(page)).at(-1)).toBe('open:com.instagram.android:1200000');
   await page.goto('/?e2e#you');
   await expect(page.locator('.you-reasons')).toHaveText('Your reasons this week: 1 just scrolling');
+});
+
+test('spec 54: at 200% text the "Open anyway" taps scroll down to Back, and Back returns to the card', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await setUp(page);
+  await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+  await phoneOpens(page);
+  await card(page).getByRole('button', { name: 'Open Instagram anyway' }).click();
+  await textAt200(page);
+  const back = card(page).getByRole('button', { name: 'Back' });
+  await back.scrollIntoViewIfNeeded();
+  await expect(back).toBeInViewport();
+  await back.click();
+  await expect(card(page).getByRole('button', { name: 'Open Instagram anyway' })).toBeVisible();
 });
 
 test('off for today from Plan, and on again', async ({ page }) => {

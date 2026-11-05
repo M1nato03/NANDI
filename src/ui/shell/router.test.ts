@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { beforeEach, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { canonicalRoute, go, initializeHistory, parentRoute, route, tabOf } from './router';
 
 beforeEach(() => {
@@ -51,4 +51,17 @@ it('opens on Yatra every time (spec 37), keeps a linked route, and redirects old
   history.replaceState(null, '', '#you/train/history');
   initializeHistory();
   expect(location.hash).toBe('#yatra/train/history');
+});
+
+describe('spec 55: crew link routes', () => {
+  it('keep the case of the payload (base64url), normalising only the prefix', () => {
+    expect(canonicalRoute('#crew/join/AbC-_9xY')).toBe('crew/join/AbC-_9xY');
+    expect(canonicalRoute('#CREW/Add/AbC')).toBe('crew/add/AbC');
+    expect(canonicalRoute('#Plan')).toBe('plan');
+  });
+  it('go() accepts a crew link and still refuses anything else with capitals', () => {
+    expect(() => go('crew/add/AbC-_9')).not.toThrow();
+    expect(location.hash).toBe('#crew/add/AbC-_9');
+    expect(() => go('Plan/Evil')).toThrow('Invalid route');
+  });
 });

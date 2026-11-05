@@ -5,7 +5,10 @@ type Entry = { nandi: true; from?: string; deckIndex?: number };
 const entry = (): Entry | null => history.state?.nandi === true ? history.state as Entry : null;
 
 export function canonicalRoute(path: string): string {
-  const value = legacyRoute(path.replace(/^#\/?/, '').toLowerCase());
+  // Spec 55: a crew link's payload is case-sensitive base64url, so only its prefix is normalised.
+  const raw = path.replace(/^#\/?/, '');
+  if (/^crew\/(join|joined|add)\//i.test(raw)) return `crew/${raw.slice(5, raw.indexOf('/', 5)).toLowerCase()}${raw.slice(raw.indexOf('/', 5))}`;
+  const value = legacyRoute(raw.toLowerCase());
   // Spec 34: Train and Kapi's shelf (Mind, then Read's Games) live in Yatra's corners now.
   if (value === 'train' || value.startsWith('train/')) return `yatra/${value}`;
   if (value === 'read/games' || value.startsWith('read/games/')) return `yatra/mind${value.slice(10)}`;
@@ -65,7 +68,10 @@ export function tabOf(path: string): Tab {
 }
 export function go(path: string): void {
   // Book and chapter ids carry hyphens (read/chapter/money-markets/money-markets-ch1).
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/.test(path)) throw new Error('Invalid route');
+  // Spec 55: a crew link carries a base64url payload (letters of both cases, digits, - and _); the crew link validator
+  // checks it on its screen.
+  const crewLink = /^crew\/(join|joined|add)\/[A-Za-z0-9_-]{1,1500}$/.test(path);
+  if (!crewLink && !/^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/.test(path)) throw new Error('Invalid route');
   const destination = canonicalRoute(path);
   if (route() === destination) return;
   const from = route();
