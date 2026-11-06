@@ -14,7 +14,7 @@
 .train-screen .actions { margin: 12px 0; }
 .train-readiness { margin: 14px 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .train-readiness p { flex-basis: 100%; margin: 0; }
-.train-readiness button { font-size: 13px; padding: 8px; }
+.train-readiness button { font-size: .8125rem; padding: 8px; }
 .train-heatmap { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; max-width: 300px; }
 .train-heatmap span { height: 22px; border-radius: 4px; background: var(--raised); border: 1px solid var(--line); }
 .train-heatmap span.trained { background: var(--accent); border-color: var(--accent); }
@@ -27,34 +27,34 @@
 .train-workout { min-width: 0; }
 .train-progress { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .train-progress .eyebrow { margin: 4px 0 10px; }
-.train-progress .text-button { min-width: 0; padding: 0 0 8px 8px; white-space: nowrap; font-size: 13px; }
+.train-progress .text-button { min-width: 0; padding: 0 0 8px 8px; white-space: nowrap; font-size: .8125rem; }
 .train-dots { display: flex; gap: 7px; }
 .train-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
 .train-dots span.complete { background: var(--muted); }
 .train-dots span.current { width: 20px; border-radius: 8px; background: var(--accent); }
 .train-workout .train-exercise { position: relative; margin-top: 20px; padding: 22px; }
-.train-exercise h1 { font-size: clamp(30px, 9vw, 44px); margin: 8px 0 10px; }
+.train-exercise h1 { font-size: clamp(1.875rem, 9vw, 2.75rem); margin: 8px 0 10px; }
 .train-exercise .train-target { color: var(--ink); font-weight: 700; margin: 0 0 16px; }
 .train-exercise .train-detail { margin: 8px 0; }
 .train-cues { padding-left: 20px; color: var(--muted); line-height: 1.5; margin: 14px 0; }
 .train-done-list { list-style: none; margin: 18px 0 0; padding: 0; border-top: 1px solid var(--line); }
-.train-done-list li { display: flex; justify-content: space-between; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+.train-done-list li { display: flex; justify-content: space-between; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .875rem; }
 .train-done-list span { color: var(--accent); font-weight: 800; }
 .train-active-set { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 20px; }
-.train-active-set h3 { font-size: 22px; margin-bottom: 16px; }
+.train-active-set h3 { font-size: 1.375rem; margin-bottom: 16px; }
 .train-stepper-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .train-stepper-grid:has(> :only-child) { grid-template-columns: 1fr; }
 .train-stepper { min-width: 0; }
-.train-stepper > span { display: block; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+.train-stepper > span { display: block; margin-bottom: 8px; font-size: .8125rem; color: var(--muted); }
 .train-stepper-controls { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; gap: 3px; }
-.train-stepper-controls button { width: 48px; height: 52px; padding: 0; font-size: 24px; }
-.train-stepper-controls input { min-width: 0; width: 100%; height: 52px; text-align: center; font-size: 21px; font-weight: 700; color: var(--ink); background: var(--raised); border: 1px solid var(--line); border-radius: 8px; appearance: textfield; }
+.train-stepper-controls button { width: 48px; height: 52px; padding: 0; font-size: 1.5rem; }
+.train-stepper-controls input { min-width: 0; width: 100%; height: 52px; text-align: center; font-size: 1.3125rem; font-weight: 700; color: var(--ink); background: var(--raised); border: 1px solid var(--line); border-radius: 8px; appearance: textfield; }
 .train-stepper-controls input::-webkit-inner-spin-button, .train-stepper-controls input::-webkit-outer-spin-button { appearance: none; margin: 0; }
-.train-active-set .train-log { display: block; width: 100%; min-height: 56px; margin-top: 22px; font-size: 17px; }
+.train-active-set .train-log { display: block; width: 100%; min-height: 56px; margin-top: 22px; font-size: 1.0625rem; }
 .train-active-set .train-pain { display: block; margin: 8px auto 0; color: var(--muted); padding: 8px 12px; }
 .train-rest { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; background: var(--raised); color: var(--ink); padding: 12px; border-radius: 9px; margin-top: 16px; }
 .train-rest > div { display: flex; gap: 6px; }
-.train-rest button { padding: 8px 10px; font-size: 13px; }
+.train-rest button { padding: 8px 10px; font-size: .8125rem; }
 .train-nav { display: flex; gap: 10px; }
 .train-nav button { flex: 1; min-width: 0; }
 .train-all-toggle { margin-top: 10px; }
@@ -64,12 +64,12 @@
 .train-all-list button span { overflow: hidden; text-overflow: ellipsis; }
 .train-all-list small { white-space: nowrap; }
 .train-complete { animation: train-check 420ms ease-out; }
-.train-check { position: absolute; top: 16px; right: 18px; color: var(--accent); font-size: 26px; }
+.train-check { position: absolute; top: 16px; right: 18px; color: var(--accent); font-size: 1.625rem; }
 @keyframes train-check { 50% { border-color: var(--accent); transform: scale(1.01); } }
 @media (prefers-reduced-motion: reduce) { .train-complete { animation: none; } }
 :root[data-motion='reduce'] .train-complete { animation: none; }
 .train-safety { color: var(--danger) !important; font-weight: 600; }
-.train-pr-badge { display: inline-block; background: var(--gold); color: var(--bg); border-radius: 4px; font-size: 12px; font-weight: 700; padding: 3px 6px; }
+.train-pr-badge { display: inline-block; background: var(--gold); color: var(--bg); border-radius: 4px; font-size: .75rem; font-weight: 700; padding: 3px 6px; }
 .train-effort { border: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .train-effort legend { margin-bottom: 6px; }
 .train-finish button { margin-right: 8px; margin-bottom: 8px; }
@@ -77,7 +77,7 @@
 /* Move uses the shared card and progress primitives. */
 .train-screen, .train-workout, .train-onboarding { --area-color: var(--area-move); }
 .train-hero { background: var(--surface-1); }
-.train-screen .card > h2, .train-workout .card > h2 { font-size: 26px; line-height: 30px; }
+.train-screen .card > h2, .train-workout .card > h2 { font-size: 1.625rem; line-height: 1.875rem; }
 .train-readiness button { min-height: 44px; border-radius: var(--radius-chip); }
 .train-readiness button[aria-pressed='true'] { background: color-mix(in srgb, var(--area-move) 20%, var(--surface-2)); color: var(--area-move); }
 .train-metrics, .train-history { display: grid; gap: 8px; }
@@ -86,7 +86,7 @@
 .train-heatmap span.trained { background: var(--area-move); }
 /* A rest-day check is drawn too, as a ring: rest is part of the week, not a gap (batch 5). */
 .train-heatmap span.rest { border: 2px solid var(--area-move); background: transparent; }
-.train-heatmap span { display: grid; place-items: center; font-size: 13px; line-height: 1; }
+.train-heatmap span { display: grid; place-items: center; font-size: .8125rem; line-height: 1; }
 .train-heatmap span.trained { color: var(--on-accent, #fff); }
 .train-heatmap span.rest { color: var(--ink); }
 .train-heatmap-key { margin: 8px 0 0; }
@@ -104,8 +104,8 @@
 .train-rest > div { flex-wrap: wrap; }
 .train-rest button { min-height: 44px; }
 .train-all-list button { min-height: 56px; border-radius: var(--radius-row); }
-@media (max-width: 430px) { .train-checks { grid-template-columns: 1fr; } .train-days { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; } .train-days button { min-width: 44px; font-size: 12px; } }
-.train-checks label span::before { content: ''; display: grid; place-items: center; flex: 0 0 20px; width: 20px; height: 20px; margin-right: 10px; border: 2px solid var(--ink-3); border-radius: 6px; font-size: 13px; line-height: 1; }
+@media (max-width: 430px) { .train-checks { grid-template-columns: 1fr; } .train-days { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; } .train-days button { min-width: 44px; font-size: .75rem; } }
+.train-checks label span::before { content: ''; display: grid; place-items: center; flex: 0 0 20px; width: 20px; height: 20px; margin-right: 10px; border: 2px solid var(--ink-3); border-radius: 6px; font-size: .8125rem; line-height: 1; }
 .train-checks input:checked + span::before { content: '✓'; border-color: var(--bg); background: var(--bg); color: var(--accent); }
 .train-loads { display: grid; gap: 4px; margin: 12px 0; padding: 12px; border: 1px solid var(--line); border-radius: 12px; }
 .train-loads legend { padding: 0 4px; font-weight: 700; }
@@ -130,16 +130,16 @@
 /* Spec 24 #3 Taal week: claps are filled dots, rest beats are open waves; both only ever fill. */
 .taal-beats { list-style: none; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin: 8px 0; padding: 0; max-width: 320px; }
 .taal-beat { display: grid; justify-items: center; gap: 4px; }
-.taal-beat .taal-mark { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; font-size: 14px; line-height: 1; color: var(--ink-2); }
+.taal-beat .taal-mark { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; font-size: .875rem; line-height: 1; color: var(--ink-2); }
 .taal-clap .taal-mark { border: 2px solid var(--area-move, var(--accent)); }
 .taal-clap.taal-filled .taal-mark { background: var(--area-move, var(--accent)); }
 .taal-rest .taal-mark { border: 2px dashed var(--line); border-radius: 12px; }
 .taal-rest.taal-filled .taal-mark { background: color-mix(in srgb, var(--area-move, var(--accent)) 18%, var(--raised)); border-style: solid; }
 .taal-extra .taal-mark { outline: 2px dotted var(--ink-2); outline-offset: 2px; }
 .taal-today .taal-day { font-weight: 700; color: var(--ink); }
-.taal-day { font-size: 12px; color: var(--ink-2); }
+.taal-day { font-size: .75rem; color: var(--ink-2); }
 .taal-beats-small { gap: 3px; margin: 0; max-width: 168px; }
-.taal-beats-small .taal-mark { width: 16px; height: 16px; font-size: 10px; }
+.taal-beats-small .taal-mark { width: 16px; height: 16px; font-size: .625rem; }
 .taal-key { display: flex; gap: 16px; }
 .taal-key span::before { content: ''; display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: middle; border-radius: 50%; }
 .taal-key-clap::before { background: var(--area-move, var(--accent)); }

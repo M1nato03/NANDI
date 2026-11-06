@@ -12,35 +12,35 @@
 .motif-kolam .book-cover-motif { background: radial-gradient(circle, var(--cover-mark) 1.8px, transparent 2.2px) 0 0 / 14px 14px, radial-gradient(circle, transparent 5px, var(--cover-mark) 5.5px, var(--cover-mark) 6.5px, transparent 7px) 7px 7px / 14px 14px; }
 .motif-stamp .book-cover-motif { margin: 7px; border: 2px dashed var(--cover-mark); border-radius: 4px 8px 8px 4px; }
 /* Spec 50 §4: wrap at spaces only (never "Babylo|n"); a title too big for its cover steps its font down in Cover.tsx. */
-.book-cover-title { position: relative; flex: none; font: 700 15px/1.05 'Bricolage Grotesque', sans-serif; letter-spacing: .01em; overflow-wrap: normal; word-break: normal; hyphens: manual;
+.book-cover-title { position: relative; flex: none; font: 700 .9375rem/1.05 'Bricolage Grotesque', sans-serif; letter-spacing: .01em; overflow-wrap: normal; word-break: normal; hyphens: manual;
   /* The fit measures each step at once; reduced motion gives every property a tiny transition (theme.css), which would
      leave the size it measures one step behind, so a title never transitions its size. */
   transition-property: none; }
-.book-cover-author { position: relative; margin-top: 4px; font: 600 10px/1 'DM Sans', sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.book-cover-author { position: relative; margin-top: 4px; font: 600 .625rem/1 'DM Sans', sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
 .cover-thumb { width: 52px; height: 72px; padding: 6px 6px 6px 10px; }
-.cover-thumb .book-cover-title { font-size: 10px; }
+.cover-thumb .book-cover-title { font-size: .625rem; }
 .cover-shelf { width: 104px; height: 148px; padding: 10px 10px 10px 14px; }
 .cover-large { width: 120px; height: 172px; padding: 12px 12px 12px 16px; }
-.cover-large .book-cover-title { font-size: 18px; }
+.cover-large .book-cover-title { font-size: 1.125rem; }
 
 .read-continue { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; align-items: center; margin: 16px 0; }
 .read-continue .book-cover { grid-row: span 2; }
 .read-continue-text { min-width: 0; display: grid; gap: 2px; }
-.read-continue-text h2 { margin: 0; font-size: 20px; line-height: 24px; overflow-wrap: anywhere; }
+.read-continue-text h2 { margin: 0; font-size: 1.25rem; line-height: 1.5rem; overflow-wrap: anywhere; }
 .read-continue-text p { margin: 0; }
 .read-continue > button, .read-continue .read-night-note { grid-column: 2; justify-self: start; min-height: 44px; }
 .read-continue .read-empty { grid-column: 1 / -1; margin: 0; }
 
 .read-library { margin: 24px 0 8px; }
 .read-library > h2 { margin: 0 0 4px; }
-.read-shelf h3 { margin: 14px 0 8px; font-size: 16px; }
+.read-shelf h3 { margin: 14px 0 8px; font-size: 1rem; }
 .read-shelf-row { display: flex; gap: 12px; margin: 0 -16px; padding: 2px 16px 10px; overflow-x: auto; list-style: none; scroll-snap-type: x proximity; scroll-padding-inline: 16px; }
 .read-shelf-row li { flex: none; scroll-snap-align: start; }
 .read-book-tile { display: grid; gap: 6px; width: 112px; padding: 4px; border: 0; background: none; color: var(--ink); text-align: left; box-shadow: none; }
-.read-book-tile .small { color: var(--ink-3); font-size: 12px; line-height: 16px; }
+.read-book-tile .small { color: var(--ink-3); font-size: .75rem; line-height: 1rem; }
 
 .read-book-head { display: flex; gap: 16px; align-items: flex-end; margin: 8px 0 12px; }
-.read-book-head h1 { margin: 0 0 6px; font-size: 28px; line-height: 30px; overflow-wrap: anywhere; }
+.read-book-head h1 { margin: 0 0 6px; font-size: 1.75rem; line-height: 1.875rem; overflow-wrap: anywhere; }
 .read-book-head p { margin: 0; color: var(--ink-3); }
 .read-blurb { margin: 0 0 6px; }
 .read-book-page .read-start { min-height: 44px; margin: 10px 0 4px; }
@@ -52,13 +52,13 @@
 .read-chapter-text .small { color: var(--ink-3); }
 .read-chapter[data-state='done'] .read-chapter-num, .read-chapter[data-state='due'] .read-chapter-num { background: var(--area); color: var(--button-ink, #fff); }
 .read-chapter-ideas { padding: 0 12px 10px; }
-.read-chapter-ideas summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--ink-3); font-size: 14px; }
+.read-chapter-ideas summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--ink-3); font-size: .875rem; }
 
 .read-chapter-head { margin: 4px 0 8px; }
-.read-chapter-head h1 { margin: 2px 0 0; font-size: 22px; line-height: 26px; }
+.read-chapter-head h1 { margin: 2px 0 0; font-size: 1.375rem; line-height: 1.625rem; }
 .read-done-card { display: grid; justify-items: center; gap: 8px; margin: 16px 0; text-align: center; }
 .read-done-card h1, .read-done-card h2 { margin: 0; }
-.read-takeaway { margin: 4px 0 8px; font-size: 18px; line-height: 26px; }
+.read-takeaway { margin: 4px 0 8px; font-size: 1.125rem; line-height: 1.625rem; }
 .read-done-card button { min-height: 44px; width: 100%; max-width: 320px; }
 .read-wait { margin: 16px 0; }
 

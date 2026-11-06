@@ -13,8 +13,8 @@
 @keyframes square-side-3 { from { transform: translate(0, var(--edge)); } to { transform: translate(0, 0); } }
 .square-middle { position: absolute; inset: 25% 12% 22%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 /* Capped so the word stays inside the square at large text sizes (the square itself is capped at 220 px). */
-.square-word { font: 700 min(1.6rem, 32px)/1.15 'Bricolage Grotesque', system-ui, sans-serif; color: var(--square-word, var(--ink)); animation: square-word-in var(--dur-fast) var(--ease-out) both; }
-.square-count { font: 500 min(1.25rem, 26px)/1.2 system-ui, sans-serif; color: var(--square-count, var(--ink-2)); font-variant-numeric: tabular-nums; }
+.square-word { font: 700 min(1.6rem, 2rem)/1.15 'Bricolage Grotesque', system-ui, sans-serif; color: var(--square-word, var(--ink)); animation: square-word-in var(--dur-fast) var(--ease-out) both; }
+.square-count { font: 500 min(1.25rem, 1.625rem)/1.2 system-ui, sans-serif; color: var(--square-count, var(--ink-2)); font-variant-numeric: tabular-nums; }
 @keyframes square-word-in { from { opacity: 0; transform: translateY(3px); } }
 .square-turtle { position: absolute; width: 64px; height: 64px; right: -20px; bottom: -24px; }
 .square-turtle .kachhua-shell { transform-box: fill-box; transform-origin: center bottom; transition: transform var(--phase-s, 5s) var(--ease-in-out); }

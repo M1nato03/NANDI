@@ -3,8 +3,8 @@
 .pause-card .eyebrow { margin: 0; }
 .pause-friend { position: absolute; top: 14px; right: 14px; }
 .pause-plan-label { margin: 0; color: var(--secondary-ink); }
-.pause-line { margin: 0; font-size: clamp(24px, 7vw, 32px); line-height: 1.2; }
-.pause-do { min-height: 56px; font-size: 18px; }
+.pause-line { margin: 0; font-size: clamp(1.5rem, 7vw, 2rem); line-height: 1.2; }
+.pause-do { min-height: 56px; font-size: 1.125rem; }
 .pause-picks { display: grid; gap: 10px; }
 .pause-exits { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .pause-exits .text-button { min-height: 48px; justify-content: center; text-align: center; }
@@ -21,7 +21,7 @@
 /* Spec 52 D: the in-app way names its move and can run to two lines; every way keeps one size, so none weighs more. */
 .pause-ways { display: grid; grid-auto-rows: 1fr; gap: 10px; margin-top: 4px; }
 .pause-not-now { justify-self: start; color: var(--ink-2); font-weight: 400; }
-.pause-clock { margin: 0; font: 800 56px 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; text-align: center; }
+.pause-clock { margin: 0; font: 800 3.5rem 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; text-align: center; }
 .pause-earned { margin: 0; color: var(--accent); font-weight: 700; }
 .pause-demo { margin: 0; text-align: center; }
 

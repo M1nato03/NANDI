@@ -9,23 +9,23 @@ button.courtyard-friend:focus-visible { outline: 3px solid var(--focus); outline
 .courtyard-night .courtyard-friend { filter: brightness(.68) saturate(.75); }
 .courtyard-evening .courtyard-friend { filter: brightness(.94) sepia(.08); }
 .courtyard-banner { display: block; width: 100%; margin: 0 0 12px; padding: 0; border: 0; background: none; text-align: left; color: var(--ink); min-height: 0; }
-.courtyard-caption { display: block; margin: 8px 2px 0; color: var(--secondary-ink); font-size: 14px; }
+.courtyard-caption { display: block; margin: 8px 2px 0; color: var(--secondary-ink); font-size: .875rem; }
 .courtyard-screen .courtyard-caption { margin-bottom: 4px; }
-.courtyard-card h2 { margin: 0; font-size: 18px; }
+.courtyard-card h2 { margin: 0; font-size: 1.125rem; }
 .courtyard-card p { margin: 8px 0 0; }
 .courtyard-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 12px; }
 .courtyard-steps span { height: 8px; border-radius: 4px; background: var(--line); }
 .courtyard-steps span.got { background: var(--accent); }
 .courtyard-friends-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 16px 0; }
 .courtyard-chip { display: grid; gap: 2px; min-height: 52px; padding: 8px; border-radius: var(--radius-row, 12px); text-align: left; font-weight: 700; }
-.courtyard-chip small { font-weight: 400; font-size: 12px; color: var(--secondary-ink); }
+.courtyard-chip small { font-weight: 400; font-size: .75rem; color: var(--secondary-ink); }
 .courtyard-chip.selected { outline: 2px solid var(--accent); }
 .storybook { display: grid; gap: 12px; text-align: center; }
 .story-page { display: grid; justify-items: center; gap: 12px; min-height: 260px; align-content: center; }
 .story-page .courtyard { max-width: 100%; }
-.story-cover h2 { margin: 0; font: 800 26px 'Bricolage Grotesque', sans-serif; }
+.story-cover h2 { margin: 0; font: 800 1.625rem 'Bricolage Grotesque', sans-serif; }
 .story-cover p, .story-close p { margin: 0; }
-.story-text { margin: 0; font-size: 19px; line-height: 1.45; max-width: 30ch; }
+.story-text { margin: 0; font-size: 1.1875rem; line-height: 1.45; max-width: 30ch; }
 .story-dots, .story-pager { display: flex; justify-content: center; gap: 6px; }
 .story-dots span { width: 12px; height: 12px; border-radius: 50%; background: var(--line); }
 .story-dots span.got { background: var(--accent); }
@@ -33,7 +33,7 @@ button.courtyard-friend:focus-visible { outline: 3px solid var(--focus); outline
 .story-pager span.on { background: var(--ink); }
 .storybook .sheet-actions { justify-content: center; }
 .storybook-card.you-link, .storybook-list .you-link, .courtyard-screen .you-link { min-height: 0; gap: 4px; margin: 0 0 12px; }
-.storybook-card.you-link strong, .storybook-list .you-link strong, .courtyard-screen .you-link strong { font-size: 20px; letter-spacing: -.02em; }
+.storybook-card.you-link strong, .storybook-list .you-link strong, .courtyard-screen .you-link strong { font-size: 1.25rem; letter-spacing: -.02em; }
 .courtyard-swing { transform-origin: 151px 82px; animation: courtyard-sway 4s ease-in-out infinite; }
 .courtyard-kite { animation: courtyard-bob 5s ease-in-out infinite; }
 .courtyard-clouds { animation: courtyard-drift 30s ease-in-out infinite alternate; }
