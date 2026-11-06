@@ -42,7 +42,9 @@ test("Read: Continue is Chiku's, idea checks get Moti's own card, and a book's i
   await page.goto('/?e2e#grow/remember');
   const moti = page.getByRole('region', { name: 'Review with Moti' });
   await expect(moti.getByRole('button', { name: 'Idea checks · 2 today' })).toBeVisible();
-  await expect(moti.locator('[data-cast="Moti"]')).toHaveCount(1);
+  // Spec 571: one Moti per screen: on Remember's stage, not again inside the card.
+  await expect(page.getByRole('region', { name: "Moti's stage" }).locator('[data-cast="Moti"]')).toHaveCount(1);
+  await expect(moti.locator('[data-cast]')).toHaveCount(0);
   await page.goto('/?e2e#grow/read');
   await openIdeas(page, 'money-markets', 'Inflation');
   await expect(page.locator('.learn-trail-chest [data-cast="Chiku"]').first()).toBeVisible();

@@ -38,7 +38,10 @@ test('every old Train, Mind and Games route lands in its Grow door', async ({ pa
   }
   await page.goto('/#you');
   await expect(page.getByRole('heading', { name: 'You', exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: /^Train/ })).toHaveCount(0);
+  // Spec 571 §0.18 #7: You has one link line per Grow door, never the Train screen itself.
+  await expect(page.getByRole('button', { name: /^Train/ })).toHaveCount(1);
+  await expect(page.getByTestId('door-link-train')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Train' })).toHaveCount(0);
   await page.goto('/#grow/read');
   await expect(page.getByRole('heading', { name: 'Read', level: 1 })).toBeVisible();
   await expect(page.getByText('Games', { exact: true })).toHaveCount(0);

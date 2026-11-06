@@ -42,7 +42,7 @@ const fit = (text: string) => words(text) <= 8;
 export function finishToastText(line: string, gain = 0, shownXp = 0, jar?: string): string {
   if (jar) return fit(jar) ? jar : jar.split(' · ')[0]!;
   if (gain <= 0 || line === welcomeToastLine) return line;
-  const combined = `+${shownXp} XP today · ${line}`;
+  const combined = `+${shownXp} XP · ${line}`;
   return fit(combined) ? combined : line;
 }
 export const toastWords = words;

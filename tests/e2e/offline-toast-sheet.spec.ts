@@ -51,9 +51,9 @@ for (const wait of [10_000, 60_001]) {
       return;
     }
     await expect(toast).toBeVisible();
-    const [notice, tabs, viewport] = [await toast.boundingBox(), await page.locator('.tabbar').boundingBox(), page.viewportSize()];
+    const [notice, tabs] = [await toast.boundingBox(), await page.locator('.tabbar').boundingBox()];
     expect(notice && tabs && notice.y + notice.height <= tabs.y).toBeTruthy();
-    expect(notice && viewport && notice.y > viewport.height / 2).toBeTruthy();
+    // Spec 571 E10: it keeps its place at the top of the page flow (shell.spec: it never covers a button).
     await page.clock.runFor(4000);
     await expect(toast).not.toBeVisible();
     await page.evaluate(() => window.dispatchEvent(new Event('nandi:e2e-offline-ready')));
