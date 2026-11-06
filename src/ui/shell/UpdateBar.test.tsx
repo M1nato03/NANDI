@@ -14,7 +14,7 @@ vi.mock('../../platform/sw-register', () => ({
 }));
 vi.mock('dexie-react-hooks', () => ({ useLiveQuery: () => false }));
 vi.mock('../../data/canReloadNow', () => ({ canReloadNow: () => Promise.resolve(true) }));
-import { UpdateBar } from './UpdateBar';
+import { OfflineReady } from './UpdateBar';
 
 const ready = () => act(() => { sw.state = { ...sw.state, offlineReady: true }; sw.listeners.forEach(listener => listener()); });
 const mutate = async (change: () => void) => { await act(async () => { change(); await Promise.resolve(); }); };
@@ -29,7 +29,7 @@ afterEach(() => { cleanup(); document.body.replaceChildren(); vi.useRealTimers()
 
 describe('offline-ready notice', () => {
   it('shows once for four seconds when no sheet is open', () => {
-    render(<UpdateBar />);
+    render(<OfflineReady />);
     ready();
     expect(toast()?.textContent).toBe('Ready to work offline');
     act(() => vi.advanceTimersByTime(3999));
@@ -45,7 +45,7 @@ describe('offline-ready notice', () => {
       if (kind === 'dialog') sheet.setAttribute('aria-modal', 'true');
       else sheet.className = 'sheet-backdrop';
       document.body.append(sheet);
-      render(<UpdateBar />);
+      render(<OfflineReady />);
       ready();
       act(() => vi.advanceTimersByTime(10_000));
       expect(toast()).toBeNull();
@@ -62,7 +62,7 @@ describe('offline-ready notice', () => {
     const sheet = document.createElement('div');
     sheet.className = 'sheet-backdrop';
     document.body.append(sheet);
-    render(<UpdateBar />);
+    render(<OfflineReady />);
     ready();
     act(() => vi.advanceTimersByTime(60_001));
     await mutate(() => sheet.remove());
@@ -75,7 +75,7 @@ describe('offline-ready notice', () => {
     first.className = 'sheet-backdrop';
     second.setAttribute('aria-modal', 'true');
     document.body.append(first, second);
-    render(<UpdateBar />);
+    render(<OfflineReady />);
     ready();
     await mutate(() => first.classList.remove('sheet-backdrop'));
     expect(toast()).toBeNull();
@@ -84,7 +84,7 @@ describe('offline-ready notice', () => {
   });
 
   it('ends a visible notice when a sheet opens, without replaying it', async () => {
-    render(<UpdateBar />);
+    render(<OfflineReady />);
     ready();
     expect(toast()).not.toBeNull();
     const sheet = document.createElement('div');
@@ -94,6 +94,28 @@ describe('offline-ready notice', () => {
     await mutate(() => sheet.remove());
     expect(toast()).toBeNull();
     act(() => vi.advanceTimersByTime(60_000));
+    expect(sw.dismiss).toHaveBeenCalledTimes(1);
+  });
+
+  it('waits while the top bar is hidden (the Night route), however long, then shows once with its full four seconds', async () => {
+    const shell = document.createElement('div');
+    const bar = document.createElement('header');
+    bar.className = 'topbar';
+    bar.style.display = 'none';
+    shell.append(bar);
+    document.body.append(shell);
+    render(<OfflineReady />, { container: bar });
+    ready();
+    expect(toast()).toBeNull();
+    act(() => vi.advanceTimersByTime(5 * 60_000));
+    expect(sw.dismiss).not.toHaveBeenCalled();
+    expect(toast()).toBeNull();
+    // Leaving Night shows the top bar again (the shell's class changes with it).
+    await mutate(() => { bar.style.display = ''; shell.className = 'app-shell'; });
+    expect(toast()).not.toBeNull();
+    act(() => vi.advanceTimersByTime(3_999));
+    expect(sw.dismiss).not.toHaveBeenCalled();
+    act(() => vi.advanceTimersByTime(1));
     expect(sw.dismiss).toHaveBeenCalledTimes(1);
   });
 });

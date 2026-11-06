@@ -1,13 +1,15 @@
 /*
- * Spec 571 E10: "Ready to work offline" never covers a sheet; it hides in the same frame a sheet opens, before the
- * observer runs.
- * b2 (7 Nov): it is a real toast now, not a block in the page flow. In the flow its one-time arrival on the first open
- * pushed the whole screen down (a layout shift, gate-571h CLS 0.150). It takes the economy toast's slot above the tab
- * bar (and its top slot on the screens where that toast moves up), taps go through it, and it waits behind a live
- * economy toast instead of stacking on it.
+ * The first open's "Ready to work offline" notice (b2, 7 Nov, option A). In the page flow its one-time arrival pushed
+ * the whole screen down (gate-571h CLS 0.150), so it now sits over the brand side of the top bar: the brand slot runs
+ * from the bar's start up to the Today dots, and the notice fills that slot on one line (ellipsis at large text), so it
+ * never changes the bar's height, never covers a dot, button or link (spec 571 E10), and taps go through it.
+ * It waits for any sheet (E10, hidden in the same frame a sheet opens) and behind a live economy toast, which takes
+ * the top slot on question screens, so the two never show at once.
  */
-.offline-ready-toast { position: fixed; z-index: 20; left: 50%; bottom: calc(82px + env(safe-area-inset-bottom)); transform: translateX(-50%); margin: 0; pointer-events: none; }
-.app-shell:has(.case-prove, .learn-active, .learn-feedback, .idea-sitting, .idea-end, .book-check-tried) .offline-ready-toast { bottom: auto; top: calc(10px + env(safe-area-inset-top)); }
-.night-route .offline-ready-toast { bottom: calc(16px + env(safe-area-inset-bottom)); }
+.topbar .brand-slot { position: relative; display: flex; align-items: center; flex: 1 1 auto; min-width: 0; align-self: stretch; }
+.topbar .brand-slot > .brand { min-width: 0; }
+.offline-ready-toast { position: absolute; inset: 50% auto auto 0; transform: translateY(-50%); max-width: calc(100% - 8px); margin: 0;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; z-index: 1;
+  background: var(--surface-2); color: var(--ink); box-shadow: var(--shadow-1); }
 body:has(.economy-toast) .offline-ready-toast,
 body:has([aria-modal="true"], .sheet-backdrop) .offline-ready-toast { visibility: hidden; }
