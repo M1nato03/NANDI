@@ -34,7 +34,7 @@
 .read-library { margin: 24px 0 8px; }
 .read-library > h2 { margin: 0 0 4px; }
 .read-shelf h3 { margin: 14px 0 8px; font-size: 16px; }
-.read-shelf-row { display: flex; gap: 12px; margin: 0 -16px; padding: 2px 16px 10px; overflow-x: auto; list-style: none; scroll-snap-type: x proximity; }
+.read-shelf-row { display: flex; gap: 12px; margin: 0 -16px; padding: 2px 16px 10px; overflow-x: auto; list-style: none; scroll-snap-type: x proximity; scroll-padding-inline: 16px; }
 .read-shelf-row li { flex: none; scroll-snap-align: start; }
 .read-book-tile { display: grid; gap: 6px; width: 112px; padding: 4px; border: 0; background: none; color: var(--ink); text-align: left; box-shadow: none; }
 .read-book-tile .small { color: var(--ink-3); font-size: 12px; line-height: 16px; }
