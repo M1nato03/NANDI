@@ -319,6 +319,15 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const { item, concept } = found;
   const itemStep = item.step ? findStep([concept], item.step) : undefined;
   const ordered = step.optionOrder.map(id => item.options.find(option => option.id === id)).filter((option): option is NonNullable<typeof option> => !!option);
+  // a9 (7 Nov): a Match grid reads as two sides, so the first column holds one side of every pair and the second the
+  // other, each still shuffled. Scoring stays direction-free (matchPairKeys).
+  const matchSides = item.type === 'match' ? (() => {
+    // Answers may list a pair both ways (a→d and d→a): each pair counts once, its first listing names its left side.
+    const lefts = new Set<string>(), placed = new Set<string>();
+    for (const pair of item.answer) if (!placed.has(pair.left) && !placed.has(pair.right)) { lefts.add(pair.left); placed.add(pair.left); placed.add(pair.right); }
+    return [...ordered.filter(option => lefts.has(option.id)), ...ordered.filter(option => !lefts.has(option.id))];
+  })() : undefined;
+  const shown = matchSides ?? ordered;
   // A matched term is used on both sides of its pair.
   const used = new Set(item.type === 'order' ? sequence : pairs.flatMap(pair => [pair.left, pair.right]));
   const inARow = longestCombo(data.ledger, drop.id);
@@ -349,7 +358,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
         <div className="learn-estimate-scale" aria-hidden="true"><span>{formatEstimate(scale.lo, unit)}</span><span>{formatEstimate(scale.hi, unit)}</span></div>
         {visibleFeedback && <p className="learn-estimate-answer">Answer: {formatEstimate(item.answer.value, unit)}</p>}
       </div>;
-    })() : <div className={`learn-options${item.type === 'match' ? ' learn-match' : ''}`}>{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>}
+    })() : <div className={`learn-options${item.type === 'match' ? ' learn-match' : ''}`} style={matchSides ? { '--match-rows': Math.ceil(matchSides.length / 2) } as CSSProperties : undefined}>{shown.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>}
     </div>
     {!night && moreBelow && <div className="learn-more-cue"><button type="button" aria-label="Answers below" onClick={() => revealBelow('.learn-options > button, .learn-estimate input[type="range"]')}><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg></button></div>}
     {/* Spec 13 L: one question per question. A new idea records fairly sure; a review folds "how sure?" into Check itself (one tap),
