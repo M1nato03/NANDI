@@ -119,7 +119,7 @@ export function Welcome({ onDone }: { onDone: () => void }) {
         <h1>When do you want to be asleep?</h1>
         <p>From this time, NANDI turns calm: no new lessons, just a gentle wind-down.</p>
         <label className="welcome-time">Bedtime<input type="time" required value={bedtime} onChange={event => setBedtime(event.target.value || WELCOME_BEDTIME)} /></label>
-        <p className="small">You can change it any time in Settings.</p>
+        <p className="small">You can change it any time in Calm &amp; Sleep.</p>
         <button type="button" disabled={saving} onClick={() => void finish()}>{action.label}</button>
       </>}
     </div>
