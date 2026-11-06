@@ -7,6 +7,9 @@ import { pendingWrites } from '../../core/pendingWrites';
 import {
   applyServiceWorkerUpdate, dismissOfflineReady, getServiceWorkerState, subscribeToServiceWorker,
 } from '../../platform/sw-register';
+import './updateBar.css';
+
+const hasOpenSheet = () => !!document.querySelector('[aria-modal="true"], .sheet-backdrop');
 
 export function UpdateBar() {
   const { needRefresh, offlineReady } = useSyncExternalStore(subscribeToServiceWorker, getServiceWorkerState);
@@ -16,6 +19,7 @@ export function UpdateBar() {
   const focusActive = useLiveQuery(isFocusActive, []);
   const trainActive = useLiveQuery(isTrainSessionActive, []);
   const updating = useRef(false);
+  const [showOfflineReady, setShowOfflineReady] = useState(false);
 
   useEffect(() => pendingWrites.subscribe(setWrites), []);
 
@@ -32,8 +36,31 @@ export function UpdateBar() {
 
   useEffect(() => {
     if (!offlineReady) return;
-    const timer = setTimeout(dismissOfflineReady, 4000);
-    return () => clearTimeout(timer);
+    const deadline = Date.now() + 60_000;
+    let shown = false;
+    let displayTimer: ReturnType<typeof setTimeout> | undefined;
+    const expiry = setTimeout(() => { if (!shown) dismissOfflineReady(); }, 60_000);
+    const check = () => {
+      if (hasOpenSheet()) {
+        setShowOfflineReady(false);
+        // Once seen, a new sheet ends the notice rather than showing it a second time.
+        if (shown) dismissOfflineReady();
+      } else if (!shown) {
+        if (Date.now() >= deadline) { dismissOfflineReady(); return; }
+        shown = true;
+        setShowOfflineReady(true);
+        displayTimer = setTimeout(dismissOfflineReady, 4000);
+      }
+    };
+    const observer = new MutationObserver(check);
+    observer.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-modal', 'class'] });
+    check();
+    return () => {
+      observer.disconnect();
+      clearTimeout(expiry);
+      clearTimeout(displayTimer);
+      setShowOfflineReady(false);
+    };
   }, [offlineReady]);
 
   async function handleUpdate() {
@@ -58,6 +85,6 @@ export function UpdateBar() {
     );
   }
 
-  if (offlineReady) return <div className="offline-ready-toast" role="status" aria-label="Offline ready">Ready to work offline</div>;
+  if (offlineReady && showOfflineReady) return <div className="offline-ready-toast" role="status" aria-label="Offline ready">Ready to work offline</div>;
   return null;
 }

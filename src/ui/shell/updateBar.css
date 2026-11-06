@@ -1,0 +1,12 @@
+/* The system notice sits just above the tabs, including the phone's safe area. */
+.app-shell .offline-ready-toast {
+  position: fixed;
+  inset: auto auto calc(76px + env(safe-area-inset-bottom)) 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Hide in the same frame a sheet opens, before its observer callback runs. */
+body:has([aria-modal="true"], .sheet-backdrop) .offline-ready-toast { visibility: hidden; }

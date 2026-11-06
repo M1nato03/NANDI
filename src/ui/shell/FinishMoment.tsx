@@ -3,11 +3,12 @@ import { Cast, Nandi, useFriendMoment } from '../cast/Cast';
 import { finishCast } from '../cast/placement';
 import type { FinishActivity } from './finish';
 import { useModalFocus } from './useModalFocus';
+import { finishToastText } from './toastQueue';
 
 export function FinishMoment({ line, gain = 0, shownXp = 0, reduced, activity = 'task', jar }: { line: string; gain?: number; shownXp?: number; reduced: boolean; activity?: FinishActivity; jar?: string }) {
   // A new notice replacing a visible one nods again (Codex A item 128).
   const at = useFriendMoment(`${activity}|${line}|${gain}`, 1);
-  return <div className={`economy-toast finish-moment${reduced ? '' : ' finish-bloom'}`} role="status"><Cast {...finishCast[activity]} size={38} moment="nod" at={at} /><span>{gain > 0 && <>+{shownXp} XP today · </>}{line}{jar && <span className="finish-jar">{jar}</span>}</span></div>;
+  return <div className={`economy-toast finish-moment${reduced ? '' : ' finish-bloom'}`} role="status"><Cast {...finishCast[activity]} size={38} moment="nod" at={at} /><span className={jar ? 'finish-jar' : undefined}>{finishToastText(line, gain, shownXp, jar)}</span></div>;
 }
 
 export function DoneForToday({ close, reduced, suggestion }: { close: () => void; reduced: boolean; suggestion?: string | null }) {

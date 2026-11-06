@@ -10,7 +10,7 @@ import { shutdownAt } from '../../core/tasks/planner';
 import { isAfterBedtime } from '../../core/time';
 import { tapHaptic } from '../../platform/haptics';
 import type { LedgerRow, SettingRow, TaskRow, LearnDropRow, SessionRow, PuzzleRunRow, DailyLogRow, FocusRow } from '../../data/types';
-import { jarLineFor } from '../../core/yatra/jar';
+import { jarActs, jarLineFor, JAR_LINE_MS } from '../../core/yatra/jar';
 import { dailyDropId } from '../learn/dropIds';
 import { reconcileGamify, recordShown } from '../../data/repos/gamify';
 import { todayDotStatus } from './TodayDots';
@@ -26,6 +26,7 @@ import { Cast } from '../cast/Cast';
 import { playCastSound } from '../cast/sound';
 import '../screens/economy.css';
 import { useModalFocus } from './useModalFocus';
+import { closeToast, emptyToastQueue, enqueueToast, welcomeToastLine, type Notice } from './toastQueue';
 
 /** Browser storage can be blocked (private mode, cleared site data); reveals then simply show again. */
 const store = {
@@ -33,27 +34,29 @@ const store = {
   set: (area: Storage, key: string, value: string): void => { try { area.setItem(key, value); } catch { /* ignore */ } },
 };
 
-type Notice = { text: string; macro: boolean; gain?: number; detail?: string; activity?: FinishActivity; character?: 'Nandi' | 'Kachhua'; level?: number; totalXp?: number; jar?: string };
 type Source = { facts: LedgerRow[]; settings: SettingRow[]; tasks: TaskRow[]; sessions: SessionRow[]; runs: PuzzleRunRow[]; drop?: LearnDropRow; log?: DailyLogRow; focus: FocusRow[] };
 // Spec 33: the day's two areas are Plan and Read (Night comes after the day closes; Train is parked).
 const complete = (source: Source, now: number) => { const status = todayDotStatus(now, { tasks: source.tasks, ledger: source.facts, runs: source.runs, drop: source.drop, log: source.log }); return status.plan && status.read; };
 export function EconomyFeedback() {
   const source = useLiveQuery(async () => { const now = Date.now(); await db.learnConcepts.toArray(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)), focus: await db.focus.where('startedAt').above(now - 36 * 3_600_000).toArray() }; }, []);
   const prior = useRef<Source | null>(null);
-  const [notice, setNotice] = useState<Notice | null>(null);
-  const reveal = useModalFocus<HTMLDivElement>(() => setNotice(null));
-  // A badge never pops up on its own: it waits to join the next finish moment (audit 10-21).
-  const noticeRef = useRef<Notice | null>(null);
-  const pendingBadge = useRef<string | null>(null);
-  useEffect(() => { noticeRef.current = notice; }, [notice]);
-  const withBadge = (next: Notice): Notice => { const label = pendingBadge.current; if (!label || next.macro) return next; pendingBadge.current = null; return next.text.includes(label) ? next : { ...next, text: `${next.text} · ${label}` }; };
+  const bedtimeRef = useRef<string>(RULES.night.defaultBedtime);
+  const lastJarAct = useRef<string | undefined>(undefined);
+  const [queue, setQueue] = useState(emptyToastQueue);
+  const queueRef = useRef(queue);
+  useEffect(() => { queueRef.current = queue; }, [queue]);
+  const notice = queue.current;
+  const showNotice = (next: Notice) => setQueue(current => enqueueToast(current, next));
+  const dismissNotice = () => setQueue(current => isAfterBedtime(Date.now(), bedtimeRef.current) ? emptyToastQueue : closeToast(current));
+  const reveal = useModalFocus<HTMLDivElement>(dismissNotice);
   const [doneCard, setDoneCard] = useState(false);
   const [pendingDone, setPendingDone] = useState(false);
+  const pendingDoneRef = useRef(pendingDone);
+  useEffect(() => { pendingDoneRef.current = pendingDone; }, [pendingDone]);
   const [shownXp, setShownXp] = useState(0);
   const lastLine = useRef<string | undefined>(store.get(sessionStorage, 'finish.lastLine') ?? undefined);
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce';
   // The finish listener is set up once, so it reads the latest bedtime through a ref.
-  const bedtimeRef = useRef<string>(RULES.night.defaultBedtime);
   useEffect(() => {
     const value = source?.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
     bedtimeRef.current = typeof value === 'string' ? value : RULES.night.defaultBedtime;
@@ -67,7 +70,7 @@ export function EconomyFeedback() {
       lastLine.current = line;
       store.set(sessionStorage, 'finish.lastLine', line);
       void tapHaptic(true);
-      setNotice(withBadge({ text: line, macro: false, activity }));
+      showNotice({ text: line, macro: false, activity });
     };
     window.addEventListener(finishEvent, onFinish);
     return () => window.removeEventListener(finishEvent, onFinish);
@@ -95,25 +98,9 @@ export function EconomyFeedback() {
     const own = added.filter(row => !RECONCILE_KINDS.has(row.kind));
     if (own.length > 5 || (!own.length && added.length > 5) || added.some(row => Math.abs(Date.now() - row.updatedAt) > 5_000)) return;
     const isBadge = (row: LedgerRow) => row.kind === 'badge-tier' || row.kind === 'monthly-challenge';
-    // Spec 54: a finish already on screen takes its jar line when the act's own row lands just after it.
-    if (noticeRef.current && !noticeRef.current.macro && noticeRef.current.activity && !noticeRef.current.jar) {
-      const late = jarLineFor(source, dayKey(Date.now()), Date.now(), added);
-      if (late) setNotice(current => current && !current.macro && !current.jar ? { ...current, jar: late } : current);
-    }
-    const badge = added.find(isBadge);
-    // A badge that lands in the same update as the finish that earned it must not swallow that finish (spec 52: the
-    // first idea's finish went missing about 1 run in 5 when reconcile's badge tier arrived with it).
+    // Badges remain in the ledger for You. Neither badges nor quests add a pop to a finish.
     const dropDone = !!source.drop && source.drop.drop.items.length > 0 && source.drop.drop.cursor >= source.drop.drop.items.length && (!previous.drop || previous.drop.drop.cursor < previous.drop.drop.items.length);
-    if (badge) {
-      // Badge tiers can arrive while someone is answering or planning; mark the moment without covering their controls.
-      const label = badge.kind === 'monthly-challenge' ? 'Monthly challenge complete' : 'A new badge tier';
-      // A badge usually lands just after the finish that earned it: add it to that moment instead of replacing the warm line.
-      // With no finish on screen (say, mid-question) it waits for the next one rather than covering an explanation.
-      if (noticeRef.current && !noticeRef.current.macro) setNotice(current => current && !current.macro ? { ...current, text: current.text.includes(label) ? current.text : `${current.text} · ${label}` } : current);
-      else pendingBadge.current = label;
-      // With a finish in the same update, go on: withBadge adds the label to that finish's line.
-      if (!dropDone && added.every(row => isBadge(row) || row.kind === 'daily-quest')) return;
-    }
+    if (!dropDone && added.length && added.every(row => isBadge(row) || row.kind === 'daily-quest')) return;
     const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session' && sessionCounts(row.inputs)) || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))) || (row.mode === 'read' && row.kind === 'chapter'));
     const dropFinished = dropDone;
     const now = Date.now(), today = dayKey(now);
@@ -130,6 +117,14 @@ export function EconomyFeedback() {
     const motionReduced = reduced();
     // After bedtime nothing celebrates: no buzz, no count-up (economy review 32, F1).
     if (afterBedtime) return;
+    const acts = jarActs(source.facts.filter(row => row.dayKey === today), source.focus);
+    const jarAct = acts.find(row => added.some(fact => fact.id === row.id))
+      ?? acts.filter(row => row.kind !== 'focus' && Math.abs(now - row.at) <= JAR_LINE_MS).at(-1);
+    const jarId = jarAct ? `${jarAct.id}:${jarAct.at}` : undefined;
+    const jar = jarId && jarId !== lastJarAct.current ? jarLineFor(source, today, now, added) : undefined;
+    if (jar) lastJarAct.current = jarId;
+    // A jar row can arrive after the finish event. It waits for that visible line to close.
+    if (jar && !achievement && !dropFinished) showNotice({ text: jar, jar, macro: false, activity: queueRef.current.current?.activity });
     const realWorld = achievement?.mode === 'tasks' || achievement?.mode === 'train';
     const macroKind = view.level > oldView.level ? `Level ${view.level}` : view.season.rank < oldView.season.rank && view.season.tier !== oldView.season.tier ? `${view.season.tier} tier` : '';
     const key = `economy.macro:${today}`;
@@ -137,19 +132,18 @@ export function EconomyFeedback() {
     const justCompleted = shouldShowDoneForToday({ wasComplete: complete(previous, now), isComplete: complete(source, now), seen: !!store.get(localStorage, `finish.done:${today}`), afterBedtime: isAfterBedtime(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime), macroCount: count });
     // Spec 15 D: the first marked day after a miss brings a fixed, announced gift (a soft day counts too).
     const welcomed = (view.days.at(-1)?.welcome ?? 0) > 0 && !(oldView.days.at(-1)?.welcome);
-    const welcomeLine = 'Welcome back. Here is a small gift for coming back.';
+    const welcomeLine = welcomeToastLine;
     if (welcomed && !achievement && !dropFinished && !justCompleted) {
       // On a soft day the gift line sits inside the calm soft finish, with no count-up overlay.
       if ((view.days.at(-1)?.soft ?? 0) > 0) return;
-      void tapHaptic(true, 20); setNotice({ text: welcomeLine, gain, macro: false, character: 'Kachhua' }); return;
+      void tapHaptic(true, 20); showNotice({ text: welcomeLine, gain, macro: false, character: 'Kachhua' }); return;
     }
     if (!achievement && !dropFinished && !justCompleted) return;
     const macro = !justCompleted && !!macroKind && realWorld && !afterBedtime && count < RULES.juice.macroPerDayMax;
     if (macro || justCompleted) store.set(sessionStorage, key, String(count + 1));
     if (justCompleted) {
       store.set(localStorage, `finish.done:${today}`, 'seen');
-      if (achievement || dropFinished) setPendingDone(true);
-      else setDoneCard(true);
+      setPendingDone(true);
     }
     void tapHaptic(true, justCompleted ? [30, 50, 30] : 20);
     const soundOn = source.settings.some(row => row.key === 'economy.soundOn' && row.value === true && !row.deleted);
@@ -159,9 +153,9 @@ export function EconomyFeedback() {
     const line = pickFinishLine(activity, lastLine.current);
     lastLine.current = line;
     store.set(sessionStorage, 'finish.lastLine', line);
-    setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Nandi' : undefined,
+    showNotice({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Nandi' : undefined,
       // Spec 45c: a real level rise opens the level page in place of the reveal; a tier change keeps the reveal.
-      level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp, jar: macro ? undefined : jarLineFor(source, today, now, added) }));
+      level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp, jar });
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;
@@ -182,33 +176,36 @@ export function EconomyFeedback() {
   const settingsRef = useRef<SettingRow[]>([]);
   useEffect(() => { settingsRef.current = source?.settings ?? []; }, [source]);
   useEffect(() => {
-    if (!notice || notice.macro) return;
+    if (!notice || notice.macro || doneCard || pauseOffer) return;
     const finish = !!notice.activity;
     const timer = window.setTimeout(() => {
-      setNotice(null);
-      if (!finish || !pauseOfferDue(settingsRef.current, dayKey(Date.now()), nightPauseAvailable())) return;
+      dismissNotice();
+      if (queueRef.current.pending.length || pendingDoneRef.current || isAfterBedtime(Date.now(), bedtimeRef.current) || !finish || !pauseOfferDue(settingsRef.current, dayKey(Date.now()), nightPauseAvailable())) return;
       setPauseOffer(true);
       void answerOffer(db, PAUSE_OFFER_KEY, 'shown', Date.now()).catch(() => { /* shown again next finish at most */ });
     }, RULES.juice.mesoMs[1] + 600);
     return () => window.clearTimeout(timer);
-  }, [notice]);
+  }, [notice, doneCard, pauseOffer]);
   useEffect(() => {
-    if (!pendingDone) return;
-    const timer = window.setTimeout(() => { setNotice(null); setDoneCard(true); setPendingDone(false); }, RULES.juice.mesoMs[1] + 600);
+    if (!pendingDone || notice) return;
+    const timer = window.setTimeout(() => {
+      if (!isAfterBedtime(Date.now(), bedtimeRef.current)) setDoneCard(true);
+      setPendingDone(false);
+    }, 0);
     return () => window.clearTimeout(timer);
-  }, [pendingDone]);
+  }, [pendingDone, notice]);
   if (pauseOffer && !doneCard) return <PauseOffer close={() => setPauseOffer(false)} />;
   if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} suggestion={boundedSuggestion(readInterests(source?.settings ?? []), dayKey(Date.now()), false)} />; // eslint-disable-line react-hooks/purity
   if (!notice) return null;
   if (notice.macro && notice.level) return <LevelPage dialog={reveal} level={notice.level} totalXp={notice.totalXp ?? 0} reduced={reduced()} close={() => {
-    setNotice(null);
+    dismissNotice();
     // Focus goes back to what raised the page; if that is gone (a finished row folds away), to the page's heading. The
     // row can fold away a moment after focus went back to its Done, so it is checked again once the fold is over.
     const toHeading = () => { if (document.activeElement && document.activeElement !== document.body) return; const heading = document.getElementById('main')?.querySelector<HTMLElement>('h1'); if (!heading) return; if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); };
     requestAnimationFrame(toHeading);
     window.setTimeout(toHeading, 500);
   }} />;
-  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Nandi" pose="cheer" size={80} moment="hop" at={1} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p><button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} jar={notice.jar} />;
+  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Nandi" pose="cheer" size={80} moment="hop" at={1} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p><button type="button" onClick={dismissNotice}>Continue</button><button type="button" className="secondary" onClick={dismissNotice}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} jar={notice.jar} />;
 }
 
 const ARRIVING = ['Mor', 'Chiku', 'Nandi', 'Kapi', 'Kachhua'] as const;

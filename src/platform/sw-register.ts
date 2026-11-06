@@ -27,6 +27,13 @@ export function subscribeToServiceWorker(listener: () => void): () => void {
 
 export function dismissOfflineReady(): void { setState({ offlineReady: false }); }
 
+// Builder-only: exercise the real once-only path without waiting for a worker install.
+if (import.meta.env.VITE_E2E === '1') {
+  window.addEventListener('nandi:e2e-offline-ready', () => {
+    void markOfflineReady().catch(error => console.error('Could not save offline-ready state', error));
+  });
+}
+
 async function markOfflineReady(): Promise<void> {
   const key = 'offlineReadyShown';
   if ((await db.settings.get(key))?.value === true) return;

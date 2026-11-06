@@ -10,6 +10,8 @@ vi.mock('../cast/sound', () => ({ playCastSound: mock.playCastSound }));
 // Reconcile (badges, quests, closes) is tested on its own; here it would race the finish under test.
 vi.mock('../../data/repos/gamify', () => ({ reconcileGamify: mock.reconcileGamify, recordShown: () => Promise.resolve() }));
 import { EconomyFeedback } from './EconomyFeedback';
+import { finishEvent } from './finish';
+import { RULES } from '../../core/rules.config';
 
 // Economy review 32, F1 and F2: nothing celebrates after bedtime, and the count-up respects reduced motion.
 const settle = () => act(async () => { await new Promise(resolve => setTimeout(resolve, 80)); });
@@ -46,13 +48,15 @@ describe('economy feedback', () => {
   it('celebrates a finished task in the day', async () => {
     const seen = await finishTask('2026-11-03T12:00:00');
     // The count-up runs on animation frames (frozen with a fixed clock here), so any count is fine; never below 0.
-    await waitFor(() => expect(seen.some(toast => /^\+\d+ XP today · /.test(toast.text))).toBe(true));
+    await waitFor(() => expect(seen.some(toast => /^\+\d+ XP today(?: · |$)/.test(toast.text))).toBe(true));
     expect(mock.tapHaptic).toHaveBeenCalled();
   });
 
-  it('spec 52: a badge tier landing in the same update does not swallow the finish; it joins its line', async () => {
+  it('571 E4: a badge tier landing with a finish stays recorded for You without joining the toast', async () => {
     const seen = await finishTask('2026-10-22T12:00:00', true);
-    expect(seen.some(row => row.className.includes('finish-moment') && row.text.includes('A new badge tier'))).toBe(true);
+    expect(seen.some(row => row.className.includes('finish-moment'))).toBe(true);
+    expect(seen.every(row => !row.text.includes('badge'))).toBe(true);
+    expect(await db.ledger.where('kind').equals('badge-tier').count()).toBe(1);
   });
   it('spec 52: a first idea landing with its badge tiers, quest and drop fact (6 rows at once) still shows its finish', async () => {
     vi.setSystemTime(new Date('2026-11-04T12:00:00'));
@@ -73,7 +77,9 @@ describe('economy feedback', () => {
     }); });
     await settle();
     observer.disconnect();
-    expect(seen.some(text => text.includes('A new badge tier'))).toBe(true);
+    expect(seen.length).toBeGreaterThan(0);
+    expect(seen.every(text => !text.includes('badge'))).toBe(true);
+    expect(await db.ledger.where('kind').equals('badge-tier').count()).toBe(2);
   });
 
   it('spec 52: a restore stays quiet: old facts in bulk, reconcile rows alone, or a few old facts with fresh reconcile rows', async () => {
@@ -123,10 +129,65 @@ describe('economy feedback', () => {
   it('F2: with Motion off the XP shows in full at once, with no bloom and no sound', async () => {
     document.documentElement.dataset.motion = 'reduce';
     const seen = await finishTask('2026-11-05T12:00:00');
-    await waitFor(() => expect(seen.some(toast => /^\+[1-9]\d* XP today · /.test(toast.text))).toBe(true));
+    await waitFor(() => expect(seen.some(toast => /^\+[1-9]\d* XP today(?: · |$)/.test(toast.text))).toBe(true));
     // The full number from the first frame: never a count from 0, and no bloom.
     expect(seen.every(toast => !/^\+0 XP/.test(toast.text) && !toast.className.includes('finish-bloom'))).toBe(true);
     expect(mock.playCastSound).not.toHaveBeenCalled();
+  });
+
+  it('571 E4: finish events wait their turn and close before the next one appears', async () => {
+    vi.setSystemTime(new Date('2026-11-05T12:00:00'));
+    render(<EconomyFeedback />);
+    await waitFor(() => expect(mock.reconcileGamify).toHaveBeenCalled());
+    vi.useFakeTimers({ toFake: ['Date', 'setTimeout', 'clearTimeout'] });
+    const random = vi.spyOn(Math, 'random').mockReturnValue(0);
+    act(() => window.dispatchEvent(new CustomEvent(finishEvent, { detail: 'task' })));
+    const first = document.querySelector('[role=status]')!.textContent;
+    act(() => vi.advanceTimersByTime(1000));
+    act(() => window.dispatchEvent(new CustomEvent(finishEvent, { detail: 'learn' })));
+    expect(document.querySelectorAll('[role=status]')).toHaveLength(1);
+    expect(document.querySelector('[role=status]')!.textContent).toBe(first);
+    act(() => vi.advanceTimersByTime(RULES.juice.mesoMs[1] + 600 - 1000));
+    expect(document.querySelectorAll('[role=status]')).toHaveLength(1);
+    expect(document.querySelector('[role=status]')!.textContent).toBe('That idea has room to settle.');
+    act(() => vi.advanceTimersByTime(RULES.juice.mesoMs[1] + 600));
+    expect(document.querySelector('[role=status]')).toBeNull();
+    random.mockRestore();
+  });
+
+  it('571 E4: a late jar line waits for the visible finish and is not repeated by reconcile', async () => {
+    vi.setSystemTime(new Date('2026-11-05T12:00:00'));
+    const now = Date.now(), day = dayKey(now);
+    await db.settings.put({ key: 'yatra.jarFrom', value: day, updatedAt: now, deleted: 0, deviceId: 'test' });
+    render(<EconomyFeedback />);
+    await waitFor(() => expect(mock.reconcileGamify).toHaveBeenCalled());
+    await settle();
+    act(() => window.dispatchEvent(new CustomEvent(finishEvent, { detail: 'learn' })));
+    const first = document.querySelector('[role=status]')!.textContent;
+    await act(async () => { await db.ledger.add({ id: 'idea:late', mode: 'read', kind: 'idea', refId: 'late', inputs: {}, dayKey: day, updatedAt: now, deleted: 0, deviceId: 'test' }); });
+    await settle();
+    expect(document.querySelectorAll('[role=status]')).toHaveLength(1);
+    expect(document.querySelector('[role=status]')!.textContent).toBe(first);
+    await waitFor(() => expect(document.querySelector('[role=status]')?.textContent).toBe('+5 min into the jar · idea read'), { timeout: 2500 });
+    await act(async () => { await db.ledger.add({ id: 'learn-drop:late', mode: 'gamify', kind: 'learn-drop', refId: 'late', inputs: {}, dayKey: day, updatedAt: now, deleted: 0, deviceId: 'test' }); });
+    await settle();
+    await waitFor(() => expect(document.querySelector('[role=status]')).toBeNull(), { timeout: 2500 });
+    expect(document.querySelector('[role=dialog]')).toBeNull();
+  });
+
+  it('571 E4: queued finishes are dropped when bedtime passes', async () => {
+    vi.setSystemTime(new Date('2026-11-05T12:00:00'));
+    render(<EconomyFeedback />);
+    await waitFor(() => expect(mock.reconcileGamify).toHaveBeenCalled());
+    vi.useFakeTimers({ toFake: ['Date', 'setTimeout', 'clearTimeout'] });
+    act(() => {
+      window.dispatchEvent(new CustomEvent(finishEvent, { detail: 'task' }));
+      window.dispatchEvent(new CustomEvent(finishEvent, { detail: 'learn' }));
+    });
+    vi.setSystemTime(new Date('2026-11-06T02:00:00'));
+    act(() => vi.advanceTimersByTime(RULES.juice.mesoMs[1] + 600));
+    expect(document.querySelector('[role=status]')).toBeNull();
+    expect(document.querySelector('[role=dialog]')).toBeNull();
   });
 
   // Spec 45c: a real level rise opens the level page in place of the season reveal; it is one dialog with one way on.
