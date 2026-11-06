@@ -1,5 +1,13 @@
 /*
- * Spec 571 E10: "Ready to work offline" never covers a sheet. It keeps its place at the top of the page flow, so it
- * never covers a button either (shell.spec), and it hides in the same frame a sheet opens, before the observer runs.
+ * Spec 571 E10: "Ready to work offline" never covers a sheet; it hides in the same frame a sheet opens, before the
+ * observer runs.
+ * b2 (7 Nov): it is a real toast now, not a block in the page flow. In the flow its one-time arrival on the first open
+ * pushed the whole screen down (a layout shift, gate-571h CLS 0.150). It takes the economy toast's slot above the tab
+ * bar (and its top slot on the screens where that toast moves up), taps go through it, and it waits behind a live
+ * economy toast instead of stacking on it.
  */
+.offline-ready-toast { position: fixed; z-index: 20; left: 50%; bottom: calc(82px + env(safe-area-inset-bottom)); transform: translateX(-50%); margin: 0; pointer-events: none; }
+.app-shell:has(.case-prove, .learn-active, .learn-feedback, .idea-sitting, .idea-end, .book-check-tried) .offline-ready-toast { bottom: auto; top: calc(10px + env(safe-area-inset-top)); }
+.night-route .offline-ready-toast { bottom: calc(16px + env(safe-area-inset-bottom)); }
+body:has(.economy-toast) .offline-ready-toast,
 body:has([aria-modal="true"], .sheet-backdrop) .offline-ready-toast { visibility: hidden; }
