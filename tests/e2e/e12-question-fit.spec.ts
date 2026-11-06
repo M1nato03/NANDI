@@ -37,6 +37,8 @@ for (const fixture of fixtures) {
     await expectPageFits(page);
     await expectAnswersShown(page);
     await expectCheckFits(page, false);
+    // Nothing is below the fold at normal text, so there is no "more below" cue.
+    await expect(page.locator('.learn-more-cue')).toHaveCount(0);
     const options = page.locator(fixture.type === 'estimate' ? '.learn-estimate input[type="range"]' : '.learn-options');
     await expect.poll(async () => {
       const stem = await page.locator('.learn-stem').boundingBox();
@@ -72,8 +74,16 @@ for (const fixture of fixtures.filter(item => item.size === 'longest')) {
     // At large text, scroll the middle to the last answer while the page and Check stay put.
     const middle = page.locator('.learn-q');
     await expect(middle).toHaveCSS('overflow-y', 'auto');
+    // b2 (6 Nov): while the middle holds more below, a fade and a chevron (no words) sit on its bottom edge.
+    const overflows = await middle.evaluate(node => node.scrollHeight - node.clientHeight > 2);
+    if (overflows) {
+      await expect(page.locator('.learn-more-cue svg')).toBeVisible();
+      await expect(middle).toHaveClass(/more-below/);
+    }
     await middle.evaluate(node => { node.scrollTop = node.scrollHeight; });
     await settleQuestionFit(page);
+    // At the end of the middle there is nothing more below, so the cue goes.
+    await expect(page.locator('.learn-more-cue')).toHaveCount(0);
     await expectPageFits(page);
     await expectCheckFits(page, false);
     await pickDemoAnswer(page, fixture);
