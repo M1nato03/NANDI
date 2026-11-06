@@ -32,6 +32,17 @@ test('Train settings: track, rest day, hot-day mode and equipment keep what you 
   await expect(page.getByLabel('Dumbbells')).toBeChecked();
   await expect(page.getByLabel('Hot-day mode')).toBeChecked();
   await expect(page.getByLabel('Rest day')).toHaveValue('3');
+  // Two quick taps with no wait between: each saves only its own field, so neither undoes the other.
+  await page.getByLabel('Resistance band').click();
+  await page.getByLabel('Barbell').selectOption('15');
+  // Both controls are drawn from the stored program, so these hold only once both writes have landed.
+  await expect(page.getByLabel('Barbell')).toHaveValue('15');
+  await expect(page.getByLabel('Resistance band')).toBeChecked();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Training settings' })).toBeVisible();
+  await expect(page.getByLabel('Resistance band')).toBeChecked();
+  await expect(page.getByLabel('Barbell')).toHaveValue('15');
+  await expect(page.getByLabel('Dumbbells')).toBeChecked();
   // Last: the select is drawn from the saved program, so it shows gym only once that is stored (gym then asks for setup).
   await page.getByLabel('Training track').selectOption('gym');
   await expect(page.getByLabel('Training track')).toHaveValue('gym');

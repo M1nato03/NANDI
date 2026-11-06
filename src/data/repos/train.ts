@@ -88,7 +88,7 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         return row;
       }).then(async row => { await setRestWeekday(db, input.restDay, now); return (await getProgram()) ?? row; });
     },
-    async updateProgram(changes: Partial<Pick<ProgramRow, 'track' | 'days' | 'weeklyTarget' | 'restDay' | 'heatModeEnabled' | 'equipment'>>, now: number): Promise<ProgramRow> {
+    async updateProgram(changes: Partial<Pick<ProgramRow, 'track' | 'days' | 'weeklyTarget' | 'restDay' | 'heatModeEnabled'>> & { equipment?: Partial<EquipmentSetting> }, now: number): Promise<ProgramRow> {
       return mutation(async () => {
         const old = await getProgram();
         if (!old) throw new Error('Complete rank assessment first');
@@ -98,7 +98,10 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         const planHistory = planChanged
           ? [...(old.planHistory ?? [{ from: '0000-01-01', days: old.days ?? [1, 3, 5], target: old.weeklyTarget ?? 3 }]).filter(step => step.from !== from), { from, days: changes.days ?? old.days ?? [1, 3, 5], target: changes.weeklyTarget ?? old.weeklyTarget ?? 3 }]
           : old.planHistory;
-        const row = { ...old, ...changes, ...(planHistory ? { planHistory } : {}), heatStartedAt: changes.heatModeEnabled && !old.heatModeEnabled ? now : old.heatStartedAt, ...meta(now) };
+        // Equipment merges into what is stored, read inside this write: two quick taps (Dumbbells, then Barbell) each
+        // change only their own field, so the second never puts back the first's old value.
+        const equipment = changes.equipment ? { ...old.equipment, ...changes.equipment } as EquipmentSetting : old.equipment;
+        const row = { ...old, ...changes, equipment, ...(planHistory ? { planHistory } : {}), heatStartedAt: changes.heatModeEnabled && !old.heatModeEnabled ? now : old.heatStartedAt, ...meta(now) };
         await db.programs.put(row);
         return row;
       }).then(async row => {
