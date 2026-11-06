@@ -11,5 +11,9 @@
 .offline-ready-toast { position: absolute; inset: 50% auto auto 0; transform: translateY(-50%); max-width: calc(100% - 8px); margin: 0;
   overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; z-index: 1;
   background: var(--surface-2); color: var(--ink); box-shadow: var(--shadow-1); }
+/* While the notice shows, the brand under it steps aside (its mark would peep out at the pill's rounded edge). */
+.topbar .brand-slot:has(> .offline-ready-toast) > .brand { visibility: hidden; }
 body:has(.economy-toast) .offline-ready-toast,
 body:has([aria-modal="true"], .sheet-backdrop) .offline-ready-toast { visibility: hidden; }
+body:has(.economy-toast) .topbar .brand-slot > .brand,
+body:has([aria-modal="true"], .sheet-backdrop) .topbar .brand-slot > .brand { visibility: visible; }
