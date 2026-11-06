@@ -19,7 +19,11 @@ export function canonicalRoute(path: string): string {
  * Spec 571 stage 1: Read, Kapi's shelf (Play), Train and Calm live behind Grow's doors, and the useful-days record under
  * You. Old routes (shared links, widgets, notifications, backups) resolve here to their new homes.
  */
-const MOVES: readonly [string, string][] = [['read', 'grow/read'], ['yatra/train', 'grow/train'], ['yatra/mind', 'grow/play'], ['yatra/calm', 'grow/calm'], ['yatra/days', 'you/days']];
+// Card reviews (Moti's) moved from Kapi's shelf to Remember, so they come first: the first match wins.
+const MOVES: readonly [string, string][] = [
+  ['yatra/mind/reviews', 'grow/remember/cards'], ['yatra/mind/deck', 'grow/remember/deck'],
+  ['read', 'grow/read'], ['yatra/train', 'grow/train'], ['yatra/mind', 'grow/play'], ['yatra/calm', 'grow/calm'], ['yatra/days', 'you/days'],
+];
 const moved = (value: string, from: string, to: string) => value === from || value.startsWith(`${from}/`) ? `${to}${value.slice(from.length)}` : null;
 export function toGrow(value: string): string {
   for (const [from, to] of MOVES) { const next = moved(value, from, to); if (next) return next; }
@@ -57,7 +61,10 @@ function legacyRoute(value: string): string {
 
 export function route(): string { return canonicalRoute(location.hash); }
 export function parentRoute(path: string): string {
-  if (path === 'grow/remember') return 'grow';
+  if (path === 'grow/remember' || path === 'grow/sleep') return 'grow';
+  if (path.startsWith('grow/remember/')) return 'grow/remember';
+  // Calm and tonight's kolam sit behind the Calm & Sleep door.
+  if (path === 'grow/calm' || path === 'kolam') return 'grow/sleep';
   const legacy = screenKey(path);
   let parent = toGrow(oldParent(legacy));
   // A moved screen's top goes back to its new tab (a Book check still goes back to Yatra, where it is offered).
@@ -90,6 +97,8 @@ export function tabOf(path: string): Tab {
   const root = canonicalRoute(path).split('/')[0];
   // Spec 55: a crew link belongs to Yatra, where the crew lives.
   if (root === 'crew') return 'Yatra';
+  // Spec 571: tonight's kolam is Kachhua's, behind Grow's Calm & Sleep door.
+  if (root === 'kolam') return 'Grow';
   return tabs.find(tab => tab.toLowerCase() === root) ?? 'Plan';
 }
 export function go(path: string): void {
@@ -116,7 +125,11 @@ export function back(fallback = parentRoute(route())): void {
 /** Where Back goes, named: a tab, or the Yatra corner a screen sits in (spec 34), by its heading (spec 45c: Play, Train). */
 export function backDestination(): string {
   const target = canonicalRoute(entry()?.from ?? parentRoute(route()));
-  if (target === 'yatra/mind' || target.startsWith('yatra/mind/')) return 'Play';
-  if (target === 'yatra/train' || target.startsWith('yatra/train/')) return 'Train';
+  // Spec 571: a Grow door is named by its own heading.
+  if (target === 'grow/play' || target.startsWith('grow/play/')) return 'Play';
+  if (target === 'grow/train' || target.startsWith('grow/train/')) return 'Train';
+  if (target.startsWith('grow/remember')) return 'Remember';
+  if (target === 'grow/read' || target.startsWith('grow/read/')) return 'Read';
+  if (target === 'grow/sleep') return 'Calm & Sleep';
   return tabOf(target);
 }

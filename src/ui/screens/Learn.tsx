@@ -59,13 +59,15 @@ import { chikuOpen, type ChikuScene } from '../../core/learn/chiku';
 import { ChikuStage } from '../learn/ChikuStage';
 import { AreaScope } from '../shell/AreaScope';
 import { FriendStage } from '../cast/FriendStage';
+import { CardReviews } from '../grow/CardReviews';
+import { LearningHolding } from './LearningHolding';
 import { saveChikuPlayed } from '../../data/repos/learn-engine';
 
 type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean; goldReview?: boolean };
 
 const STATE_LABEL: Record<ChapterState, string> = { 'not-started': 'Not started', 'in-progress': 'In progress', done: 'Done', due: 'Due for review' };
 
-/** Spec 33: the Read tab (Continue, Review with Moti, the Library) and each book's page. */
+/** Spec 33: Read (Continue, the Library) and each book's page; spec 571: Moti's Remember door. */
 export function Learn({ entry, book: bookParam }: { entry?: string; book?: string }) {
   const [practice, setPractice] = useState<Practice>();
   const [moti, setMoti] = useState<'haveli' | 'matka' | null>(null);
@@ -146,6 +148,21 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
       {state === 'Mastered' && goldItems(concept, taughtOn, dayKey(openedAt)) && <button type="button" className="secondary" disabled={triedToday} onClick={() => setPractice({ conceptId: concept.id, topicId, goldReview: true })}>Gold review</button>}</div>;
   })}</div>;
 
+  // Spec 571 M3: Grow › Remember, Moti's door: the review card (idea checks, haveli, matka), card reviews and how learning holds.
+  const motiWaiting = dueCount > 0 || haveliIdeas.length > 0 || (matkaItems.length > 0 && matkaDone.length < matkaItems.length);
+  if (entry === 'remember') return <section className="screen learn-screen remember-screen"><FriendStage area="review"><p className="eyebrow">Moti by the keepsake wall</p><h1>Remember</h1></FriendStage>
+    <section className="card learn-moti" data-area="review" aria-label="Review with Moti" data-testid="moti-review">
+      <h2>Review with Moti</h2>
+      {!motiWaiting && <p className="small">Nothing waiting now. Ideas you read come back here.</p>}
+      {dueCount > 0 && <><button type="button" className="learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} today</button>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
+      {haveliIdeas.length > 0 && <button type="button" className="secondary learn-haveli-action" onClick={() => setMoti('haveli')}>Haveli · {haveliCount(haveliToday, litToday, visits, haveliCap)}</button>}
+      {matkaItems.length > 0 && matkaDone.length < matkaItems.length && <button type="button" className="secondary learn-matka-action" onClick={() => setMoti('matka')}>Matka · {matkaItems.length - matkaDone.length} sealed guesses</button>}
+    </section>
+    <CardReviews />
+    <LearningHolding />
+    {message && <p role="status">{message}</p>}{scene}
+  </section>;
+
   if (entry === 'book') {
     const pack = topics.find(row => row.body.topic.id === bookParam);
     if (!pack) return <section className="screen learn-screen"><h1>Book not found</h1><button type="button" onClick={() => go('read')}>Back to library</button>{scene}</section>;
@@ -191,13 +208,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
           : <button type="button" onClick={() => go(`read/chapter/${current.body.topic.id}/${upNext.id}`)}>{upNextState === 'in-progress' ? 'Continue' : 'Start'}</button>}
       </> : <p className="read-empty">Every book here is finished. New books are on their way.</p>}
     </section>
-    {/* Item 135: one friend per panel. Review (idea checks, haveli, matka) is Moti's own rose card. */}
-    {(dueCount > 0 || haveliIdeas.length > 0 || (matkaItems.length > 0 && matkaDone.length < matkaItems.length)) && <section className="card learn-moti" data-area="review" aria-label="Review with Moti">
-      <FriendStage area="review" size={48} compact band><h2>Review with Moti</h2></FriendStage>
-      {dueCount > 0 && <><button type="button" className="learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} today</button>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
-      {haveliIdeas.length > 0 && <button type="button" className="secondary learn-haveli-action" onClick={() => setMoti('haveli')}>Haveli · {haveliCount(haveliToday, litToday, visits, haveliCap)}</button>}
-      {matkaItems.length > 0 && matkaDone.length < matkaItems.length && <button type="button" className="secondary learn-matka-action" onClick={() => setMoti('matka')}>Matka · {matkaItems.length - matkaDone.length} sealed guesses</button>}
-    </section>}
+    {/* Spec 571 (one place): Moti's review card lives on Grow › Remember; Read keeps Chiku's books only. */}
     <section className="read-library" aria-label="Library"><h2>Library</h2>
       {shelves.map(shelf => <section key={shelf.shelf} className="read-shelf" aria-label={shelf.title}><h3>{shelf.title}</h3>
         <ul className="read-shelf-row">{shelf.books.map(pack => {

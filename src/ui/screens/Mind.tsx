@@ -42,7 +42,6 @@ import { Tracks, trackCardContent } from '../mind/Tracks';
 import { economyVisible, nightMindNote } from '../mind/economyVisibility';
 import { trackWindDownTime } from '../mind/windDown';
 import { CaseScreen } from '../mind/CaseScreen';
-import { EmptyState } from '../EmptyState';
 import { caseRunId } from '../../data/repos/mysteries';
 import '../mind/mind.css';
 import { BoardTutorial, CaseTutorial } from '../mind/Tutorial';
@@ -142,9 +141,7 @@ export function Mind({ entry }: { entry?: string }) {
   // Older installs already hold the seeded cards; for them the deck simply stays on.
   const deckOn = settings.some(row => row.key === 'mind.deckOn' && row.value === true && !row.deleted) || cards.some(row => row.deckId === 'greene' && !row.deleted);
   const hiddenCards = new Set(flags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
-  const dueCount = cards.filter(row => !row.deleted && !hiddenCards.has(`card:${row.id}`) && row.due <= today).length;
   const reviewRamp = readReviewRamp(settings.find(row => row.key === 'mind.reviewRamp' && !row.deleted)?.value);
-  const todayReviews = reviewAllowance(dueCount, today, reviewRamp);
   const sessionSeen = new Set([...reviewedIds, ...(reviews ?? []).filter(row => row.kind === 'card').map(row => row.id)]);
   const reviewWaiting = cards.filter(row => !row.deleted && !hiddenCards.has(`card:${row.id}`) && row.due <= today && !sessionSeen.has(row.id)).length;
   const bestByType = Object.fromEntries(types.map(type => [type, puzzleRuns.filter(row => row.type === type && !row.deleted && row.result === 'solved' && row.solveMs !== undefined).reduce<number | undefined>((best, row) => best === undefined ? row.solveMs : Math.min(best, row.solveMs!), undefined)])) as Record<PuzzleType, number | undefined>;
@@ -194,10 +191,6 @@ export function Mind({ entry }: { entry?: string }) {
   }, [today, entry]);
   // The people-reading deck is opt-in (audit 10-21): seed it only once the person has turned it on.
   useEffect(() => { if (deck && deckOn) void seedDeckCards(db, deck).catch(error => recordError('window', error)); }, [deckOn]);
-  const turnOnDeck = async () => {
-    const time = Date.now(), deviceId = await getOrCreateDeviceId(db, time);
-    await trackWrite(() => db.settings.put({ key: 'mind.deckOn', value: true, updatedAt: time, deleted: 0, deviceId }));
-  };
 
   const startLesson = async (packId: string, lesson: Lesson, review = false) => {
     const pack = lessonPacks.find(value => value.id === packId);
@@ -209,10 +202,6 @@ export function Mind({ entry }: { entry?: string }) {
     await saveLessonDraft(db, draft);
     go('learn/lesson');
   };
-  const startReviews = () => {
-    if (!deck) return;
-    go('mind/reviews');
-  };
   const startDeckPractice = async () => {
     if (!deck) return;
     const [progress, allRatings, allFlags] = await Promise.all([db.deckProg.toArray(), db.ratings.toArray(), db.flags.toArray()]);
@@ -222,7 +211,7 @@ export function Mind({ entry }: { entry?: string }) {
     setReviews(buildReviewSession(today, [], progress, allRatings, hidden, deck, RULES.mind.reviewSession.ramp[2]));
   };
   const finishReviews = async (oneMore: boolean) => {
-    if (reviewIsPractice) { setReviews(null); setReviewIsPractice(false); return; }
+    if (reviewIsPractice) { setReviews(null); setReviewIsPractice(false); if (entry === 'deck') back('grow/remember'); return; }
     const now = Date.now(), deviceId = await getOrCreateDeviceId(db, now);
     const [allCards, allFlags, stored] = await Promise.all([db.cards.toArray(), db.flags.toArray(), db.settings.get('mind.reviewRamp')]);
     const hidden = new Set(allFlags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
@@ -244,7 +233,7 @@ export function Mind({ entry }: { entry?: string }) {
       setReviewedIds([...seen]);
       setReviewIsOneMore(true);
       setReviews(next);
-    } else { setReviews(null); setReviewedIds([]); setReviewIsOneMore(false); back('mind'); }
+    } else { setReviews(null); setReviewedIds([]); setReviewIsOneMore(false); back('grow/remember'); }
   };
 
   const persist = useCallback((row: PuzzleRunRow) => {
@@ -414,6 +403,8 @@ export function Mind({ entry }: { entry?: string }) {
         }).catch(error => { recordError('window', error); setMessage('Could not open this board.'); setBusy(false); });
       }
       else if (entry === 'case') setCaseOpen(true);
+      // Spec 571: Remember's "Practice people-reading deck" opens here and starts the practice round.
+      else if (entry === 'deck' && deck) void startDeckPractice().catch(error => recordError('window', error));
       else if (entry === 'reviews' && deck) void Promise.all([db.cards.toArray(), db.deckProg.toArray(), db.ratings.toArray(), db.flags.toArray(), db.settings.get('mind.reviewRamp')]).then(([allCards, progress, allRatings, allFlags, stored]) => {
         const hidden = new Set(allFlags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
         const due = allCards.filter(row => !row.deleted && !hidden.has(`card:${row.id}`) && row.due <= today).length;
@@ -508,6 +499,8 @@ export function Mind({ entry }: { entry?: string }) {
     </>}
   </section>;
 
+  // Spec 571: the card rounds open from Remember; until the round is built they show no shelf behind them.
+  if (entry === 'reviews' || entry === 'deck') return <section className="screen" role="status">{deck ? 'Opening the cards…' : 'No cards to review.'}</section>;
   return <section className="screen mind-hub">
     {entry !== 'courses' && entry !== 'unit' && <><FriendStage area="mind" art={<KapiMoment moment="swing" size={96} />}><p className="eyebrow">Kapi in the branches</p><h1>Play</h1></FriendStage>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
@@ -532,7 +525,7 @@ export function Mind({ entry }: { entry?: string }) {
     <details className="mind-techniques"><summary>Technique cards</summary>{(() => { const isOpen = (card: typeof techniqueCards[number]) => unlocks.some(row => row.id === techniqueId(card.type, card.name) && !row.deleted); const open = techniqueCards.filter(isOpen); const locked = techniqueCards.filter(card => !isOpen(card)); const typeNames: Record<string, string> = { sudoku: 'Mini Sudoku', crowns: 'Crowns', sunmoon: 'Sun & Moon', path: 'Number Path', calc: 'Calcudoku', mystery: 'Case' }; return <><p className="small">{open.length} of {techniqueCards.length} unlocked. Use a technique in a solve to unlock its card.</p>{open.length > 0 && <div className="mind-technique-list">{open.map(card => <article key={techniqueId(card.type, card.name)}><h3>{card.name}</h3><p>{card.explanation}</p><p className="small">{card.example}</p></article>)}</div>}{[...new Set(locked.map(card => card.type))].map(type => <div key={type} className="mind-technique-locked"><h3>{typeNames[type] ?? type}</h3><ul>{locked.filter(card => card.type === type).map(card => <li key={card.name}>{card.name}</li>)}</ul></div>)}</>; })()}</details>
     </details>
     <details className="card mind-story"><summary>Story so far · {currentArcTitle(today)}</summary>{panels.length ? panels.map(panel => <article key={panel.id}><h3>{panel.chapterTitle}{panel.bonus ? ' · Bonus' : ''}</h3><p>{panel.text}</p></article>) : <p>Solve today's case to uncover the first panel.</p>}</details>
-    <section className="card"><h2>Card reviews</h2>{todayReviews ? <><p>{todayReviews} for today</p>{dueCount > todayReviews && <p className="deck-meta">{dueCount} waiting</p>}<button type="button" className="secondary" onClick={startReviews}>Review cards</button></> : dueCount ? <><p>That's enough for today</p><p className="deck-meta">{dueCount} waiting</p></> : <EmptyState area="think">You're all caught up for now.</EmptyState>}{deckOn ? <button type="button" className="secondary" onClick={() => void startDeckPractice()}>Practice people-reading deck</button> : <div className="mind-deck-off"><p className="small">People-reading deck: {deck?.body.cards.length ?? 0} cards on reading people and power. It stays off until you want it.</p><button type="button" className="secondary" onClick={() => void turnOnDeck()}>Turn on the deck</button></div>}</section>
+    {/* Spec 571: card reviews and the people-reading deck are Moti's, on Grow › Remember (one place). */}
     </>}
     {(entry === 'courses' || entry === 'unit') && <details className="card mind-courses" open={entry === 'unit' ? true : undefined}><summary>Courses</summary>
       <div className="card mind-old-lesson"><h2>Today's lesson</h2>{lessonSlotDone ? <p>Complete for today.</p> : pendingDraft?.day === today && !pendingDraft.review && pendingDraft.step < 7 ? <button type="button" onClick={() => { const row = lessonPacks.find(pack => pack.body.course.id === pendingDraft.courseId); const lesson = row?.body.lessons.find(value => value.id === pendingDraft.lessonId); if (row && lesson) void startLesson(row.id, lesson); }}>Continue lesson</button> : night !== 'day' ? <p>New lessons wait for the morning.</p> : <><p>{nextLessons[0]?.next?.t}</p><button type="button" onClick={() => { const row = nextLessons[0]; if (row?.next) void startLesson(row.pack.id, row.next); }}>Start lesson</button></>}</div>

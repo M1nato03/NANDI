@@ -51,7 +51,8 @@ export const STAGES: Record<Area, { friend: CastName; stage: string; body: strin
 /** Which area a route belongs to; You has none and stays neutral. */
 export function areaOf(route: string): Area | undefined {
   // Spec 571: a moved screen keeps its friend's area (Read is Chiku's, Play Kapi's, Calm Kachhua's); Grow's doors stay neutral.
-  if (route === 'grow/remember') return 'review';
+  if (route === 'grow/remember' || route.startsWith('grow/remember/')) return 'review';
+  if (route === 'grow/sleep') return 'night';
   const path = screenKey(route);
   const root = path.split('/')[0];
   if (root === 'night') return 'night';
