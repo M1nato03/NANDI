@@ -109,7 +109,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   // Spec 571 §0.20 (E12): a question fits one screen; the answers and Check sit in the thumb zone.
   const fitRef = useFitViewport();
   // §0.20 (b2): at large text the middle can hold more than shows; a fade and a chevron (no words) say so.
-  const [middleRef, moreBelow] = useMoreBelow();
+  const [middleRef, moreBelow, revealBelow] = useMoreBelow();
   const feedbackKey = visibleFeedback ? visibleFeedback.cursor : -1;
   useEffect(() => {
     // The explanation lands below the options; bring it on screen so nobody has to hunt for it.
@@ -351,7 +351,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       </div>;
     })() : <div className={`learn-options${item.type === 'match' ? ' learn-match' : ''}`}>{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>}
     </div>
-    {!night && moreBelow && <div className="learn-more-cue" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg></div>}
+    {!night && moreBelow && <div className="learn-more-cue"><button type="button" aria-label="Answers below" onClick={() => revealBelow('.learn-options > button, .learn-estimate input[type="range"]')}><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg></button></div>}
     {/* Spec 13 L: one question per question. A new idea records fairly sure; a review folds "how sure?" into Check itself (one tap),
         because "do I still know this?" is the real question there. Gold review keeps the three chips. */}
     {!visibleFeedback && <div className="learn-confidence learn-check">{goldReview && <><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy || !pending} onClick={() => { if (!pending) return; setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div></>}

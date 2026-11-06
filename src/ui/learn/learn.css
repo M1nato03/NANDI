@@ -406,7 +406,10 @@
    so a reader at large text sees that answers follow before Check. No words; the fade is a mask, so it fits any area colour. */
 .learn-fit > .learn-q.more-below { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent); }
 .learn-fit > .learn-more-cue { flex: none; position: relative; height: 0; margin-top: -6px; color: var(--muted); pointer-events: none; }
-.learn-fit > .learn-more-cue svg { position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%); width: 36px; height: 36px; padding: 6px; border-radius: 50%; background: var(--surface-2); color: var(--ink-2, var(--ink)); box-shadow: 0 2px 8px rgba(0, 0, 0, .14); }
+/* b2 (6 Nov): the chip is a real button; its 48px hit box reaches past the 36px disc it draws. */
+.learn-fit > .learn-more-cue button { position: absolute; left: 50%; bottom: -2px; transform: translateX(-50%); display: grid; place-items: center; width: 48px; height: 48px; min-height: 48px; padding: 0; border: 0; border-radius: 50%; background: transparent; box-shadow: none; color: inherit; pointer-events: auto; }
+.learn-fit > .learn-more-cue button:active:not(:disabled) { transform: translateX(-50%) translateY(1px); filter: none; }
+.learn-fit > .learn-more-cue svg { width: 36px; height: 36px; padding: 6px; border-radius: 50%; background: var(--surface-2); color: var(--ink-2, var(--ink)); box-shadow: 0 2px 8px rgba(0, 0, 0, .14); }
 /* Room for the answers: tighter spacing inside the fitted drop only, so a 3-4 option item and the estimate slider sit
    fully on screen above Check at 360x800 (measured on the E12 extremes). Touch targets keep their 44-48px. */
 .learn-drop.learn-fit { gap: 6px; }

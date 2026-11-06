@@ -27,6 +27,15 @@ const fixtures: QuestionFitFixture[] = [
 ];
 
 test.use({ viewport: { width: 360, height: 800 }, reducedMotion: 'reduce', colorScheme: 'light' });
+
+const FIRST_ANSWER = '.learn-options > button, .learn-estimate input[type="range"]';
+async function firstAnswerInsideMiddle(page: import('@playwright/test').Page) {
+  return page.evaluate(selector => {
+    const middle = document.querySelector('.learn-q')?.getBoundingClientRect();
+    const first = document.querySelector(selector)?.getBoundingClientRect();
+    return !!middle && !!first && first.top >= middle.top - 1 && first.bottom <= middle.bottom + 1;
+  }, FIRST_ANSWER);
+}
 test.beforeAll(() => { expect(fixtures).toEqual(questionFitExtremes()); });
 test.beforeEach(async ({ page }) => { await page.clock.setFixedTime(FIT_NOON); });
 
@@ -79,6 +88,14 @@ for (const fixture of fixtures.filter(item => item.size === 'longest')) {
     if (overflows) {
       await expect(page.locator('.learn-more-cue svg')).toBeVisible();
       await expect(middle).toHaveClass(/more-below/);
+      // b2 (6 Nov): the chip is a real button (48x48 hit box, named, no words) that brings the first answer up.
+      const cue = page.getByRole('button', { name: 'Answers below' });
+      const box = await cue.boundingBox();
+      expect(box && box.width >= 48 && box.height >= 48, JSON.stringify(box)).toBe(true);
+      await cue.click();
+      // This file runs with reduced motion, so the scroll is instant: one read straight after the tap, no polling.
+      expect(await firstAnswerInsideMiddle(page), 'the first answer sits fully inside the middle after the tap').toBe(true);
+      await expect(page.locator(FIRST_ANSWER).first()).toBeFocused();
     }
     await middle.evaluate(node => { node.scrollTop = node.scrollHeight; });
     await settleQuestionFit(page);
@@ -91,6 +108,18 @@ for (const fixture of fixtures.filter(item => item.size === 'longest')) {
     await expectPageFits(page);
   });
 }
+
+test.describe('with motion on', () => {
+  test.use({ reducedMotion: 'no-preference' });
+  test('the "Answers below" chip scrolls the middle smoothly to the first answer at 200% text', async ({ page }) => {
+    await openItemDemo(page, fixtures.find(item => item.id === 'anchoring-9')!);
+    await textAt200(page);
+    await settleQuestionFit(page);
+    await page.getByRole('button', { name: 'Answers below' }).click();
+    await expect.poll(() => firstAnswerInsideMiddle(page), { message: 'the first answer ends up fully inside the middle' }).toBe(true);
+    await expect(page.locator(FIRST_ANSWER).first()).toBeFocused();
+  });
+});
 
 test('the fit follows the page when something above the question comes and goes', async ({ page }) => {
   await page.clock.setFixedTime(FIT_NOON);
