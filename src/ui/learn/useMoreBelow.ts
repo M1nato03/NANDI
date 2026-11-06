@@ -5,7 +5,7 @@ import { useCallback, useRef, useState } from 'react';
  * whether there is more below the visible part of a scrolling node, so the screen can show a quiet cue (a fade and a
  * chevron, no words). Rechecked on scroll, on any size change of the node or its content, and when content changes.
  * b2 (6 Nov): the chevron is a real button. reveal(selector) scrolls the node so the first match sits at its top
- * (smooth, or at once under reduced motion) and moves focus there, since the cue goes away once nothing is below.
+ * (smooth, or at once when the phone or NANDI's own setting reduces motion) and moves focus there, since the cue goes away once nothing is below.
  */
 export function useMoreBelow(): [(node: HTMLElement | null) => void, boolean, (selector: string) => void] {
   const [more, setMore] = useState(false);
@@ -15,7 +15,8 @@ export function useMoreBelow(): [(node: HTMLElement | null) => void, boolean, (s
     const node = current.current;
     const target = node?.querySelector<HTMLElement>(selector);
     if (!node || !target) return;
-    const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    // Either the phone's setting or NANDI's own Reduce motion (You › Settings › Appearance) makes the scroll instant.
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce';
     const top = node.scrollTop + target.getBoundingClientRect().top - node.getBoundingClientRect().top;
     node.scrollTo({ top, behavior: still ? 'auto' : 'smooth' });
     target.focus({ preventScroll: true });

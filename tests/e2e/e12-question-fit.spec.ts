@@ -119,6 +119,19 @@ test.describe('with motion on', () => {
     await expect.poll(() => firstAnswerInsideMiddle(page), { message: 'the first answer ends up fully inside the middle' }).toBe(true);
     await expect(page.locator(FIRST_ANSWER).first()).toBeFocused();
   });
+  test('with NANDI’s own Reduce motion on, the chip scrolls at once even though the phone allows motion', async ({ page }) => {
+    await page.goto('/#you');
+    await page.getByRole('button', { name: /Settings/ }).click();
+    await page.getByLabel('Motion').selectOption('reduce');
+    await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduce');
+    await openItemDemo(page, fixtures.find(item => item.id === 'anchoring-9')!);
+    await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduce');
+    await textAt200(page);
+    await settleQuestionFit(page);
+    await page.getByRole('button', { name: 'Answers below' }).click();
+    // One read straight after the tap, no polling: a smooth scroll would still be on its way.
+    expect(await firstAnswerInsideMiddle(page), 'the first answer sits fully inside the middle at once').toBe(true);
+  });
 });
 
 test('the fit follows the page when something above the question comes and goes', async ({ page }) => {
