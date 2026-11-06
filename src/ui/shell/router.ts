@@ -10,7 +10,7 @@ export function canonicalRoute(path: string): string {
   if (/^crew\/(join|joined|add)\//i.test(raw)) return `crew/${raw.slice(5, raw.indexOf('/', 5)).toLowerCase()}${raw.slice(raw.indexOf('/', 5))}`;
   const value = legacyRoute(raw.toLowerCase());
   // Spec 34: Train and Kapi's shelf (Mind, then Read's Games) live in Yatra's corners now.
-  if (value === 'train' || value.startsWith('train/')) return `yatra/${value}`;
+  if (value === 'train' || value.startsWith('train/')) return toGrow(`yatra/${value}`);
   if (value === 'read/games' || value.startsWith('read/games/')) return toGrow(`yatra/mind${value.slice(10)}`);
   return toGrow(value);
 }
