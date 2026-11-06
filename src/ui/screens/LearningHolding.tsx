@@ -9,7 +9,7 @@ export function LearningHolding() {
   const [openedAt] = useState(() => Date.now());
   const facts = useLiveQuery(async () => (await loadEngineFacts(db)).facts, []);
   const figures = learningFigures({ facts: facts ?? [] }, openedAt);
-  return <section className="card learn-figures" aria-label="How your learning is holding"><h2>How your learning is holding</h2>
+  return <section className="card learn-figures" aria-label="How your learning is holding" data-testid="learning-holding"><h2>How your learning is holding</h2>
     <p>30-day recall: {figures.recall30 === null ? 'Builds after your first 30 days' : `${figures.recall30}%`}</p>
     {figures.sureAccuracy !== null && <p>When you feel sure, you are right {figures.sureAccuracy}% of the time</p>}</section>;
 }
