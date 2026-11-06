@@ -105,7 +105,7 @@ test('old links land behind the right door with Grow lit (G7, E7)', async ({ pag
   await expect(lit(page)).toHaveText('You');
 });
 
-test('Read no longer shows Moti; Play no longer shows card reviews; the dot reads Grow (E2: a door is one tap from Grow)', async ({ page }) => {
+test('Read no longer shows Moti; Play no longer shows card reviews; the reading dot reads Read and opens Grow › Read (E2, ring option b)', async ({ page }) => {
   await page.goto('/?e2e#grow/read');
   await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
   await expect(page.getByRole('region', { name: 'Review with Moti' })).toHaveCount(0);
@@ -115,10 +115,12 @@ test('Read no longer shows Moti; Play no longer shows card reviews; the dot read
   await page.goto('/?e2e#grow/remember');
   await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
   await expect(page.getByTestId('moti-review')).toBeVisible();
-  const dot = page.getByRole('button', { name: /^Grow: / });
+  // b2 ring option (b): the reading dot keeps the name Read and opens Grow › Read.
+  await expect(page.getByRole('button', { name: /^Grow: / })).toHaveCount(0);
+  const dot = page.getByRole('button', { name: /^Read: / });
   await expect(dot).toBeVisible();
   await dot.click();
-  await expect(page).toHaveURL(/#grow$/);
+  await expect(page).toHaveURL(/#grow\/read$/);
 });
 
 /** Buttons in main painted in the area's solid button colour (E1: at most one per screen). */
