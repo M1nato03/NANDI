@@ -15,5 +15,5 @@
 /* You: one link line per door (§0.18 #7), each a full 48 px tap target. */
 .you-doors { display: grid; gap: 0; }
 .you-doors .eyebrow { margin-bottom: 4px; }
-.you-door-link { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 48px; margin: 0; padding: 0 2px; border-top: 1px solid var(--line); text-align: left; }
-.you-door-link::after { content: '›'; color: var(--secondary-ink); font-size: 1.4rem; }
+.you-doors .you-door-link { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 48px; margin: 0; padding: 0 2px; border-top: 1px solid var(--line); text-align: left; }
+.you-doors .you-door-link::after { content: '›'; color: var(--secondary-ink); font-size: 1.4rem; }

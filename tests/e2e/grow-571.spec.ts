@@ -120,3 +120,43 @@ test('Read no longer shows Moti; Play no longer shows card reviews; the dot read
   await dot.click();
   await expect(page).toHaveURL(/#grow$/);
 });
+
+/** Buttons in main painted in the area's solid button colour (E1: at most one per screen). */
+const filledButtons = (page: Page) => page.evaluate(() => {
+  const main = document.getElementById('main')!;
+  const probe = document.createElement('div');
+  probe.style.background = 'var(--button)';
+  main.appendChild(probe);
+  const solid = getComputedStyle(probe).backgroundColor;
+  probe.remove();
+  return [...main.querySelectorAll('button')].filter(button => button.offsetParent && getComputedStyle(button).backgroundColor === solid).map(button => button.textContent?.trim());
+});
+/** Words of main's text inside the first screen (E3). */
+const wordsAboveFold = (page: Page) => page.evaluate(() => {
+  const walker = document.createTreeWalker(document.getElementById('main')!, NodeFilter.SHOW_TEXT);
+  let words = 0;
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    const parent = node.parentElement;
+    if (!parent || !parent.offsetParent || parent.closest('[aria-hidden="true"]')) continue;
+    const range = document.createRange(); range.selectNodeContents(node);
+    const box = range.getBoundingClientRect();
+    if (box.height && box.top < window.innerHeight) words += (node.textContent ?? '').split(/\s+/).filter(word => /\w/.test(word)).length;
+  }
+  return words;
+});
+
+test('E1, E3, E5 on Grow, Remember and You: one solid button at most, ≤ 25 words above the fold on Grow, 48 px targets', async ({ page }) => {
+  for (const route of ['grow', 'grow/remember', 'grow/sleep', 'you']) {
+    await page.goto(`/?e2e#${route}`);
+    await expect(page.locator('main h1').first()).toBeVisible();
+    await page.waitForTimeout(400);
+    expect((await filledButtons(page)).length, route).toBeLessThanOrEqual(1);
+  }
+  await page.goto('/?e2e#grow');
+  await expect(page.getByTestId('door-sleep')).toBeVisible();
+  expect(await wordsAboveFold(page)).toBeLessThanOrEqual(25);
+  await page.goto('/?e2e#you');
+  const links = await page.getByRole('navigation', { name: 'Your doors' }).getByRole('button').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().height));
+  expect(links).toHaveLength(5);
+  expect(links.every(height => height >= 48)).toBe(true);
+});
