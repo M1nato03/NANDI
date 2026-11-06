@@ -14,7 +14,8 @@ async function openNightDrop(page: Page) {
 }
 
 async function pickAnswer(page: Page) {
-  const confidence = page.locator('.learn-confidence');
+  // §0.20 (E12): Check is in place from the start, disabled; the answer is chosen once a Check control is enabled.
+  const confidence = page.locator('.learn-confidence button:enabled').first();
   const option = page.locator('.learn-options button:enabled').first();
   await expect(confidence.or(option)).toBeVisible();
   for (let attempt = 0; attempt < 12; attempt++) {

@@ -135,7 +135,8 @@ test('a missed Gold review has five items and keeps Mastered state', async ({ pa
   await expect(page.locator('.learn-drop-head')).toContainText('1 / 5');
   for (let index = 0; index < 5; index++) {
     await expect(page.locator('.learn-hint')).toHaveCount(0);
-    await expect(page.locator('.learn-confidence-chips')).toHaveCount(0);
+    // §0.20 (E12): the chips sit in place from the start, but none can be picked before an answer.
+    await expect(page.locator('.learn-confidence-chips button:enabled')).toHaveCount(0);
     await answerItem(page, index >= 3);
   }
   await expect(page.getByRole('heading', { name: 'Gold review complete' })).toBeVisible();

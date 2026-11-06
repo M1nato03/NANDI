@@ -50,7 +50,7 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   for (let item = 0; item < 3; item++) {
     for (let attempt = 0; attempt < 12; attempt++) {
       if (await page.locator('.learn-feedback').isVisible()) break;
-      if (await page.locator('.learn-confidence').isVisible()) { await page.locator('.learn-confidence').getByRole('button', { name: /^Check/ }).first().click(); break; }
+      if (await page.locator('.learn-confidence button:enabled').first().isVisible()) { await page.locator('.learn-confidence').getByRole('button', { name: /^Check/ }).first().click(); break; }
       const slider = page.locator('.learn-estimate input[type=range]');
       if (await slider.isVisible()) { await slider.fill((await slider.getAttribute('max'))!); continue; }
       // A match item: tapping the same term again deselects it (ship-33), so pair the first open term with the last.
