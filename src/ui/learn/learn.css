@@ -1,12 +1,12 @@
 .deck-card:has(.learn-drop) { padding: 22px; justify-content: flex-start; }
 /* The slide-in between questions moves content 28 px right; clip it so the page never grows wider than the phone (cj2 lesson walk #4). */
 .learn-drop { width: 100%; display: grid; align-content: start; gap: 14px; overflow-x: clip; }
-.deck-card .learn-drop h2, .learn-drop h2 { font-size: clamp(20px, 5.4vw, 24px); line-height: 1.3; margin: 5px 0; }
-.deck-card .learn-drop h2.learn-stop-title { font-size: clamp(28px, 7vw, 40px); line-height: 1.13; }
+.deck-card .learn-drop h2, .learn-drop h2 { font-size: clamp(1.25rem, 5.4vw, 1.5rem); line-height: 1.3; margin: 5px 0; }
+.deck-card .learn-drop h2.learn-stop-title { font-size: clamp(1.75rem, 7vw, 2.5rem); line-height: 1.13; }
 .learn-drop h3 { margin: 0; }
-.learn-drop p { margin: 0; font-size: 15px; }
-.learn-drop-head { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 13px; }
-.learn-drop-head .learn-header-link { min-height: 44px; padding: 7px 0; background: none; border: 0; color: var(--accent); font: 800 20px 'Bricolage Grotesque', sans-serif; }
+.learn-drop p { margin: 0; font-size: 0.9375rem; }
+.learn-drop-head { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 0.8125rem; }
+.learn-drop-head .learn-header-link { min-height: 44px; padding: 7px 0; background: none; border: 0; color: var(--accent); font: 800 1.25rem 'Bricolage Grotesque', sans-serif; }
 .learn-progress { height: 5px; border-radius: 9px; background: var(--raised); overflow: hidden; }
 .learn-progress span { display: block; height: 100%; background: var(--teal); transition: width .2s ease; }
 .learn-options, .learn-topic-tiles { display: grid; gap: 9px; }
@@ -14,11 +14,11 @@
 .learn-options button:disabled { opacity: .68; }
 .learn-options button.selected { border-color: var(--accent); }
 .learn-options button.right-option { border-color: var(--teal); }
-.learn-drop .eyebrow { margin-top: 8px; color: var(--accent-ink); font-size: 12px; }
-.learn-drop .learn-hint { color: var(--muted); font-size: 13px; }
+.learn-drop .eyebrow { margin-top: 8px; color: var(--accent-ink); font-size: 0.75rem; }
+.learn-drop .learn-hint { color: var(--muted); font-size: 0.8125rem; }
 .learn-feedback { padding: 15px; border: 1px solid var(--line); border-radius: 14px; background: var(--raised); }
 .learn-feedback.right { border-color: var(--teal); }
-.learn-feedback strong { font: 800 19px 'Bricolage Grotesque', sans-serif; }
+.learn-feedback strong { font: 800 1.1875rem 'Bricolage Grotesque', sans-serif; }
 .learn-feedback p { margin: 7px 0; }
 .learn-feedback .learn-rule { color: var(--ink); }
 .learn-feedback button { width: 100%; margin-top: 10px; }
@@ -26,11 +26,11 @@
 @keyframes learn-flash { from { box-shadow: inset 0 0 0 100vmax color-mix(in srgb, var(--teal) 17%, transparent); } to { box-shadow: inset 0 0 0 100vmax transparent; } }
 .learn-topic-tile { min-height: 102px; padding: 16px; display: grid; gap: 5px; text-align: left; background: var(--raised); border: 1px solid var(--line); color: var(--ink); }
 .learn-topic-tile.chosen { border-color: var(--teal); background: color-mix(in srgb, var(--teal) 12%, var(--surface)); }
-.learn-topic-tile strong { font: 800 23px 'Bricolage Grotesque', sans-serif; }
-.learn-topic-tile span { color: var(--secondary-ink); font-size: 14px; }
+.learn-topic-tile strong { font: 800 1.4375rem 'Bricolage Grotesque', sans-serif; }
+.learn-topic-tile span { color: var(--secondary-ink); font-size: 0.875rem; }
 .learn-stop .learn-chip { border-color: var(--teal); }
 .learn-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.learn-chip { padding: 9px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--raised); font-size: 13px; color: var(--ink); }
+.learn-chip { padding: 9px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--raised); font-size: 0.8125rem; color: var(--ink); }
 .learn-screen { min-width: 0; }
 .learn-today { margin: 20px 0 28px; display: grid; gap: 12px; }
 .learn-today h2 { margin: 0; }
@@ -38,7 +38,7 @@
 .learn-today-status + .learn-today-status { padding-top: 12px; border-top: 1px solid var(--line); }
 .learn-today-status > div { display: grid; gap: 2px; min-width: 0; }
 .learn-today-status strong { color: var(--ink); }
-.learn-today-status span { color: var(--muted); font-size: 13px; }
+.learn-today-status span { color: var(--muted); font-size: 0.8125rem; }
 .learn-today-status button { min-width: 90px; min-height: 44px; }
 .learn-today-status .learn-today-note { text-align: right; }
 .learn-review-action { width: 100%; min-height: 44px; }
@@ -46,22 +46,22 @@
 .learn-map-heading p { margin: 0 0 14px; color: var(--muted); }
 .learn-map-topic { margin: 10px 0; min-width: 0; padding: 14px; }
 .learn-topic-expand { display: grid; gap: 7px; width: 100%; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--ink); text-align: left; }
-.learn-topic-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; font: 800 21px 'Bricolage Grotesque', sans-serif; }
-.learn-topic-title > span { font: 700 24px 'DM Sans', sans-serif; color: var(--accent); }
-.learn-topic-hook { color: var(--secondary-ink); font-size: 13px; line-height: 1.35; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; text-align: left; }
-.learn-topic-progress-label { color: var(--muted); font-size: 12px; }
+.learn-topic-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; font: 800 1.3125rem 'Bricolage Grotesque', sans-serif; }
+.learn-topic-title > span { font: 700 1.5rem 'DM Sans', sans-serif; color: var(--accent); }
+.learn-topic-hook { color: var(--secondary-ink); font-size: 0.8125rem; line-height: 1.35; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; text-align: left; }
+.learn-topic-progress-label { color: var(--muted); font-size: 0.75rem; }
 .learn-topic-progress { display: block; height: 5px; overflow: hidden; border-radius: 5px; background: var(--raised); }
 .learn-topic-progress > span { display: block; height: 100%; background: var(--teal); }
 .learn-topic-toggle { min-height: 44px; margin-top: 10px; padding: 7px 12px; }
 .learn-ideas { margin-top: 16px; border-top: 1px solid var(--line); }
-.learn-idea-group h3 { margin: 16px 0 7px; font-size: 15px; }
+.learn-idea-group h3 { margin: 16px 0 7px; font-size: 0.9375rem; }
 .learn-idea-group h3 small { color: var(--muted); font-weight: 400; }
 .learn-idea-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 9px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); min-width: 0; }
 .learn-idea-row > div { min-width: 0; }
-.learn-idea-row strong { color: var(--ink); font-size: 14px; }
-.learn-idea-row p { margin: 3px 0 0; color: var(--muted); font-size: 12px; line-height: 1.35; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.learn-idea-row strong { color: var(--ink); font-size: 0.875rem; }
+.learn-idea-row p { margin: 3px 0 0; color: var(--muted); font-size: 0.75rem; line-height: 1.35; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .learn-idea-row small { color: var(--teal); }
-.learn-idea-row button { min-height: 44px; max-width: 104px; padding: 6px 9px; font-size: 12px; line-height: 1.2; }
+.learn-idea-row button { min-height: 44px; max-width: 104px; padding: 6px 9px; font-size: 0.75rem; line-height: 1.2; }
 @media (max-width: 380px) { .learn-idea-row { grid-template-columns: minmax(0, 1fr) 92px; } }
 @media (prefers-reduced-motion: reduce) { .learn-correct { animation: none; } .learn-progress span { transition: none; } }
 :root[data-motion='reduce'] .learn-correct { animation: none; }
@@ -72,35 +72,35 @@
 .learn-confidence-chips button[aria-pressed='true'] { background: var(--area-learn); color: var(--surface-1); }
 .learn-confidence > button { min-height: 44px; }
 .learn-figures { display: grid; gap: 8px; margin: 22px 0; }
-.learn-figures h2 { margin: 0; font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.learn-figures h2 { margin: 0; font: 700 1.1875rem/1.5rem 'Bricolage Grotesque', sans-serif; }
 .learn-figures p { margin: 0; }
 
 /* Learn surfaces share the same chip, row, and progress language as the deck. */
 .learn-screen { --area-color: var(--area-learn); }
 .learn-today { gap: 10px; }
-.learn-today h2 { font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.learn-today h2 { font: 700 1.1875rem/1.5rem 'Bricolage Grotesque', sans-serif; }
 .learn-today-status { min-height: 56px; padding: 8px 12px; border-radius: var(--radius-chip); background: var(--surface-2); }
 .learn-today-status + .learn-today-status { padding-top: 8px; border: 0; }
-.learn-today-status strong { font-size: 14px; }
+.learn-today-status strong { font-size: 0.875rem; }
 .learn-today-status button { background: color-mix(in srgb, var(--area-learn) 14%, var(--surface-1)); color: var(--area-learn); }
 .learn-today-status span { color: var(--ink-3); }
 .learn-map-heading { margin-top: 24px; }
-.learn-map-heading h2 { font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.learn-map-heading h2 { font: 700 1.1875rem/1.5rem 'Bricolage Grotesque', sans-serif; }
 .learn-map-topic { padding: 20px; margin: 12px 0; }
-.learn-topic-title { font-size: 22px; line-height: 26px; }
+.learn-topic-title { font-size: 1.375rem; line-height: 26px; }
 .learn-topic-title > span { color: var(--area-learn); }
 .learn-topic-hook { color: var(--ink-2); }
 .learn-topic-progress { height: 6px; border-radius: 999px; background: var(--surface-3); }
 .learn-topic-progress > span, .learn-progress span { background: var(--area-learn); }
 .learn-topic-toggle { min-height: 48px; }
 .learn-ideas { display: grid; gap: 8px; margin-top: 16px; border: 0; }
-.learn-idea-group h3 { margin: 16px 0 8px; font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.learn-idea-group h3 { margin: 16px 0 8px; font: 700 1.1875rem/1.5rem 'Bricolage Grotesque', sans-serif; }
 .learn-idea-row { min-height: 64px; padding: 12px 16px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); }
-.learn-idea-row strong { font-size: 16px; }
-.learn-idea-row p { color: var(--ink-3); font-size: 13px; }
-.learn-idea-row button { min-height: 44px; font-size: 13px; }
+.learn-idea-row strong { font-size: 1rem; }
+.learn-idea-row p { color: var(--ink-3); font-size: 0.8125rem; }
+.learn-idea-row button { min-height: 44px; font-size: 0.8125rem; }
 .learn-options { gap: 10px; }
-.learn-options button.ui-list-row { display: flex; width: 100%; min-height: 60px; padding: 14px 16px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); color: var(--ink); font-size: 16px; line-height: 24px; text-align: left; }
+.learn-options button.ui-list-row { display: flex; width: 100%; min-height: 60px; padding: 14px 16px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); color: var(--ink); font-size: 1rem; line-height: 24px; text-align: left; }
 .learn-options button:disabled { opacity: 1; }
 .learn-options button.selected { background: var(--surface-3); }
 .learn-options button.right-option { background: color-mix(in srgb, var(--area-learn) 22%, var(--surface-2)); color: var(--ink); }
@@ -137,11 +137,11 @@
 @media (max-width: 380px) { .learn-trail-node { width: calc(100% - 12px); } .learn-trail-node > div { flex-basis: 90px; } .learn-trail-node button { max-width: 94px; } }
 /* Drag-to-guess for estimate questions */
 .learn-estimate { display: grid; gap: 8px; margin: 12px 0; }
-.learn-estimate-value { justify-self: center; font: 800 28px 'Bricolage Grotesque', sans-serif; color: var(--ink); }
+.learn-estimate-value { justify-self: center; font: 800 1.75rem 'Bricolage Grotesque', sans-serif; color: var(--ink); }
 .learn-estimate-row { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 8px; }
-.learn-estimate-row button { min-width: 48px; min-height: 48px; padding: 0; font-size: 22px; }
+.learn-estimate-row button { min-width: 48px; min-height: 48px; padding: 0; font-size: 1.375rem; }
 .learn-estimate-row input[type='range'] { width: 100%; min-height: 44px; accent-color: var(--accent); }
-.learn-estimate-scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); padding: 0 56px; }
+.learn-estimate-scale { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); padding: 0 56px; }
 .learn-estimate-answer { justify-self: center; margin: 0; font-weight: 700; }
 .learn-estimate.right .learn-estimate-value { color: var(--ok); }
 
@@ -168,8 +168,8 @@
 .learn-ask-row.leaning .learn-friend { transform: rotate(5deg) translateX(3px); }
 .learn-ask-bubble { position: relative; flex: 1; min-width: 0; padding: 10px 14px; border: 2px solid var(--edge-soft); border-radius: 16px; background: var(--surface-2); }
 .learn-ask-bubble::before { content: ''; position: absolute; left: -8px; top: 50%; width: 12px; height: 12px; background: var(--surface-2); border-left: 2px solid var(--edge-soft); border-bottom: 2px solid var(--edge-soft); transform: translateY(-50%) rotate(45deg); }
-.learn-drop .learn-ask-bubble .eyebrow { margin: 0 0 2px; font-size: 11px; }
-.learn-drop .learn-ask { margin: 0; font: 800 18px/23px 'Bricolage Grotesque', sans-serif; color: var(--ink); }
+.learn-drop .learn-ask-bubble .eyebrow { margin: 0 0 2px; font-size: 0.6875rem; }
+.learn-drop .learn-ask { margin: 0; font: 800 1.125rem/1.4375rem 'Bricolage Grotesque', sans-serif; color: var(--ink); }
 
 /* A: options and tiles with a raised edge that press down. */
 .learn-options button.ui-list-row, .learn-topic-tile { box-shadow: inset 0 0 0 2px var(--edge-soft), 0 var(--press) 0 var(--edge-soft); transition: transform 90ms ease-out, box-shadow 90ms ease-out, background-color .16s; }
@@ -200,8 +200,8 @@
 .learn-finish-friends .cast-svg { animation: none; visibility: visible !important; }
 .learn-finish-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .learn-finish-stat { display: grid; justify-items: center; gap: 2px; padding: 12px 6px; border-radius: var(--radius-row); background: var(--surface-2); box-shadow: inset 0 0 0 2px var(--edge-soft), 0 var(--press) 0 var(--edge-soft); }
-.learn-finish-stat strong { font: 800 28px/32px 'Bricolage Grotesque', sans-serif; color: var(--area-learn); font-variant-numeric: tabular-nums; }
-.learn-finish-stat span { color: var(--ink-3); font-size: 13px; }
+.learn-finish-stat strong { font: 800 1.75rem/2rem 'Bricolage Grotesque', sans-serif; color: var(--area-learn); font-variant-numeric: tabular-nums; }
+.learn-finish-stat span { color: var(--ink-3); font-size: 0.8125rem; }
 .learn-celebrate .learn-chip { animation: learn-chip-in .3s ease-out calc(var(--i) * 60ms + 600ms) both; }
 @keyframes learn-chip-in { from { opacity: 0; transform: translateX(-14px); } }
 .learn-perfect { font-weight: 700; color: var(--area-learn); }
@@ -246,7 +246,7 @@
 .step-dots li.now { background: color-mix(in srgb, var(--area-learn) 55%, var(--surface-3)); }
 .step-teach { display: grid; gap: 12px; padding: 18px; border-radius: 22px; background: color-mix(in srgb, var(--area-learn) 10%, var(--surface-1)); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--area-learn) 35%, transparent); }
 .learn-drop .step-teach h2 { margin: 0; }
-.learn-drop .step-teach-text, .learn-drop .step-takeaway { margin: 0; font-size: 18px; line-height: 27px; color: var(--ink); }
+.learn-drop .step-teach-text, .learn-drop .step-takeaway { margin: 0; font-size: 1.125rem; line-height: 27px; color: var(--ink); }
 .step-continue { width: 100%; }
 .step-visual { min-width: 0; }
 /* A flow reads top to bottom, one node per line, so arrows never end a line at phone width (cj2 lesson walk #12). */
@@ -257,14 +257,14 @@
 .step-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .step-side { display: grid; gap: 4px; align-content: start; padding: 10px 12px; border-radius: 14px; background: var(--surface-1); box-shadow: inset 0 0 0 2px var(--edge-soft, var(--line)); }
 .step-side strong { color: var(--area-learn); }
-.step-side span { font-size: 14px; color: var(--ink-2); }
+.step-side span { font-size: 0.875rem; color: var(--ink-2); }
 .step-scale { display: grid; gap: 6px; }
-.step-scale-label { font-size: 13px; color: var(--ink-2); }
+.step-scale-label { font-size: 0.8125rem; color: var(--ink-2); }
 .step-scale-bar { position: relative; height: 14px; margin: 8px 11px 0; border-radius: 999px; background: linear-gradient(90deg, color-mix(in srgb, var(--area-learn) 25%, var(--surface-3)), var(--area-learn)); }
-.step-scale-mark { position: absolute; top: 50%; width: 22px; height: 22px; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 50%; background: var(--surface-1); color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); font-size: 12px; font-weight: 800; }
-.step-scale-list { margin: 4px 0 0; padding-left: 22px; display: grid; gap: 2px; font-size: 14px; color: var(--ink-2); }
-.step-scale-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); }
-.learn-drop .step-example { margin: 0; font-size: 18px; line-height: 2.1; }
+.step-scale-mark { position: absolute; top: 50%; width: 22px; height: 22px; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 50%; background: var(--surface-1); color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); font-size: 0.75rem; font-weight: 800; }
+.step-scale-list { margin: 4px 0 0; padding-left: 22px; display: grid; gap: 2px; font-size: 0.875rem; color: var(--ink-2); }
+.step-scale-ends { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--ink-3); }
+.learn-drop .step-example { margin: 0; font-size: 1.125rem; line-height: 2.1; }
 .step-part { display: inline; min-height: 0; margin: 0 1px; padding: 4px 6px; border-radius: 8px; background: var(--surface-2); color: var(--ink); font: inherit; box-shadow: inset 0 0 0 2px var(--edge-soft, var(--line)); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .step-part.right { background: color-mix(in srgb, var(--area-learn) 25%, var(--surface-1)); box-shadow: inset 0 0 0 2px var(--area-learn); }
 .step-part.wrong { background: color-mix(in srgb, var(--area-move) 18%, var(--surface-1)); box-shadow: inset 0 0 0 2px var(--area-move); }
@@ -381,7 +381,7 @@
 .idea-dots li.done { background: var(--area-learn); }
 .idea-dots li.now { background: var(--area-learn); box-shadow: 0 0 0 3px color-mix(in srgb, var(--area-learn) 30%, transparent); }
 .idea-friend { position: absolute; top: 4px; right: 0; }
-.idea-example p, .idea-plan-line { margin: 0; font-size: 18px; line-height: 1.45; }
+.idea-example p, .idea-plan-line { margin: 0; font-size: 1.125rem; line-height: 1.45; }
 .idea-plan-line { font-weight: 700; }
 .idea-end-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
@@ -399,6 +399,9 @@
 .learn-fit .learn-stem.long { font-size: 1.125rem; line-height: 1.35; }
 .learn-fit .learn-check { padding-bottom: env(safe-area-inset-bottom); }
 .learn-fit .learn-check button:disabled { opacity: .55; }
+/* Every text size in the question area is in rem (b2, 6 Nov): a person who reads at a larger text size gets the stem,
+   the answers, the hints and Check at that size. The shared button style is fixed px, so Check and the chips are set here. */
+.learn-drop .learn-check button, .learn-drop .learn-confidence-chips button { font-size: 1rem; line-height: 1.5rem; }
 /* Room for the answers: tighter spacing inside the fitted drop only, so a 3-4 option item and the estimate slider sit
    fully on screen above Check at 360x800 (measured on the E12 extremes). Touch targets keep their 44-48px. */
 .learn-drop.learn-fit { gap: 6px; }
@@ -414,4 +417,4 @@
 .learn-fit .learn-options button.ui-list-row { min-height: 48px; padding: 10px 14px; }
 /* Match: terms and their matches as a two-column grid of tiles, so three pairs fit beside the question. */
 .learn-fit .learn-options.learn-match { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.learn-fit .learn-options.learn-match button.ui-list-row { font-size: 15px; line-height: 1.3; overflow-wrap: anywhere; }
+.learn-fit .learn-options.learn-match button.ui-list-row { font-size: 0.9375rem; line-height: 1.3; overflow-wrap: anywhere; }

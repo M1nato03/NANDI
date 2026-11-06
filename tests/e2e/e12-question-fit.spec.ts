@@ -53,7 +53,19 @@ for (const fixture of fixtures) {
 for (const fixture of fixtures.filter(item => item.size === 'longest')) {
   test(`${fixture.type}, longest: ${fixture.id} keeps Check in view at 200% text`, async ({ page }) => {
     await openItemDemo(page, fixture);
+    // b2 (6 Nov): every text in the question area follows the reader's size. The answers (or the estimate's value),
+    // the stem and Check must each be at least 1.8x their normal size at 200% text.
+    const sizes = () => page.evaluate(() => {
+      const px = (selector: string) => { const node = document.querySelector(selector); return node ? parseFloat(getComputedStyle(node).fontSize) : 0; };
+      return { answer: px('.learn-options button') || px('.learn-estimate-value'), stem: px('.learn-stem'), check: px('.learn-check button') };
+    });
+    const normal = await sizes();
     await textAt200(page);
+    const large = await sizes();
+    for (const part of ['answer', 'stem', 'check'] as const) {
+      expect(normal[part], `${part} has a size`).toBeGreaterThan(0);
+      expect(large[part] / normal[part], `${part} at 200% text (${normal[part]}px → ${large[part]}px)`).toBeGreaterThanOrEqual(1.8);
+    }
     await settleQuestionFit(page);
     await expectPageFits(page);
     await expectCheckFits(page, false);
