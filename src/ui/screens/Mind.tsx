@@ -416,7 +416,7 @@ export function Mind({ entry }: { entry?: string }) {
       }).catch(error => recordError('window', error));
     }, 0);
     return () => window.clearTimeout(timer);
-  }, [entry, caseReady, featured.type, featured.diff, today]);
+  }, [entry, caseReady, featured.type, featured.diff, today]); // eslint-disable-line react-hooks/exhaustive-deps -- the deck round starts once per entry
   const state: PuzzleState = { grid: run?.grid ?? (board ? initialGrid(board) : []), path: run?.path ?? [] };
   const par = board ? parMs(puzzleRuns, board.type, board.diff) : undefined;
   const panels = revealedPanels(puzzleRuns, today);

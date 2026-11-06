@@ -162,7 +162,7 @@ export function YourSeason() {
       {arc && <p className="small">Story: {arc}</p>}
     </div>}
     <ThisWeek settings={settings} today={economy.today} dates={weekDates} bank={view.streak.restDays} />
-    <button type="button" className="card you-link you-courtyard-link useful-record-link" onClick={() => go('yatra/days')}><strong>Your record</strong><span>Every useful day, your longest run and Clean weeks</span></button>
+    <button type="button" className="card you-link you-courtyard-link useful-record-link" data-testid="useful-days-link" onClick={() => go('you/days')}><strong>Your record</strong><span>Every useful day, your longest run and Clean weeks</span></button>
     {show.shards && <div className="card economy-shards"><div><span className="eyebrow">Shards</span><h2>{view.shards.toLocaleString()}</h2></div><button type="button" onClick={() => go('you/shop')}>Shop</button></div>}
     {how && <LadderHow target={target} onClose={() => setHow(false)} />}
   </section>;

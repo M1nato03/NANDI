@@ -21,6 +21,9 @@ export function todayDotStatus(now: number, data: DotData): Record<'plan' | 'rea
 }
 
 const DOT_AREA = { plan: 'do', read: 'learn', night: 'night' } as const;
+// Spec 571 stage 1: the reading dot is named for its tab, Grow, and opens it.
+const DOT_NAME = { plan: 'Plan', read: 'Grow', night: 'Night' } as const;
+const DOT_ROUTE = { plan: 'plan', read: 'grow', night: 'night' } as const;
 /**
  * Spec 52: only the dots for picked areas (learn and mind share Read, where Games live; Train has no dot). At size 'all'
  * all three show, as before; a person who picked only Train sees no dots row.
@@ -45,5 +48,5 @@ export function TodayDots({ now }: { now: number }) {
   const status = data && todayDotStatus(now, data);
   const dots = data ? todayDots(data.picks) : (['plan', 'read', 'night'] as const);
   if (!dots.length) return null;
-  return <nav className="today-dots" aria-label="Today status">{dots.map(area => <button key={area} type="button" className={`today-dot deck-area-${DOT_AREA[area]}`} aria-label={`${area[0]!.toUpperCase()}${area.slice(1)}: ${status?.[area] ? 'done' : 'not done'}`} onClick={() => go(area)}><span data-done={status?.[area] ? 'true' : 'false'} /><small className="today-dot-label" aria-hidden="true">{`${area[0]!.toUpperCase()}${area.slice(1)}`}</small></button>)}</nav>;
+  return <nav className="today-dots" aria-label="Today status">{dots.map(area => <button key={area} type="button" className={`today-dot deck-area-${DOT_AREA[area]}`} aria-label={`${DOT_NAME[area]}: ${status?.[area] ? 'done' : 'not done'}`} onClick={() => go(DOT_ROUTE[area])}><span data-done={status?.[area] ? 'true' : 'false'} /><small className="today-dot-label" aria-hidden="true">{DOT_NAME[area]}</small></button>)}</nav>;
 }

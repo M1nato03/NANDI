@@ -14,7 +14,7 @@ import { revealMeters } from '../../core/economy/reveal';
 import { dayKey } from '../../core/time/dayKey';
 import { softToday } from '../../core/soft/soft';
 import { PrivateBooks } from './PrivateBooks';
-import { LearningHolding } from './LearningHolding';
+import { DOORS } from '../grow/Grow';
 import { HelpsWithRow } from './HelpsWith';
 
 export function You() {
@@ -34,9 +34,11 @@ export function You() {
   const today = dayKey(Date.now()); // eslint-disable-line react-hooks/purity
   const softMore = useLiveQuery(() => db.settings.get(`soft.more:${today}`), [today]);
   const softDay = !!softToday(sources?.facts ?? [], today).state && softMore?.value !== true;
-  return <section className="screen you-screen"><p className="eyebrow">Your space</p><h1>You</h1><button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/courtyard')}><strong>Courtyard</strong><span>Your six friends and how each corner is growing</span></button>{show.storybooks && <button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/stories')}><strong>Storybooks</strong><span>Each week, told as a short story</span></button>}{!softDay && <YourSeason />}<LearningHolding />
+  return <section className="screen you-screen"><p className="eyebrow">Your space</p><h1>You</h1><button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/courtyard')}><strong>Courtyard</strong><span>Your six friends and how each corner is growing</span></button>{show.storybooks && <button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/stories')}><strong>Storybooks</strong><span>Each week, told as a short story</span></button>}{!softDay && <YourSeason />}
     {show.quests && !softDay && <DailyQuests />}{show.badges && <button type="button" className="card you-link" onClick={() => go('you/badges')}><strong>Badges</strong><span>See the ideas and habits taking shape</span></button>}
-    <section className="card you-week" aria-label="This week in words"><span className="eyebrow">This week in words</span><h2>What your time became</h2>{weekNumbers.length ? <div className="you-week-numbers">{weekNumbers.map(item => <div className="you-week-number" key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div> : <p>Your week is just beginning. One small step counts.</p>}{recap && <RecapShare recap={recap} />}{reasons && <p className="you-reasons">{reasons}</p>}</section>
+    {/* Spec 571 M6: "Your week" is the week in words and the receipt; the useful-days count stays on the home; Your season links to the record. */}<section className="card you-week" aria-label="Your week"><span className="eyebrow">Your week</span><h2>What your time became</h2>{weekNumbers.length ? <div className="you-week-numbers">{weekNumbers.map(item => <div className="you-week-number" key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div> : <p>Your week is just beginning. One small step counts.</p>}{recap && <RecapShare recap={recap} />}{reasons && <p className="you-reasons">{reasons}</p>}</section>
+    {/* Spec 571 §0.18 #7: each door keeps its own progress; You has one line per door. */}
+    <nav className="card you-doors" aria-label="Your doors"><span className="eyebrow">Your doors</span>{DOORS.map(door => <button type="button" key={door.id} className="text-button you-door-link" data-testid={`door-link-${door.id}`} onClick={() => go(door.route)}>{door.title}</button>)}</nav>
     <HexagonCard now={Date.now()} />{/* eslint-disable-line react-hooks/purity */}
     <BackupNudge />
     {/* Spec 33: private books are imported here. Train moved to Yatra (spec 34). */}

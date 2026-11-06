@@ -18,7 +18,7 @@ import { NightPlanSetting } from './NightPlanSetting';
 import { MinutesRecord } from './MinutesRecord';
 import { ReminderSettings } from './ReminderSettings';
 import { nightPauseAvailable } from '../../platform/nightPause';
-import { BUSY_SHIFT_KEY, INTERESTS, INTERESTS_KEY, readInterests, type InterestId } from '../../core/adaptive/day';
+import { INTERESTS, INTERESTS_KEY, readInterests, type InterestId } from '../../core/adaptive/day';
 import { notifier } from '../../platform/notifier';
 import { MORNING_DEFAULT, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON, NUDGE_PERMISSION_ASKED } from '../../core/nudges';
 import { CALM_SOUNDS } from '../../platform/calmSound';
@@ -57,7 +57,6 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   };
   const shutdown = value('planner.shutdown', RULES.night.defaultShutdown);
   const bedtime = value('planner.bedtime', RULES.night.defaultBedtime);
-  const goal = value('planner.goalBedtime', RULES.night.goalBedtime);
   const morning = value(NUDGE_MORNING_TIME, MORNING_DEFAULT);
   const restWeek = weekStart(dayKey(Date.now())); // eslint-disable-line react-hooks/purity
   const reward = settings?.find(row => row.key === 'planner.reward')?.value;
