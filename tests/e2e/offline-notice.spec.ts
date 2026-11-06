@@ -81,7 +81,8 @@ test('on a question screen the notice waits behind a live economy toast, so the 
   await open(page, '/?e2e&item=anchoring-9#grow/read/item-demo', false);
   // A stand-in for the XP toast, in its own class and slot, while the notice is up.
   await page.evaluate(() => { const toast = document.createElement('div'); toast.className = 'economy-toast'; toast.textContent = '+5 XP'; document.body.append(toast); });
-  await expect(notice(page)).toHaveCSS('visibility', 'hidden');
+  // Hidden by visibility, so it also leaves the accessibility tree: find it by its class.
+  await expect(page.locator('.offline-ready-toast')).toHaveCSS('visibility', 'hidden');
   await page.evaluate(() => document.querySelector('.economy-toast')?.remove());
   await expect(notice(page)).toHaveCSS('visibility', 'visible');
 });
