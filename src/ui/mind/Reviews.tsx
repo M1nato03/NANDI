@@ -24,6 +24,8 @@ export function Reviews({ entries, cards, progress, deck, lessonCards, afterBedt
     try { await onDone(oneMore); }
     catch (cause) { recordError('window', cause); setError('Could not save this session. Try again.'); setStopping(false); }
   };
+  // a9 via b2 (7 Nov): someone who has never had a card isn't told "that's enough"; the honest line (existing copy) instead.
+  if (!entry && !entries.length && !waiting && !progress.length && !cards.some(row => !row.deleted)) return <section className="screen mind-review"><h1>Card reviews</h1><EmptyState area="think">No cards to review.</EmptyState></section>;
   if (!entry) return <section className="screen mind-review"><h1>That's enough for today</h1><EmptyState area="think">Your mind has room to rest.</EmptyState>{waiting > 0 && <p>{waiting} more can wait until tomorrow</p>}<button type="button" disabled={stopping} onClick={() => void stop(false)}>Finish reviews</button>{canOneMore && waiting > 0 && <button type="button" className="text-button" disabled={stopping} onClick={() => void stop(true)}>One more set</button>}{error && <p role="alert">{error}</p>}</section>;
   const card = entry.kind === 'card' ? cards.find(row => row.id === entry.id) : undefined;
   const content = card ? (card.deckId === 'greene' ? deck.body.cards.find(row => row.id === card.id) : null) : null;
