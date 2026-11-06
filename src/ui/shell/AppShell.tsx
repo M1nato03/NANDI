@@ -19,7 +19,7 @@ import { effectiveShutdown } from '../../core/tasks/planner';
 import { useFocusKeeper } from '../tasks/useTaskBoard';
 import { RULES } from '../../core/rules.config';
 import { DelayedCardSkeleton } from './DelayedCardSkeleton';
-import { back, backDestination, go, initializeHistory, navigationEventName, route, tabOf } from './router';
+import { back, backDestination, go, initializeHistory, navigationEventName, route, screenKey, tabOf } from './router';
 import { changeRoute, routeMotionDone } from './routeMotion';
 import { markLinkedEntry } from './entry';
 import { areaOf } from '../areas';
@@ -54,6 +54,7 @@ import { HelpsWith } from '../screens/HelpsWith';
 import { takeLaunchLink } from '../../platform/links';
 import { useWelcomeNeeded, Welcome } from '../welcome/Welcome';
 
+const Grow = lazy(() => import('../grow/Grow').then(module => ({ default: module.Grow })));
 const CrewScreen = lazy(() => import('../yatra/Crew').then(module => ({ default: module.CrewScreen })));
 const CrewLinkScreen = lazy(() => import('../yatra/Crew').then(module => ({ default: module.CrewLinkScreen })));
 const NightPlanSetting = lazy(() => import('../screens/NightPlanSetting').then(module => ({ default: module.NightPlanSetting })));
@@ -261,56 +262,60 @@ export function AppShell() {
   const tab = tabOf(path);
   const areaOverride = useAreaOverride();
   let screen;
-  if (path === 'ground/backup' || path === 'you/backup') screen = <Backup onRestored={restored} />;
-  else if (path === 'you/season') screen = <SeasonLadder />;
-  else if (path === 'you/shop') screen = <SeasonShop />;
-  else if (path === 'you/badges') screen = <Badges />;
-  else if (path === 'you/contentreview') screen = <ContentReview />;
-  else if (path === 'you/cast') screen = <MeetCast />;
-  else if (path === 'you/courtyard') screen = <CourtyardScreen />;
-  else if (path === 'you/stories') screen = <StorybookList />;
-  else if (path === 'you/helps') screen = <HelpsWith />;
+  // Spec 571 stage 1: a moved screen is looked up by its old key (grow/read → read, grow/play → yatra/mind, …).
+  const key = screenKey(path);
+  if (key === 'ground/backup' || key === 'you/backup') screen = <Backup onRestored={restored} />;
+  else if (key === 'you/season') screen = <SeasonLadder />;
+  else if (key === 'you/shop') screen = <SeasonShop />;
+  else if (key === 'you/badges') screen = <Badges />;
+  else if (key === 'you/contentreview') screen = <ContentReview />;
+  else if (key === 'you/cast') screen = <MeetCast />;
+  else if (key === 'you/courtyard') screen = <CourtyardScreen />;
+  else if (key === 'you/stories') screen = <StorybookList />;
+  else if (key === 'you/helps') screen = <HelpsWith />;
   // Spec 55: the crew screen, and where crew links land (every one goes through the one link validator).
-  else if (path === 'yatra/crew' || path === 'yatra/crew/paste') screen = <CrewScreen key={path} paste={path === 'yatra/crew/paste'} />;
-  else if (path.startsWith('crew/')) screen = <CrewLinkScreen key={path} route={path} />;
-  else if (/^you\/story\/\d{8}$/.test(path)) screen = <StorybookScreen key={path} weekStart={weekFromRoute(path.slice(10))} />;
-  else if (path === 'you/owner') screen = <OwnerPanel />;
-  else if (path === 'you/night') screen = <Night />;
+  else if (key === 'yatra/crew' || key === 'yatra/crew/paste') screen = <CrewScreen key={key} paste={key === 'yatra/crew/paste'} />;
+  else if (key.startsWith('crew/')) screen = <CrewLinkScreen key={key} route={key} />;
+  else if (/^you\/story\/\d{8}$/.test(key)) screen = <StorybookScreen key={key} weekStart={weekFromRoute(key.slice(10))} />;
+  else if (key === 'you/owner') screen = <OwnerPanel />;
+  else if (key === 'you/night') screen = <Night />;
   // Spec 18: "Sleep earlier" starts on tonight's plan.
-  else if (path === 'you/tonight') screen = <section className="screen"><p className="eyebrow">Sleep earlier</p><h1>Tonight</h1><NightPlanSetting firstRun /></section>;
-  else if (path === 'you/settings') screen = <section className="screen"><p className="eyebrow">You</p><h1>Settings</h1>{nativeUpdater.available && <section className="card"><h2>App updates</h2>
+  else if (key === 'you/tonight') screen = <section className="screen"><p className="eyebrow">Sleep earlier</p><h1>Tonight</h1><NightPlanSetting firstRun /></section>;
+  else if (key === 'you/settings') screen = <section className="screen"><p className="eyebrow">You</p><h1>Settings</h1>{nativeUpdater.available && <section className="card"><h2>App updates</h2>
     <p>Current version: {nativeUpdater.installed ? `${nativeUpdater.installed.versionName} (${nativeUpdater.installed.versionCode})` : 'Checking…'}</p>
     <button type="button" className="secondary" onClick={() => void nativeUpdater.check(true)}>Check for updates</button>
     {nativeUpdater.message && <p role="status">{nativeUpdater.message}</p>}
   </section>}<Ground {...appearance} /></section>;
-  else if (path === 'mind/generator' || path === 'you/mind/generator') screen = <GeneratorCheck />;
-  else if (path === 'tasks/plan' || path === 'plan/morning') screen = <Planner mode="plan" />;
-  else if (path === 'tasks/shutdown' || path === 'plan/shutdown') screen = <Planner mode="shutdown" />;
-  else if (path === 'tasks/review' || path === 'plan/review') screen = <Planner mode="review" />;
-  else if (path === 'plan/focus') screen = <Today />;
-  else if (path === 'plan/pause') screen = <PauseSetup />;
-  else if (import.meta.env.VITE_E2E === '1' && path === 'read/chiku-demo') screen = <ChikuDemo />;
-  else if (SkillDemo && path === 'read/skill-demo') screen = <SkillDemo />;
+  else if (key === 'mind/generator' || key === 'you/mind/generator') screen = <GeneratorCheck />;
+  else if (key === 'tasks/plan' || key === 'plan/morning') screen = <Planner mode="plan" />;
+  else if (key === 'tasks/shutdown' || key === 'plan/shutdown') screen = <Planner mode="shutdown" />;
+  else if (key === 'tasks/review' || key === 'plan/review') screen = <Planner mode="review" />;
+  else if (key === 'plan/focus') screen = <Today />;
+  else if (key === 'plan/pause') screen = <PauseSetup />;
+  else if (import.meta.env.VITE_E2E === '1' && key === 'read/chiku-demo') screen = <ChikuDemo />;
+  else if (SkillDemo && key === 'read/skill-demo') screen = <SkillDemo />;
   // Spec 33: Read (books, chapters, the old drop) and its Games (Kapi's shelf, the old Mind).
-  else if (path === 'read' || path === 'read/drop') screen = <Learn entry={path.split('/')[1]} />;
-  else if (/^read\/book\/[a-z0-9-]+$/.test(path)) screen = <Learn key={path} entry="book" book={path.split('/')[2]} />;
-  else if (/^read\/chapter\/[a-z0-9-]+\/[a-z0-9-]+$/.test(path)) screen = <Chapter key={path} topicId={path.split('/')[2]!} moduleId={path.split('/')[3]!} />;
-  else if (/^read\/check\/[a-z0-9-]+\/[a-z0-9-]+$/.test(path)) screen = <BookCheck key={path} topicId={path.split('/')[2]!} moduleId={path.split('/')[3]!} />;
-  else if (path === 'read/lesson' || path === 'read/unit' || path === 'read/courses') screen = <Mind key={path} entry={path.split('/')[1]} />;
+  else if (key === 'read' || key === 'read/drop') screen = <Learn entry={key.split('/')[1]} />;
+  else if (/^read\/book\/[a-z0-9-]+$/.test(key)) screen = <Learn key={key} entry="book" book={key.split('/')[2]} />;
+  else if (/^read\/chapter\/[a-z0-9-]+\/[a-z0-9-]+$/.test(key)) screen = <Chapter key={key} topicId={key.split('/')[2]!} moduleId={key.split('/')[3]!} />;
+  else if (/^read\/check\/[a-z0-9-]+\/[a-z0-9-]+$/.test(key)) screen = <BookCheck key={key} topicId={key.split('/')[2]!} moduleId={key.split('/')[3]!} />;
+  else if (key === 'read/lesson' || key === 'read/unit' || key === 'read/courses') screen = <Mind key={key} entry={key.split('/')[1]} />;
   // Spec 34: Yatra and its corners: Train (Nandi), Kapi's shelf (Mind) and Calm (Kachhua).
-  else if (path === 'yatra') screen = <Yatra />;
-  else if (path === 'yatra/mind' || path.startsWith('yatra/mind/')) screen = <Mind key={path} entry={path.split('/').slice(2).join('/')} />;
-  else if (path === 'yatra/train' || path.startsWith('yatra/train/')) screen = <Train entry={path.split('/')[2]} />;
-  else if (path === 'yatra/calm') screen = <Calm />;
-  else if (path === 'yatra/journal') screen = <Journal />;
-  else if (path === 'yatra/days') screen = <UsefulDays />;
+  else if (key === 'yatra') screen = <Yatra />;
+  else if (key === 'yatra/mind' || key.startsWith('yatra/mind/')) screen = <Mind key={key} entry={key.split('/').slice(2).join('/')} />;
+  else if (key === 'yatra/train' || key.startsWith('yatra/train/')) screen = <Train entry={key.split('/')[2]} />;
+  else if (key === 'yatra/calm') screen = <Calm />;
+  else if (key === 'yatra/journal') screen = <Journal />;
+  else if (key === 'yatra/days') screen = <UsefulDays />;
   // Spec 47c: every finished season's result, from the record.
-  else if (path === 'yatra/days/seasons') screen = <PastResults />;
-  else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
-  else if (path === 'night') screen = <Now />;
-  else if (path === 'kolam') screen = <KolamScreen />;
-  else if (import.meta.env.VITE_E2E === '1' && path === 'read/haveli-demo') screen = <HaveliDemo />;
-  else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
+  else if (key === 'yatra/days/seasons') screen = <PastResults />;
+  else if (key === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
+  else if (key === 'night') screen = <Now />;
+  else if (key === 'kolam') screen = <KolamScreen />;
+  else if (import.meta.env.VITE_E2E === '1' && key === 'read/haveli-demo') screen = <HaveliDemo />;
+  else if (key === 'grow') screen = <Grow />;
+  else if (key === 'grow/remember') screen = <Learn key={key} entry="remember" />;
+  else if (tab === 'Plan') screen = <Plan questId={key.startsWith('plan/quest/') ? key.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You />;
   else screen = <Plan />;
   const root = ['plan', 'read', 'yatra', 'you'].includes(path);

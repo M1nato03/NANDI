@@ -1,3 +1,4 @@
+import { screenKey } from './shell/router';
 import type { CastName } from './cast/Cast';
 
 /**
@@ -48,7 +49,10 @@ export const STAGES: Record<Area, { friend: CastName; stage: string; body: strin
 };
 
 /** Which area a route belongs to; You has none and stays neutral. */
-export function areaOf(path: string): Area | undefined {
+export function areaOf(route: string): Area | undefined {
+  // Spec 571: a moved screen keeps its friend's area (Read is Chiku's, Play Kapi's, Calm Kachhua's); Grow's doors stay neutral.
+  if (route === 'grow/remember') return 'review';
+  const path = screenKey(route);
   const root = path.split('/')[0];
   if (root === 'night') return 'night';
   if (root === 'read') return 'learn';

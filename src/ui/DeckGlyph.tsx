@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-export type Glyph = 'do' | 'move' | 'think' | 'notice' | 'learn' | 'extra' | 'end' | 'night' | 'you' | 'trek';
+export type Glyph = 'do' | 'move' | 'think' | 'notice' | 'learn' | 'extra' | 'end' | 'night' | 'you' | 'trek' | 'grow';
 
 export function DeckGlyph({ type }: { type: Glyph }) {
   const paths: Record<Glyph, ReactNode> = {
@@ -13,6 +13,8 @@ export function DeckGlyph({ type }: { type: Glyph }) {
     end: <><path d="M3 16h18M5 20h14M4 12l2-2m14 2-2-2M12 2v3M7 5l1.5 1.5M17 5l-1.5 1.5M6 16a6 6 0 0 1 12 0" /></>,
     // Spec 34: Yatra, a peak with the trail climbing to it.
     trek: <><path d="M2.5 20 9.5 7.5l4 6.5 2.5-3.5 5.5 9.5Z" /><path d="M7 20c1.5-2 3-3 5-3.5" /></>,
+    // Spec 571: Grow, a sprout with two leaves.
+    grow: <><path d="M12 21v-9" /><path d="M12 13c-4.5 0-7-2.5-7-7 4.5 0 7 2.5 7 7Z" /><path d="M12 11c0-3.5 2-6 6.5-6 0 3.8-2.2 6-6.5 6Z" /><path d="M8 21h8" /></>,
     you: <><circle cx="12" cy="8" r="3.8" /><path d="M4.5 20a7.5 7.5 0 0 1 15 0" /></>,
     night: <><path d="M20 15.3A8.5 8.5 0 0 1 8.7 4a8.5 8.5 0 1 0 11.3 11.3Z" /><path d="M17 4v3M15.5 5.5h3" /></>,
   };
