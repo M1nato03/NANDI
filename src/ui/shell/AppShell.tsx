@@ -67,6 +67,7 @@ const BookCheck = lazy(() => import('../learn/BookCheck').then(module => ({ defa
 const HaveliDemo = lazy(() => import('../learn/HaveliDemo').then(module => ({ default: module.HaveliDemo })));
 const KolamScreen = lazy(() => import('../night/KolamScreen').then(module => ({ default: module.KolamScreen })));
 const ChikuDemo = lazy(() => import('../learn/ChikuDemo').then(module => ({ default: module.ChikuDemo })));
+const ItemDemo = import.meta.env.VITE_E2E === '1' ? lazy(() => import('../learn/ItemDemo').then(module => ({ default: module.ItemDemo }))) : null;
 // Spec 43: the practice engine on its test fixture. Only the e2e build has this import at all, so no release chunk
 // carries the fixture (scripts/check-release-bundle.ts checks dist/).
 const SkillDemo = import.meta.env.VITE_E2E === '1' ? lazy(() => import('../learn/SkillDemo').then(module => ({ default: module.SkillDemo }))) : null;
@@ -294,6 +295,7 @@ export function AppShell() {
   else if (key === 'plan/focus') screen = <Today />;
   else if (key === 'plan/pause') screen = <PauseSetup />;
   else if (import.meta.env.VITE_E2E === '1' && key === 'read/chiku-demo') screen = <ChikuDemo />;
+  else if (ItemDemo && key === 'read/item-demo') screen = <ItemDemo />;
   else if (SkillDemo && key === 'read/skill-demo') screen = <SkillDemo />;
   // Spec 33: Read (books, chapters, the old drop) and its Games (Kapi's shelf, the old Mind).
   else if (key === 'read' || key === 'read/drop') screen = <Learn entry={key.split('/')[1]} />;

@@ -399,3 +399,19 @@
 .learn-fit .learn-stem.long { font-size: 1.125rem; line-height: 1.35; }
 .learn-fit .learn-check { padding-bottom: env(safe-area-inset-bottom); }
 .learn-fit .learn-check button:disabled { opacity: .55; }
+/* Room for the answers: tighter spacing inside the fitted drop only, so a 3-4 option item and the estimate slider sit
+   fully on screen above Check at 360x800 (measured on the E12 extremes). Touch targets keep their 44-48px. */
+.learn-drop.learn-fit { gap: 6px; }
+.learn-fit > .learn-q { gap: 8px; padding-bottom: 4px; } /* the last card's raised edge stays whole */
+.learn-fit .learn-question { gap: 6px; }
+.learn-fit > .learn-progress { height: 8px; }
+.learn-fit .learn-estimate { margin: 0; gap: 4px; }
+.learn-fit .learn-options { gap: 8px; }
+/* The same rule as a lesson (cj2 #7): during a book or chapter check the chapter title goes, the eyebrow keeps the
+   book and chapter, and the question gets the room. */
+.learn-screen:has(.learn-fit.learn-active) .read-chapter-head h1 { display: none; }
+.learn-fit .learn-ask-bubble { padding: 8px 12px; }
+.learn-fit .learn-options button.ui-list-row { min-height: 48px; padding: 10px 14px; }
+/* Match: terms and their matches as a two-column grid of tiles, so three pairs fit beside the question. */
+.learn-fit .learn-options.learn-match { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.learn-fit .learn-options.learn-match button.ui-list-row { font-size: 15px; line-height: 1.3; overflow-wrap: anywhere; }

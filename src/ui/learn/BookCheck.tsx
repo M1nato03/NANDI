@@ -38,6 +38,7 @@ export function BookCheck({ topicId, moduleId }: { topicId: string; moduleId: st
     </div>
     {failed && <p role="alert">That could not be saved on this phone. Try again.</p>}
   </div></section>;
-  return <section className="screen learn-screen">{head}<p className="small read-check-label">Three questions from this chapter</p>
+  return <section className="screen learn-screen">{head}
+    {/* §0.20 (E12): no "Three questions" line above the question; the drop's own "1 / 3" says it, and the room goes to the answers. */}
     <LearnDrop key="book-check" daily={false} practiceTopicId={topicId} chapter={{ topicId, moduleId, kind: 'check' }} onDone={() => setStage('tried')} /></section>;
 }

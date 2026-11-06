@@ -98,7 +98,7 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
     if (chiku?.chiku) return <section className="screen learn-screen">{head}<ChikuStage scene={chiku.chiku as ChikuScene} seed={`${chiku.id}:${dayKey(openedAt)}`}
       onPlayed={(card, matched) => { const at = currentTime(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chiku.id, card, matched, deviceId, now: at })).then(() => setPlayNote(''), () => setPlayNote('Could not save that play. The chapter still finishes.')); }}
       onDone={toDone} />{playNote && <p className="small" role="alert">{playNote}</p>}</section>;
-    return <section className="screen learn-screen"><header className="read-chapter-head"><p className="eyebrow">{title} · Chapter {index + 1}</p><h1>{module.title}</h1><p className="small read-check-label">Chapter check · three questions</p></header><LearnDrop key="check" daily={false} practiceTopicId={topicId} chapter={{ topicId, moduleId, kind: 'check' }} onDone={toDone} /></section>;
+    return <section className="screen learn-screen"><header className="read-chapter-head"><p className="eyebrow">Chapter check · {title} · Chapter {index + 1}</p><h1>{module.title}</h1></header><LearnDrop key="check" daily={false} practiceTopicId={topicId} chapter={{ topicId, moduleId, kind: 'check' }} onDone={toDone} /></section>;
   }
 
   // Done: the takeaway in one line, then the next chapter, or the next book when this one is finished.
