@@ -120,8 +120,8 @@ test('an install from before spec 52 counts as Everything: Home, the dots and Yo
   await page.goto('/?e2e#yatra');
   await expect(move(page)).toContainText('Read one idea');
   await expect(move(page)).toContainText('A short sitting with Chiku');
-  // Spec 571: the learning and play dot is Grow.
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Grow', 'Night']);
+  // Spec 571 (b2): the learning and play dot keeps the name Read.
+  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Read', 'Night']);
   // The one change for existing installs: the card opens the chapter itself, not the Read tab's front page.
   await move(page).click();
   await expect(page).toHaveURL(/#grow\/read\/chapter\/psychology\/psychology-ch1$/);
@@ -134,7 +134,7 @@ test('You: the same toggles; a change applies at once to the next move and the d
   await page.clock.setFixedTime(NOON);
   await withPicks(page, ['learn', 'mind']);
   await expect(move(page)).toContainText('Read one idea');
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Grow']);
+  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Read']);
   await page.goto('/?e2e#you');
   await page.getByRole('button', { name: /^What NANDI helps with/ }).click();
   await expect(page).toHaveURL(/#you\/helps$/);
@@ -143,7 +143,7 @@ test('You: the same toggles; a change applies at once to the next move and the d
   await expect.poll(() => settingsOf(page, ['profile.goals'])).toEqual({ 'profile.goals': ['mind', 'sleep'] });
   await page.goto('/?e2e#yatra');
   await expect(move(page)).toContainText("Today's puzzle board");
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Grow', 'Night']);
+  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Read', 'Night']);
   // Train alone has no dot, so there is no dots row.
   await putSettings(page, [['profile.goals', ['train']]]);
   await page.reload();

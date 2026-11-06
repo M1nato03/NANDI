@@ -26,10 +26,9 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Call bank');
     await page.getByRole('region', { name: 'Today', exact: true }).getByRole('button', { name: /^Done: Call bank/ }).click();
     await expect(page.getByRole('button', { name: 'Plan: done' })).toBeVisible();
-    await page.getByRole('button', { name: 'Grow: not done' }).click();
-    // Spec 571: the Grow dot opens the five doors.
-    await expect(page).toHaveURL(/#grow$/);
-    await page.getByTestId('door-read').click();
+    await page.getByRole('button', { name: 'Read: not done' }).click();
+    // Spec 571 (b2): the reading dot keeps its name, Read, and opens Grow › Read.
+    await expect(page).toHaveURL(/#grow\/read$/);
     await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
     await expect(page.getByRole('region', { name: 'Continue' })).toBeVisible();
     await expect(page.getByRole('region', { name: 'Courses' })).toBeVisible();

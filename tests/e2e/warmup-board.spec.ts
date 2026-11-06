@@ -33,5 +33,5 @@ test('the Grow dot and the night deck count the easy daily of the featured type'
   await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
   await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
   // Spec 571: a finished board fills the Grow dot.
-  await expect(page.getByRole('button', { name: 'Grow: done' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Read: done' })).toBeVisible();
 });

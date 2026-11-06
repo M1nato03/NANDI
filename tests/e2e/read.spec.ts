@@ -23,8 +23,8 @@ test('Read: Grow is the tab; Continue sits above the fold; no Games fold', async
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#grow/read');
   await expect(page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link')).toHaveText(['Yatra', 'Plan', 'Grow', 'You']);
-  // Spec 571: the Today dot opens Grow.
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Grow', 'Night']);
+  // Spec 571 (b2): the reading dot keeps the name Read.
+  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Read', 'Night']);
   await expect(page.getByRole('heading', { name: 'Read', level: 1 })).toBeVisible();
   const resume = page.getByRole('region', { name: 'Continue' });
   await expect(resume).toContainText(pack('psychology').body.book.title);

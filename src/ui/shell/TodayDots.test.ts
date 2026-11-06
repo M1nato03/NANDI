@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { ALL_PICKS } from '../../core/welcome';
 import { dayKey } from '../../core/time/dayKey';
 import type { LearnDropRow, LedgerRow, PuzzleRunRow, TaskRow } from '../../data/types';
-import { todayDots, todayDotStatus } from './TodayDots';
+import { DOT_NAME, DOT_ROUTE, todayDots, todayDotStatus } from './TodayDots';
 
 // Spec 33: the dots are Plan, Read and Night.
 it('fills only the dots whose daily work is complete', () => {
@@ -46,4 +46,9 @@ describe('spec 52: the dots follow the picks', () => {
     expect(todayDots({ goals: ['mind', 'sleep', 'plan', 'train'], size: 'more' })).toEqual(['plan', 'read', 'night']);
     expect(todayDots({ goals: ['train'], size: 'two' })).toEqual([]);
   });
+});
+
+it('spec 571 (b2): the reading dot keeps the name Read and opens Grow › Read', () => {
+  expect(DOT_NAME).toEqual({ plan: 'Plan', read: 'Read', night: 'Night' });
+  expect(DOT_ROUTE.read).toBe('grow/read');
 });

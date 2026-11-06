@@ -32,7 +32,7 @@ async function seedOtherCoreItems(page: Page) {
   }, { day, featured });
   await page.reload();
   // Spec 571: a drop or Kapi's daily board fills the Grow dot.
-  await expect(page.getByRole('button', { name: 'Grow: done' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Read: done' })).toBeVisible();
 }
 
 test('a finished task gets one warm line that fades', async ({ page }) => {
