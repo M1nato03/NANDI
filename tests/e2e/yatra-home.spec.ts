@@ -11,7 +11,7 @@ test('a cold open lands on Yatra, with Yatra first and lit in the tab bar', asyn
   await page.clock.setFixedTime(at(10));
   await page.goto('/');
   await expect(page).toHaveURL(/#yatra$/);
-  await expect(tabs(page).getByRole('link')).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
+  await expect(tabs(page).getByRole('link')).toHaveText(['Yatra', 'Plan', 'Grow', 'You']);
   await expect(tabs(page).getByRole('link', { name: 'Yatra' })).toHaveAttribute('aria-current', 'page');
   await expect(heading(page)).toHaveText('Camp at Jobra');
   await expect(page.locator('.home-week')).toHaveText(/^A fresh week/);
@@ -27,7 +27,8 @@ test('a cold open lands on Yatra, with Yatra first and lit in the tab bar', asyn
   await expect(page).toHaveURL(/#plan$/);
   await page.goto('/#yatra');
   await page.getByRole('button', { name: 'Read, Chiku on the reading rock' }).click();
-  await expect(page).toHaveURL(/#read$/);
+  // Spec 571: Chiku opens Read under Grow.
+  await expect(page).toHaveURL(/#grow\/read$/);
 });
 
 test('a link still wins: a notification route to Plan opens Plan', async ({ page }) => {

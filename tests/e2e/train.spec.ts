@@ -11,7 +11,7 @@ for (const scheme of ['light', 'dark'] as const) {
   test(`rank assessment to safety finish and history in ${scheme}`, async ({ page }, testInfo) => {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/#train');
+    await page.goto('/#grow/train');
     await expect(page.getByText('A rank check · about 10 minutes')).toBeVisible();
     await capture(page, testInfo.outputPath(`train-assessment-${scheme}.png`));
     await page.getByRole('button', { name: 'Start placement' }).click();
@@ -57,7 +57,7 @@ for (const scheme of ['light', 'dark'] as const) {
 
 test('a full exercise advances, then a later set resumes after reload', async ({ page }, testInfo) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
-  await page.goto('/#train');
+  await page.goto('/#grow/train');
   await page.getByRole('button', { name: 'Start placement' }).click();
   for (let pattern = 0; pattern < 7; pattern++) {
     if (pattern === 4 || pattern === 5) await page.getByRole('spinbutton', { name: 'Clean seconds' }).fill('30');
@@ -94,7 +94,7 @@ test('a full exercise advances, then a later set resumes after reload', async ({
 
 test('gym setup records starting loads that the first session uses', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-12T12:00:00') });
-  await page.goto('/#train');
+  await page.goto('/#grow/train');
   await page.getByLabel('Training track').selectOption('gym');
   await page.getByLabel('Gym access').check();
   await page.getByLabel('Goblet Squat load for 12 clean reps, kg').fill('12.5');

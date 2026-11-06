@@ -100,7 +100,8 @@ test('spec 39b, spec 52 D: the in-app way names and opens Home\'s next move (a t
   await phoneOpens(page);
   await card(page).getByRole('button', { name: /^Read on: .+, ch\. 1$/ }).click();
   await expect(card(page)).toHaveCount(0);
-  await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
+  // Spec 571: the chapter route now sits under Grow.
+  await expect(page).toHaveURL(/#grow\/read\/chapter\/psychology\/psychology-ch1$/);
   // A task planned for today: its focus.
   await page.goto('/?e2e#plan/focus');
   await page.getByLabel('Add a task').fill('Email Riya the slides');

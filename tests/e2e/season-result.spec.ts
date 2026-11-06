@@ -105,16 +105,17 @@ test('with rank tucked away the result leaves out the rank; "See your useful day
   await expect(result(page).locator('.season-result-facts')).toContainText('3 useful days');
   await result(page).getByRole('button', { name: 'See your useful days' }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
-  await expect(page).toHaveURL(/#yatra\/days$/);
+  // Spec 571: the useful-days record belongs to You.
+  await expect(page).toHaveURL(/#you\/days$/);
   await page.getByRole('button', { name: /^Past seasons/ }).click();
-  await expect(page).toHaveURL(/#yatra\/days\/seasons$/);
+  await expect(page).toHaveURL(/#you\/days\/seasons$/);
   await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toHaveText('Past seasons');
   const row = page.getByRole('listitem', { name: 'Season 1' });
   await expect(row).toContainText('Season 1 · 2 Nov–6 Dec 2026');
   await expect(row.locator('p')).toHaveText(/^3 useful days · \d+ Shards\.$/);
   await expect(row).not.toContainText(/fresh climb|You reached|is complete|of 500/);
   await page.goBack();
-  await expect(page).toHaveURL(/#yatra\/days$/);
+  await expect(page).toHaveURL(/#you\/days$/);
 });
 
 test('a phone first used after the season ended has no result for it', async ({ page }) => {

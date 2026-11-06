@@ -7,7 +7,7 @@ import { textAt200 } from './helpers/text';
 const NOON = new Date('2026-11-03T12:00:00');
 const open = async (page: Page, query = '') => {
   await page.clock.setFixedTime(NOON);
-  await page.goto(`/?e2e${query}#read/skill-demo`);
+  await page.goto(`/?e2e${query}#grow/read/skill-demo`);
   await expect(page.getByRole('region', { name: 'Practice' })).toBeVisible();
 };
 const rows = (page: Page, table: string) => page.evaluate(async name => {

@@ -113,7 +113,8 @@ test('the named in-app move goes where Home\'s next move goes; "Open anyway" ope
   await phoneOpens(page);
   await slip(page).getByRole('button', { name: /^Read on: / }).click();
   await expect(slip(page)).toHaveCount(0);
-  await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
+  // Spec 571: the chapter route now sits under Grow.
+  await expect(page).toHaveURL(/#grow\/read\/chapter\/psychology\/psychology-ch1$/);
   await page.goto('/?e2e#you');
   await phoneOpens(page);
   await slip(page).getByRole('button', { name: 'Open Instagram anyway' }).click();

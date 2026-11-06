@@ -47,7 +47,7 @@ test('a plan for a camp ahead fills from a finished idea: +5 on the finish line 
   const plan = page.getByRole('region', { name: 'Your plan on the trail' });
   await expect(plan).toContainText('movie night with Dev');
   await expect(plan.locator('.jar-plan-minutes')).toHaveText(/^0 m of /);
-  await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+  await page.goto('/?e2e#grow/read/chapter/how-things-work/how-things-work-ch1');
   await walkIdea(page, 'how-things-work');
   await expect.poll(() => jarLines(page)).toContain('+5 min into the jar · idea read');
   await page.goto('/?e2e#yatra');
@@ -77,7 +77,7 @@ test('at the 60-minute cap the finish line says "Trail done for today."', async 
   await watchFinish(page);
   await page.goto('/?e2e#yatra');
   await seed(page, [['yatra.startDay', TODAY], ['yatra.jarFrom', TODAY]], [1, 2, 3, 4, 5, 6].map(session));
-  await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+  await page.goto('/?e2e#grow/read/chapter/how-things-work/how-things-work-ch1');
   await walkIdea(page, 'how-things-work');
   await expect.poll(() => jarLines(page)).toContain('Trail done for today.');
 });

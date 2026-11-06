@@ -5,7 +5,7 @@ import { openGames, openMoreBoards, todaysBoard, BOARD_DONE } from './helpers/mi
 test('daily case grid contrast and layout', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
   await page.emulateMedia({ colorScheme: 'dark' });
-  await page.goto('/#mind');
+  await page.goto('/#grow/play');
   await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
   const grid = page.locator('.case-grid').first();
   await expect(grid).toBeVisible({ timeout: 30_000 });
@@ -31,18 +31,20 @@ test('daily case grid contrast and layout', async ({ page }, testInfo) => {
 
 test('Practice hub shows daily status, destinations and fits a phone', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
-  await page.goto('/#mind');
+  await page.goto('/#grow/play');
   await expect(page.getByRole('heading', { name: 'Play', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: /^Open the case$/ })).toBeVisible();
   await expect(todaysBoard(page)).toContainText("Today's board");
   await openMoreBoards(page);
   await expect(page.getByRole('heading', { name: 'Practice boards' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
+  // Spec 571: card reviews are on Remember, not Play.
+  await expect(page.getByRole('heading', { name: 'Card reviews' })).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Read', exact: true })).toHaveCount(0);
   await expect(page.getByText('4 left:', { exact: false })).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: 'screenshots/mind-hub-390x844.png', fullPage: true });
-  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Read' }).click();
+  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Grow' }).click();
+  await page.getByTestId('door-read').click();
   await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
 });
 
@@ -51,7 +53,7 @@ for (const scheme of ['light', 'dark'] as const) {
     test.setTimeout(120_000);
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/#mind');
+    await page.goto('/#grow/play');
     await openMoreBoards(page);
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
     const boards = [
@@ -82,7 +84,7 @@ for (const scheme of ['light', 'dark'] as const) {
     test.setTimeout(90_000);
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/?e2e#mind');
+    await page.goto('/?e2e#grow/play');
     await todaysBoard(page).click();
     await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
@@ -112,7 +114,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('.mind-best-times')).toContainText('0:');
     // One daily board per type per day (spec 29): the solved board is today's, so its shelf tile reads solved.
     await expect(todaysBoard(page)).toContainText(BOARD_DONE);
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Read' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Grow' }).click();
+    await page.getByTestId('door-read').click();
     await page.getByRole('button', { name: /^Short courses/ }).click();
     await page.getByText('Courses', { exact: true }).click();
     await expect(page.getByRole('heading', { name: "Today's lesson" })).toBeVisible();

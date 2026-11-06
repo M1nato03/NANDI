@@ -48,7 +48,7 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
 test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-16T12:00:00'));
   await page.emulateMedia({ colorScheme: 'dark' });
-  await page.goto('/?e2e#learn/drop');
+  await page.goto('/?e2e#grow/read/drop');
   await seedTaughtTopics(page, ['money-markets']);
   await page.reload();
   const learnCard = page.locator('.learn-drop');
@@ -71,10 +71,10 @@ test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo
   await expect(learnCard).toContainText('Next review:');
   await page.screenshot({ path: testInfo.outputPath('learn-stop-390x844.png') });
   await learnCard.getByRole('button', { name: 'Continue' }).click();
-  // Spec 33: the drop hands back to Read; an idea's map and Practice live on its book page.
-  await expect(page).toHaveURL(/#read$/);
+  // Spec 571: the drop hands back to Read inside Grow.
+  await expect(page).toHaveURL(/#grow\/read$/);
   await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Read: done' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Grow: done' })).toBeVisible();
   const node = await openIdeas(page, 'money-markets', 'Inflation');
   await expect(page.locator('.read-chapter').first().locator('.learn-idea-row')).toHaveCount(3);
   await expect(page.locator('.learn-idea-row')).toHaveCount(10);

@@ -36,7 +36,7 @@ for (const [big, zoomed] of [[false, false], [true, false], [false, true]] as co
       const add = () => { if (!document.head || document.getElementById('zoom-stand-in')) return false; const style = document.createElement('style'); style.id = 'zoom-stand-in'; style.textContent = css; document.head.append(style); return true; };
       if (!add()) { const watch = new MutationObserver(() => { if (add()) watch.disconnect(); }); watch.observe(document, { childList: true, subtree: true }); }
     }, ZOOM);
-    await page.goto('/?e2e#read');
+    await page.goto('/?e2e#grow/read');
     await expect(page.getByRole('region', { name: 'Library' })).toBeVisible();
     if (big) await textAt200(page);
     await page.evaluate(() => document.fonts.ready);
@@ -52,7 +52,7 @@ for (const [big, zoomed] of [[false, false], [true, false], [false, true]] as co
 
 test('the cover is a picture only: the tile still says the full title', async ({ page }) => {
   await page.clock.install({ time: NOON });
-  await page.goto('/?e2e#read');
+  await page.goto('/?e2e#grow/read');
   await expect(page.getByRole('button', { name: /^How to Win Friends and Influence People · / })).toBeVisible();
   await expect(page.locator('.book-cover').first()).toHaveAttribute('aria-hidden', 'true');
 });

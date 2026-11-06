@@ -238,7 +238,8 @@ test('precache opens lazy screens after the first visit goes offline', async ({ 
     await context.setOffline(true);
 
     const screens: [string, string][] = [
-      ['train', 'Train'], ['mind', 'Play'], ['learn', 'Read'], ['read/book/money-markets', 'Money, Plainly'],
+      // Spec 571: precached screens open through their Grow routes.
+      ['grow/train', 'Train'], ['grow/play', 'Play'], ['grow/read', 'Read'], ['grow/read/book/money-markets', 'Money, Plainly'],
       ['plan', 'Plan'], ['plan/morning', 'Morning plan'], ['you/settings', 'Settings'],
       ['you/backup', 'Backup'], ['you/night', 'Night'],
     ];
@@ -247,14 +248,15 @@ test('precache opens lazy screens after the first visit goes offline', async ({ 
       await expect(page.getByRole('main').getByRole('heading', { name: heading, exact: true }).first()).toBeVisible();
     }
 
-    await page.goto(`${server.origin}/#mind/case`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${server.origin}/#grow/play/case`, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('.mind-case')).toBeVisible();
-    await page.goto(`${server.origin}/#mind/board`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${server.origin}/#grow/play/board`, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('.mind-board')).toBeVisible();
 
     await page.evaluate(() => { location.hash = '#you'; });
-    await expect(page.getByRole('region', { name: 'This week in words' })).toBeVisible();
-    await page.evaluate(() => { location.hash = '#learn'; });
+    // Spec 571: the weekly card is named Your week.
+    await expect(page.getByRole('region', { name: 'Your week' })).toBeVisible();
+    await page.evaluate(() => { location.hash = '#grow/read'; });
     await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
   } finally {
     await context.setOffline(false);

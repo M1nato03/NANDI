@@ -45,7 +45,7 @@ test('the task and move sheets take focus, keep it inside, close on Escape and g
 
 test('the Number Path board shows where keyboard focus is', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-21T12:00:00'));
-  await page.goto('/?e2e#mind/board/daily');
+  await page.goto('/?e2e#grow/play/board/daily');
   const board = page.getByRole('group', { name: /board/i }).first();
   await expect(board).toBeVisible({ timeout: 30_000 });
   // Before any move no cell is the path head, so the board is not outlined everywhere.

@@ -87,7 +87,7 @@ export async function selectBooks(page: Page, topicIds: string[]) {
 }
 /** Spec 33: an idea's Practice and Gold review live on its book page, under the chapter's idea list. */
 export async function openIdeas(page: Page, topicId: string, conceptTitle: string) {
-  await page.goto(`/?e2e#read/book/${topicId}`);
+  await page.goto(`/?e2e#grow/read/book/${topicId}`);
   const chapter = page.locator('.read-chapter').filter({ hasText: conceptTitle });
   const ideas = chapter.locator('details.read-chapter-ideas');
   if (!(await ideas.evaluate(node => (node as HTMLDetailsElement).open))) await ideas.locator(':scope > summary').click();

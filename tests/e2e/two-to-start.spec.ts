@@ -110,7 +110,7 @@ test.describe('Welcome: pick two to start', () => {
     await welcome.getByRole('button', { name: 'Everything' }).click();
     await expect(welcome).toContainText('When do you want to be asleep?');
     await welcome.getByRole('button', { name: 'Start your first chapter' }).click();
-    await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
+    await expect(page).toHaveURL(/#grow\/read\/chapter\/psychology\/psychology-ch1$/);
     expect(await settingsOf(page, ['profile.goals', 'profile.size'])).toEqual({ 'profile.goals': ['sleep', 'learn', 'train', 'mind', 'plan'], 'profile.size': 'all' });
   });
 });
@@ -120,10 +120,11 @@ test('an install from before spec 52 counts as Everything: Home, the dots and Yo
   await page.goto('/?e2e#yatra');
   await expect(move(page)).toContainText('Read one idea');
   await expect(move(page)).toContainText('A short sitting with Chiku');
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Read', 'Night']);
+  // Spec 571: the learning and play dot is Grow.
+  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Grow', 'Night']);
   // The one change for existing installs: the card opens the chapter itself, not the Read tab's front page.
   await move(page).click();
-  await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
+  await expect(page).toHaveURL(/#grow\/read\/chapter\/psychology\/psychology-ch1$/);
   await page.goto('/?e2e#you');
   await expect(page.getByRole('button', { name: /^What NANDI helps with/ })).toContainText('Everything');
   expect(await settingsOf(page, ['profile.size'])).toEqual({ 'profile.size': undefined });
@@ -133,7 +134,7 @@ test('You: the same toggles; a change applies at once to the next move and the d
   await page.clock.setFixedTime(NOON);
   await withPicks(page, ['learn', 'mind']);
   await expect(move(page)).toContainText('Read one idea');
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Read']);
+  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Grow']);
   await page.goto('/?e2e#you');
   await page.getByRole('button', { name: /^What NANDI helps with/ }).click();
   await expect(page).toHaveURL(/#you\/helps$/);
@@ -142,7 +143,7 @@ test('You: the same toggles; a change applies at once to the next move and the d
   await expect.poll(() => settingsOf(page, ['profile.goals'])).toEqual({ 'profile.goals': ['mind', 'sleep'] });
   await page.goto('/?e2e#yatra');
   await expect(move(page)).toContainText("Today's puzzle board");
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Read', 'Night']);
+  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Grow', 'Night']);
   // Train alone has no dot, so there is no dots row.
   await putSettings(page, [['profile.goals', ['train']]]);
   await page.reload();
@@ -190,9 +191,9 @@ async function lowPhone(browser: Browser, testInfo: TestInfo, goals: string[]) {
   return { page, close: () => context.close() };
 }
 const LANDS: { area: string; title: string; route: RegExp; first: (page: Page) => ReturnType<Page['locator']> }[] = [
-  { area: 'learn', title: 'Read one idea', route: /#read\/chapter\/psychology\/psychology-ch1$/, first: page => page.locator('.idea-page') },
-  { area: 'mind', title: "Today's puzzle board", route: /#yatra\/mind\/board\/daily$/, first: page => page.getByText(/Daily board (#\d+ )?· /) },
-  { area: 'train', title: 'An easy first workout', route: /#yatra\/train\/workout$/, first: page => page.getByText('Current exercise') },
+  { area: 'learn', title: 'Read one idea', route: /#grow\/read\/chapter\/psychology\/psychology-ch1$/, first: page => page.locator('.idea-page') },
+  { area: 'mind', title: "Today's puzzle board", route: /#grow\/play\/board\/daily$/, first: page => page.getByText(/Daily board (#\d+ )?· /) },
+  { area: 'train', title: 'An easy first workout', route: /#grow\/train\/workout$/, first: page => page.getByText('Current exercise') },
   { area: 'plan', title: 'Plan today', route: /#plan\/morning$/, first: page => page.getByRole('heading', { name: 'Morning plan' }) },
   { area: 'sleep', title: 'Plan tonight', route: /#you\/tonight$/, first: page => page.getByRole('region', { name: 'Night plan setting' }) },
 ];

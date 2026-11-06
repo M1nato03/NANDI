@@ -49,7 +49,7 @@ async function walkStep(page: Page, step: Step, last: 'Your turn' | 'Done', hook
 test('a new step is taught as hook, idea, show me and one guided try; its own questions come back the next day, after the next lesson', async ({ page }) => {
   test.setTimeout(120_000);
   await page.clock.setFixedTime(new Date(2026, 9, 22, 12));
-  await page.goto('/?e2e#learn/drop');
+  await page.goto('/?e2e#grow/read/drop');
   await page.getByRole('button', { name: /Human psychology/ }).click();
   await page.getByRole('button', { name: 'Start my first drop' }).click();
 
@@ -90,7 +90,7 @@ test('a new step is taught as hook, idea, show me and one guided try; its own qu
 test('a missed question on a taught step offers the idea again instead of a paragraph', async ({ page }) => {
   test.setTimeout(90_000);
   await page.clock.setFixedTime(new Date(2026, 9, 22, 12));
-  await page.goto('/?e2e#learn/drop');
+  await page.goto('/?e2e#grow/read/drop');
   await page.getByRole('button', { name: /Human psychology/ }).click();
   await page.getByRole('button', { name: 'Start my first drop' }).click();
   await walkStep(page, stepOne!, 'Done', 0);

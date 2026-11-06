@@ -1,13 +1,13 @@
 /// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
-import { openGames, todaysBoard, BOARD_DONE } from './helpers/mind';
+import { openGames, openRemember, todaysBoard, BOARD_DONE } from './helpers/mind';
 
 for (const scheme of ['light', 'dark'] as const) {
   test(`course lesson, reviews, reload and stop in ${scheme}`, async ({ page }, testInfo) => {
     test.setTimeout(180_000);
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/?e2e#read/courses'); // spec 33: Courses sit in Read's Library
+    await page.goto('/?e2e#grow/read/courses'); // spec 33: Courses sit in Read's Library
     await page.getByText('Courses', { exact: true }).click();
     await page.getByRole('button', { name: 'Start lesson', exact: true }).click();
     const lesson = page.locator('.mind-lesson');
@@ -50,7 +50,8 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await lesson.getByRole('button', { name: 'Done' }).click();
 
-    await openGames(page);
+    // Spec 571: the people-reading deck and reviews are on Remember.
+    await openRemember(page);
     // The people-reading deck is opt-in; turning it on adds its cards to the reviews.
     await page.getByRole('button', { name: 'Turn on the deck' }).click();
     await expect(page.getByText('5 for today')).toBeVisible();
@@ -77,6 +78,7 @@ for (const scheme of ['light', 'dark'] as const) {
     }
     await expect(page.getByRole('heading', { name: "That's enough for today" })).toBeVisible();
     await page.getByRole('button', { name: 'Finish reviews' }).click();
+    await openGames(page);
     await todaysBoard(page).click();
     await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));

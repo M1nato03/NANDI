@@ -108,14 +108,20 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByText('Saved nandi-week-2026-W41.json.')).toBeVisible();
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
     await page.getByRole('button', { name: /Settings/ }).click();
-    await page.getByLabel('Shutdown time').fill('22:45');
+    // Spec 571: bedtime controls moved from Settings to Calm & Sleep.
+    await page.getByTestId('bedtime-link').click();
+    const bedtime = page.getByRole('region', { name: 'Shutdown and bedtime' });
+    await bedtime.getByLabel('Shutdown time').fill('22:45');
     await expect(page.getByText('Planner settings saved.')).toBeVisible();
-    await page.getByLabel('Bedtime target').fill('23:30');
+    await bedtime.getByLabel('Bedtime target').fill('23:30');
+    await expect(bedtime.getByLabel('Bedtime target')).toHaveValue('23:30');
+    await page.goBack();
     await expect(page.getByText('Shutdown nudge: 22:45.')).toBeVisible();
+    await page.getByTestId('bedtime-link').click();
     await expectLayout(page);
     await page.reload();
-    await expect(page.getByLabel('Shutdown time')).toHaveValue('22:45');
-    await expect(page.getByLabel('Bedtime target')).toHaveValue('23:30');
+    await expect(bedtime.getByLabel('Shutdown time')).toHaveValue('22:45');
+    await expect(bedtime.getByLabel('Bedtime target')).toHaveValue('23:30');
     await expectLayout(page);
   });
 }

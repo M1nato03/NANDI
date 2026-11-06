@@ -8,7 +8,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/');
     const tabs = page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link');
-    await expect(tabs).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
+    await expect(tabs).toHaveText(['Yatra', 'Plan', 'Grow', 'You']);
     // Spec 37: the app opens on Yatra; Plan is one tap away.
     await expect(page).toHaveURL(/#yatra$/);
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
@@ -26,28 +26,30 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Call bank');
     await page.getByRole('region', { name: 'Today', exact: true }).getByRole('button', { name: /^Done: Call bank/ }).click();
     await expect(page.getByRole('button', { name: 'Plan: done' })).toBeVisible();
-    await page.getByRole('button', { name: 'Read: not done' }).click();
-    await expect(page).toHaveURL(/#read$/);
+    await page.getByRole('button', { name: 'Grow: not done' }).click();
+    // Spec 571: the Grow dot opens the five doors.
+    await expect(page).toHaveURL(/#grow$/);
+    await page.getByTestId('door-read').click();
     await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
     await expect(page.getByRole('region', { name: 'Continue' })).toBeVisible();
     await expect(page.getByRole('region', { name: 'Courses' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Review cards' })).toHaveCount(0);
-    // Spec 34: Kapi's shelf is Yatra's Mind corner.
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
-    await page.getByRole('button', { name: /^Play, / }).click();
-    await expect(page).toHaveURL(/#yatra\/mind$/);
+    // Spec 571: Kapi's shelf is Grow's Play door.
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Grow' }).click();
+    await page.getByTestId('door-play').click();
+    await expect(page).toHaveURL(/#grow\/play$/);
     await expect(page.getByRole('heading', { name: 'Play', exact: true })).toBeVisible();
     await expect(todaysBoard(page)).toBeVisible();
     await expect(page.getByRole('button', { name: /^(?:Open|Continue) the case$/ })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Card reviews' })).toHaveCount(0);
     await expect(page.getByRole('main').getByText("Today's drop")).toHaveCount(0);
     await tabs.filter({ hasText: 'You' }).click();
     await expect(page.getByRole('heading', { name: 'You', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: /Settings/ })).toBeVisible();
     await expect(page.getByRole('main').getByRole('button', { name: 'Open Learn' })).toHaveCount(0);
-    // Spec 34: Train is Yatra's Train corner now.
-    await tabs.filter({ hasText: 'Yatra' }).click();
-    await page.getByRole('button', { name: /^Train, / }).click();
+    // Spec 571: Train is a Grow door.
+    await tabs.filter({ hasText: 'Grow' }).click();
+    await page.getByTestId('door-train').click();
     await expect(page.getByRole('heading', { name: 'Train', exact: true })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`tabs-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -58,9 +60,10 @@ for (const scheme of ['light', 'dark'] as const) {
 
 test('old routes redirect to feature homes and night stays separate', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
-  for (const [oldRoute, newRoute] of [['now', 'plan'], ['you/train', 'yatra/train'], ['you/learn', 'read'], ['you/mind', 'yatra/mind'], ['train', 'yatra/train'], ['read/games', 'yatra/mind'], ['mind/case', 'yatra/mind/case']] as const) {
+  // Spec 571: old shared links resolve to their Grow doors.
+  for (const [oldRoute, newRoute] of [['now', 'plan'], ['you/train', 'grow/train'], ['you/learn', 'grow/read'], ['you/mind', 'grow/play'], ['train', 'grow/train'], ['read/games', 'grow/play'], ['mind/case', 'grow/play/case']] as const) {
     await page.goto(`/#${oldRoute}`);
-    await expect(page).toHaveURL(new RegExp(`#${newRoute}$`));
+    await expect(page).toHaveURL(new RegExp(`#${newRoute.replaceAll('/', '\\/')}$`));
   }
   await page.goto('/#night');
   await expect(page.getByRole('article', { name: 'Tonight card' })).toBeVisible();

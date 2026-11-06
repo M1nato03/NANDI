@@ -44,7 +44,7 @@ const ledger = (page: Page) => page.evaluate(async () => {
 test('a new user finishing a teach-first drop fills the Mind slot', async ({ page }) => {
   test.setTimeout(90_000);
   await page.clock.setFixedTime(new Date(2026, 9, 22, 12));
-  await page.goto('/?e2e#learn/drop');
+  await page.goto('/?e2e#grow/read/drop');
   await page.getByRole('button', { name: /Human psychology/ }).click();
   await page.getByRole('button', { name: 'Start my first drop' }).click();
   // Spec 16 §5: the lesson's own questions come back from tomorrow, so the drop may end right after it.

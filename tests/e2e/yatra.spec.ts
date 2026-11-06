@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-// Spec 34 Yatra: Train, Kapi's shelf and Calm in one tab; every old route lands in the right corner.
+// Spec 571: camp friends still open Train, Play and Calm behind Grow.
 const NOON = new Date('2026-10-28T12:00:00');
 const calmRows = (page: Page) => page.evaluate(async () => {
   const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
@@ -9,43 +9,44 @@ const calmRows = (page: Page) => page.evaluate(async () => {
   return rows.filter(row => row.mode === 'calm');
 });
 
-test('Yatra\'s camp: Nandi, Kapi and Kachhua open their corners, with Yatra lit in the tab bar', async ({ page }) => {
+test('Yatra\'s camp: Nandi, Kapi and Kachhua open their Grow corners', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
   await page.goto('/#plan');
   const tabs = page.getByRole('navigation', { name: 'Main tabs' });
-  await expect(tabs.getByRole('link')).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
+  await expect(tabs.getByRole('link')).toHaveText(['Yatra', 'Plan', 'Grow', 'You']);
   await tabs.getByRole('link', { name: 'Yatra' }).click();
   await expect(page).toHaveURL(/#yatra$/);
   // Spec 45b: the corners are the friends at camp.
   await expect(page.locator('.notebook-home h1')).toBeVisible();
-  for (const [name, url, heading] of [['Train, Nandi by the pack', /#yatra\/train$/, null], ['Play, Kapi in the branches', /#yatra\/mind$/, 'Play'], ['Calm, Kachhua by the fire', /#yatra\/calm$/, 'Calm']] as const) {
+  for (const [name, url, heading] of [['Train, Nandi by the pack', /#grow\/train$/, null], ['Play, Kapi in the branches', /#grow\/play$/, 'Play'], ['Calm, Kachhua by the fire', /#grow\/calm$/, 'Calm']] as const) {
     await page.goto('/#yatra');
     await page.getByRole('button', { name }).click();
     await expect(page).toHaveURL(url);
-    await expect(tabs.getByRole('link', { name: 'Yatra' })).toHaveAttribute('aria-current', 'page');
+    await expect(tabs.getByRole('link', { name: 'Grow' })).toHaveAttribute('aria-current', 'page');
     if (heading) await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible();
     await page.getByRole('button', { name: /^Back to / }).click();
     await expect(page).toHaveURL(/#yatra$/);
   }
 });
 
-test('every old Train, Mind and Games route lands in its Yatra corner; You and Read no longer hold them', async ({ page }) => {
+test('every old Train, Mind and Games route lands in its Grow door', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
-  for (const [from, to] of [['train', 'yatra/train'], ['train/history', 'yatra/train/history'], ['you/train', 'yatra/train'], ['mind', 'yatra/mind'], ['mind/case', 'yatra/mind/case'], ['you/mind', 'yatra/mind'], ['read/games', 'yatra/mind'], ['read/games/practice', 'yatra/mind/practice'], ['learn/games', 'yatra/mind']] as const) {
+  // Spec 571: old routes redirect under Grow.
+  for (const [from, to] of [['train', 'grow/train'], ['train/history', 'grow/train/history'], ['you/train', 'grow/train'], ['mind', 'grow/play'], ['mind/case', 'grow/play/case'], ['you/mind', 'grow/play'], ['read/games', 'grow/play'], ['read/games/practice', 'grow/play/practice'], ['learn/games', 'grow/play']] as const) {
     await page.goto(`/#${from}`);
     await expect(page).toHaveURL(new RegExp(`#${to.replaceAll('/', '\\/')}$`));
   }
   await page.goto('/#you');
   await expect(page.getByRole('heading', { name: 'You', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: /^Train/ })).toHaveCount(0);
-  await page.goto('/#read');
+  await page.goto('/#grow/read');
   await expect(page.getByRole('heading', { name: 'Read', level: 1 })).toBeVisible();
   await expect(page.getByText('Games', { exact: true })).toHaveCount(0);
 });
 
 test('Calm: the breath leads in and out, a full minute saves one quiet row, and stopping early saves nothing', async ({ page }) => {
   await page.clock.install({ time: NOON });
-  await page.goto('/#yatra/calm');
+  await page.goto('/#grow/calm');
   await expect(page.getByText('A quiet few minutes with your breath.')).toBeVisible();
   await expect(page.locator('.calm-phase')).toHaveText('4 in, 6 out');
   // Stopping early saves nothing and says nothing about it.
@@ -75,7 +76,7 @@ test('Calm: the breath leads in and out, a full minute saves one quiet row, and 
 
 test("Kapi's shelf leads with today's case, visible without a scroll", async ({ page }) => {
   await page.clock.setFixedTime(NOON);
-  await page.goto('/#yatra/mind');
+  await page.goto('/#grow/play');
   const card = page.getByRole('region', { name: "Today's case" });
   await expect(card).toContainText("Today's case");
   const open = card.getByRole('button', { name: 'Open the case' });
@@ -83,5 +84,5 @@ test("Kapi's shelf leads with today's case, visible without a scroll", async ({ 
   const box = (await open.boundingBox())!;
   expect(box.y + box.height).toBeLessThan(page.viewportSize()!.height - 64);
   await open.click();
-  await expect(page).toHaveURL(/#yatra\/mind\/case$/);
+  await expect(page).toHaveURL(/#grow\/play\/case$/);
 });

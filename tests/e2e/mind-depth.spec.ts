@@ -3,7 +3,7 @@ import { openMoreBoards } from './helpers/mind';
 
 const openSudoku = async (page: import('@playwright/test').Page) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   await openMoreBoards(page);
   await page.getByRole('button', { name: 'Practice', exact: true }).click();
   await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
@@ -48,7 +48,7 @@ test('a correctly used technique unlocks after solve and survives reload and bac
 
 test('solving a case reveals the next story panel', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
   await page.waitForFunction(() => Boolean((window as Window & { __nandiCaseTest?: unknown }).__nandiCaseTest));
   await page.evaluate(() => (window as Window & { __nandiCaseTest?: { solveTodaysCase: () => void } }).__nandiCaseTest!.solveTodaysCase());
@@ -61,7 +61,7 @@ test('solving a case reveals the next story panel', async ({ page }) => {
 
 test('share is hidden after bedtime with the clock pinned', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
   await page.waitForFunction(() => Boolean((window as Window & { __nandiCaseTest?: unknown }).__nandiCaseTest));
   await page.clock.setFixedTime(new Date('2026-11-02T23:30:00'));

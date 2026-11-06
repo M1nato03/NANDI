@@ -10,10 +10,10 @@ for (const scheme of ['light', 'dark'] as const) {
       Object.defineProperty(navigator, 'canShare', { configurable: true, value: undefined });
     });
     await page.goto('/#you');
-    await expect(page.getByRole('region', { name: 'This week in words' })).toContainText('What your time became');
+    await expect(page.getByRole('region', { name: 'Your week' })).toContainText('What your time became');
     await seedRecapWeek(page, '2026-10-15');
     const download = page.waitForEvent('download');
-    await page.getByRole('region', { name: 'This week in words' }).getByRole('button', { name: 'Share my week' }).click();
+    await page.getByRole('region', { name: 'Your week' }).getByRole('button', { name: 'Share my week' }).click();
     const preview = page.getByRole('dialog', { name: "Your week's receipt" });
     await expect(preview.getByRole('img')).toBeVisible({ timeout: 20_000 });
     await preview.getByRole('button', { name: 'Share' }).click();

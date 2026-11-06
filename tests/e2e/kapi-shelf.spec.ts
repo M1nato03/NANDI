@@ -17,7 +17,7 @@ const boardFacts = (page: Page) => page.evaluate(async () => {
 
 test('a first open starts with the how-to: one move per step, Kapi on the square, then the first board; it can be replayed', async ({ page }) => {
   await page.clock.setFixedTime(monday);
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   const shelf = page.getByRole('region', { name: "Kapi's shelf" });
   await expect(shelf.getByRole('button', { name: /^Crowns/ })).toContainText('Starts with a how-to');
   await shelf.getByRole('button', { name: /^Crowns/ }).click();
@@ -61,7 +61,7 @@ test('a first open starts with the how-to: one move per step, Kapi on the square
 
 test('Skip how-to opens the board at once and is remembered; Check names the broken rule and marks it without red', async ({ page }) => {
   await page.clock.setFixedTime(monday);
-  await page.goto('/?e2e#mind/shelf/crowns');
+  await page.goto('/?e2e#grow/play/shelf/crowns');
   await page.getByRole('button', { name: 'Skip how-to' }).click();
   const grid = page.getByRole('group', { name: 'Crowns board' });
   await expect(grid).toBeVisible({ timeout: 30_000 });
@@ -80,14 +80,14 @@ test('Skip how-to opens the board at once and is remembered; Check names the bro
   // The next move clears the marks.
   await cell(page, /^Row 1, column 3,/).click();
   await expect(grid.locator('.conflict')).toHaveCount(0);
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   await expect(page.getByRole('region', { name: "Kapi's shelf" }).getByRole('button', { name: /^Crowns/ })).not.toContainText('Starts with a how-to');
 });
 
 test('the daily board plus two more, then Kapi naps; the first is the daily board fact and the rest are side boards', async ({ page }) => {
   test.setTimeout(120_000);
   await page.clock.setFixedTime(monday);
-  await page.goto('/?e2e#mind/shelf/crowns');
+  await page.goto('/?e2e#grow/play/shelf/crowns');
   await page.getByRole('button', { name: 'Skip how-to' }).click();
   for (let round = 0; round < 3; round++) {
     await expect(page.getByRole('group', { name: 'Crowns board' })).toBeVisible({ timeout: 30_000 });
@@ -100,7 +100,7 @@ test('the daily board plus two more, then Kapi naps; the first is the daily boar
   await expect(page.getByLabel('Puzzle result')).toContainText("That's today's puzzles. Kapi's off to nap.");
   await expect(page.getByRole('button', { name: 'Another puzzle' })).toHaveCount(0);
   expect(await boardFacts(page)).toEqual([true, false, false]);
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   const tile = page.getByRole('region', { name: "Kapi's shelf" }).getByRole('button', { name: /^Crowns/ });
   await expect(tile).toContainText('Done for today');
   await tile.click();
@@ -109,7 +109,7 @@ test('the daily board plus two more, then Kapi naps; the first is the daily boar
 
 test("Kapi's case starts with its 4-step walkthrough of the grid", async ({ page }) => {
   await page.clock.setFixedTime(monday);
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
   const howto = page.getByRole('region', { name: 'How to play the case' });
   await expect(howto).toContainText('Step 1 of 4');
@@ -151,14 +151,14 @@ test('the how-to takes each board’s real input: Sun & Moon taps, Sudoku and Ca
   await page.clock.setFixedTime(monday);
   const next = async (label: 'Next' | 'Done') => page.getByRole('button', { name: label, exact: true }).click();
   // Sun & Moon: a tap cycles empty, sun, moon.
-  await page.goto('/?e2e#mind/howto/sunmoon');
+  await page.goto('/?e2e#grow/play/howto/sunmoon');
   for (const [name, taps, label] of [[/^Row 1, column 3:/, 2, 'Next'], [/^Row 1, column 6:/, 2, 'Next'], [/^Row 3, column 1:/, 2, 'Next'], [/^Row 1, column 2:/, 1, 'Next'], [/^Row 1, column 2:/, 2, 'Done']] as const) {
     for (let tap = 0; tap < taps; tap++) await cell(page, name).click();
     await next(label);
   }
   await expect(page.getByRole('region', { name: 'How to play Sun & Moon' })).toContainText('That is all of Sun & Moon.');
   // Mini Sudoku: pick the square, then the number; a wrong number is not taken.
-  await page.goto('/?e2e#mind/howto/sudoku');
+  await page.goto('/?e2e#grow/play/howto/sudoku');
   await cell(page, /^Row 1, column 4:/).click();
   await page.locator('.mind-pad').getByRole('button', { name: '3', exact: true }).click();
   await expect(page.getByText('Not that number. Look at the rule again.')).toBeVisible();
@@ -172,7 +172,7 @@ test('the how-to takes each board’s real input: Sun & Moon taps, Sudoku and Ca
   }
   await expect(page.getByRole('region', { name: 'How to play Mini Sudoku' })).toContainText('Your board is 6 by 6');
   // Calcudoku: the same digits, with the groups' sums and products.
-  await page.goto('/?e2e#mind/howto/calc');
+  await page.goto('/?e2e#grow/play/howto/calc');
   for (const [name, digit, label] of [[/^Row 1, column 3:/, '3', 'Next'], [/^Row 3, column 1:/, '3', 'Next'], [/^Row 2, column 1:/, '2', 'Next'], [/^Row 1, column 3:/, '3', 'Next'], [/^Row 2, column 3:/, '1', 'Done']] as const) {
     await cell(page, name).click();
     await page.locator('.mind-pad').getByRole('button', { name: digit, exact: true }).click();
@@ -180,7 +180,7 @@ test('the how-to takes each board’s real input: Sun & Moon taps, Sudoku and Ca
   }
   await expect(page.getByRole('region', { name: 'How to play Calcudoku' })).toContainText('That is all of Calcudoku.');
   // Number Path: a tap starts on 1, then a drag carries the line one square.
-  await page.goto('/?e2e#mind/howto/path');
+  await page.goto('/?e2e#grow/play/howto/path');
   await cell(page, /^Row 1, column 1, number 1/).click();
   await next('Next');
   const from = (await cell(page, /^Row 1, column 1, number 1/).boundingBox())!, to = (await cell(page, /^Row 1, column 2/).boundingBox())!;
@@ -202,10 +202,10 @@ test('the largest boards fit 360 px with 20 px text, cells at least 36 px; Kapi 
   test.skip(testInfo.project.name !== 'mobile-360x800', 'The narrow phone is the hard case');
   await page.clock.setFixedTime(monday);
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   await expect(page.locator('.kapi-friend[data-moment="swing"]')).toHaveCSS('animation-name', 'none');
   for (const [type, group] of [['crowns', 'Crowns board'], ['sudoku', 'Mini Sudoku board'], ['calc', 'Calcudoku board'], ['sunmoon', 'Sun and Moon board'], ['path', 'Number Path board']] as const) {
-    await page.goto(`/?e2e#mind/board/${type}/hard`);
+    await page.goto(`/?e2e#grow/play/board/${type}/hard`);
     await page.reload();
     await page.getByRole('button', { name: 'Skip how-to' }).click();
     await expect(page.locator('.mind-tutorial')).toHaveCount(0);

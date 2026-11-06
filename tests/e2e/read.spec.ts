@@ -19,11 +19,12 @@ const dropIds = (page: Page) => page.evaluate(async () => {
   return rows.filter(row => row.drop.chapter).map(row => `${row.id.split(':').slice(0, 2).join(':')}|${row.drop.chapter!.moduleId}`).sort();
 });
 
-test('Read: the tabs are Plan, Read, Yatra and You; Continue sits above the fold; no Games fold', async ({ page }) => {
+test('Read: Grow is the tab; Continue sits above the fold; no Games fold', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
-  await page.goto('/?e2e#read');
-  await expect(page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link')).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Read', 'Night']);
+  await page.goto('/?e2e#grow/read');
+  await expect(page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link')).toHaveText(['Yatra', 'Plan', 'Grow', 'You']);
+  // Spec 571: the Today dot opens Grow.
+  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Grow', 'Night']);
   await expect(page.getByRole('heading', { name: 'Read', level: 1 })).toBeVisible();
   const resume = page.getByRole('region', { name: 'Continue' });
   await expect(resume).toContainText(pack('psychology').body.book.title);
@@ -43,9 +44,10 @@ async function openHash(page: Page, hash: string) {
   await expect(page).toHaveURL(new RegExp(`#${hash.replaceAll('/', '\\/')}$`));
 }
 
-test('old Learn and Mind links still open, now inside Read', async ({ page }) => {
+test('old Learn and Mind links still open in their Grow doors', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
-  for (const [from, to] of [['learn', 'read'], ['learn/drop', 'read/drop'], ['mind', 'yatra/mind'], ['mind/practice', 'yatra/mind/practice'], ['you/learn', 'read']] as const) {
+  // Spec 571: old routes redirect to Read or Play under Grow.
+  for (const [from, to] of [['learn', 'grow/read'], ['learn/drop', 'grow/read/drop'], ['mind', 'grow/play'], ['mind/practice', 'grow/play/practice'], ['you/learn', 'grow/read']] as const) {
     await page.goto(`/?e2e#${from}`);
     await expect(page).toHaveURL(new RegExp(`#${to.replaceAll('/', '\\/')}$`));
   }
@@ -56,13 +58,13 @@ test('old Learn and Mind links still open, now inside Read', async ({ page }) =>
 test('spec 41: a chapter is read one idea a sitting (the first is the day\'s drop), each ending on a real stop; a quiz chapter is done after its last idea, and its Book check comes the next day', async ({ page }) => {
   test.setTimeout(150_000);
   await page.clock.setFixedTime(NOON);
-  await page.goto('/?e2e#read/book/how-things-work');
+  await page.goto('/?e2e#grow/read/book/how-things-work');
   const book = pack('how-things-work');
   const ideas = book.body.modules[0]!.concepts.filter(concept => (concept as { steps?: unknown[] }).steps?.length).length;
   await expect(page.getByRole('heading', { name: book.body.book.title, level: 1 })).toBeVisible();
   await expect(page.getByRole('list', { name: 'Chapters' }).getByRole('button', { name: /^Chapter \d: .*, Not started$/ })).toHaveCount(3);
   await page.getByRole('button', { name: 'Start · Chapter 1' }).click();
-  await expect(page).toHaveURL(/#read\/chapter\/how-things-work\/how-things-work-ch1$/);
+  await expect(page).toHaveURL(/#grow\/read\/chapter\/how-things-work\/how-things-work-ch1$/);
   await expect(page.getByRole('list', { name: `Idea 1 of ${ideas}` })).toBeVisible();
   await walkIdea(page, 'how-things-work');
   // A real stop: two equal buttons, no timer, nothing moves on by itself.
@@ -98,11 +100,11 @@ test('spec 41: a chapter is read one idea a sitting (the first is the day\'s dro
 test('a finished book offers the next one; the recall and Chiku checks finish their chapters too', async ({ page }) => {
   test.setTimeout(90_000);
   await page.clock.setFixedTime(NOON);
-  await page.goto('/?e2e#read');
+  await page.goto('/?e2e#grow/read');
   await seedTaughtTopics(page, ['history-civilisations', 'money-markets', 'psychology']);
   // Spec 41: a quiz chapter with every idea read is done at once (its questions come the next day): the book is finished.
   for (const chapter of ['history-civilisations-ch1', 'history-civilisations-ch2']) {
-    await openHash(page, `read/chapter/history-civilisations/${chapter}`);
+    await openHash(page, `grow/read/chapter/history-civilisations/${chapter}`);
     await expect(page.locator('.read-done-card')).toBeVisible();
   }
   await expect(page.locator('.read-done-card')).toContainText(`You finished ${pack('history-civilisations').body.book.title}.`);
@@ -110,17 +112,17 @@ test('a finished book offers the next one; the recall and Chiku checks finish th
   // Recall: Moti's haveli rebuilds the chapter's idea from its three pieces.
   const money = pack('money-markets').body.modules[0]!;
   const idea = money.concepts.find(concept => concept.recall)!;
-  await openHash(page, 'read/chapter/money-markets/money-markets-ch1');
+  await openHash(page, 'grow/read/chapter/money-markets/money-markets-ch1');
   await page.getByRole('button', { name: idea.title, exact: true }).click();
   for (const piece of idea.recall!.pieces) await page.locator('.haveli-tiles').getByRole('button', { name: piece, exact: true }).click();
   await page.getByRole('button', { name: 'Close' }).click();
   await expect(page.locator('.read-done-card')).toContainText('Chapter 1 done');
   // Chiku: the chapter's scene (skipping it still finishes the chapter; nothing is lost).
-  await openHash(page, 'read/chapter/psychology/psychology-ch1');
+  await openHash(page, 'grow/read/chapter/psychology/psychology-ch1');
   await page.locator('.chiku-skip').click();
   await expect(page.locator('.read-done-card')).toContainText('Chapter 1 done');
   await expect.poll(() => ledgerIds(page, 'chapter:')).toEqual(['chapter:history-civilisations:history-civilisations-ch1', 'chapter:history-civilisations:history-civilisations-ch2', 'chapter:money-markets:money-markets-ch1', 'chapter:psychology:psychology-ch1']);
-  await page.goto('/?e2e#read');
+  await page.goto('/?e2e#grow/read');
   await expect(page.getByRole('region', { name: 'Finished' })).toContainText(pack('history-civilisations').body.book.title);
 });
 
@@ -133,7 +135,7 @@ test('after bedtime no new chapter starts; the rest waits for tomorrow', async (
   await expect(page).toHaveURL(/#night$/);
   await page.getByRole('button', { name: 'Leave night deck' }).click();
   await expect(page).toHaveURL(/#plan$/);
-  await openHash(page, 'read/chapter/how-things-work/how-things-work-ch1');
+  await openHash(page, 'grow/read/chapter/how-things-work/how-things-work-ch1');
   await expect(page.locator('.read-wait')).toContainText('The rest of this chapter opens tomorrow.');
   await expect(page.locator('.step-lesson')).toHaveCount(0);
 });
@@ -147,7 +149,7 @@ test('a private book imports on You, shows on its own shelf, survives a reload, 
   // A bundled book (not private) is refused.
   await page.locator('.you-private-import input[type=file]').setInputFiles({ name: 'open.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(fixtureTopic)) });
   await expect(page.getByRole('region', { name: 'Private books' })).toContainText('Only a book marked private can be imported here.');
-  await page.goto('/?e2e#read');
+  await page.goto('/?e2e#grow/read');
   await expect(page.getByRole('region', { name: 'Private' })).toContainText('My Seed Notes');
   await page.reload();
   await page.getByRole('region', { name: 'Private' }).getByRole('button', { name: /^My Seed Notes/ }).click();
@@ -155,6 +157,6 @@ test('a private book imports on You, shows on its own shelf, survives a reload, 
   await page.goto('/?e2e#you');
   await page.getByRole('button', { name: 'Remove My Seed Notes' }).click();
   await page.getByRole('button', { name: 'Remove it' }).click();
-  await page.goto('/?e2e#read');
+  await page.goto('/?e2e#grow/read');
   await expect(page.getByRole('region', { name: 'Library' })).not.toContainText('My Seed Notes');
 });

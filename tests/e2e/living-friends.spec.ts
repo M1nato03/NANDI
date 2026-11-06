@@ -28,7 +28,8 @@ test('a friend mid-hop never blocks a tap on what lies under it', async ({ page 
 test('reduced motion: no friend moves anywhere, only the pose', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
-  for (const route of ['you/cast', 'learn', 'plan']) {
+  // Spec 571: Read now opens through Grow.
+  for (const route of ['you/cast', 'grow/read', 'plan']) {
     await page.goto(`/?e2e#${route}`);
     if (route === 'you/cast') await page.getByRole('button', { name: 'Mor cheer: play' }).click();
     const names = await page.locator('.cast-svg, .cast-svg *').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).animationName).filter(name => name !== 'none'));

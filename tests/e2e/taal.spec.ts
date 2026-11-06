@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 // Spec 24 #3 Taal week (cj5-train §7 #1). Wed 4 Nov 2026; the default program days are Mon, Wed, Fri.
 async function placed(page: Page) {
-  await page.goto('/#train');
+  await page.goto('/#grow/train');
   await page.getByRole('button', { name: 'Start placement' }).click();
   for (let pattern = 0; pattern < 7; pattern++) {
     if (pattern === 4 || pattern === 5) await page.getByRole('spinbutton', { name: 'Clean seconds' }).fill('30');

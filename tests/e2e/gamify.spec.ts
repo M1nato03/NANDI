@@ -87,9 +87,9 @@ test('seeded daily quests complete and a badge appears under You', async ({ page
 
 test('combo appears in a drop and the topic trail opens practice', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
-  await page.goto('/?e2e#learn');
+  await page.goto('/?e2e#grow/read');
   await seedTaughtTopics(page, ['money-markets']);
-  await page.goto('/?e2e#learn/drop');
+  await page.goto('/?e2e#grow/read/drop');
   await page.reload();
   await page.getByRole('button', { name: /Money and markets/ }).click();
   await page.getByRole('button', { name: 'Start my first drop' }).click();
@@ -112,7 +112,7 @@ test('combo appears in a drop and the topic trail opens practice', async ({ page
 
 test('a missed Gold review has five items and keeps Mastered state', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
-  await page.goto('/?e2e#learn');
+  await page.goto('/?e2e#grow/read');
   // Gold review waits until every step of the idea was taught on an earlier day.
   await seedTaughtTopics(page, ['money-markets']);
   await page.evaluate(async at => {

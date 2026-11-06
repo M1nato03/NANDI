@@ -30,7 +30,7 @@ test('after bedtime the night drop has only due reviews, then stops calmly when 
   test.setTimeout(90_000);
   const now = new Date(2026, 9, 18, 2, 0).getTime();
   await page.clock.setFixedTime(new Date(now));
-  await page.goto('/?e2e#learn');
+  await page.goto('/?e2e#grow/read');
   await page.waitForFunction(() => !!window.__nandiTest);
   await page.evaluate(async ({ id, due }) => window.__nandiTest!.seedLearnNight(id, due), { id: conceptId, due: now - 1 });
   await seedTaughtTopics(page, ['money-markets']);
@@ -57,7 +57,7 @@ test('after bedtime the night drop has only due reviews, then stops calmly when 
 test('a daily question asks one thing: no "How sure?" step, and the answer is saved as fairly sure', async ({ page }) => {
   test.setTimeout(90_000);
   await page.clock.setFixedTime(new Date(2026, 9, 19, 12));
-  await page.goto('/?e2e#learn/drop');
+  await page.goto('/?e2e#grow/read/drop');
   await seedTaughtTopics(page, ['money-markets']);
   await page.reload();
   await page.getByRole('button', { name: /Money and markets/ }).click();
@@ -75,9 +75,10 @@ test('a daily question asks one thing: no "How sure?" step, and the answer is sa
   expect(await page.evaluate(() => window.__nandiTest!.learnConfidence())).toBe('fairly-sure');
 });
 
-test('You shows empty learning figures (spec 33 moved them from Read to You)', async ({ page }) => {
+test('Remember shows empty learning figures', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
-  await page.goto('/?e2e#you');
+  // Spec 571: learning figures moved from You to Remember.
+  await page.goto('/?e2e#grow/remember');
   const figures = page.getByRole('region', { name: 'How your learning is holding' });
   await expect(figures).toContainText('30-day recall: Builds after your first 30 days');
   await expect(figures).not.toContainText('When you feel sure');

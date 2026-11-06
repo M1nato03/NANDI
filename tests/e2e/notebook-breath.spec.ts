@@ -223,7 +223,7 @@ test('reduced motion: the dot and the shell stay still, the words and the darker
 
 test('Calm: Square or Slow within Paced; the chosen length still ends the sit, Stop still works, and the pay is the same', async ({ page }) => {
   await ready(page);
-  await page.goto('/?e2e#yatra/calm');
+  await page.goto('/?e2e#grow/calm');
   await expect(page.getByRole('button', { name: 'Paced' })).toHaveAttribute('aria-pressed', 'true');
   await page.getByRole('button', { name: 'Square' }).click();
   await expect(page.getByRole('button', { name: 'Holds: on' })).toBeVisible();

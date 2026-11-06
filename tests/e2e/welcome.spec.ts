@@ -40,7 +40,8 @@ test('a fresh install picks one area and lands in its first lesson, with no topi
   await expect(welcome).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'What do you want to get sharp at?' })).toHaveCount(0);
   // Spec 33, spec 41: the first chapter of the first book, read one idea a sitting; the first idea ends on a real stop.
-  await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
+  // Spec 571: first chapters now open under Grow.
+  await expect(page).toHaveURL(/#grow\/read\/chapter\/psychology\/psychology-ch1$/);
   await walkIdea(page, 'psychology');
   await expect(page.locator('.idea-end')).toContainText('Idea done');
   expect(Date.now() - started).toBeLessThan(90_000);
@@ -65,7 +66,7 @@ test("Sharpen my mind opens today's board, and Get fit starts the easy first wor
   await pick(welcome, 'Get fit');
   await welcome.getByRole('button', { name: 'Start an easy first workout' }).click();
   // Straight into the first workout, on the easiest step of each move: no setup page and no second tap.
-  await expect(page).toHaveURL(/#yatra\/train\/workout$/);
+  await expect(page).toHaveURL(/#grow\/train\/workout$/);
   await expect(page.getByText('Current exercise')).toBeVisible();
 });
 

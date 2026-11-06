@@ -25,7 +25,7 @@ async function openCalm(page: Page) {
   await page.clock.install({ time: NOON });
   await page.goto('/#plan');
   await page.evaluate(() => sessionStorage.setItem('nandi.e2eCalm', JSON.stringify({ on: true })));
-  await page.goto('/#yatra/calm');
+  await page.goto('/#grow/calm');
   await expect(page.getByRole('heading', { name: 'Calm', exact: true })).toBeVisible();
 }
 
@@ -66,7 +66,7 @@ test('a timed sit that ends while NANDI is away is saved on return, once', async
   await page.clock.fastForward(4 * MIN);
   await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
   await expect.poll(() => calmRows(page)).toEqual([{ minutes: 3, way: 'quiet' }]);
-  await page.evaluate(() => { location.hash = '#yatra/calm'; });
+  await page.evaluate(() => { location.hash = '#grow/calm'; });
   await expect(page.locator('.calm-start')).toBeVisible();
   expect(await calmRows(page)).toEqual([{ minutes: 3, way: 'quiet' }]);
 });

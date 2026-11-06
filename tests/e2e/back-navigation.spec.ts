@@ -4,13 +4,13 @@ import { todaysBoard } from './helpers/mind';
 test('tabs and Today dots navigate to feature homes at phone size', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
-  // Spec 45c: Read's heading is its area word; spec 45b: Home's is the camp's line. Three dots: Plan, Read, Night.
-  const heading: Record<string, string> = { Plan: 'Plan', Read: 'Read', Yatra: 'Camp at Jobra', You: 'You' };
-  for (const name of ['Plan', 'Read', 'Yatra', 'You']) {
+  // Spec 571: Grow is a tab and a Today dot.
+  const heading: Record<string, string> = { Plan: 'Plan', Grow: 'Grow', Yatra: 'Camp at Jobra', You: 'You' };
+  for (const name of ['Plan', 'Grow', 'Yatra', 'You']) {
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name }).click();
     await expect(page.getByRole('heading', { name: heading[name], exact: true })).toBeVisible();
   }
-  for (const name of ['Plan', 'Read']) {
+  for (const name of ['Plan', 'Grow']) {
     await page.getByRole('button', { name: `${name}: not done` }).click();
     await expect(page).toHaveURL(new RegExp(`#${name.toLowerCase()}$`));
   }
@@ -23,7 +23,7 @@ test('tabs and Today dots navigate to feature homes at phone size', async ({ pag
 
 test('browser Back restores the Mind board and saved puzzle progress', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
-  await page.goto('/#mind');
+  await page.goto('/#grow/play');
   await todaysBoard(page).click();
   const board = page.locator('.mind-board');
   await expect(board.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });

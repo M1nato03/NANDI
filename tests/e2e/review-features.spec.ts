@@ -20,7 +20,7 @@ test('weekly review starts with plain words and keeps details optional', async (
 test('daily case progress and completion survive reload', async ({ page }) => {
   test.setTimeout(90_000);
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
   await expect(page.getByRole('heading', { name: 'Who was where?' })).toBeVisible({ timeout: 30_000 });
   const cell = page.getByRole('region', { name: 'Who was where?' }).getByRole('button').first();

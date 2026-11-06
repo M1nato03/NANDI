@@ -42,9 +42,9 @@ test('a new phone: no useful day yet, the camp, and one move to Read', async ({ 
   await expect(page.locator('.useful-days-list')).toHaveCount(0);
   await expect(page.locator('main')).not.toContainText(/\byet\b|\bnone\b/i);
   await page.goBack();
-  // Spec 52: the move lands in the thing itself, the chapter Continue offers, not the Read tab's front page.
+  // Spec 571: the move lands in the chapter under Grow.
   await move(page).click();
-  await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
+  await expect(page).toHaveURL(/#grow\/read\/chapter\/psychology\/psychology-ch1$/);
 });
 
 test('useful days count marked dates this week (before Season 1), and one tap opens the record', async ({ page }) => {
@@ -60,7 +60,7 @@ test('useful days count marked dates this week (before Season 1), and one tap op
   await page.reload();
   await expect(page.locator('.home-week')).toHaveText(/^2 useful days\s*this week/);
   await page.locator('.home-week').click();
-  await expect(page).toHaveURL(/#yatra\/days$/);
+  await expect(page).toHaveURL(/#you\/days$/);
   await expect(page.getByRole('heading', { name: 'Your record', level: 1 })).toBeVisible();
   await expect(page.locator('.useful-days-facts')).toContainText('This week2 useful days');
   const days = page.locator('.useful-days-list > li');
@@ -85,7 +85,8 @@ test('in Season 1 the line counts the season, from its first Monday', async ({ p
 test('all five friends go to their areas, once each, and Back returns to the same Home', async ({ page }) => {
   await page.clock.install({ time: WED });
   await home(page);
-  for (const [name, hash] of [['Plan, Mor at the map', 'plan'], ['Read, Chiku on the reading rock', 'read'], ['Train, Nandi by the pack', 'yatra/train'], ['Play, Kapi in the branches', 'yatra/mind'], ['Calm, Kachhua by the fire', 'yatra/calm']] as const) {
+  // Spec 571: camp friends still open their screens directly at the new routes.
+  for (const [name, hash] of [['Plan, Mor at the map', 'plan'], ['Read, Chiku on the reading rock', 'grow/read'], ['Train, Nandi by the pack', 'grow/train'], ['Play, Kapi in the branches', 'grow/play'], ['Calm, Kachhua by the fire', 'grow/calm']] as const) {
     // A double tap still opens the area once.
     await page.getByRole('button', { name }).dblclick();
     await expect(page).toHaveURL(new RegExp(`#${hash}$`));
@@ -114,7 +115,7 @@ test('with motion, a tap plays the friend\'s reaction where it stands, then open
   expect(await within()).toEqual(box);
   await expect(page).toHaveURL(/#yatra$/);
   await page.clock.runFor(300);
-  await expect(page).toHaveURL(/#yatra\/mind$/);
+  await expect(page).toHaveURL(/#grow\/play$/);
 });
 
 test('the move follows the order: focus, then Book check, then Train day, then a task', async ({ page }) => {
@@ -133,7 +134,7 @@ test('the move follows the order: focus, then Book check, then Train day, then a
   await page.reload();
   await expect(move(page)).toContainText('Book check');
   await move(page).click();
-  await expect(page).toHaveURL(/#read\/check\/richest-man-in-babylon\/babylon-2$/);
+  await expect(page).toHaveURL(/#grow\/read\/check\/richest-man-in-babylon\/babylon-2$/);
   // A focus, before everything.
   await put(page, 'focus', [{ id: 'f1', taskId: 't1', startedAt: WED.getTime() - 5 * 60_000, ...meta }]);
   await home(page);

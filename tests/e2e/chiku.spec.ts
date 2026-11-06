@@ -5,7 +5,7 @@ import { expect, test, type Page } from '@playwright/test';
 // A fixed noon, so a run after the night window opens does not land on the night deck; timers keep running.
 const open = async (page: Page, seed = 'demo', fixNoon = true) => {
   if (fixNoon) await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
-  await page.goto(`/?e2e&seed=${seed}#learn/chiku-demo`);
+  await page.goto(`/?e2e&seed=${seed}#grow/read/chiku-demo`);
   await expect(page.getByRole('region', { name: 'Teach Chiku' })).toBeVisible();
 };
 const stage = (page: Page) => page.locator('.chiku-stage');
@@ -121,7 +121,7 @@ test('focus starts on the scene, and at the end only the verdict is read, not th
 
 test('a card that ends with a full stop is quoted without it (spec 51 HTWF cards)', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
-  await page.goto('/?e2e&concept=htwf-admit-error#learn/chiku-demo');
+  await page.goto('/?e2e&concept=htwf-admit-error#grow/read/chiku-demo');
   await page.getByRole('group', { name: 'Your cards' }).getByRole('button', { name: 'Blame the classmate for my message.' }).click();
   await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText('You gave Chiku: Blame the classmate for my message.');
   for (let i = 0; i < 4; i++) await stage(page).click();

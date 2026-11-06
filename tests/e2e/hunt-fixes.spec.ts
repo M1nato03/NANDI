@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test';
 test('a session stopped with no set logged counts nowhere, gets no praise, and its card goes at once', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.clock.setFixedTime(new Date('2026-10-30T12:00:00'));
-  await page.goto('/?e2e#yatra/train');
+  await page.goto('/?e2e#grow/train');
   await page.getByRole('button', { name: 'Start easy, skip the test' }).click();
   await page.getByRole('button', { name: 'Finish session' }).click();
   await expect(page).toHaveURL(/train\/finish$/);
@@ -12,7 +12,7 @@ test('a session stopped with no set logged counts nowhere, gets no praise, and i
   // No finish line and no badge tier for logging nothing.
   await page.waitForTimeout(1500);
   await expect(page.locator('.economy-toast')).toHaveCount(0);
-  await page.goto('/?e2e#yatra/train');
+  await page.goto('/?e2e#grow/train');
   await expect(page.getByText('A fresh week. Start with one session.')).toBeVisible();
   await expect(page.getByText('Session in progress')).toHaveCount(0);
   await expect(page.getByText('0 of 3 sessions this week.')).toBeVisible();

@@ -23,7 +23,7 @@ test('cast gallery shows all poses in both themes', async ({ page }, testInfo) =
 
 test('Chiku stays beside a Learn question', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
-  await page.goto('/#learn/drop');
+  await page.goto('/#grow/read/drop');
   await page.getByRole('button', { name: /Money and markets/ }).click();
   await page.getByRole('button', { name: 'Start my first drop' }).click();
   await expect(page.locator('.learn-drop [data-cast="Chiku"]')).toBeVisible();

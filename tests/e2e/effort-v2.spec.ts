@@ -18,7 +18,7 @@ test('spec 41: an idea-sitting pays its share of the chapter (the day\'s drop ne
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.clock.install({ time: WEDNESDAY });
   const before = await totalXp(page);
-  await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+  await page.goto('/?e2e#grow/read/chapter/how-things-work/how-things-work-ch1');
   const first = pack.body.modules[0]!.concepts.find(concept => concept.steps?.length)!;
   await walkIdea(page, 'how-things-work');
   // The first sitting was the day's drop: its chapter pay (5 base + 5 a step), never less than the drop's 15.
@@ -27,7 +27,7 @@ test('spec 41: an idea-sitting pays its share of the chapter (the day\'s drop ne
   await expect.poll(() => totalXp(page)).toBe(before + pay);
   // A second sitting the same day pays its steps, with no second drop.
   const second = pack.body.modules[0]!.concepts.filter(concept => concept.steps?.length)[1]!;
-  await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+  await page.goto('/?e2e#grow/read/chapter/how-things-work/how-things-work-ch1');
   await walkIdea(page, 'how-things-work');
   const more = Math.min(40 - (5 + 5 * first.steps!.length), 5 * second.steps!.length);
   await expect.poll(() => totalXp(page)).toBe(before + pay + more);

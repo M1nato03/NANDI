@@ -9,7 +9,8 @@ test('a tab change fades the new page in, then focus is on the new heading; Back
   await page.clock.install({ time: NOON });
   await page.goto('/?e2e#plan');
   await expect(page.locator('#main h1')).toBeVisible();
-  await tabs(page).getByRole('link', { name: 'Read' }).click();
+  // Spec 571: Grow replaced Read in the tab bar.
+  await tabs(page).getByRole('link', { name: 'Grow' }).click();
   expect(await motion(page)).toBe('fade');
   await expect(page.locator('#main h1')).toBeFocused();
   await expect(tabs(page)).toBeVisible();
@@ -37,7 +38,7 @@ test('rapid route changes: the latest wins, with no stale page left behind', asy
   await expect(page.locator('#main h1')).toBeVisible();
   await page.evaluate(() => {
     const links = [...document.querySelectorAll<HTMLAnchorElement>('nav[aria-label="Main tabs"] a')];
-    for (const name of ['Read', 'Yatra', 'You']) links.find(link => link.textContent?.includes(name))!.click();
+    for (const name of ['Grow', 'Yatra', 'You']) links.find(link => link.textContent?.includes(name))!.click();
   });
   await expect(page).toHaveURL(/#you$/);
   await expect(page.getByRole('heading', { name: 'You', level: 1 })).toBeVisible();
@@ -47,7 +48,7 @@ test('rapid route changes: the latest wins, with no stale page left behind', asy
 
 test('with a dialog open, a route change does not fade', async ({ page }) => {
   await page.clock.install({ time: NOON });
-  await page.goto('/?e2e#yatra/calm');
+  await page.goto('/?e2e#grow/calm');
   await page.getByRole('button', { name: /^Other/ }).click();
   await expect(page.getByRole('dialog', { name: 'Other lengths' })).toBeVisible();
   await page.evaluate(() => { location.hash = '#plan'; });

@@ -22,7 +22,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.goto('/?e2e#plan');
     await page.waitForFunction(() => !!window.__nandiTest);
     await page.evaluate(async () => window.__nandiTest!.seedNordicSlow());
-    await page.goto('/?e2e#train');
+    await page.goto('/?e2e#grow/train');
     await expect(page.getByRole('heading', { name: 'Hostel Bodyweight' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Ready for a harder hamstring move?' })).toHaveCount(0);
 
@@ -40,7 +40,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Finish session' }).click();
     await expect(page.getByRole('heading', { name: 'Session finished' })).toBeVisible();
 
-    await page.goto('/?e2e#train');
+    await page.goto('/?e2e#grow/train');
     const card = page.getByRole('region', { name: 'Ready for a harder hamstring move?' });
     await expect(card).toBeVisible();
     const ready = card.getByRole('button', { name: "I'm ready" });

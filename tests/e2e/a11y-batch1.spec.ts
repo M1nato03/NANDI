@@ -28,7 +28,7 @@ async function heal(page: Page) {
 
 test('Calm: a sit that could not be saved says so, and saving again keeps it', async ({ page }) => {
   await page.clock.install({ time: NOON });
-  await page.goto('/#yatra/calm');
+  await page.goto('/#grow/calm');
   await expect(page.getByRole('heading', { name: 'Calm', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Quiet', exact: true }).click();
   await page.getByRole('button', { name: '3 min', exact: true }).click();
@@ -46,7 +46,7 @@ test('Calm: a sit that could not be saved says so, and saving again keeps it', a
 
 test('Calm: the Other sheet takes focus, Escape closes it, and focus goes back to Other', async ({ page }) => {
   await page.clock.install({ time: NOON });
-  await page.goto('/#yatra/calm');
+  await page.goto('/#grow/calm');
   const other = page.locator('.calm-other');
   await other.focus();
   await page.keyboard.press('Enter');
@@ -66,9 +66,9 @@ test('Calm: the Other sheet takes focus, Escape closes it, and focus goes back t
 
 test('a chapter that could not be saved does not say done; saving again finishes it', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
-  await page.goto('/?e2e#read');
+  await page.goto('/?e2e#grow/read');
   await seedTaughtTopics(page, ['psychology']);
-  await page.goto('/?e2e#read/chapter/psychology/psychology-ch1');
+  await page.goto('/?e2e#grow/read/chapter/psychology/psychology-ch1');
   await expect(page.locator('.chiku-skip')).toBeVisible();
   await breakLedger(page);
   await page.locator('.chiku-skip').click();

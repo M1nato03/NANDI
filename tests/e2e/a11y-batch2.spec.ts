@@ -26,7 +26,7 @@ async function seedTimedTask(page: Page, title: string) {
 
 test('C7: every "spot the part" choice is at least 44 by 44 px', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
-  await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+  await page.goto('/?e2e#grow/read/chapter/how-things-work/how-things-work-ch1');
   await walkIdea(page, 'how-things-work');
   await page.getByRole('button', { name: 'One more idea' }).click();
   // The second idea tries spot-the-part; walk to it.

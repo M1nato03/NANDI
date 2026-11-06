@@ -9,10 +9,11 @@ import { textAt200 } from './helpers/text';
 const NOON = new Date('2026-11-04T10:00:00');
 const AREAS = [
   { friend: 'Plan, Mor at the map', hash: 'plan', place: 'Mor at the map', heading: 'Plan' },
-  { friend: 'Read, Chiku on the reading rock', hash: 'read', place: 'Chiku on the reading rock', heading: 'Read' },
-  { friend: 'Train, Nandi by the pack', hash: 'yatra/train', place: 'Nandi by the pack', heading: 'Train' },
-  { friend: 'Play, Kapi in the branches', hash: 'yatra/mind', place: 'Kapi in the branches', heading: 'Play' },
-  { friend: 'Calm, Kachhua by the fire', hash: 'yatra/calm', place: 'Kachhua by the fire', heading: 'Calm' },
+  // Spec 571: camp friends open their screens behind Grow.
+  { friend: 'Read, Chiku on the reading rock', hash: 'grow/read', place: 'Chiku on the reading rock', heading: 'Read' },
+  { friend: 'Train, Nandi by the pack', hash: 'grow/train', place: 'Nandi by the pack', heading: 'Train' },
+  { friend: 'Play, Kapi in the branches', hash: 'grow/play', place: 'Kapi in the branches', heading: 'Play' },
+  { friend: 'Calm, Kachhua by the fire', hash: 'grow/calm', place: 'Kachhua by the fire', heading: 'Calm' },
 ] as const;
 const head = (page: Page) => page.locator('.notebook-head, .notebook-title').first();
 
@@ -27,7 +28,7 @@ test('each friend opens a notebook page: the place, one heading, the friend on i
     await expect(head(page).locator('.eyebrow')).toHaveText(area.place);
     await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toHaveText(area.heading);
     // The friend stands on the head's ground, not on a coloured band (Calm's friend is on its breathing stage).
-    if (area.hash !== 'yatra/calm') {
+    if (area.hash !== 'grow/calm') {
       await expect(head(page).locator('.notebook-ground [data-cast]')).toHaveCount(1);
       await expect(head(page)).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     }
@@ -39,13 +40,13 @@ test('each friend opens a notebook page: the place, one heading, the friend on i
 
 test('the real controls stay: a Train session starts, today\'s board opens, Calm offers Square and Slow', async ({ page }) => {
   await page.clock.install({ time: NOON });
-  await page.goto('/?e2e#yatra/train');
+  await page.goto('/?e2e#grow/train');
   await page.getByRole('button', { name: 'Start easy, skip the test' }).click();
   await expect(page.getByRole('button', { name: 'Finish session' })).toBeVisible();
-  await page.goto('/?e2e#yatra/mind');
+  await page.goto('/?e2e#grow/play');
   await todaysBoard(page).click();
   await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
-  await page.goto('/?e2e#yatra/calm');
+  await page.goto('/?e2e#grow/calm');
   await expect(page.getByRole('button', { name: 'Square' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Slow' })).toBeVisible();
 });
@@ -53,7 +54,7 @@ test('the real controls stay: a Train session starts, today\'s board opens, Calm
 test('a sitting is pages: a folio on each, the corner and a swipe turn it like Continue, and it ends on the choice card', async ({ page }) => {
   test.setTimeout(120_000);
   await page.clock.install({ time: NOON });
-  await page.goto('/?e2e#read/book/richest-man-in-babylon');
+  await page.goto('/?e2e#grow/read/book/richest-man-in-babylon');
   await page.getByRole('button', { name: 'Start · Chapter 1' }).click();
   const sitting = page.locator('.idea-sitting');
   const pageSheet = sitting.locator('.idea-page');

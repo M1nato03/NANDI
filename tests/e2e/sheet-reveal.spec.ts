@@ -5,7 +5,7 @@ import { stepsOf } from './learn-helpers';
 // anchoring-s2's hook was one of the 20 steps where that happened at 360x800.
 test('after a missed hook guess the right answer stays in view, not under the result sheet', async ({ page }) => {
   await page.clock.setFixedTime(new Date(2026, 9, 22, 12));
-  await page.goto('/?e2e#learn/drop');
+  await page.goto('/?e2e#grow/read/drop');
   const steps = stepsOf('psychology');
   const at = steps.findIndex(step => step.id === 'anchoring-s2');
   await page.waitForFunction(() => !!window.__nandiTest);

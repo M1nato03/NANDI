@@ -11,7 +11,7 @@ const shared = (page: Page) => page.waitForFunction(() => (window as Window & { 
 test('a solved daily board becomes a link that opens the same board for a friend', async ({ page, browser }) => {
   await page.clock.setFixedTime(new Date('2026-10-21T12:00:00'));
   await catchShares(page);
-  await page.goto('/?e2e#mind/board/daily');
+  await page.goto('/?e2e#grow/play/board/daily');
   await hook(page);
   const mine = await board(page);
   await solve(page);
@@ -20,6 +20,7 @@ test('a solved daily board becomes a link that opens the same board for a friend
   const text = await shared(page);
   // Spec 19 C: three lines, text only. 21 Oct is before the board-number epoch, so no number yet. Spec 24: the link ends
   // with the sender's pace marks.
+  // Spec 571: the shared legacy link resolves to Grow's Play route when opened.
   expect(text).toMatch(/^NANDI \S+ [A-Za-z &]+ · (Easy|Medium|Hard)\n\d+:\d\d · no hints ✨\nSame board, your turn: https:\/\/nandi\.nandi11\.workers\.dev\/#mind\/challenge\/20261021\/[a-z]+\/[a-z]+\/\d+\/p[0-9a-z]{30}$/);
   const hash = text.slice(text.indexOf('#'));
 
@@ -28,6 +29,7 @@ test('a solved daily board becomes a link that opens the same board for a friend
   await friend.clock.setFixedTime(new Date('2026-10-23T12:00:00'));
   await catchShares(friend);
   await friend.goto(`/?e2e&welcome${hash}`);
+  await expect(friend).toHaveURL(/#grow\/play\/challenge\/20261021\//);
   await expect(friend.getByText(/A friend's challenge/)).toBeVisible();
   await expect(friend.getByRole('dialog', { name: 'Welcome to NANDI' })).toHaveCount(0);
   await hook(friend);
@@ -46,7 +48,7 @@ test('a solved daily board becomes a link that opens the same board for a friend
 test("a friend opening today's link plays today's daily board and gets the Today chip", async ({ page, browser }) => {
   await page.clock.setFixedTime(new Date('2026-10-23T12:00:00'));
   await catchShares(page);
-  await page.goto('/?e2e#mind/board/daily');
+  await page.goto('/?e2e#grow/play/board/daily');
   await hook(page);
   const mine = await board(page);
   await solve(page);
@@ -60,6 +62,7 @@ test("a friend opening today's link plays today's daily board and gets the Today
   const friend = await (await browser.newContext({ viewport: { width: 360, height: 800 } })).newPage();
   await friend.clock.setFixedTime(new Date('2026-10-23T18:00:00'));
   await friend.goto(`/?e2e${hash}`);
+  await expect(friend).toHaveURL(/#grow\/play\/challenge\/20261023\//);
   await expect(friend.locator('.mind-board .eyebrow')).toHaveText(/^Daily board #1 · /);
   await hook(friend);
   expect(await board(friend)).toEqual(mine);
@@ -67,7 +70,7 @@ test("a friend opening today's link plays today's daily board and gets the Today
   await expect(friend.getByRole('button', { name: 'Share result' })).toBeVisible();
   // The solved run is written after the result shows; leave only once it is saved (CI flake 10-25).
   await expect(friend.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-  await friend.goto('/?e2e#mind');
+  await friend.goto('/?e2e#grow/play');
   await friend.reload();
   await expect(todaysBoard(friend)).toContainText(BOARD_DONE);
 });

@@ -165,7 +165,7 @@ test('at 200% text You\'s week, the target choice, the record and the ladder she
   await expect(close).toBeInViewport();
   expect(await fits(page)).toBe(true);
   await close.click();
-  await page.goto('/?e2e#yatra/days');
+  await page.goto('/?e2e#you/days');
   await textAt200(page);
   await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toHaveText('1 useful day this season');
   expect(await fits(page)).toBe(true);

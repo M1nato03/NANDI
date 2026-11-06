@@ -31,16 +31,19 @@ test('Plan has one Mor, on its stage, and Mor reacts there', async ({ page }) =>
 test("Read: Continue is Chiku's, idea checks get Moti's own card, and a book's ideas and chest are Chiku's", async ({ page }) => {
   const noon = new Date('2026-10-20T12:00:00').getTime();
   await page.clock.setFixedTime(new Date(noon));
-  await page.goto('/?e2e#read');
+  await page.goto('/?e2e#grow/read');
   await seedTaughtTopics(page, ['money-markets']);
   await seedDueIdeas(page, ['inflation', 'compounding'], noon);
   // Idea checks count the books you have started (spec 33; the old topic picks).
   await selectBooks(page, ['money-markets']);
   await page.reload();
+  // Spec 571: Moti's review card lives in Remember; Chiku's Continue remains in Read.
+  await expect(page.getByRole('region', { name: 'Continue' }).locator('[data-cast]')).toHaveCount(0);
+  await page.goto('/?e2e#grow/remember');
   const moti = page.getByRole('region', { name: 'Review with Moti' });
   await expect(moti.getByRole('button', { name: 'Idea checks · 2 today' })).toBeVisible();
   await expect(moti.locator('[data-cast="Moti"]')).toHaveCount(1);
-  await expect(page.getByRole('region', { name: 'Continue' }).locator('[data-cast]')).toHaveCount(0);
+  await page.goto('/?e2e#grow/read');
   await openIdeas(page, 'money-markets', 'Inflation');
   await expect(page.locator('.learn-trail-chest [data-cast="Chiku"]').first()).toBeVisible();
   const trail = await page.evaluate(() => [...document.querySelectorAll('.read-book-page [data-cast]')].map(node => node.getAttribute('data-cast')));

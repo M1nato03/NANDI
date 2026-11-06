@@ -14,7 +14,7 @@ const openPractice = async (page: Page) => {
 
 test('the pace line is opt-in, remembered, compares with your best, and hides after bedtime', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   await openPractice(page);
   // No earlier run with marks yet, so there is nothing to compare with.
   await expect(page.getByRole('button', { name: 'Show pace' })).toHaveCount(0);
@@ -22,7 +22,7 @@ test('the pace line is opt-in, remembered, compares with your best, and hides af
   await expect(page.getByLabel('Puzzle result')).toBeVisible();
   await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
   // A second practice board of the same type and difficulty (the route picks the next attempt).
-  await page.goto('/?e2e#mind/board/sudoku/easy');
+  await page.goto('/?e2e#grow/play/board/sudoku/easy');
   await page.reload();
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await expect(page.getByLabel('Puzzle result')).toHaveCount(0);
@@ -59,7 +59,7 @@ test('the pace line is opt-in, remembered, compares with your best, and hides af
 
 test('with large text (20 px root) the pace row fits above the board without clipping (Codex A items 79, 80; spec 29)', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
-  await page.goto(`/?e2e#mind/challenge/sudoku/easy/12345/${marks}`);
+  await page.goto(`/?e2e#grow/play/challenge/sudoku/easy/12345/${marks}`);
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await page.getByRole('button', { name: 'Show pace' }).click();
   await expect(page.locator('.mind-pace-track')).toBeVisible();
@@ -84,7 +84,7 @@ test('with large text (20 px root) the pace row fits above the board without cli
 test('under reduced motion the pace line is one still line of text', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
-  await page.goto(`/?e2e#mind/challenge/sudoku/easy/12345/${marks}`);
+  await page.goto(`/?e2e#grow/play/challenge/sudoku/easy/12345/${marks}`);
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await page.getByRole('button', { name: 'Show pace' }).click();
   await expect(page.locator('.mind-pace-still')).toHaveText('Your friend: 0:50');
@@ -93,7 +93,7 @@ test('under reduced motion the pace line is one still line of text', async ({ pa
 
 test("a friend's link carries their pace; the finish shows their time and the reply link carries yours", async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
-  await page.goto(`/?e2e#mind/challenge/sudoku/easy/12345/${marks}`);
+  await page.goto(`/?e2e#grow/play/challenge/sudoku/easy/12345/${marks}`);
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await page.waitForFunction(() => Boolean(window.__nandiMindTest));
   await page.getByRole('button', { name: 'Show pace' }).click();
@@ -106,7 +106,7 @@ test("a friend's link carries their pace; the finish shows their time and the re
 
 test('Prove it: a short pick shows what still fits, a real proof earns the stamp, and it stays after reload', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
   await page.waitForFunction(() => Boolean(window.__nandiCaseTest));
   const { shortest, clues } = await page.evaluate(() => window.__nandiCaseTest!.proof());
@@ -138,7 +138,7 @@ test('Prove it: a short pick shows what still fits, a real proof earns the stamp
 
 test('Prove it is not offered after bedtime', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#grow/play');
   await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
   await page.waitForFunction(() => Boolean(window.__nandiCaseTest));
   await page.clock.setFixedTime(new Date('2026-11-02T23:30:00'));
