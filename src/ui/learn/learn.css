@@ -384,3 +384,18 @@
 .idea-example p, .idea-plan-line { margin: 0; font-size: 18px; line-height: 1.45; }
 .idea-plan-line { font-weight: 700; }
 .idea-end-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/*
+ * Spec 571 §0.20 (E12, Jenil 6 Nov: "these question should be in the center, the options should be a bit lower around
+ * the thumb reach"): a question screen fits the screen with no page scroll. A compact top (progress + count), the
+ * question centred in the free space, the answers and Check at the bottom in the thumb zone. When the question is long
+ * (or text is at 200%), only the middle scrolls; Check stays put.
+ */
+.learn-drop.learn-fit { display: flex; flex-direction: column; gap: 10px; height: var(--fit-h, auto); min-height: 0; }
+.learn-fit > .learn-drop-head, .learn-fit > .learn-progress, .learn-fit > .learn-check, .learn-fit > .learn-feedback, .learn-fit > [role='status'] { flex: none; }
+.learn-fit > .learn-q { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; overscroll-behavior: contain; }
+.learn-fit .learn-question { display: grid; gap: 12px; margin-block: auto; }
+.learn-fit .learn-q > .learn-options, .learn-fit .learn-q > .learn-estimate, .learn-fit .learn-q > .learn-hint { flex: none; }
+.learn-fit .learn-stem.long { font-size: 1.125rem; line-height: 1.35; }
+.learn-fit .learn-check { padding-bottom: env(safe-area-inset-bottom); }
+.learn-fit .learn-check button:disabled { opacity: .55; }
