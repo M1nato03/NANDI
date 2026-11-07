@@ -3,7 +3,7 @@ import { FIT_NOON, openItemDemo, settleQuestionFit } from '../e2e/helpers/e12-qu
 import { questionFitExtremes } from '../e2e/helpers/e12-items';
 
 // Large text page scroll (b2, 7 Nov): the longest item of each of the 7 types at 200% text from load, light and dark,
-// 360x800 @2x. Two shots each: as it opens (no auto-scroll) and after "Answers below".
+// 360x800 @2x. Three shots each: as it opens (no auto-scroll), after "Answers below", and at the page's end.
 const OUT = process.env.SHOTS_DIR ?? 'D:/nandi-gate-logs/shots-large-text';
 
 for (const theme of ['light', 'dark'] as const) {
@@ -22,6 +22,9 @@ for (const theme of ['light', 'dark'] as const) {
         await page.getByRole('button', { name: 'Answers below' }).click();
         await settleQuestionFit(page);
         await page.screenshot({ path: `${OUT}/${theme}-${fixture.type}-2-answers.png` });
+        await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+        await settleQuestionFit(page);
+        await page.screenshot({ path: `${OUT}/${theme}-${fixture.type}-3-end.png` });
       }
     } finally { await ctx.close(); }
   });
