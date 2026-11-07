@@ -42,6 +42,8 @@ for (const fixture of fixtures) {
     // Nothing is below the fold at normal text, so there is no "more below" cue, and the fitted layout stays (b2, 7 Nov).
     await expect(page.locator('.learn-more-cue')).toHaveCount(0);
     await expect(page.locator('.learn-drop.learn-page')).toHaveCount(0);
+    // No plain-tint band in the fitted layout (it belongs to page scroll with more below only).
+    expect(await page.locator('.learn-check').evaluate(row => getComputedStyle(row, '::before').content)).toBe('none');
     const options = page.locator(fixture.type === 'estimate' ? '.learn-estimate input[type="range"]' : '.learn-options');
     await expect.poll(async () => {
       const stem = await page.locator('.learn-stem').boundingBox();
@@ -132,6 +134,15 @@ for (const fixture of fixtures.filter(item => item.size === 'longest')) {
     await settleQuestionFit(page);
     await expect(page.locator('.learn-more-cue')).toHaveCount(0);
     await expectCheckFits(page, false);
+    // b2: the plain-tint band shows only while there is more below, so at the end the last answer (or the slider and
+    // its scale) is whole and at full contrast above the row.
+    await expect(drop).not.toHaveClass(/page-more/);
+    const end = await page.evaluate(() => {
+      const row = document.querySelector('.learn-check')!;
+      const last = document.querySelector('.learn-options > button:last-child, .learn-estimate-scale')!.getBoundingClientRect();
+      return { band: getComputedStyle(row, '::before').content, rowTop: row.getBoundingClientRect().top, lastBottom: last.bottom };
+    });
+    expect(end.band === 'none' && end.lastBottom <= end.rowTop + 0.5, JSON.stringify(end)).toBe(true);
     // A pick never flips the layout back.
     await pickDemoAnswer(page, fixture);
     await expect(drop).toHaveClass(/learn-page/);
