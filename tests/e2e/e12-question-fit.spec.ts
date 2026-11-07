@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { questionFitExtremes, type QuestionFitFixture } from './helpers/e12-items';
 import { expectAnswersShown, expectCheckFits, expectPageFits, FIT_NOON, openItemDemo, pickDemoAnswer, settleQuestionFit } from './helpers/e12-question-fit';
 import { textAt200 } from './helpers/text';
@@ -29,13 +29,6 @@ const fixtures: QuestionFitFixture[] = [
 test.use({ viewport: { width: 360, height: 800 }, reducedMotion: 'reduce', colorScheme: 'light' });
 
 const FIRST_ANSWER = '.learn-options > button, .learn-estimate input[type="range"]';
-async function firstAnswerInsideMiddle(page: import('@playwright/test').Page) {
-  return page.evaluate(selector => {
-    const middle = document.querySelector('.learn-q')?.getBoundingClientRect();
-    const first = document.querySelector(selector)?.getBoundingClientRect();
-    return !!middle && !!first && first.top >= middle.top - 1 && first.bottom <= middle.bottom + 1;
-  }, FIRST_ANSWER);
-}
 test.beforeAll(() => { expect(fixtures).toEqual(questionFitExtremes()); });
 test.beforeEach(async ({ page }) => { await page.clock.setFixedTime(FIT_NOON); });
 
@@ -46,8 +39,9 @@ for (const fixture of fixtures) {
     await expectPageFits(page);
     await expectAnswersShown(page);
     await expectCheckFits(page, false);
-    // Nothing is below the fold at normal text, so there is no "more below" cue.
+    // Nothing is below the fold at normal text, so there is no "more below" cue, and the fitted layout stays (b2, 7 Nov).
     await expect(page.locator('.learn-more-cue')).toHaveCount(0);
+    await expect(page.locator('.learn-drop.learn-page')).toHaveCount(0);
     const options = page.locator(fixture.type === 'estimate' ? '.learn-estimate input[type="range"]' : '.learn-options');
     await expect.poll(async () => {
       const stem = await page.locator('.learn-stem').boundingBox();
@@ -61,8 +55,28 @@ for (const fixture of fixtures) {
   });
 }
 
+// Large text (b2, 7 Nov): a question that can't fit the fitted middle turns the page into the scroller. The stem and
+// the answers scroll together; only the bottom action row (Check) stays pinned. No auto-scroll on load.
+async function textAt200FromLoad(page: Page) {
+  await page.addInitScript(() => document.addEventListener('DOMContentLoaded', () => {
+    const style = document.createElement('style');
+    style.textContent = 'html { font-size: 200% !important; }';
+    document.head.append(style);
+  }));
+}
+const geometry = (page: Page) => page.evaluate(selector => {
+  const box = (query: string) => { const rect = document.querySelector(query)?.getBoundingClientRect(); return rect ? { top: rect.top, bottom: rect.bottom } : undefined; };
+  const stem = document.querySelector('.learn-stem');
+  return { vh: innerHeight, scrollY, row: box('.learn-check'), stem: box('.learn-stem'), first: box(selector),
+    line: stem ? parseFloat(getComputedStyle(stem).lineHeight) : 0, wide: document.documentElement.scrollWidth > innerWidth + 1 };
+}, FIRST_ANSWER);
+async function firstAnswerInView(page: Page) {
+  const { first, row } = await geometry(page);
+  return !!first && !!row && first.top >= -1 && first.bottom <= row.top + 1;
+}
+
 for (const fixture of fixtures.filter(item => item.size === 'longest')) {
-  test(`${fixture.type}, longest: ${fixture.id} keeps Check in view at 200% text`, async ({ page }) => {
+  test(`${fixture.type}, longest: ${fixture.id} at 200% text: the page scrolls and Check stays pinned`, async ({ page }) => {
     await openItemDemo(page, fixture);
     // b2 (6 Nov): every text in the question area follows the reader's size. The answers (or the estimate's value),
     // the stem and Check must each be at least 1.8x their normal size at 200% text.
@@ -71,52 +85,57 @@ for (const fixture of fixtures.filter(item => item.size === 'longest')) {
       return { answer: px('.learn-options button') || px('.learn-estimate-value'), stem: px('.learn-stem'), check: px('.learn-check button') };
     });
     const normal = await sizes();
-    await textAt200(page);
+    await textAt200FromLoad(page);
+    await openItemDemo(page, fixture);
+    await expect.poll(() => page.evaluate(() => getComputedStyle(document.documentElement).fontSize)).toBe('32px');
     const large = await sizes();
     for (const part of ['answer', 'stem', 'check'] as const) {
       expect(normal[part], `${part} has a size`).toBeGreaterThan(0);
       expect(large[part] / normal[part], `${part} at 200% text (${normal[part]}px → ${large[part]}px)`).toBeGreaterThanOrEqual(1.8);
     }
-    await settleQuestionFit(page);
-    await expectPageFits(page);
+    const drop = page.locator('.learn-drop');
+    await expect(drop).toHaveClass(/learn-page/);
+    // On load: no auto-scroll, and the stem's first line is on screen above the pinned row.
+    const loaded = await geometry(page);
+    expect(loaded.scrollY, 'no auto-scroll on load').toBe(0);
+    expect(!!loaded.stem && !!loaded.row && loaded.stem.top >= 0 && loaded.stem.top + loaded.line <= loaded.row.top, JSON.stringify(loaded)).toBe(true);
+    expect(loaded.wide, 'no sideways scroll').toBe(false);
     await expectCheckFits(page, false);
-    // At large text, scroll the middle to the last answer while the page and Check stay put.
-    const middle = page.locator('.learn-q');
-    await expect(middle).toHaveCSS('overflow-y', 'auto');
-    // b2 (6 Nov): while the middle holds more below, a fade and a chevron (no words) sit on its bottom edge.
-    const overflows = await middle.evaluate(node => node.scrollHeight - node.clientHeight > 2);
-    if (overflows) {
-      await expect(page.locator('.learn-more-cue svg')).toBeVisible();
-      await expect(middle).toHaveClass(/more-below/);
-      // b2 (6 Nov): the chip is a real button (48x48 hit box, named, no words) that brings the first answer up.
-      const cue = page.getByRole('button', { name: 'Answers below' });
-      const box = await cue.boundingBox();
-      expect(box && box.width >= 48 && box.height >= 48, JSON.stringify(box)).toBe(true);
-      await cue.click();
-      // This file runs with reduced motion, so the scroll is instant: one read straight after the tap, no polling.
-      expect(await firstAnswerInsideMiddle(page), 'the first answer sits fully inside the middle after the tap').toBe(true);
-      await expect(page.locator(FIRST_ANSWER).first()).toBeFocused();
-    }
-    await middle.evaluate(node => { node.scrollTop = node.scrollHeight; });
+    // More below the row: a fade and the chevron sit on the row's top edge; the chevron brings the first answer into view.
+    await expect(drop).toHaveClass(/page-more/);
+    const cue = page.getByRole('button', { name: 'Answers below' });
+    await expect(cue).toBeVisible();
+    const box = await cue.boundingBox();
+    expect(box && box.width >= 48 && box.height >= 48, JSON.stringify(box)).toBe(true);
+    await cue.click();
+    // This file runs with reduced motion, so the scroll is instant: one read straight after the tap, no polling.
+    expect(await firstAnswerInView(page), JSON.stringify(await geometry(page))).toBe(true);
+    await expect(page.locator(FIRST_ANSWER).first()).toBeFocused();
+    await expectCheckFits(page, false);
+    // With the stem's top at the top of the screen, at least 70% of the screen above the row is for reading.
+    await page.evaluate(() => { const stem = document.querySelector('.learn-stem')!; window.scrollTo(0, window.scrollY + stem.getBoundingClientRect().top); });
+    const reading = await geometry(page);
+    expect(reading.row ? reading.row.top / reading.vh : 0, JSON.stringify(reading)).toBeGreaterThanOrEqual(0.7);
+    await expectCheckFits(page, false);
+    // At the page's end nothing is below, so the cue goes; Check is still in view.
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
     await settleQuestionFit(page);
-    // At the end of the middle there is nothing more below, so the cue goes.
     await expect(page.locator('.learn-more-cue')).toHaveCount(0);
-    await expectPageFits(page);
     await expectCheckFits(page, false);
+    // A pick never flips the layout back.
     await pickDemoAnswer(page, fixture);
+    await expect(drop).toHaveClass(/learn-page/);
     await expectCheckFits(page, true);
-    await expectPageFits(page);
   });
 }
 
 test.describe('with motion on', () => {
   test.use({ reducedMotion: 'no-preference' });
-  test('the "Answers below" chip scrolls the middle smoothly to the first answer at 200% text', async ({ page }) => {
+  test('the "Answers below" chip scrolls the page smoothly to the first answer at 200% text', async ({ page }) => {
+    await textAt200FromLoad(page);
     await openItemDemo(page, fixtures.find(item => item.id === 'anchoring-9')!);
-    await textAt200(page);
-    await settleQuestionFit(page);
     await page.getByRole('button', { name: 'Answers below' }).click();
-    await expect.poll(() => firstAnswerInsideMiddle(page), { message: 'the first answer ends up fully inside the middle' }).toBe(true);
+    await expect.poll(() => firstAnswerInView(page), { message: 'the first answer ends up fully in view above Check' }).toBe(true);
     await expect(page.locator(FIRST_ANSWER).first()).toBeFocused();
   });
   test('with NANDI’s own Reduce motion on, the chip scrolls at once even though the phone allows motion', async ({ page }) => {
@@ -124,14 +143,33 @@ test.describe('with motion on', () => {
     await page.getByRole('button', { name: /Settings/ }).click();
     await page.getByLabel('Motion').selectOption('reduce');
     await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduce');
+    await textAt200FromLoad(page);
     await openItemDemo(page, fixtures.find(item => item.id === 'anchoring-9')!);
     await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduce');
-    await textAt200(page);
-    await settleQuestionFit(page);
     await page.getByRole('button', { name: 'Answers below' }).click();
     // One read straight after the tap, no polling: a smooth scroll would still be on its way.
-    expect(await firstAnswerInsideMiddle(page), 'the first answer sits fully inside the middle at once').toBe(true);
+    expect(await firstAnswerInView(page), 'the first answer is fully in view at once').toBe(true);
   });
+});
+
+test('a text size change before any pick moves the question to page scroll; after a pick it waits for the next item', async ({ page }) => {
+  const fixture = fixtures.find(item => item.id === 'anchoring-9')!;
+  await openItemDemo(page, fixture);
+  const drop = page.locator('.learn-drop');
+  await expect(drop).not.toHaveClass(/learn-page/);
+  await textAt200(page);
+  await settleQuestionFit(page);
+  await expect(drop).toHaveClass(/learn-page/);
+  // Back to 100% before a pick: the fitted layout returns.
+  await page.evaluate(() => document.querySelectorAll('style').forEach(style => { if (style.textContent?.includes('200%')) style.remove(); }));
+  await settleQuestionFit(page);
+  await expect(drop).not.toHaveClass(/learn-page/);
+  await expectPageFits(page);
+  // After a pick the layout holds still, even when the text size changes.
+  await pickDemoAnswer(page, fixture);
+  await textAt200(page);
+  await settleQuestionFit(page);
+  await expect(drop).not.toHaveClass(/learn-page/);
 });
 
 test('the fit follows the page when something above the question comes and goes', async ({ page }) => {

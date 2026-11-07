@@ -407,9 +407,19 @@
 .learn-fit > .learn-q.more-below { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent); }
 .learn-fit > .learn-more-cue { flex: none; position: relative; height: 0; margin-top: -6px; color: var(--muted); pointer-events: none; }
 /* b2 (6 Nov): the chip is a real button; its 48px hit box reaches past the 36px disc it draws. */
-.learn-fit > .learn-more-cue button { position: absolute; left: 50%; bottom: -2px; transform: translateX(-50%); display: grid; place-items: center; width: 48px; height: 48px; min-height: 48px; padding: 0; border: 0; border-radius: 50%; background: transparent; box-shadow: none; color: inherit; pointer-events: auto; }
-.learn-fit > .learn-more-cue button:active:not(:disabled) { transform: translateX(-50%) translateY(1px); filter: none; }
-.learn-fit > .learn-more-cue svg { width: 36px; height: 36px; padding: 6px; border-radius: 50%; background: var(--surface-2); color: var(--ink-2, var(--ink)); box-shadow: 0 2px 8px rgba(0, 0, 0, .14); }
+.learn-fit .learn-more-cue button { position: absolute; left: 50%; bottom: -2px; transform: translateX(-50%); display: grid; place-items: center; width: 48px; height: 48px; min-height: 48px; padding: 0; border: 0; border-radius: 50%; background: transparent; box-shadow: none; color: inherit; pointer-events: auto; }
+.learn-fit .learn-more-cue button:active:not(:disabled) { transform: translateX(-50%) translateY(1px); filter: none; }
+.learn-fit .learn-more-cue svg { width: 36px; height: 36px; padding: 6px; border-radius: 50%; background: var(--surface-2); color: var(--ink-2, var(--ink)); box-shadow: 0 2px 8px rgba(0, 0, 0, .14); }
+/* Large text (b2, 7 Nov): when the question can't fit the fitted middle, the page scrolls instead (the stem and the
+   answers together, so a long stem reads as one page) and only the bottom action row stays pinned. The fade and the
+   chevron move onto that row's top edge. Fit mode above is untouched, so 100% text is pixel for pixel the same. */
+.learn-drop.learn-fit.learn-page { height: auto; min-height: var(--fit-h, auto); }
+.learn-fit.learn-page > .learn-q { flex: none; overflow: visible; overscroll-behavior: auto; }
+.learn-fit.learn-page > .learn-q.more-below { -webkit-mask-image: none; mask-image: none; }
+.learn-fit.learn-page > .learn-check { position: sticky; bottom: 0; z-index: 5; margin-top: auto; box-shadow: 0 -6px 18px rgba(0, 0, 0, .08); }
+.learn-fit.learn-page.page-more > .learn-check::before { content: ''; position: absolute; left: -16px; right: -16px; bottom: 100%; height: 48px; background: linear-gradient(to bottom, transparent, var(--area-tint, var(--bg))); pointer-events: none; }
+.learn-fit.learn-page > .learn-check > .learn-more-cue { position: absolute; left: 0; right: 0; bottom: 100%; height: 0; margin: 0; color: var(--muted); pointer-events: none; }
+.learn-fit.learn-page > .learn-check > .learn-more-cue button { bottom: 4px; }
 /* Room for the answers: tighter spacing inside the fitted drop only, so a 3-4 option item and the estimate slider sit
    fully on screen above Check at 360x800 (measured on the E12 extremes). Touch targets keep their 44-48px. */
 .learn-drop.learn-fit { gap: 6px; }

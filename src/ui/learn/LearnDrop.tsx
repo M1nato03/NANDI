@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { gradeItem, masteryMapState, matchPairKeys, orderOptions, type Confidence, type Drop, type ItemAnswer } from '../../core/learn/engine';
 import { revealSheet } from './revealSheet';
 import { useFitViewport } from './useFitViewport';
 import { useMoreBelow } from './useMoreBelow';
+import { useQuestionMode } from './questionMode';
 import { RULES } from '../../core/rules.config';
 import { dayKey, isAfterBedtime } from '../../core/time';
 import { trackWrite } from '../../core/pendingWrites';
@@ -107,9 +108,14 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const visibleFeedback = feedback ?? savedFeedback;
   const feedbackRef = useRef<HTMLDivElement>(null);
   // Spec 571 §0.20 (E12): a question fits one screen; the answers and Check sit in the thumb zone.
-  const fitRef = useFitViewport();
+  const fitViewport = useFitViewport();
+  // Large text (b2, 7 Nov): a question that can't fit the fitted middle turns the whole page into the scroller (stem
+  // and answers scroll together) with only the action row pinned. Decided per item, and never once something is picked.
+  const [modeRef, mode] = useQuestionMode(night || !drop ? '' : `${drop.id}:${visibleFeedback?.cursor ?? drop.cursor}`, !!pending || !!visibleFeedback);
+  const page = mode === 'page';
+  const fitRef = useCallback((node: HTMLElement | null) => { fitViewport(node); modeRef(node); }, [fitViewport, modeRef]);
   // §0.20 (b2): at large text the middle can hold more than shows; a fade and a chevron (no words) say so.
-  const [middleRef, moreBelow, revealBelow] = useMoreBelow();
+  const [middleRef, moreBelow, revealBelow] = useMoreBelow(page);
   const feedbackKey = visibleFeedback ? visibleFeedback.cursor : -1;
   useEffect(() => {
     // The explanation lands below the options; bring it on screen so nobody has to hunt for it.
@@ -340,7 +346,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const pose = visibleFeedback ? (visibleFeedback.correct ? 'cheer' : 'think') : 'idle';
   // Spec 25 §6: a review question (Moti's) shows in rose; a new step stays teal; the night deck keeps its own look.
   const review = !night && (step.mode === 'review' || !!reviewDue || !!goldReview);
-  return <div ref={night ? undefined : fitRef} className={`learn-drop learn-active${night ? ' learn-night' : ' learn-fit'}${!night && visibleFeedback?.correct ? ' learn-correct' : ''}`}>{review && <AreaScope area="review" />}<header className="learn-drop-head">{!daily && !night && !chapter && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{questionNumber} / {questionItems.length}</span>{inARow >= 3 && <span className="pill learn-streak-pill" key={inARow}>{inARow} in a row</span>}</header><div className={`learn-progress${!night && combo >= 3 ? ' hot' : ''}`} aria-hidden="true"><span style={{ width: `${filled}%` }} /></div>
+  const cue = moreBelow && <div className="learn-more-cue"><button type="button" aria-label="Answers below" onClick={() => revealBelow('.learn-options > button, .learn-estimate input[type="range"]')}><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg></button></div>;
+  return <div ref={night ? undefined : fitRef} className={`learn-drop learn-active${night ? ' learn-night' : ' learn-fit'}${!night && page ? ` learn-page${moreBelow ? ' page-more' : ''}` : ''}${!night && visibleFeedback?.correct ? ' learn-correct' : ''}`}>{review && <AreaScope area="review" />}<header className="learn-drop-head">{!daily && !night && !chapter && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{questionNumber} / {questionItems.length}</span>{inARow >= 3 && <span className="pill learn-streak-pill" key={inARow}>{inARow} in a row</span>}</header><div className={`learn-progress${!night && combo >= 3 ? ' hot' : ''}`} aria-hidden="true"><span style={{ width: `${filled}%` }} /></div>
     <div ref={night ? undefined : middleRef} className={`learn-q${!night && moreBelow ? ' more-below' : ''}`} key={position}>
     <div className="learn-question"><div className={`learn-ask-row${pending && !visibleFeedback ? ' leaning' : ''}`}><span className="learn-friend"><Cast name={friend} pose={pose} moment={pose === 'cheer' ? 'nod' : pose === 'think' ? 'tilt' : undefined} at={pose === 'idle' ? 0 : position + 1} size={72} title={`${friend} ${pose === 'cheer' ? 'cheering' : pose === 'think' ? 'thinking' : 'watching'}`} /></span><div className="learn-ask-bubble"><p className="eyebrow">{concept.title}</p><p className="learn-ask">{askFor(item.type)}</p></div></div><h2 className={`learn-stem${item.stem.length > 150 ? ' long' : ''}`}>{item.stem}</h2></div>
     {!goldReview && item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
@@ -360,10 +367,10 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       </div>;
     })() : <div className={`learn-options${item.type === 'match' ? ' learn-match' : ''}`} style={matchSides ? { '--match-rows': Math.ceil(matchSides.length / 2) } as CSSProperties : undefined}>{shown.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>}
     </div>
-    {!night && moreBelow && <div className="learn-more-cue"><button type="button" aria-label="Answers below" onClick={() => revealBelow('.learn-options > button, .learn-estimate input[type="range"]')}><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg></button></div>}
+    {!night && !page && cue}
     {/* Spec 13 L: one question per question. A new idea records fairly sure; a review folds "how sure?" into Check itself (one tap),
         because "do I still know this?" is the real question there. Gold review keeps the three chips. */}
-    {!visibleFeedback && <div className="learn-confidence learn-check">{goldReview && <><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy || !pending} onClick={() => { if (!pending) return; setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div></>}
+    {!visibleFeedback && <div className="learn-confidence learn-check">{!night && page && cue}{goldReview && <><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy || !pending} onClick={() => { if (!pending) return; setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div></>}
       {!goldReview && step.mode !== 'new' ? <div className="learn-check-pair"><button type="button" disabled={busy || !pending} onClick={() => { if (pending) void answer(pending.value, pending.optionId, 'certain'); }}>Check · I'm sure</button><button type="button" className="secondary" disabled={busy || !pending} onClick={() => { if (pending) void answer(pending.value, pending.optionId, 'guess'); }}>Check · Guessing</button></div>
         : <button type="button" disabled={busy || !pending} onClick={() => { if (pending) void answer(pending.value, pending.optionId); }}>Check</button>}</div>}
     {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback learn-sheet ${visibleFeedback.correct ? 'right' : 'idea'}`} role="status"><strong className="learn-sheet-title">{visibleFeedback.correct ? 'Exactly.' : goldReview ? 'Keep going.' : 'Good try. Here is the idea.'}</strong>{!goldReview && <><p>{visibleFeedback.text}</p>{!visibleFeedback.correct && item.type !== 'order' && item.type !== 'match' && item.type !== 'estimate' && item.options.some(option => option.correct) && <p className="learn-right-answer">Right answer: {item.options.find(option => option.correct)!.text}</p>}{itemStep ? (!visibleFeedback.correct && (ideaAgain ? <div className="step-again"><p className="step-teach-text">{itemStep.step.teach}</p><StepVisual visual={itemStep.step.visual} /></div> : <button type="button" className="text-button step-again-button" onClick={() => setIdeaAgain(true)}>See the idea again</button>)) : !visibleFeedback.correct && <p className="learn-rule">{visibleFeedback.rule}</p>}</>}<button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
