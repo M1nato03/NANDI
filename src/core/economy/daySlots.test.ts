@@ -67,7 +67,11 @@ describe('daySlots (spec 571 stage 2 commit 1: moved, not changed)', () => {
       const rules = ruleSets[day % ruleSets.length]!;
       const v7 = day % 4 >= 2, v9 = v7 && day % 2 === 1;
       const want = legacy(rows, key, rules, RULES_HISTORY, v7, v9);
-      expect(daySlots(rows, { key, rules, history: RULES_HISTORY, v7, v9 })).toEqual(want);
+      // Stage 2 commit 6 added `useful` and `rings` beside the old fields; before v10 the old fields are exactly the same.
+      const { useful, rings, ...slots } = daySlots(rows, { key, rules, history: RULES_HISTORY, v7, v9, v10: false });
+      expect(slots).toEqual(want);
+      expect(rings).toBeNull();
+      expect(useful).toBe(want.plannedTask || want.body || want.mindSlot);
       hatTricks += +want.hatTrick; minds += +want.mindSlot; bodies += +want.body; planned += +want.plannedTask;
     }
     // The fuzz reaches both sides of every slot.

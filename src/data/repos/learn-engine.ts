@@ -4,7 +4,8 @@ import { dayKey } from '../../core/time';
 import { shutdownAt } from '../../core/tasks/planner';
 import type { TopicItem } from '../packs/schemas';
 import type { NandiDb } from '../db';
-import { effectiveBedtime } from './night';
+import { effectiveBedtime, nightStamp } from './night';
+import { addDropFinished } from './dropFinished';
 import type { LearnConceptRow, LearnItemRow } from '../types';
 
 export async function saveDrop(db: NandiDb, drop: Drop, deviceId: string, now: number): Promise<void> {
@@ -31,6 +32,7 @@ export function sealedGuess(item: TopicItem, answer: ItemAnswer): { guess?: numb
 export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise<void> {
   const bedtime = await effectiveBedtime(db, input.now);
   const afterBedtime = input.now >= shutdownAt(input.now, bedtime);
+  const night = await nightStamp(db, input.now);
   await trackWrite(() => db.transaction('rw', [db.learnConcepts, db.learnItems, db.learnDrops, db.ledger], async () => {
     const factId = `learn-answer:${input.answerId}`;
     if (await db.ledger.get(factId)) return;
@@ -53,11 +55,13 @@ export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise
       await db.learnConcepts.put(concept);
       await db.learnItems.put(item);
     }
-    await db.learnDrops.put({ ...current, drop: { ...advanceDrop(current.drop), pendingFeedback: { cursor: current.drop.cursor, answer: input.answer, correct: grade.correct } }, updatedAt: input.now });
+    const advanced = advanceDrop(current.drop);
+    await db.learnDrops.put({ ...current, drop: { ...advanced, pendingFeedback: { cursor: current.drop.cursor, answer: input.answer, correct: grade.correct } }, updatedAt: input.now });
     await db.ledger.add({ id: factId, dayKey: dayKey(input.now), mode: 'mind', kind: step.mode === 'retention' ? 'learn-retention' : 'learn-answer', refId: input.answerId,
         // Spec 26 M2: the raw first answer, sealed for the matka. Facts are append-only, so it can never be edited.
-        inputs: { itemId: input.item.id, conceptId: input.item.conceptId, correct: grade.correct, score: grade.score, confidence: input.confidence, dropId: input.dropId, retentionDay: step.retentionDay, afterBedtime, ...sealedGuess(input.item, input.answer) },
+        inputs: { itemId: input.item.id, conceptId: input.item.conceptId, correct: grade.correct, score: grade.score, confidence: input.confidence, dropId: input.dropId, retentionDay: step.retentionDay, afterBedtime, ...night, ...sealedGuess(input.item, input.answer) },
       updatedAt: input.now, deleted: 0, deviceId: input.deviceId });
+    await addDropFinished(db, advanced, { afterBedtime, ...night }, input.deviceId, input.now);
   }));
 }
 
@@ -67,10 +71,13 @@ export async function saveLessonDone(db: NandiDb, drop: Drop, result: LessonResu
   const id = `learn-lesson:${result.stepId}`;
   // Mind earns nothing after bedtime, so the lesson fact says when it was finished (economy second opinion 3).
   const afterBedtime = now >= shutdownAt(now, await effectiveBedtime(db, now));
+  const night = await nightStamp(db, now);
   await trackWrite(() => db.transaction('rw', db.ledger, db.learnDrops, async () => {
     if (!await db.ledger.get(id)) await db.ledger.add({ id, mode: 'learn', kind: 'learn-lesson', refId: result.stepId, dayKey: dayKey(now),
-      inputs: { conceptId: result.conceptId, dropId: result.dropId, afterBedtime, hookCorrect: result.hookCorrect, ...(result.hookPick ? { hookPick: result.hookPick, ...(result.hookPickText ? { hookPickText: result.hookPickText } : {}), ...(result.hookOptionTexts ? { hookOptionTexts: result.hookOptionTexts } : {}), ...(result.packVersion ? { packVersion: result.packVersion } : {}) } : {}), spotCorrect: result.spotCorrect, guidedFirstTry: result.guidedFirstTry }, updatedAt: now, deleted: 0, deviceId });
-    await db.learnDrops.put({ id: drop.id, drop: { ...drop, cursor: Math.min(drop.items.length, drop.cursor + 1) }, updatedAt: now, deleted: 0, deviceId });
+      inputs: { conceptId: result.conceptId, dropId: result.dropId, afterBedtime, ...night, hookCorrect: result.hookCorrect, ...(result.hookPick ? { hookPick: result.hookPick, ...(result.hookPickText ? { hookPickText: result.hookPickText } : {}), ...(result.hookOptionTexts ? { hookOptionTexts: result.hookOptionTexts } : {}), ...(result.packVersion ? { packVersion: result.packVersion } : {}) } : {}), spotCorrect: result.spotCorrect, guidedFirstTry: result.guidedFirstTry }, updatedAt: now, deleted: 0, deviceId });
+    const moved = { ...drop, cursor: Math.min(drop.items.length, drop.cursor + 1) };
+    await db.learnDrops.put({ id: drop.id, drop: moved, updatedAt: now, deleted: 0, deviceId });
+    await addDropFinished(db, moved, { afterBedtime, ...night }, deviceId, now);
   }));
 }
 

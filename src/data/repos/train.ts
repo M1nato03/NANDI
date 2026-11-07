@@ -4,6 +4,7 @@ import { db as appDb } from '../db';
 import type { ProgramRow, SessionRow, SetRow, ExStateRow, PrRow, LedgerRow } from '../types';
 import { entityRepo, naturalRepo } from './base';
 import { setRestWeekday } from './economy';
+import { nightStamp } from './night';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
 import { weekStart } from '../../core/economy/deriveEconomy';
@@ -220,6 +221,8 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
       });
     },
     async finishSession(sessionId: string, now: number): Promise<SessionRow> {
+      // Spec 571 §0.20 rule 3: a session finished in the night window lights no Body ring (read before the transaction).
+      const night = await nightStamp(db, now);
       return mutation(async () => {
         const session = await db.sessions.get(sessionId);
         if (!session) throw new Error('Session not found');
@@ -239,7 +242,7 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         const status: SessionRow['status'] = pain ? 'safety' : done >= total ? 'completed' : exercises.every(ex => ex.sets.length > 0) ? 'minimum' : 'partial';
         const row: SessionRow = { ...session, status, endedAt: now, restEndsAt: undefined, xp, workingSets: done, ...meta(now) };
         await db.sessions.put(row);
-        const fact: LedgerRow = { id: `train-session:${sessionId}`, mode: 'train', kind: 'session', refId: sessionId, dayKey: session.dayKey, inputs: { xp, ...counts, ...('setPay' in rules.train ? { paidSets } : {}) }, ...meta(now) };
+        const fact: LedgerRow = { id: `train-session:${sessionId}`, mode: 'train', kind: 'session', refId: sessionId, dayKey: session.dayKey, inputs: { xp, ...counts, ...('setPay' in rules.train ? { paidSets } : {}), ...night }, ...meta(now) };
         if (!(await db.ledger.get(fact.id))) await db.ledger.add(fact);
         const program = await getProgram();
         const placement = { ...program?.placement };
@@ -296,13 +299,14 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
       });
     },
     async restDayCheck(now: number, minutes: number): Promise<void> {
+      const night = await nightStamp(db, now);
       await mutation(async () => {
         if (minutes < (rulesFor(dayKey(now))?.rules ?? RULES).train.restDayCheckMinMinutes) throw new Error('Walk or move for 10 minutes first');
         const key = dayKey(now);
         // Only a session that finished and paid counts as training; a started or skipped one leaves the walk check open (batch 5).
         if ((await db.sessions.where('dayKey').equals(key).filter(row => live(row) && row.status !== 'active' && row.status !== 'skipped' && (row.xp ?? 0) > 0).count()) > 0) throw new Error('Rest check is for a non-session day');
         const id = `train-rest:${key}`;
-        if (!(await db.ledger.get(id))) await db.ledger.add({ id, mode: 'train', kind: 'rest', refId: key, dayKey: key, inputs: { minutes }, ...meta(now) });
+        if (!(await db.ledger.get(id))) await db.ledger.add({ id, mode: 'train', kind: 'rest', refId: key, dayKey: key, inputs: { minutes, ...night }, ...meta(now) });
       });
     },
     /**

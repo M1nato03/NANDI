@@ -1,3 +1,4 @@
+import { nightStamp } from './night';
 import { trackWrite } from '../../core/pendingWrites';
 import { RULES } from '../../core/rules.config';
 import { nextRating } from '../../core/learn/learn';
@@ -20,6 +21,7 @@ export async function openDailyCase(db: NandiDb, mystery: MysteryCase, day: stri
 }
 
 export async function saveDailyCase(db: NandiDb, row: PuzzleRunRow, now = Date.now(), afterBedtime = row.afterBedtime ?? false): Promise<PuzzleRunRow> {
+  const night = row.result === 'solved' ? await nightStamp(db, now) : {};
   return trackWrite(() => db.transaction('rw', [db.puzzleRuns, db.ledger, db.ratings], async () => {
     const prior = await db.puzzleRuns.get(row.id);
     if (prior?.result) return prior;
@@ -27,7 +29,7 @@ export async function saveDailyCase(db: NandiDb, row: PuzzleRunRow, now = Date.n
     await db.puzzleRuns.put(saved);
     if (saved.result === 'solved' || saved.result === 'revealed') {
       const id = `mystery:${saved.id}`;
-      if (!(await db.ledger.get(id))) await db.ledger.add({ id, dayKey: saved.dayKey!, mode: 'mind', kind: 'mystery', refId: saved.id, inputs: { daily: true, afterBedtime, result: saved.result, hintsUsed: saved.hintsUsed ?? 0, tries: saved.tries ?? 0 }, updatedAt: now, deleted: 0, deviceId: saved.deviceId });
+      if (!(await db.ledger.get(id))) await db.ledger.add({ id, dayKey: saved.dayKey!, mode: 'mind', kind: 'mystery', refId: saved.id, inputs: { daily: true, afterBedtime, ...night, result: saved.result, hintsUsed: saved.hintsUsed ?? 0, tries: saved.tries ?? 0 }, updatedAt: now, deleted: 0, deviceId: saved.deviceId });
       // Spec 04: the daily case moves the detective rating, which picks the deck's case cards. It is internal: never
       // shown, never paid. A clean solve scores 1, a solve with hints or a second try 0.7, a reveal 0 (batch 5).
       const score = saved.result === 'revealed' ? RULES.mind.caseScore.revealed

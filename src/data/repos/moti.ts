@@ -4,7 +4,7 @@ import { dayKey } from '../../core/time';
 import { shutdownAt } from '../../core/tasks/planner';
 import { HAVELI_FACT } from '../../core/moti/haveli';
 import { matkaShift, type MatkaItem } from '../../core/moti/matka';
-import { effectiveBedtime } from './night';
+import { effectiveBedtime, nightStamp } from './night';
 import { getOrCreateDeviceId } from '../device';
 
 const afterBedtimeAt = async (db: NandiDb, now: number) => now >= shutdownAt(now, await effectiveBedtime(db, now));
@@ -15,10 +15,10 @@ const afterBedtimeAt = async (db: NandiDb, now: number) => now >= shutdownAt(now
  */
 export async function saveHaveliRebuilt(db: NandiDb, conceptId: string, now: number): Promise<void> {
   const day = dayKey(now), refId = HAVELI_FACT(day, conceptId), id = `card:${refId}`;
-  const [afterBedtime, deviceId] = [await afterBedtimeAt(db, now), await getOrCreateDeviceId(db, now)];
+  const [afterBedtime, deviceId, night] = [await afterBedtimeAt(db, now), await getOrCreateDeviceId(db, now), await nightStamp(db, now)];
   await trackWrite(() => db.transaction('rw', db.ledger, async () => {
     if (await db.ledger.get(id)) return;
-    await db.ledger.add({ id, dayKey: day, mode: 'mind', kind: 'card', refId, inputs: { afterBedtime, correct: true, source: 'haveli' }, updatedAt: now, deleted: 0, deviceId });
+    await db.ledger.add({ id, dayKey: day, mode: 'mind', kind: 'card', refId, inputs: { afterBedtime, ...night, correct: true, source: 'haveli' }, updatedAt: now, deleted: 0, deviceId });
   }));
 }
 
@@ -29,12 +29,12 @@ export async function saveHaveliRebuilt(db: NandiDb, conceptId: string, now: num
  */
 export async function saveMatkaAnswer(db: NandiDb, input: { week: string; item: MatkaItem; recalled: number | string; now: number }): Promise<void> {
   const day = dayKey(input.now), refId = `${input.week}.${input.item.factId}`, id = `matka:${refId}`;
-  const [afterBedtime, deviceId] = [await afterBedtimeAt(db, input.now), await getOrCreateDeviceId(db, input.now)];
+  const [afterBedtime, deviceId, night] = [await afterBedtimeAt(db, input.now), await getOrCreateDeviceId(db, input.now), await nightStamp(db, input.now)];
   const shift = input.item.level === 2 && typeof input.recalled === 'number' ? matkaShift(input.item.sealed as number, input.recalled, input.item.answer!) : undefined;
   await trackWrite(() => db.transaction('rw', db.ledger, async () => {
     if (await db.ledger.get(id)) return;
     await db.ledger.add({ id, dayKey: day, mode: 'mind', kind: 'matka', refId, inputs: { sourceFactId: input.item.factId, level: input.item.level, recalled: input.recalled, sealed: input.item.sealed, answer: input.item.answer ?? null, shift: shift ?? null, afterBedtime }, updatedAt: input.now, deleted: 0, deviceId });
     const card = `${day}:matka:${refId}`;
-    if (!(await db.ledger.get(`card:${card}`))) await db.ledger.add({ id: `card:${card}`, dayKey: day, mode: 'mind', kind: 'card', refId: card, inputs: { afterBedtime, correct: true, source: 'matka' }, updatedAt: input.now, deleted: 0, deviceId });
+    if (!(await db.ledger.get(`card:${card}`))) await db.ledger.add({ id: `card:${card}`, dayKey: day, mode: 'mind', kind: 'card', refId: card, inputs: { afterBedtime, ...night, correct: true, source: 'matka' }, updatedAt: input.now, deleted: 0, deviceId });
   }));
 }

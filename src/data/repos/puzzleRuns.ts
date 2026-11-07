@@ -1,3 +1,4 @@
+import { nightStamp } from './night';
 import type { NandiDb } from '../db';
 import type { PuzzleRunRow } from '../types';
 import type { PuzzleBoard } from '../../core/puzzles';
@@ -39,6 +40,8 @@ export function accrueActive(row: PuzzleRunRow, now: number): PuzzleRunRow {
 }
 
 export async function savePuzzleRun(store: NandiDb, row: PuzzleRunRow, now = Date.now(), afterBedtime = row.afterBedtime ?? false): Promise<PuzzleRunRow> {
+  // Spec 571 §0.20 rule 3: a board solved in the night window lights no ring (read only for a solve, before the transaction).
+  const night = row.result === 'solved' ? await nightStamp(store, now) : {};
   return trackWrite(() => store.transaction('rw', [store.puzzleRuns, store.ledger], async () => {
     const prior = await store.puzzleRuns.get(row.id);
     if (prior?.result === 'solved') {
@@ -47,7 +50,7 @@ export async function savePuzzleRun(store: NandiDb, row: PuzzleRunRow, now = Dat
     }
     const saved = row.result === 'solved' ? { ...row, afterBedtime: row.afterBedtime ?? afterBedtime, updatedAt: now } : { ...row, updatedAt: now };
     await store.puzzleRuns.put(saved);
-    await putDailyBoardFact(store, saved, afterBedtime, now);
+    await putDailyBoardFact(store, saved, afterBedtime, now, night);
     return saved;
   }));
 }

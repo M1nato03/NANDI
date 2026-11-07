@@ -54,6 +54,8 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     if (!await db.settings.get('economy.v8From')) await db.settings.put({ key: 'economy.v8From', value: today, updatedAt: now, deleted: 0, deviceId });
     // Spec 41: idea sittings pay as they go from the first day this build ran.
     if (!await db.settings.get('economy.v9From')) await db.settings.put({ key: 'economy.v9From', value: today, updatedAt: now, deleted: 0, deviceId });
+    // Spec 571 §0.20 (rings): Mind "any two", the night window on all three slots, from the first day this build ran.
+    if (!await db.settings.get('economy.v10From')) await db.settings.put({ key: 'economy.v10From', value: today, updatedAt: now, deleted: 0, deviceId });
     // Batch 5 (item 51): from the day after this build first runs, Mind after bedtime grows no courtyard corner.
     // Tomorrow, so nothing done earlier today stops counting, and never before the day after the furthest day this
     // phone has shown, so a clock set back on the upgrade day cannot shrink a corner later. Written once (items 53-54).
@@ -80,8 +82,10 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
       const own = facts.filter(fact => (fact.kind === 'learn-answer' || fact.kind === 'learn-retention' || fact.kind === 'learn-lesson') && fact.inputs.dropId === drop.id);
       const completing = own.reduce<typeof own[number] | undefined>((latest, fact) => !latest || fact.updatedAt >= latest.updatedAt ? fact : latest, undefined);
       const late = completing?.inputs.afterBedtime === true ? { afterBedtime: true } : {};
+      // Spec 571 §0.20: the finishing write already wrote this fact (addDropFinished); this backstop keeps its stamps.
+      const night = completing?.inputs.night === true ? { night: true } : {};
       // Spec 36 v2: a drop that was a chapter's reading pays through the chapter, so it says so.
-      await add('learn-drop', today, today, { ...late, ...(drop.drop.chapter ? { chapter: true } : {}) });
+      await add('learn-drop', today, today, { ...late, ...night, ...(drop.drop.chapter ? { chapter: true } : {}) });
       // A perfect drop needs at least 3 scored questions; a lesson with 1 or 2 is not a "perfect" run (second opinion 5).
       const scored = drop.drop.items.filter(item => !item.lesson).length;
       if (scored >= 3 && perfectDrop(facts, drop.id, scored)) await add('perfect-drop', today, today, late);

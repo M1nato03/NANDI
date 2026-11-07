@@ -161,6 +161,8 @@ All these rows use the existing append-only ledger. XP and Shards are replayed f
 | All | Hat-trick | +30 | ≥1 planned task done + a Body slot + a Mind slot on the same dayKey |
 | All | Lights-out check-in | +15 | Self-report before his current bedtime target; once a day. If it's missed, a next-morning back-fill card records the time at 0 XP |
 
+> **From economy.v10From (spec 571 §0.20, Jenil 7 Nov):** the Hat-trick is the three rings. Yatra = a planned task done; Body = a paid session or the rest walk; Mind = two DIFFERENT acts from today's drop, a chapter (not the drop's own reading), a Calm sit of 5+ minutes, a solved case, Kapi's daily board, cards ≥ the mark minimum. Facts stamped `night` (bedtime → 05:00) count for no ring. XP per item is unchanged, and the useful-day mark keeps "any one" (drop / case / board / cards). Days before v10From keep the old slots.
+
 **Worked example (a typical good day = 245 XP):**
 
 - Tasks: 2 Musts done on their first day (M 20×1.5 = 30, S 10×1.5 = 15) plus 1 L done after one postpone (35) = 80.

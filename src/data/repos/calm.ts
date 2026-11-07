@@ -2,6 +2,7 @@ import type { NandiDb } from '../db';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
 import { getOrCreateDeviceId } from '../device';
+import { nightStamp } from './night';
 import { CALM_MINUTES, CALM_INTERVALS, CALM_WAYS, sitMinutes, type CalmLength, type CalmWay } from '../../core/calm/session';
 
 export { CALM_MINUTES };
@@ -75,7 +76,9 @@ export async function saveCalmDone(db: NandiDb, session: { elapsedMs: number; wa
   if (minutes < 1) return null;
   const id = `calm:${session.startedAt}`;
   const deviceId = await getOrCreateDeviceId(db, now);
-  const inputs = session.way === 'paced' ? { minutes, way: session.way, in: session.breath.in, out: session.breath.out } : { minutes, way: session.way };
+  // Spec 571 §0.20 rule 3: a sit finished in the night window counts for no ring (its XP is unchanged).
+  const night = await nightStamp(db, now);
+  const inputs = session.way === 'paced' ? { minutes, way: session.way, in: session.breath.in, out: session.breath.out, ...night } : { minutes, way: session.way, ...night };
   await trackWrite(() => db.transaction('rw', db.ledger, async () => {
     if (await db.ledger.get(id)) return;
     await db.ledger.add({ id, dayKey: dayKey(now), mode: 'calm', kind: 'session', refId: String(session.startedAt), inputs, updatedAt: now, deleted: 0, deviceId });

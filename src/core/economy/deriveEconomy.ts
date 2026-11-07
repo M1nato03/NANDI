@@ -37,7 +37,7 @@ export interface EconomyDay {
   soft: number; welcome: number;
   /** Spec 24 #1: a kept Phone ki chhutti, paid once a day at most. It is not a Hat-trick slot and marks no day. */
   chhutti: number;
-  /** Spec 36: minutes sat in Calm, from economy.v6From. Not a Hat-trick slot; marks no day. */
+  /** Spec 36: minutes sat in Calm, from economy.v6From. It marks no day; from economy.v10From a sit of 5+ minutes is one of Mind's two acts (spec 571 §0.20). */
   calm: number;
   /** Spec 39: finished Pause card acts (from economy.v8From). */
   pause: number;
@@ -504,6 +504,9 @@ function replayEconomy(
   const v9From = typeof v9Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v9Stored) ? v9Stored : '9999-12-31';
   const v9 = (key: string) => key >= v9From;
   const reading = readingPay(ordered, v9From, day => rulesFor(day, history)?.rules ?? RULES);
+  // Spec 571 §0.20 (rings): Mind "any two" and the night window on every slot, from the day this build first runs.
+  const v10Stored = value(settings, 'economy.v10From');
+  const v10From = typeof v10Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v10Stored) ? v10Stored : '9999-12-31';
   const unpaidQuests = customQuestPay(ordered, v4From, history).unpaid;
   // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
   const restWeekdayFor = (key: string): number | undefined => {
@@ -533,7 +536,7 @@ function replayEconomy(
     const doneXp = calculateTasksDayXp(rows.filter(row => row.kind === 'done'), RULES, history);
     const tasks = v6(key) ? Math.min(rules.tasks.dailyCap, doneXp + focusDayXp(rows, rules)) : Math.min(PRE_EFFORT_TASKS_CAP, doneXp);
     // Spec 571 §0.20: the Hat-trick slots (and the reads they come from) have one definition, shared with the rings.
-    const slots = daySlots(rows, { key, rules, history, v7: v7(key), v9: v9(key) });
+    const slots = daySlots(rows, { key, rules, history, v7: v7(key), v9: v9(key), v10: key >= v10From });
     const { bestSession, restXp, rest, mindRows, caseSolved, cards, learnDrop, dropWasChapter } = slots;
     const prs = rows.filter(row => row.mode === 'train' && row.kind === 'pr').slice(0, rules.train.prMaxPerDay).reduce((sum, row) => sum + replayFactXp(row, history), 0);
     // A short session after a walk check keeps the better of the two, never less (economy review 32, A1).
@@ -562,7 +565,7 @@ function replayEconomy(
       Math.min(cards.length, rules.mind.cardsMaxPerDay) * rules.mind.cardXp +
       mindRows.filter(row => row.kind === 'board' && row.inputs.daily === false).slice(0, rules.mind.sideBoardsMaxPerDay).reduce((sum, row) => sum + board(row, rules.mind.sideBoardXp), 0) +
       (learnDrop && !dropWasChapter ? rules.mind.learnDropXp : 0) + (perfectBeforeBed ? rows.filter(row => row.mode === 'gamify' && row.kind === 'perfect-drop').reduce((sum, row) => sum + replayFactXp(row, history), 0) : 0));
-    const { plannedTask, body, mindSlot, hatTrick } = slots;
+    const { body, mindSlot, hatTrick } = slots;
     const lightsOut = rows.some(row => row.kind === 'lightsout' && row.inputs.metTarget === true && row.inputs.backfill !== true) ? rules.bonuses.lightsOutXp : 0;
     const quests = rows.filter(row => row.mode === 'quests' && row.kind === 'quest' && !unpaidQuests.has(row.id)).reduce((sum, row) => sum + replayFactXp(row, history), 0);
     const boost = rows.find(row => row.kind === 'focus-boost');
@@ -599,7 +602,8 @@ function replayEconomy(
     const pause = v8(key) ? pauseDayXp(rows, rules) : 0;
     days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut, soft, chhutti, calm, pause, welcome: 0, held: 0,
       total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut + soft + chhutti + calm + pause,
-      mark: plannedTask || body || mindSlot || soft > 0, body, mindSlot });
+      // Rule 2: the useful-day mark keeps "any one" (slots.useful); from v10 the Hat-trick follows the rings.
+      mark: slots.useful || soft > 0, body, mindSlot });
   }
   // Spec 15 D: the first marked day after an unmarked one gets a fixed, announced gift. Chosen weekly rest days
   // are not misses, so walk back over them: a gap that is only the rest day gets nothing, a longer one does.

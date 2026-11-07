@@ -4,7 +4,7 @@ import { shutdownAt } from '../../core/tasks/planner';
 import { chapterFactId, chapterRef } from '../../core/learn/books';
 import { getOrCreateDeviceId } from '../device';
 import type { NandiDb } from '../db';
-import { effectiveBedtime } from './night';
+import { effectiveBedtime, nightStamp } from './night';
 
 /**
  * Spec 33 §3: a finished chapter is one fact, written once (a re-read writes nothing). Spec 36 v2: it carries what the
@@ -15,6 +15,7 @@ import { effectiveBedtime } from './night';
 export async function saveChapterDone(db: NandiDb, topicId: string, moduleId: string, now: number, check: { rebuilt?: boolean; checkLater?: boolean } = {}): Promise<void> {
   const id = chapterFactId(topicId, moduleId);
   const afterBedtime = now >= shutdownAt(now, await effectiveBedtime(db, now));
+  const night = await nightStamp(db, now);
   const deviceId = await getOrCreateDeviceId(db, now);
   await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops], async () => {
     if (await db.ledger.get(id)) return;
@@ -27,7 +28,7 @@ export async function saveChapterDone(db: NandiDb, topicId: string, moduleId: st
     const first = new Map<string, boolean>();
     for (const answer of answers) { const item = String(answer.inputs.itemId ?? answer.refId); if (!first.has(item)) first.set(item, answer.inputs.correct === true); }
     const firstRight = [...first.values()].filter(Boolean).length + (check.rebuilt ? 1 : 0);
-    await db.ledger.add({ id, mode: 'read', kind: 'chapter', refId: chapterRef(topicId, moduleId), dayKey: dayKey(now), inputs: { afterBedtime, newSteps: new Set(steps.map(row => row.refId)).size, firstRight, readDrops, ...(check.checkLater ? { checkLater: true } : {}) }, updatedAt: now, deleted: 0, deviceId });
+    await db.ledger.add({ id, mode: 'read', kind: 'chapter', refId: chapterRef(topicId, moduleId), dayKey: dayKey(now), inputs: { afterBedtime, ...night, newSteps: new Set(steps.map(row => row.refId)).size, firstRight, readDrops, ...(check.checkLater ? { checkLater: true } : {}) }, updatedAt: now, deleted: 0, deviceId });
   }));
 }
 
@@ -40,6 +41,7 @@ export async function saveIdeaDone(db: NandiDb, input: { topicId: string; module
   const chapter = chapterRef(input.topicId, input.moduleId);
   const id = `read-idea:${chapter}:${input.conceptId}`;
   const afterBedtime = now >= shutdownAt(now, await effectiveBedtime(db, now));
+  const night = await nightStamp(db, now);
   const deviceId = await getOrCreateDeviceId(db, now);
   await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops], async () => {
     if (await db.ledger.get(id)) return;
@@ -48,7 +50,7 @@ export async function saveIdeaDone(db: NandiDb, input: { topicId: string; module
     const taught = await db.ledger.where('kind').equals('learn-lesson').filter(row => !row.deleted && reads.has(String(row.inputs.dropId))).toArray();
     const steps = [...new Set(taught.map(row => row.refId))].filter(step => !counted.has(step));
     await db.ledger.add({ id, mode: 'read', kind: 'idea', refId: `${chapter}:${input.conceptId}`, dayKey: dayKey(now),
-      inputs: { chapter, conceptId: input.conceptId, steps, newSteps: steps.length, afterBedtime, ...(input.dropId ? { dropId: input.dropId } : {}), ...(input.askedItem ? { askedItem: input.askedItem } : {}) }, updatedAt: now, deleted: 0, deviceId });
+      inputs: { chapter, conceptId: input.conceptId, steps, newSteps: steps.length, afterBedtime, ...night, ...(input.dropId ? { dropId: input.dropId } : {}), ...(input.askedItem ? { askedItem: input.askedItem } : {}) }, updatedAt: now, deleted: 0, deviceId });
   }));
 }
 

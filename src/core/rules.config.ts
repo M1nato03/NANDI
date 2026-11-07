@@ -326,7 +326,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'tasks.liveTimers': [1, 1], 'tasks.preReminderMin': [0, 30],
   // Train: session awards, weekly goals, progression and safe finite placement tests.
   'train.sessionFullXp': [1, 200], 'train.sessionPartialFloorXp': [0, 200],
-  'train.minimumOrSafetyXp': [0, 200], 'train.restDayCheckXp': [0, 50],
+  'train.minimumOrSafetyXp': [0, 200], 'train.restDayCheckXp': [1, 50],
   'train.restDayCheckMinMinutes': [1, 60], 'train.prXp': [0, 100], 'train.prMaxPerDay': [0, 10],
   'train.weeklyTarget': [2, 7], 'train.weeklyBonus.targetMet': [0, 200], 'train.weeklyBonus.oneShort': [0, 200],
   'train.dailyCapExclWeekly': [40, 300],

@@ -2,7 +2,7 @@ import { nextRepeatDay, sameTimeOn } from '../../core/tasks/repeat';
 import { ulid } from 'ulidx';
 import type { NandiDb } from '../db';
 import { db as appDb } from '../db';
-import { effectiveBedtime } from './night';
+import { effectiveBedtime, nightStamp } from './night';
 import { entityRepo } from './base';
 import type { TaskRow, FocusRow, TaskEventRow } from '../types';
 import { dayKey, lightsOutNightKey } from '../../core/time/dayKey';
@@ -456,6 +456,8 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
       });
     },
     async completeTask(taskId: string, now: number): Promise<TaskRow> {
+      // Spec 571 §0.20 rule 3: a task done in the night window keeps no ring lit (read before the transaction).
+      const night = await nightStamp(db, now);
       return mutation(async () => {
         const task = await repos.tasks.get(taskId);
         if (!task) throw new Error('Task not found');
@@ -505,7 +507,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
             kind: 'done',
             refId: taskId,
             dayKey: key,
-            inputs,
+            inputs: { ...inputs, ...night },
             updatedAt: now,
             deleted: 0,
             deviceId,

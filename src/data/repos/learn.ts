@@ -3,6 +3,7 @@ import { trackWrite } from '../../core/pendingWrites';
 import { addDays, cardAfterAnswer, itemAfterAnswer, nextRating, type Confidence } from '../../core/learn/learn';
 import { dayKey } from '../../core/time';
 import { getOrCreateDeviceId } from '../device';
+import { nightStamp } from './night';
 import type { NandiDb } from '../db';
 import type { CardRow, DeckProgRow, LessonProgRow, PlanRow, PuzzleRunRow } from '../types';
 import type { DeckPack } from '../../core/learn/deck';
@@ -19,7 +20,7 @@ export async function seedDeckCards(db: NandiDb, deck: DeckPack, now = Date.now(
   }));
 }
 /** Caller must own a ledger write transaction. */
-export async function putDailyBoardFact(db: NandiDb, run: PuzzleRunRow, afterBedtime: boolean, now: number): Promise<void> {
+export async function putDailyBoardFact(db: NandiDb, run: PuzzleRunRow, afterBedtime: boolean, now: number, night: { night?: true } = {}): Promise<void> {
   if ((!run.daily && !run.shelf) || run.result !== 'solved' || !run.dayKey) return;
   // A solved daily case pays as a case, not also as the daily board (batch 3 g). Facts already written keep paying.
   if (run.type === 'mystery') return;
@@ -29,7 +30,7 @@ export async function putDailyBoardFact(db: NandiDb, run: PuzzleRunRow, afterBed
   // further board (another type's daily or an extra) is a side board under the existing side-board cap.
   const dailyTaken = await db.ledger.where('dayKey').equals(run.dayKey).filter(row => row.mode === 'mind' && row.kind === 'board' && row.inputs.daily !== false && !row.deleted).count() > 0;
   const daily = !!run.daily && !dailyTaken;
-  await db.ledger.add({ id, dayKey: run.dayKey, mode: 'mind', kind: 'board', refId: run.id, inputs: { daily, afterBedtime, type: run.type, diff: run.diff ?? '', hintsUsed: run.hintsUsed ?? 0 }, updatedAt: now, deleted: 0, deviceId: run.deviceId });
+  await db.ledger.add({ id, dayKey: run.dayKey, mode: 'mind', kind: 'board', refId: run.id, inputs: { daily, afterBedtime, ...night, type: run.type, diff: run.diff ?? '', hintsUsed: run.hintsUsed ?? 0 }, updatedAt: now, deleted: 0, deviceId: run.deviceId });
 }
 export async function saveLessonDraft(db: NandiDb, draft: LessonDraft | null, now = Date.now()): Promise<void> {
   const deviceId = await getOrCreateDeviceId(db, now);
@@ -72,17 +73,19 @@ export async function answerPlan(db: NandiDb, plan: PlanRow, answer: NonNullable
 }
 export async function reviewCard(db: NandiDb, card: CardRow, correct: boolean, afterBedtime = false, now = Date.now()): Promise<void> {
   const day = dayKey(now);
+  const night = await nightStamp(db, now);
   await trackWrite(() => db.transaction('rw', [db.cards, db.ledger], async () => {
     const current = await db.cards.get(card.id);
     if (!current || current.deleted) return;
     await db.cards.put({ ...cardAfterAnswer(current, correct, day), updatedAt: now });
     const id = `card:${day}:${card.id}`;
-    if (!(await db.ledger.get(id))) await db.ledger.add({ id, dayKey: day, mode: 'mind', kind: 'card', refId: `${day}:${card.id}`, inputs: { afterBedtime, correct }, updatedAt: now, deleted: 0, deviceId: current.deviceId });
+    if (!(await db.ledger.get(id))) await db.ledger.add({ id, dayKey: day, mode: 'mind', kind: 'card', refId: `${day}:${card.id}`, inputs: { afterBedtime, ...night, correct }, updatedAt: now, deleted: 0, deviceId: current.deviceId });
   }));
 }
 export async function reviewItem(db: NandiDb, item: DeckProgRow | null, id: string, type: string, difficulty: number, correct: boolean, hinted: boolean, afterBedtime = false, now = Date.now()): Promise<void> {
   const day = dayKey(now), deviceId = item?.deviceId ?? await getOrCreateDeviceId(db, now);
   const skill = type === 'mystery' ? 'detective' : 'people';
+  const night = await nightStamp(db, now);
   await trackWrite(() => db.transaction('rw', [db.deckProg, db.ratings, db.ledger], async () => {
     const current = await db.deckProg.get(id);
     if (current?.last === day) return;
@@ -90,7 +93,7 @@ export async function reviewItem(db: NandiDb, item: DeckProgRow | null, id: stri
     const rating = await db.ratings.get(skill);
     await db.ratings.put({ id: skill, value: nextRating(rating?.value ?? 1000, rating?.n ?? 0, difficulty, correct ? (hinted ? 0.6 : 1) : 0), n: (rating?.n ?? 0) + 1, updatedAt: now, deleted: 0, deviceId });
     const factId = `card:${day}:${id}`;
-    if (!(await db.ledger.get(factId))) await db.ledger.add({ id: factId, dayKey: day, mode: 'mind', kind: 'card', refId: `${day}:${id}`, inputs: { afterBedtime, correct }, updatedAt: now, deleted: 0, deviceId });
+    if (!(await db.ledger.get(factId))) await db.ledger.add({ id: factId, dayKey: day, mode: 'mind', kind: 'card', refId: `${day}:${id}`, inputs: { afterBedtime, ...night, correct }, updatedAt: now, deleted: 0, deviceId });
   }));
 }
 export async function hideReview(db: NandiDb, refId: string, now = Date.now()): Promise<void> {
