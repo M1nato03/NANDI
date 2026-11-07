@@ -226,4 +226,18 @@ describe('spec 571 rule 3: the night window', () => {
   it('a daytime bedtime (shift work) gets bedtime + 7 h', () => {
     expect([when('08:59'), when('09:00'), when('15:59'), when('16:00')].map(t => inNightWindow(t, '09:00'))).toEqual([false, true, true, false]);
   });
+  // b2 (8 Nov, a9's edge in 26c8b54): a bedtime 20:00-04:59 runs to 05:00; 05:00-19:59 gets bedtime + 7 h, so an
+  // afternoon bedtime no longer makes a 15 h window.
+  it.each([
+    ['20:00', '05:00'], ['22:00', '05:00'], ['23:30', '05:00'], [RULES.night.defaultBedtime, '05:00'],
+    ['14:00', '21:00'], ['08:00', '15:00'], ['19:59', '02:59'], ['05:00', '12:00'],
+  ])('bedtime %s: the window ends at %s', (bed, end) => {
+    const minutes = (time: string) => { const [h = 0, m = 0] = time.split(':').map(Number); return h * 60 + m; };
+    const clock = (total: number) => `${String(Math.floor(total / 60) % 24).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
+    const startAt = minutes(bed), endAt = minutes(end);
+    expect(inNightWindow(when(clock(startAt - 1 + 1440)), bed), 'a minute before bedtime').toBe(false);
+    expect(inNightWindow(when(clock(startAt)), bed), 'at bedtime').toBe(true);
+    expect(inNightWindow(when(clock(endAt - 1 + 1440)), bed), 'the last minute').toBe(true);
+    expect(inNightWindow(when(clock(endAt)), bed), 'at the end').toBe(false);
+  });
 });

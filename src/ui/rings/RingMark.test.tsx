@@ -58,4 +58,10 @@ describe('ring marks', () => {
     }
     expect(RING_MARK_STROKE).toBe(2.6);
   });
+  it('b2 nits (8 Nov): the dumbbell has two rounded plates, not an "H"; the feather eye-spot holds at 10 CSS px', () => {
+    expect(RING_MARKS.dumbbell).toHaveLength(3);
+    expect(RING_MARKS.dumbbell.filter(shape => 'rect' in shape)).toEqual([{ rect: [4, 7.5, 3.5, 9, 1] }, { rect: [16.5, 7.5, 3.5, 9, 1] }]);
+    const eye = RING_MARKS.feather.find(shape => 'circle' in shape) as { circle: [number, number, number] };
+    expect(eye.circle[2]).toBe(2.4);
+  });
 });

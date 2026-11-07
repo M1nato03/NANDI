@@ -15,9 +15,11 @@ export const RING_MARK_MAX_STROKES = 4;
 
 export const RING_MARKS: Record<RingMarkKind, readonly Shape[]> = {
   // Yatra: Mor's feather, a quill line with one eye-spot near the tip.
-  feather: [{ d: 'M4.5 19.5C9 15 13.5 9.5 19 4.5' }, { d: 'M19 4.5c-.5 6-5 11-11.5 12.5' }, { circle: [15.2, 8.8, 1.7] }],
-  // Body: a workout is a short bar with two upright plates; a rest walk is a side-view shoe, toe rising.
-  dumbbell: [{ d: 'M7.5 12h9' }, { d: 'M5.5 7.5v9' }, { d: 'M18.5 7.5v9' }],
+  // The eye-spot at r 2.4 (b2, 8 Nov: at r 1.7 it vanished at 10 CSS px).
+  feather: [{ d: 'M4.5 19.5C9 15 13.5 9.5 19 4.5' }, { d: 'M19 4.5c-.5 6-5 11-11.5 12.5' }, { circle: [15.2, 8.8, 2.4] }],
+  // Body: a workout is a short bar between two rounded plates (b2, 8 Nov: two lines read as an "H"); a rest walk is a
+  // side-view shoe, toe rising.
+  dumbbell: [{ rect: [4, 7.5, 3.5, 9, 1] }, { d: 'M7.5 12h9' }, { rect: [16.5, 7.5, 3.5, 9, 1] }],
   shoe: [{ d: 'M3.5 17.5V8h5l2.5 4 5.5 1.5c2.5.7 4 1.8 4 4Z' }, { d: 'M3.5 20.5h17' }],
   // Mind: one mark per act; the main shapes differ (upright drop, V book, 45° leaf, round lens, square lattice, fan).
   droplet: [{ d: 'M12 3.5c3.6 4.6 6 8 6 11a6 6 0 0 1-12 0c0-3 2.4-6.4 6-11Z' }],
