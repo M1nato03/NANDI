@@ -48,7 +48,6 @@ import { nightRouteTime, nightRouteTransition } from './nightRoute';
 import { EconomyFeedback } from './EconomyFeedback';
 import { MeetCast } from '../cast/MeetCast';
 import { OpenMoment } from '../cast/OpenMoment';
-import { CourtyardScreen } from '../courtyard/Courtyard';
 import { StorybookList, StorybookScreen, weekFromRoute } from '../courtyard/Storybook';
 import { HelpsWith } from '../screens/HelpsWith';
 import { takeLaunchLink } from '../../platform/links';
@@ -71,13 +70,14 @@ const ItemDemo = import.meta.env.VITE_E2E === '1' ? lazy(() => import('../learn/
 // Spec 43: the practice engine on its test fixture. Only the e2e build has this import at all, so no release chunk
 // carries the fixture (scripts/check-release-bundle.ts checks dist/).
 const SkillDemo = import.meta.env.VITE_E2E === '1' ? lazy(() => import('../learn/SkillDemo').then(module => ({ default: module.SkillDemo }))) : null;
-const Plan = lazy(() => import('../screens/Plan').then(module => ({ default: module.Plan })));
 const Planner = lazy(() => import('../screens/Planner').then(module => ({ default: module.Planner })));
 const Train = lazy(() => import('../screens/Train').then(module => ({ default: module.Train })));
 const Mind = lazy(() => import('../screens/Mind').then(module => ({ default: module.Mind })));
 const Ground = lazy(() => import('../screens/Ground').then(module => ({ default: module.Ground })));
 const You = lazy(() => import('../screens/You').then(module => ({ default: module.You })));
-const Yatra = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.Yatra })));
+// Spec 571 stage 2: the Yatra tab is the trek strip above Mor's plan; the Courtyard tab is home.
+const YatraTab = lazy(() => import('../yatra/YatraTab').then(module => ({ default: module.YatraTab })));
+const CourtyardHome = lazy(() => import('../courtyard/CourtyardHome').then(module => ({ default: module.CourtyardHome })));
 const Calm = lazy(() => import('../yatra/Calm').then(module => ({ default: module.Calm })));
 const Journal = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.Journal })));
 const UsefulDays = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.UsefulDays })));
@@ -272,7 +272,7 @@ export function AppShell() {
   else if (key === 'you/badges') screen = <Badges />;
   else if (key === 'you/contentreview') screen = <ContentReview />;
   else if (key === 'you/cast') screen = <MeetCast />;
-  else if (key === 'you/courtyard') screen = <CourtyardScreen />;
+  else if (key === 'you/courtyard') screen = <CourtyardHome />;
   else if (key === 'you/stories') screen = <StorybookList />;
   else if (key === 'you/helps') screen = <HelpsWith />;
   // Spec 55: the crew screen, and where crew links land (every one goes through the one link validator).
@@ -304,7 +304,7 @@ export function AppShell() {
   else if (/^read\/check\/[a-z0-9-]+\/[a-z0-9-]+$/.test(key)) screen = <BookCheck key={key} topicId={key.split('/')[2]!} moduleId={key.split('/')[3]!} />;
   else if (key === 'read/lesson' || key === 'read/unit' || key === 'read/courses') screen = <Mind key={key} entry={key.split('/')[1]} />;
   // Spec 34: Yatra and its corners: Train (Nandi), Kapi's shelf (Mind) and Calm (Kachhua).
-  else if (key === 'yatra') screen = <Yatra />;
+  else if (key === 'yatra') screen = <YatraTab />;
   else if (key === 'yatra/mind' || key.startsWith('yatra/mind/')) screen = <Mind key={key} entry={key.split('/').slice(2).join('/')} />;
   else if (key === 'yatra/train' || key.startsWith('yatra/train/')) screen = <Train entry={key.split('/')[2]} />;
   else if (key === 'yatra/calm') screen = <Calm />;
@@ -319,10 +319,10 @@ export function AppShell() {
   else if (key === 'grow') screen = <Grow />;
   else if (key === 'grow/remember') screen = <Learn key={key} entry="remember" />;
   else if (key === 'grow/sleep') screen = <SleepDoor />;
-  else if (tab === 'Plan') screen = <Plan questId={key.startsWith('plan/quest/') ? key.split('/')[2] : undefined} />;
+  else if (key === 'plan' || key.startsWith('plan/quest/')) screen = <YatraTab questId={key.startsWith('plan/quest/') ? key.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You />;
-  else screen = <Plan />;
-  const root = ['plan', 'grow', 'yatra', 'you'].includes(path);
+  else screen = <YatraTab />;
+  const root = ['courtyard', 'plan', 'grow', 'yatra', 'you'].includes(path);
   // Spec 25: the route's area colours the screen; You stays neutral.
   return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`} data-area={areaOverride ?? areaOf(path)} data-books={booksGen}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}{storageFull && <button type="button" className="auto-backup-warning storage-full" onClick={() => go('you/backup')}>This phone is out of room for NANDI's data. Tap to save a backup copy.</button>}<header className="topbar"><div className="brand-slot"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><OfflineReady /></div><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}>{pause.reason === 'night' ? <NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /> : <PauseCard packageName={pause.packageName} close={() => setPause(null)} />}</Suspense>}<OpenMoment night={path === 'night' || nightRouteTime(clockTime, RULES.night.defaultShutdown)} pause={!!pause} pauseCheckedAt={pauseCheckedAt} widgetChecked={widgetChecked} />{welcomeNeeded && <Welcome onDone={closeWelcome} />}</div>;
 }

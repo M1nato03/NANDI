@@ -26,7 +26,8 @@ export function BookCheck({ topicId, moduleId }: { topicId: string; moduleId: st
   const answer = (tried: Tried) => { setFailed(false); void saveChapterCheck(db, topicId, moduleId, tried, Date.now()).then(() => setStage('saved'), () => setFailed(true)); };
   if (stage === 'saved' || (checked && !checked.deleted && stage !== 'tried')) return <section className="screen learn-screen">{head}<div className="card read-done-card" role="status">
     <p className="read-takeaway">Book check done. The chapter is yours.</p>
-    <button type="button" onClick={() => go('yatra')}>Back to Yatra</button>
+    {/* Spec 571 stage 2 (row 85): the check lives on its book, so done goes back there. */}
+    <button type="button" onClick={() => go(`read/book/${topicId}`)}>Back to the book</button>
   </div></section>;
   if (stage === 'tried') return <section className="screen learn-screen">{head}<div className="card book-check-tried">
     <h2>Did you try it?</h2>

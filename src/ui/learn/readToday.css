@@ -1,0 +1,8 @@
+/* Spec 571 stage 2 (rows 89-90): "Today's idea", the first row on Grow › Read; (row 85) the Book check on its chapter. */
+.read-today-idea { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: center; width: 100%; min-height: 64px; margin: 16px 0 0; padding: 12px 14px; text-align: left; color: var(--ink); }
+button.read-today-idea { border: 1px solid var(--line); background: var(--surface); box-shadow: none; }
+.read-today-idea .eyebrow { grid-column: 1; margin: 0; }
+.read-today-idea strong { grid-column: 1; font: 700 1.1875rem/1.2 'Bricolage Grotesque', sans-serif; overflow-wrap: anywhere; }
+.read-today-idea .small { grid-column: 1 / -1; margin: 0; color: var(--ink-2); }
+.read-today-arrow { grid-column: 2; grid-row: 1 / span 2; color: var(--ink-2); font-size: 1.25rem; }
+.read-check-link { min-height: 44px; margin: 8px 0 0; }

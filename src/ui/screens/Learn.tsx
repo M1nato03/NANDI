@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LARGE_TEXT_ROOT_PX, useRootPx } from '../shell/useRootPx';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { masteryMapState } from '../../core/learn/engine';
+import { masteryMapState, type Drop } from '../../core/learn/engine';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { LearnDrop } from '../learn/LearnDrop';
@@ -13,7 +13,7 @@ import { dayKey, isAfterBedtime } from '../../core/time';
 import { effectiveBedtime } from '../../data/repos/night';
 import { RULES } from '../../core/rules.config';
 import { completedModuleKey, UnitScene } from '../cast/UnitScene';
-import { bookConcepts, bookDone, bookMinutes, bookTitle, bookUnitId, chapterRef, chapterState, currentBook, libraryOrder, libraryShelves, nextChapter, readingState, type ChapterState } from '../../core/learn/books';
+import { bookCheckDue, bookConcepts, bookDone, bookMinutes, bookTitle, bookUnitId, chapterRef, chapterState, currentBook, libraryOrder, libraryShelves, nextChapter, readingState, type ChapterState } from '../../core/learn/books';
 import { Cover } from '../learn/Cover';
 import '../learn/read.css';
 import { Cast } from '../cast/Cast';
@@ -63,10 +63,36 @@ import { FriendStage } from '../cast/FriendStage';
 import { CardReviews } from '../grow/CardReviews';
 import { LearningHolding } from './LearningHolding';
 import { saveChikuPlayed } from '../../data/repos/learn-engine';
+import '../learn/readToday.css';
 
 type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean; goldReview?: boolean };
 
 const STATE_LABEL: Record<ChapterState, string> = { 'not-started': 'Not started', 'in-progress': 'In progress', done: 'Done', due: 'Due for review' };
+
+/**
+ * Spec 571 stage 2 (rows 89-90, placed 7 Nov): "Today's idea" is the first row on Grow › Read, so ring → Read → drop is
+ * one tap. Before: the topic; during: where the drop is; done: its takeaway as a quiet tick, with no "do it again". It
+ * opens the drop's one home (read/drop), where the topic picker still runs on the first drop.
+ */
+function TodayIdea({ drop, selected }: { drop?: Drop; selected: readonly string[] }) {
+  const concepts = topics.flatMap(pack => pack.body.modules.flatMap(module => module.concepts));
+  const packOf = (conceptId?: string) => conceptId ? topics.find(pack => pack.body.modules.some(module => module.concepts.some(concept => concept.id === conceptId))) : undefined;
+  if (drop && drop.items.length > 0 && drop.cursor >= drop.items.length) {
+    const lesson = drop.items.find(item => item.lesson)?.lesson;
+    const taught = lesson ? findStep(concepts, lesson) : undefined;
+    return <section className="card read-today-idea" data-state="done" aria-label="Today's idea">
+      <p className="eyebrow"><span aria-hidden="true">✓ </span>Today's idea</p>
+      <p className="small">{taught?.step.takeaway ?? 'Done for today.'}</p>
+    </section>;
+  }
+  const during = !!drop && drop.items.length > 0 && (drop.cursor > 0 || !!drop.pendingFeedback);
+  const pack = packOf(drop?.items[0]?.conceptId) ?? (selected.length === 1 ? topics.find(row => row.body.topic.id === selected[0]) : undefined);
+  return <button type="button" className="card read-today-idea" data-state={during ? 'during' : 'before'} data-testid="today-idea-link" onClick={() => go('read/drop')}>
+    <span className="eyebrow">Today's idea</span>
+    <strong>{during ? `Continue · ${Math.min(drop!.cursor + 1, drop!.items.length)} of ${drop!.items.length}` : pack ? bookTitle(pack) : 'One idea, about five minutes'}</strong>
+    <span className="read-today-arrow" aria-hidden="true">›</span>
+  </button>;
+}
 
 /** Spec 33: Read (Continue, the Library) and each book's page; spec 571: Moti's Remember door. */
 export function Learn({ entry, book: bookParam }: { entry?: string; book?: string }) {
@@ -175,6 +201,8 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
     const concepts = bookConcepts(pack);
     const mastered = new Set(concepts.filter(concept => masteryMapState(stateById.get(concept.id)) === 'Mastered' || gold.has(concept.id)).map(concept => concept.id));
     const chest = chestReady(concepts.map(concept => concept.id), mastered);
+    // Spec 571 stage 2 (row 85): the next-day Book check lives on its book, on the due chapter's row.
+    const checkDue = bookCheckDue(data?.ledger ?? [], today);
     return <section className="screen learn-screen read-book-page">
       <div className="read-book-head"><Cover pack={pack} size="large" /><div><h1>{bookTitle(pack)}</h1><p>{book?.author ?? 'NANDI'}{book?.year ? ` · ${book.year}` : ''}</p></div></div>
       {book && <p className="read-blurb">{book.blurb}</p>}
@@ -189,6 +217,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
           <button type="button" className="read-chapter-open" aria-label={`Chapter ${index + 1}: ${module.title}, ${STATE_LABEL[state]}`} onClick={() => go(`read/chapter/${topicId}/${module.id}`)}>
             <span className="read-chapter-num" aria-hidden="true">{index + 1}</span><span className="read-chapter-text"><strong>{module.title}</strong><span className="small">{module.minutes ?? 0} min · {module.concepts.length} ideas</span></span><span className="pill">{STATE_LABEL[state]}</span>
           </button>
+          {checkDue?.topicId === topicId && checkDue.moduleId === module.id && <button type="button" className="secondary read-check-link" data-testid="book-check-link" onClick={() => go(`read/check/${topicId}/${module.id}`)}>Tried it? · Check</button>}
           <details className="read-chapter-ideas"><summary>{module.concepts.length} ideas<span className="read-chevron" aria-hidden="true">▸</span></summary>{ideaRows(topicId, module.concepts)}</details>
         </li>;
       })}</ol>
@@ -203,6 +232,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
   const upNextState = current && upNext ? stateOf(current.body.topic.id, upNext) : undefined;
   const shelves = libraryShelves(library, chaptersDone);
   return <section className="screen learn-screen read-screen"><FriendStage area="learn"><p className="eyebrow">Chiku on the reading rock</p><h1>Read</h1></FriendStage>
+    <TodayIdea drop={data?.daily && !data.daily.deleted ? data.daily.drop : undefined} selected={selected} />
     <section className="card read-continue" aria-label="Continue">
       {current && upNext ? <>
         <Cover pack={current} size="thumb" />

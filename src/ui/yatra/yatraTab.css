@@ -1,0 +1,5 @@
+/* Spec 571 stage 2: the Yatra tab. The strip's title is an h2 (Mor's plan holds the page's h1). */
+.trek-strip .home-title { margin-top: 0; }
+.trek-strip .home-title h2 { min-width: 0; margin: 0; font-size: 1.25rem; line-height: 1.15; overflow-wrap: anywhere; }
+/* The lazy strip's place while its chunk loads: the title row and the 300 px scene. */
+.trek-slot { min-height: calc(1.25rem * 1.15 + 312px); }

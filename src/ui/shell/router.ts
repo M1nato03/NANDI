@@ -20,7 +20,10 @@ export function canonicalRoute(path: string): string {
  * You. Old routes (shared links, widgets, notifications, backups) resolve here to their new homes.
  */
 // Card reviews (Moti's) moved from Kapi's shelf to Remember, so they come first: the first match wins.
+// Spec 571 stage 2: the crew lives on the Courtyard (its one home, E11 row 1), and so does the old You › Courtyard; the crew
+// comes first so its new path is not read back as the old courtyard screen.
 const MOVES: readonly [string, string][] = [
+  ['yatra/crew', 'courtyard/crew'], ['you/courtyard', 'courtyard'],
   ['yatra/mind/reviews', 'grow/remember/cards'], ['yatra/mind/deck', 'grow/remember/deck'],
   ['read', 'grow/read'], ['yatra/train', 'grow/train'], ['yatra/mind', 'grow/play'], ['yatra/calm', 'grow/calm'], ['yatra/days', 'you/days'],
 ];
@@ -36,8 +39,8 @@ export function screenKey(path: string): string {
 }
 
 function legacyRoute(value: string): string {
-  // Spec 37: the app opens on Yatra; old Now links still go to Plan.
-  if (!value) return 'yatra';
+  // Spec 571 stage 2: the app opens on the Courtyard (spec 37's Yatra home moved there); old Now links still go to Plan.
+  if (!value) return 'courtyard';
   if (value === 'now') return 'plan';
   if (value === 'now/focus' || value === 'today') return 'plan/focus';
   if (value === 'tasks') return 'plan';
@@ -65,10 +68,12 @@ export function parentRoute(path: string): string {
   if (path.startsWith('grow/remember/')) return 'grow/remember';
   // Calm and tonight's kolam sit behind the Calm & Sleep door.
   if (path === 'grow/calm' || path === 'kolam') return 'grow/sleep';
+  // Spec 571 stage 2: the crew screens go back to the Courtyard.
+  if (path.startsWith('courtyard/')) return 'courtyard';
   const legacy = screenKey(path);
   let parent = toGrow(oldParent(legacy));
-  // A moved screen's top goes back to its new tab (a Book check still goes back to Yatra, where it is offered).
-  if (parent === 'yatra' && legacy !== path && !legacy.startsWith('read/check/')) parent = path.startsWith('you/days') ? 'you' : 'grow';
+  // A moved screen's top goes back to its new tab.
+  if (parent === 'yatra' && legacy !== path) parent = path.startsWith('you/days') ? 'you' : 'grow';
   return parent === path ? (path.startsWith('grow/') ? 'grow' : path.split('/')[0]!) : parent;
 }
 function oldParent(path: string): string {
@@ -80,7 +85,8 @@ function oldParent(path: string): string {
   if (path === 'yatra/days/seasons') return 'yatra/days';
   if (path.startsWith('yatra/')) return 'yatra';
   if (path.startsWith('read/chapter/')) return `read/book/${path.split('/')[2]}`;
-  if (path.startsWith('read/check/')) return 'yatra';
+  // Spec 571 stage 2 (row 85): a Book check lives on its book, so Back lands on the book.
+  if (path.startsWith('read/check/')) return `read/book/${path.split('/')[2]}`;
   if (path.startsWith('you/story/')) return 'you/stories';
   if (path === 'you/backup' || path === 'you/night' || path === 'you/cast' || path === 'you/owner') return 'you/settings';
   const root = path.split('/')[0];
@@ -89,17 +95,18 @@ function oldParent(path: string): string {
 export function navigationEventName(): string { return navigationEvent; }
 export function deckIndex(): number { return Math.max(0, Number(entry()?.deckIndex) || 0); }
 export function initializeHistory(): void {
-  // Spec 37: every open without a link lands on Yatra; a notification, widget or Night route still wins.
-  const initial = location.hash ? route() : 'yatra';
+  // Spec 571 stage 2: every open without a link lands on the Courtyard; a notification, widget or Night route still wins.
+  const initial = location.hash ? route() : 'courtyard';
   if (location.hash !== `#${initial}` || !entry()) history.replaceState({ nandi: true, deckIndex: initial === 'night' ? deckIndex() : 0 }, '', `#${initial}`);
 }
 export function tabOf(path: string): Tab {
   const root = canonicalRoute(path).split('/')[0];
-  // Spec 55: a crew link belongs to Yatra, where the crew lives.
-  if (root === 'crew') return 'Yatra';
+  // Spec 55 + 571 stage 2: a crew link belongs to the Courtyard, where the crew lives.
+  if (root === 'crew') return 'Courtyard';
   // Spec 571: tonight's kolam is Kachhua's, behind Grow's Calm & Sleep door.
   if (root === 'kolam') return 'Grow';
-  return tabs.find(tab => tab.toLowerCase() === root) ?? 'Plan';
+  // Spec 571 stage 2: Mor's plan (every plan/* screen) sits under the trek in the Yatra tab.
+  return tabs.find(tab => tab.toLowerCase() === root) ?? 'Yatra';
 }
 export function go(path: string): void {
   // Book and chapter ids carry hyphens (read/chapter/money-markets/money-markets-ch1).

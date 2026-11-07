@@ -158,9 +158,30 @@ function NextMoveCard({ rows, capped }: { rows: HomeRows; capped?: boolean }) {
   </section>;
 }
 
-export function Yatra() {
+/**
+ * Spec 571 stage 2: the home's rows (§0.2), moved as they are and in the same order, to the Courtyard: the useful-days
+ * line, the week's real things, one next move, the ten-day extra-pick offer, the week's receipt and the crew bar.
+ */
+export function HomeRows() {
   const yatra = useYatra();
   const rows = useHomeRows();
+  return <div className="home-rows notebook-home">
+    <header className="home-notes"><UsefulLine /><RealThingsLine /></header>
+    {rows && <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} />}
+    {rows && <MoreOfferCard picks={rows.picks} />}
+    {/* Spec 53: Sunday evening to Monday, the week's receipt; nothing on other days. */}
+    <WeekEndShare />
+    {/* Spec 55: the crew bar, only when this phone is in a crew. */}
+    <CrewBar />
+  </div>;
+}
+
+/**
+ * Spec 571 stage 2: the trek strip at the top of the Yatra tab: where the camp is, the trail scene, the trail note, the
+ * camp plan, and the postcards and constellation names it opens. Mor's plan follows it (YatraTab).
+ */
+export function TrekStrip() {
+  const yatra = useYatra();
   const [postcard, setPostcard] = useState<number | null>(null);
   const [renaming, setRenaming] = useState<Constellation | null>(null);
   const [name, setName] = useState('');
@@ -180,33 +201,22 @@ export function Yatra() {
   const leg = trek && postcard !== null ? trek.trail.legs[postcard] : undefined;
   const postcards = trek ? trek.legs.filter(row => row.gateOn).length : 0;
 
-  return <section className="screen yatra-screen yatra-home notebook-home">
-    {/* Spec 45b: Home is a paper page. The week's recorded time and where the camp is, the camp, then one next move. */}
-    <header className="home-notes">
-      <UsefulLine />
-      <RealThingsLine />
-      <div className="home-title">
-        <h1>{trek && yatra ? campLine(trek, yatra.night) : 'Field notes'}</h1>
-        {/* From the first postcard on: a 0 stamp on a new phone reads as a score. */}
-        {trek && postcards > 0 && <button type="button" className="home-permit" aria-label={`Journal · ${postcards}`} onClick={() => go('yatra/journal')}>
-          <span>Journal</span><b>{postcards}</b>
-        </button>}
-      </div>
-    </header>
+  return <section className="screen yatra-screen yatra-home trek-strip" aria-label="Yatra">
+    <div className="home-title">
+      <h2>{trek && yatra ? campLine(trek, yatra.night) : 'Field notes'}</h2>
+      {/* From the first postcard on: a 0 stamp on a new phone reads as a score. */}
+      {trek && postcards > 0 && <button type="button" className="home-permit" aria-label={`Journal · ${postcards}`} onClick={() => go('yatra/journal')}>
+        <span>Journal</span><b>{postcards}</b>
+      </button>}
+    </div>
     {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} onFriend={spot => go(spot.route)} />}
-    {rows && <NextMoveCard rows={rows} capped={trek?.jar.capped} />}
-    {rows && <MoreOfferCard picks={rows.picks} />}
-    {/* Spec 53: Sunday evening to Monday, the week's receipt; nothing on other days. */}
-    <WeekEndShare />
-    {/* Below the move, a quiet note on the trail: information, never a second action. */}
+    {/* Below the scene, a quiet note on the trail: information, never a second action. */}
     {trek && yatra && <div className="trek-journey">
       <div className="trek-journey-top"><strong>{trekLine(trek)}</strong></div>
       {!trek.complete && <div className="trek-rail" aria-hidden="true">{Array.from({ length: STRETCHES_PER_LEG }, (_, i) => <i key={i} className={i < trek.stretch ? 'filled' : undefined} />)}</div>}
       <p className="trek-narrative" role="status">{narrative(trek, yatra.night)}</p>
     </div>}
     {trek && <JarPlanArea trek={trek} />}
-    {/* Spec 55: the crew bar, only when this phone is in a crew. */}
-    <CrewBar />
     {leg && <div className="sheet-backdrop" onClick={closePostcard}><section ref={postcardDialog} tabIndex={-1} className="task-sheet trek-postcard" role="dialog" aria-modal="true" aria-label={`${leg.landmark.name} postcard`} onClick={event => event.stopPropagation()}>
       <p className="eyebrow">A gate on the trail · {leg.landmark.kind}</p><h2>{leg.postcard.title ?? leg.landmark.name}</h2>
       {leg.postcard.lines.map(line => <p key={line}>{line}</p>)}
