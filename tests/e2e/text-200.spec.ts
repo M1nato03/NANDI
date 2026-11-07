@@ -31,6 +31,9 @@ async function expectTextFollows200(page: Page) {
   await page.waitForTimeout(300);
   const stuck = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>('[data-text100]')].flatMap(node => {
     const before = parseFloat(node.dataset.text100!), after = parseFloat(getComputedStyle(node).fontSize);
+    // Cover text is a px picture (b2, gate-rem2): covers.spec.ts checks the book's title beside or under each cover is
+    // live text that doubles, so the cover's own title and author are not measured here.
+    if (node.closest('.book-cover-title, .book-cover-author')) return [];
     return before > 0 && after / before < 1.8 ? [`${node.tagName.toLowerCase()}.${[...node.classList].join('.')} "${node.textContent!.trim().slice(0, 30)}" ${before}px → ${after}px`] : [];
   }));
   expect(stuck, 'text that stays small at 200%').toEqual([]);

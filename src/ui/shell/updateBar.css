@@ -1,23 +1,31 @@
 /*
  * The first open's "Ready to work offline" notice (b2, 7 Nov, option A). In the page flow its one-time arrival pushed
- * the whole screen down (gate-571h CLS 0.150), so it now sits over the brand side of the top bar: the brand slot runs
- * from the bar's start up to the Today dots, and the notice fills that slot on one line (ellipsis at large text), so it
- * never changes the bar's height, never covers a dot, button or link (spec 571 E10), and taps go through it.
+ * the whole screen down (gate-571h CLS 0.150), so it is an overlay on the top bar: it covers the whole bar on one line
+ * (ellipsis at large text) while the brand and the Today dots under it step aside, so it never changes the bar's height,
+ * never covers a visible dot, button or link (spec 571 E10), and taps go through it.
  * It waits for any sheet (E10, hidden in the same frame a sheet opens) and behind a live economy toast, which takes
  * the top slot on question screens, so the two never show at once.
  */
-.topbar .brand-slot { position: relative; display: flex; align-items: center; flex: 1 1 auto; min-width: 0; align-self: stretch; }
+.topbar .brand-slot { display: flex; align-items: center; flex: 1 1 auto; min-width: 0; align-self: stretch; }
 /* Large text (rem gate, 7 Nov): the brand keeps its whole word and the Today dots move to a second row when the two
    don't fit side by side. At 100% they always fit, so nothing moves. (The notice is absolute, so it never widens the slot.) */
 .topbar { flex-wrap: wrap; }
 .topbar .brand-slot { min-width: max-content; }
 .topbar .brand-slot > .brand { min-width: 0; }
-.offline-ready-toast { position: absolute; inset: 50% auto auto 0; transform: translateY(-50%); max-width: calc(100% - 8px); margin: 0;
+/* The notice is the top bar's overlay (b2, 7 Nov, option A; gate-rem2): it owns the whole bar at any text size, so at
+   200% text, when the dots wrap to a second row, it is never a pill half over them. Its containing block is the top bar
+   (position: relative in redesign.css), not the brand slot. Scoped to .topbar so it outranks redesign.css's shared pill
+   rule (width: max-content), which loads later at the same specificity (gate-rem3: the notice stayed a 154 px pill). */
+.topbar .offline-ready-toast { position: absolute; inset: 8px 16px; display: flex; align-items: center; width: auto; max-width: none; margin: 0;
   overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; z-index: 1;
   background: var(--surface-2); color: var(--ink); box-shadow: var(--shadow-1); }
-/* While the notice shows, the brand under it steps aside (its mark would peep out at the pill's rounded edge). */
-.topbar .brand-slot:has(> .offline-ready-toast) > .brand { visibility: hidden; }
+/* While the notice shows (a few seconds, once), the brand and the Today dots under it step aside: nothing peeps out at
+   its rounded edge, and nothing tappable sits under it. They come back the moment it hides. */
+.topbar:has(.offline-ready-toast) .brand-slot > .brand,
+.topbar:has(.offline-ready-toast) > .today-dots { visibility: hidden; }
 body:has(.economy-toast) .offline-ready-toast,
 body:has([aria-modal="true"], .sheet-backdrop) .offline-ready-toast { visibility: hidden; }
 body:has(.economy-toast) .topbar .brand-slot > .brand,
-body:has([aria-modal="true"], .sheet-backdrop) .topbar .brand-slot > .brand { visibility: visible; }
+body:has([aria-modal="true"], .sheet-backdrop) .topbar .brand-slot > .brand,
+body:has(.economy-toast) .topbar > .today-dots,
+body:has([aria-modal="true"], .sheet-backdrop) .topbar > .today-dots { visibility: visible; }

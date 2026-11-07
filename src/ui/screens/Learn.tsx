@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { LARGE_TEXT_ROOT_PX, useRootPx } from '../shell/useRootPx';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { masteryMapState } from '../../core/learn/engine';
 import { db } from '../../data/db';
@@ -81,6 +82,8 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
   }, [chikuBack, chikuFor]);
   const [openedAt] = useState(() => Date.now());
   const [message, setMessage] = useState('');
+  // b2 (gate-rem2): covers are px pictures, so at large text each Library tile also shows its title as live text.
+  const largeText = useRootPx() >= LARGE_TEXT_ROOT_PX;
   const data = useLiveQuery(async () => ({
     setting: await db.settings.get(selectedTopicKey),
     sound: await db.settings.get('economy.soundOn'),
@@ -209,12 +212,12 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
       </> : <p className="read-empty">Every book here is finished. New books are on their way.</p>}
     </section>
     {/* Spec 571 (one place): Moti's review card lives on Grow › Remember; Read keeps Chiku's books only. */}
-    <section className="read-library" aria-label="Library"><h2>Library</h2>
+    <section className={`read-library${largeText ? ' large-text' : ''}`} aria-label="Library"><h2>Library</h2>
       {shelves.map(shelf => <section key={shelf.shelf} className="read-shelf" aria-label={shelf.title}><h3>{shelf.title}</h3>
         <ul className="read-shelf-row">{shelf.books.map(pack => {
           const chapters = pack.body.modules.length, read = pack.body.modules.filter(module => chaptersDone.has(chapterRef(pack.body.topic.id, module.id))).length;
           return <li key={pack.id}><button type="button" className="read-book-tile" aria-label={`${bookTitle(pack)} · ${bookDone(pack, chaptersDone) ? 'finished' : `${read} of ${chapters} chapters`}`} onClick={() => go(`read/book/${pack.body.topic.id}`)}>
-            <Cover pack={pack} /><span className="small">{bookDone(pack, chaptersDone) ? 'Finished' : `${read} of ${chapters} chapters`}</span></button></li>;
+            <Cover pack={pack} /><span className="read-book-title" aria-hidden="true">{bookTitle(pack)}</span><span className="small">{bookDone(pack, chaptersDone) ? 'Finished' : `${read} of ${chapters} chapters`}</span></button></li>;
         })}</ul></section>)}
       <section className="read-shelf" aria-label="Courses"><h3>Courses</h3><button type="button" className="card you-link you-courtyard-link read-courses-link" onClick={() => go('read/courses')}><strong>Short courses</strong><span>Lessons and tracks from before the books</span></button></section>
     </section>

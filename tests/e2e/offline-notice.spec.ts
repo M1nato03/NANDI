@@ -56,6 +56,11 @@ for (const scheme of ['light', 'dark'] as const) {
         // It lives in the top bar, beside the brand, and keeps to one line there.
         await expect(page.locator('.topbar .brand-slot .offline-ready-toast')).toHaveCount(1);
         expect(await covered(page)).toEqual([]);
+        // The overlay owns the whole bar (gate-rem2): never a pill half over the dots when they wrap at 200% text.
+        const bar = (await page.locator('.topbar').boundingBox())!, box = (await notice(page).boundingBox())!;
+        expect(box.width).toBeGreaterThanOrEqual(bar.width - 33);
+        expect(box.y).toBeGreaterThanOrEqual(bar.y - 0.5);
+        expect(box.y + box.height).toBeLessThanOrEqual(bar.y + bar.height + 0.5);
         const { ratio, alpha } = await contrast(page);
         expect(alpha, 'an opaque background').toBe(1);
         expect(ratio, 'text contrast').toBeGreaterThanOrEqual(4.5);
@@ -67,6 +72,9 @@ for (const scheme of ['light', 'dark'] as const) {
 test('the notice arrives and leaves without shifting the screen (CLS < 0.1)', async ({ page }) => {
   await open(page, '/', false);
   await expect(notice(page)).toBeHidden({ timeout: 6_000 });
+  // The brand and the Today dots it covered are back.
+  await expect(page.locator('.topbar .brand')).toHaveCSS('visibility', 'visible');
+  for (const dots of await page.locator('.topbar > .today-dots').all()) await expect(dots).toHaveCSS('visibility', 'visible');
   await page.waitForTimeout(500);
   const { shift, noticeAt } = await page.evaluate(() => {
     const store = window as Window & { shifts?: [number, number][]; noticeAt?: number };
