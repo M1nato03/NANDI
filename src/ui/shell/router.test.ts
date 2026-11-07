@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { beforeEach, describe, expect, it } from 'vitest';
-import { canonicalRoute, go, initializeHistory, parentRoute, route, screenKey, tabOf } from './router';
+import { canonicalRoute, go, initializeHistory, parentRoute, route, screenKey, tabOf, tabRule } from './router';
 
 beforeEach(() => {
   sessionStorage.clear();
@@ -92,7 +92,7 @@ describe('spec 571 stage 1: the alias table (G7)', () => {
     ['#yatra/days/seasons', 'you/days/seasons', 'yatra/days/seasons', 'You'],
     // Unchanged paths: the trek's journal, Night (widget + focus notice), kolam, settings.
     ['#yatra/journal', 'yatra/journal', 'yatra/journal', 'Yatra'],
-    ['#night', 'night', 'night', 'Yatra'],
+    ['#night', 'night', 'night', 'Grow'],
     ['#kolam', 'kolam', 'kolam', 'Grow'],
     ['#ground', 'you/settings', 'you/settings', 'You'],
     ['#ground/backup', 'you/backup', 'you/backup', 'You'],
@@ -101,6 +101,8 @@ describe('spec 571 stage 1: the alias table (G7)', () => {
     expect(canonicalRoute(old)).toBe(next);
     expect(screenKey(next)).toBe(screen);
     expect(tabOf(next)).toBe(tab);
+    // Guard: every row is lit by an explicit rule, never the silent fallback.
+    expect(tabRule(next).rule).not.toBe('fallback');
   });
   it('names Back after the door a screen sits behind', () => {
     expect(parentRoute('grow/read/check/psychology/psychology-ch1')).toBe('grow/read/book/psychology');
@@ -145,13 +147,15 @@ describe('spec 571 stage 2: the alias table (tabs Courtyard · Yatra · Grow · 
     // Rows 89-90: Today's idea opens the drop's one home.
     ['#learn/drop', 'grow/read/drop', 'read/drop', 'Grow'],
     ['#read/drop', 'grow/read/drop', 'read/drop', 'Grow'],
-    ['#night', 'night', 'night', 'Yatra'],
+    ['#night', 'night', 'night', 'Grow'],
     ['#you/mind/generator', 'you/mind/generator', 'you/mind/generator', 'You'],
   ];
   it.each(table)('"%s" opens %s (screen %s) with %s lit', (old, next, screen, tab) => {
     expect(canonicalRoute(old)).toBe(next);
     expect(screenKey(next)).toBe(screen);
     expect(tabOf(next)).toBe(tab);
+    // Guard: every row is lit by an explicit rule, never the silent fallback.
+    expect(tabRule(next).rule).not.toBe('fallback');
   });
   it('Back: the crew goes to the Courtyard, a Book check to its book, Plan screens to Mor’s plan', () => {
     expect(parentRoute('courtyard/crew')).toBe('courtyard');
@@ -159,6 +163,14 @@ describe('spec 571 stage 2: the alias table (tabs Courtyard · Yatra · Grow · 
     expect(parentRoute('grow/read/check/richest-man-in-babylon/babylon-ch2')).toBe('grow/read/book/richest-man-in-babylon');
     expect(parentRoute('plan/focus')).toBe('plan');
     expect(parentRoute('yatra/journal')).toBe('yatra');
+  });
+  it('G-E11: Night is Kachhua’s, so its one home is Grow › Calm & Sleep (lit tab and Back)', () => {
+    expect(tabRule('night')).toEqual({ tab: 'Grow', rule: 'night' });
+    expect(tabRule('#night')).toEqual({ tab: 'Grow', rule: 'night' });
+    expect(parentRoute('night')).toBe('grow/sleep');
+  });
+  it('the fallback is reachable only by a route no rule names', () => {
+    expect(tabRule('nowhere/at/all').rule).toBe('fallback');
   });
   it('go() lands old crew and courtyard links on their Courtyard paths', () => {
     go('yatra/crew');

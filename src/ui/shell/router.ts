@@ -67,7 +67,7 @@ export function parentRoute(path: string): string {
   if (path === 'grow/remember' || path === 'grow/sleep') return 'grow';
   if (path.startsWith('grow/remember/')) return 'grow/remember';
   // Calm and tonight's kolam sit behind the Calm & Sleep door.
-  if (path === 'grow/calm' || path === 'kolam') return 'grow/sleep';
+  if (path === 'grow/calm' || path === 'kolam' || path === 'night') return 'grow/sleep';
   // Spec 571 stage 2: the crew screens go back to the Courtyard.
   if (path.startsWith('courtyard/')) return 'courtyard';
   const legacy = screenKey(path);
@@ -99,15 +99,24 @@ export function initializeHistory(): void {
   const initial = location.hash ? route() : 'courtyard';
   if (location.hash !== `#${initial}` || !entry()) history.replaceState({ nandi: true, deckIndex: initial === 'night' ? deckIndex() : 0 }, '', `#${initial}`);
 }
-export function tabOf(path: string): Tab {
+/**
+ * The lit tab for a route and the rule that chose it. Every known route has an explicit rule; `fallback` is only for a
+ * route no rule names, and a test fails if any route in the alias tables reaches it (so a new route can't land silently).
+ */
+export function tabRule(path: string): { tab: Tab; rule: 'crew' | 'kolam' | 'night' | 'plan' | 'tab' | 'fallback' } {
   const root = canonicalRoute(path).split('/')[0];
   // Spec 55 + 571 stage 2: a crew link belongs to the Courtyard, where the crew lives.
-  if (root === 'crew') return 'Courtyard';
+  if (root === 'crew') return { tab: 'Courtyard', rule: 'crew' };
   // Spec 571: tonight's kolam is Kachhua's, behind Grow's Calm & Sleep door.
-  if (root === 'kolam') return 'Grow';
+  if (root === 'kolam') return { tab: 'Grow', rule: 'kolam' };
+  // Spec 571 stage 2 (b2 addition ii): Night is Kachhua's too; its one home is Grow › Calm & Sleep (Plan only links to it).
+  if (root === 'night') return { tab: 'Grow', rule: 'night' };
   // Spec 571 stage 2: Mor's plan (every plan/* screen) sits under the trek in the Yatra tab.
-  return tabs.find(tab => tab.toLowerCase() === root) ?? 'Yatra';
+  if (root === 'plan') return { tab: 'Yatra', rule: 'plan' };
+  const tab = tabs.find(item => item.toLowerCase() === root);
+  return tab ? { tab, rule: 'tab' } : { tab: 'Yatra', rule: 'fallback' };
 }
+export function tabOf(path: string): Tab { return tabRule(path).tab; }
 export function go(path: string): void {
   // Book and chapter ids carry hyphens (read/chapter/money-markets/money-markets-ch1).
   // Spec 55: a crew link carries a base64url payload (letters of both cases, digits, - and _); the crew link validator
