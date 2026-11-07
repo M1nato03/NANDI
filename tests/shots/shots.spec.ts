@@ -937,6 +937,9 @@ for (const theme of themes) test.describe(theme, () => {
     await page.clock.install({ time: new Date('2026-11-04T12:00:00') });
     await page.goto('/?e2e#plan');
     await expect(page.getByRole('button', { name: /^Pause card/ })).toContainText('Off');
+    // The week's 3 side quests are made on first open, a moment after Plan shows; wait for them so the shot never
+    // catches the card half-filled (b2, rem gate 7 Nov: it differed between runs).
+    await expect(page.locator('.quest-row')).toHaveCount(3);
     await shot(page, 'p39-0-plan-row-off');
     await page.getByRole('button', { name: /^Pause card/ }).click();
     await page.getByLabel('Instagram').check();
