@@ -20,7 +20,7 @@ async function expectTextFollows200(page: Page) {
       const own = [...node.childNodes].some(child => child.nodeType === Node.TEXT_NODE && child.textContent!.trim());
       if (!own) continue;
       const box = node.getBoundingClientRect();
-      if (!box.width || !box.height || getComputedStyle(node).visibility === 'hidden') continue;
+      if (!box.width || !box.height || !node.checkVisibility({ contentVisibilityAuto: true, visibilityProperty: true })) continue;
       node.dataset.text100 = getComputedStyle(node).fontSize;
       n += 1;
     }
@@ -34,7 +34,7 @@ async function expectTextFollows200(page: Page) {
     return before > 0 && after / before < 1.8 ? [`${node.tagName.toLowerCase()}.${[...node.classList].join('.')} "${node.textContent!.trim().slice(0, 30)}" ${before}px → ${after}px`] : [];
   }));
   expect(stuck, 'text that stays small at 200%').toEqual([]);
-  // b2 (7 Nov): and its lines keep apart: line-height at least 1.15x the font, no two line boxes of one element overlapping.
+  // b2 (7 Nov): and its lines keep apart: wrapped text has a line-height of at least 1.15x the font, and no two lines collide.
   const crowded = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>('[data-text100]')].flatMap(node => {
     const style = getComputedStyle(node);
     if (style.display === 'none' || style.visibility === 'hidden') return [];
@@ -42,12 +42,25 @@ async function expectTextFollows200(page: Page) {
     const line = style.lineHeight === 'normal' ? font * 1.2 : parseFloat(style.lineHeight);
     const name = `${node.tagName.toLowerCase()}.${[...node.classList].join('.')} "${node.textContent!.trim().slice(0, 24)}"`;
     const problems: string[] = [];
-    if (line < 1.15 * font) problems.push(`${name}: line-height ${line}px for ${font}px text`);
-    const range = document.createRange();
-    range.selectNodeContents(node);
-    const lines = [...range.getClientRects()].filter(rect => rect.width > 0).map(rect => ({ top: Math.round(rect.top * 10) / 10, bottom: Math.round(rect.bottom * 10) / 10 }))
-      .sort((a, b) => a.top - b.top).filter((rect, index, all) => index === 0 || rect.top !== all[index - 1]!.top);
-    for (let index = 1; index < lines.length; index++) if (lines[index]!.top < lines[index - 1]!.bottom - 0.5) problems.push(`${name}: line ${index + 1} overlaps line ${index}`);
+    // The text's lines, top to bottom, from its text only (a checkbox or an input beside it is not a line). A glyph
+    // box is taller than the font (about 1.3x for DM Sans), so boxes of neighbouring lines touch at any line-height
+    // under that; what matters is the line pitch. Rects less than half a font apart sit on the same line.
+    const tops: number[] = [];
+    const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+    for (let text = walker.nextNode(); text; text = walker.nextNode()) {
+      if (!text.textContent?.trim()) continue;
+      const range = document.createRange();
+      range.selectNodeContents(text);
+      for (const rect of range.getClientRects()) if (rect.width > 0) tops.push(rect.top);
+    }
+    const lines: number[] = [];
+    for (const top of tops.sort((a, b) => a - b)) if (!lines.length || top - lines.at(-1)! >= font / 2) lines.push(top);
+    // Wrapped text keeps a line-height of at least 1.15x its font (a single line has no neighbour to crowd), and no
+    // two lines sit closer than one font size, where their letters would collide.
+    // Book covers are cover art, set tight on purpose (1.05 title, 1.0 author) at every size; they keep the collision check.
+    const art = node.closest('.book-cover-title, .book-cover-author');
+    if (!art && lines.length > 1 && line < 1.15 * font) problems.push(`${name}: line-height ${line}px for ${font}px text over ${lines.length} lines`);
+    for (let index = 1; index < lines.length; index++) if (lines[index]! - lines[index - 1]! < font - 0.5) problems.push(`${name}: line ${index + 1} overlaps line ${index}`);
     return problems;
   }));
   expect(crowded, 'crowded lines at 200%').toEqual([]);
@@ -84,4 +97,26 @@ test('the Train workout logger follows 200% text', async ({ page }) => {
   await page.getByRole('button', { name: 'Start session' }).click();
   await expect(page.getByText('Exercise 1 of 7')).toBeVisible();
   await expectTextFollows200(page);
+});
+
+// Rem gate shots (7 Nov): at 200% the Today dot labels ran into each other ("PlanReadNight") and the brand pressed on
+// them. Now each dot is as wide as its label and the dots take a second row when the brand and they don't fit.
+test('the top bar at 200% text: brand and dot labels keep apart', async ({ page }) => {
+  await page.goto('/#yatra');
+  await expect(page.locator('.today-dot-label').first()).toBeVisible();
+  await textAt200(page);
+  await page.waitForTimeout(300);
+  const boxes = await page.evaluate(() => [document.querySelector('.topbar .brand')!, ...document.querySelectorAll('.today-dot-label')].map(node => {
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    const box = range.getBoundingClientRect();
+    return { text: node.textContent!.trim(), left: box.left, right: box.right, top: box.top, bottom: box.bottom };
+  }));
+  expect(boxes.length).toBe(4);
+  for (let a = 0; a < boxes.length; a++) for (let b = a + 1; b < boxes.length; b++) {
+    const one = boxes[a]!, two = boxes[b]!;
+    const apart = one.right <= two.left + 0.5 || two.right <= one.left + 0.5 || one.bottom <= two.top + 0.5 || two.bottom <= one.top + 0.5;
+    expect(apart, `${one.text} and ${two.text}: ${JSON.stringify([one, two])}`).toBe(true);
+  }
+  for (const box of boxes) expect(box.right, box.text).toBeLessThanOrEqual(360);
 });

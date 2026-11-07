@@ -9,20 +9,30 @@ import { textAt200 } from './helpers/text';
 // least 1.15x its font size, and no two lines of one element overlap.
 test.use({ viewport: { width: 360, height: 800 }, reducedMotion: 'reduce', colorScheme: 'light', serviceWorkers: 'block' });
 
-/** Elements matching `selector` whose line-height is under 1.15x the font size, or whose wrapped lines overlap. */
+/** Elements matching `selector` whose wrapped lines sit under 1.15x the font apart in line-height, or collide. */
 const crowded = (page: Page, selector: string) => page.locator(selector).evaluateAll(nodes => nodes.flatMap(node => {
   const style = getComputedStyle(node);
   const font = parseFloat(style.fontSize);
   const line = style.lineHeight === 'normal' ? font * 1.2 : parseFloat(style.lineHeight);
   const name = `${node.tagName.toLowerCase()}.${[...node.classList].join('.')} "${(node.textContent ?? '').trim().slice(0, 24)}"`;
   const problems: string[] = [];
-  if (line < 1.15 * font) problems.push(`${name}: line-height ${line}px for ${font}px text`);
-  // The text's own line boxes, top to bottom; a line that starts above the one before it ends means they overlap.
-  const range = document.createRange();
-  range.selectNodeContents(node);
-  const lines = [...range.getClientRects()].filter(rect => rect.width > 0).map(rect => ({ top: Math.round(rect.top * 10) / 10, bottom: Math.round(rect.bottom * 10) / 10 }))
-    .sort((a, b) => a.top - b.top).filter((rect, index, all) => index === 0 || rect.top !== all[index - 1]!.top);
-  for (let index = 1; index < lines.length; index++) if (lines[index]!.top < lines[index - 1]!.bottom - 0.5) problems.push(`${name}: line ${index + 1} overlaps line ${index}`);
+  // The text's lines, top to bottom, from its text only (a checkbox or an input beside it is not a line). A glyph
+  // box is taller than the font (about 1.3x for DM Sans), so boxes of neighbouring lines touch at any line-height
+  // under that; what matters is the line pitch. Rects less than half a font apart sit on the same line.
+  const tops: number[] = [];
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+  for (let text = walker.nextNode(); text; text = walker.nextNode()) {
+    if (!text.textContent?.trim()) continue;
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    for (const rect of range.getClientRects()) if (rect.width > 0) tops.push(rect.top);
+  }
+  const lines: number[] = [];
+  for (const top of tops.sort((a, b) => a - b)) if (!lines.length || top - lines.at(-1)! >= font / 2) lines.push(top);
+  // Wrapped text keeps a line-height of at least 1.15x its font (a single line has no neighbour to crowd), and no
+  // two lines sit closer than one font size, where their letters would collide.
+  if (lines.length > 1 && line < 1.15 * font) problems.push(`${name}: line-height ${line}px for ${font}px text over ${lines.length} lines`);
+  for (let index = 1; index < lines.length; index++) if (lines[index]! - lines[index - 1]! < font - 0.5) problems.push(`${name}: line ${index + 1} overlaps line ${index}`);
   return problems;
 }));
 
