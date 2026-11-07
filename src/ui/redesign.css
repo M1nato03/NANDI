@@ -275,7 +275,8 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .tabbar a[aria-current='page'] { color: var(--area-color); }
 .tabbar a[aria-current='page']::after { background: var(--area-color); }
 .today-dots { display: flex; gap: 0; margin-left: auto; }
-.today-dot { display: grid; place-items: center; align-content: center; gap: 3px; width: 44px; min-width: 44px; height: 44px; padding: 0; border: 0; background: transparent; }
+/* A dot is 44px wide, and wider when its label is (large text, rem gate 7 Nov), so the labels never run into each other. */
+.today-dot { display: grid; place-items: center; align-content: center; gap: 3px; width: auto; min-width: 44px; height: 44px; padding: 0 2px; border: 0; background: transparent; }
 .today-dot span[data-done] { width: 8px; height: 8px; border: 1.5px solid var(--area-color); border-radius: 50%; }
 .today-dot span[data-done='true'] { background: var(--area-color); }
 /* Each dot names its tab, so nobody has to guess what the four dots mean (audit 10-21). */
@@ -380,7 +381,10 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .you-links .you-link, .you-links .settings-link { min-width: 0; min-height: 146px; margin: 0; padding: 16px; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 8px; background: var(--surface-1); color: var(--ink); box-shadow: var(--shadow-1); }
 .you-screen > .settings-link { display: flex; align-items: flex-start; justify-content: center; gap: 8px; width: 100%; min-height: 112px; margin-top: 12px; text-align: left; color: var(--ink); }
 .you-screen > .settings-link > span:last-child { white-space: normal; overflow: visible; }
-.you-link strong { font: 800 clamp(1.125rem, 5vw, 1.375rem)/1.5rem 'Bricolage Grotesque', sans-serif; }
+/* Large text (rem gate, 7 Nov): a wrapped card title keeps a line-height of at least 1.15x its font. At 100% text the
+   line is exactly 24px as before (the clamp() term is 2px there, so 1.15em - 2px stays under 1.5rem for every card);
+   from about 106% up the term is 0 and 1.15em takes over. */
+.you-link strong { font: 800 clamp(1.125rem, 5vw, 1.375rem)/max(1.5rem, calc(1.15em - clamp(0px, 32px - 1.875rem, 2px))) 'Bricolage Grotesque', sans-serif; }
 .you-link > span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-3); font: 500 .75rem/1rem 'DM Sans', sans-serif; }
 .you-link .deck-glyph { flex: 0 0 36px; }
 .you-link .you-tile-eyebrow { margin: 0; color: var(--ink-3); font: 600 .75rem/1rem 'DM Sans', sans-serif; }

@@ -416,7 +416,7 @@
 .learn-drop.learn-fit.learn-page { height: auto; min-height: var(--fit-h, auto); }
 .learn-fit.learn-page > .learn-q { flex: none; overflow: visible; overscroll-behavior: auto; }
 .learn-fit.learn-page > .learn-q.more-below { -webkit-mask-image: none; mask-image: none; }
-.learn-fit.learn-page > .learn-check { position: sticky; bottom: 0; z-index: 5; margin-top: auto; box-shadow: 0 -6px 18px rgba(0, 0, 0, .08); }
+.learn-fit.learn-page > .learn-check { position: sticky; bottom: 0; z-index: 5; margin-top: auto; box-shadow: 0 0 0 12px var(--area-tint, var(--bg)), 0 -6px 18px rgba(0, 0, 0, .08); } /* the ring hides text behind the row's rounded corners */
 .learn-fit.learn-page.page-more > .learn-check::before { content: ''; position: absolute; left: -16px; right: -16px; bottom: 100%; height: 48px; background: linear-gradient(to bottom, transparent, var(--area-tint, var(--bg))); pointer-events: none; }
 .learn-fit.learn-page > .learn-check > .learn-more-cue { position: absolute; left: 0; right: 0; bottom: 100%; height: 0; margin: 0; color: var(--muted); pointer-events: none; }
 .learn-fit.learn-page > .learn-check > .learn-more-cue button { bottom: 4px; }
@@ -435,4 +435,4 @@
 .learn-fit .learn-options button.ui-list-row { min-height: 48px; padding: 10px 14px; }
 /* Match: terms and their matches as a two-column grid of tiles, so three pairs fit beside the question. */
 .learn-fit .learn-options.learn-match { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(var(--match-rows, 3), auto); grid-auto-flow: column; }
-.learn-fit .learn-options.learn-match button.ui-list-row { font-size: 0.9375rem; line-height: 1.3; overflow-wrap: anywhere; }
+.learn-fit .learn-options.learn-match button.ui-list-row { font-size: 0.9375rem; line-height: 1.3; overflow-wrap: break-word; hyphens: auto; } /* a long word breaks with a hyphen, not mid-letter (200% text) */

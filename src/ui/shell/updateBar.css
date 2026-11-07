@@ -7,6 +7,10 @@
  * the top slot on question screens, so the two never show at once.
  */
 .topbar .brand-slot { position: relative; display: flex; align-items: center; flex: 1 1 auto; min-width: 0; align-self: stretch; }
+/* Large text (rem gate, 7 Nov): the brand keeps its whole word and the Today dots move to a second row when the two
+   don't fit side by side. At 100% they always fit, so nothing moves. (The notice is absolute, so it never widens the slot.) */
+.topbar { flex-wrap: wrap; }
+.topbar .brand-slot { min-width: max-content; }
 .topbar .brand-slot > .brand { min-width: 0; }
 .offline-ready-toast { position: absolute; inset: 50% auto auto 0; transform: translateY(-50%); max-width: calc(100% - 8px); margin: 0;
   overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; z-index: 1;
