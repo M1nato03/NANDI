@@ -24,3 +24,25 @@ test('owner panel opens from five taps on the version line and asks for a PIN', 
   await expect(panel).toContainText('Learn accuracy (7 d)');
   await page.screenshot({ path: testInfo.outputPath('owner-panel.png'), fullPage: true });
 });
+
+// b2 (7 Nov): the owner-only text size check reads plain numbers. With the CSS root at 200% (the path our 200% tests
+// take), rem doubles but 16px text stays 16px; on a phone that scales text through WebView text zoom instead, the
+// 16px text would grow too. That difference is what Jenil reads out at the largest font.
+for (const [label, big, expected] of [
+  ['100%', false, ['16px', '16px', '16px', '24px / 16px']],
+  ['root 200%', true, ['32px', '32px', '16px', '48px / 32px']],
+] as const) {
+  test(`owner panel text size check at ${label}`, async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
+    if (big) await page.addInitScript(() => document.addEventListener('DOMContentLoaded', () => { const style = document.createElement('style'); style.textContent = 'html { font-size: 200% !important; }'; document.head.append(style); }));
+    await page.goto('/#you/settings');
+    await page.getByText('About this app').click();
+    const version = page.locator('.about-app p.small').first();
+    for (let i = 0; i < 5; i++) await version.click();
+    await page.getByLabel('PIN').fill('2468');
+    await page.getByRole('button', { name: 'Save PIN' }).click();
+    const check = page.getByRole('region', { name: 'Text size check' });
+    await expect(check.locator('dd')).toHaveText([...expected]);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  });
+}

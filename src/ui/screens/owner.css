@@ -22,3 +22,9 @@
 .phone-audit-date { white-space: nowrap; }
 .phone-audit-quiet { margin-top: 6px; }
 .phone-audit-quiet summary { display: list-item; }
+
+/* b2 (7 Nov): the text size check, plain numbers. */
+.owner-text-size { position: relative; }
+.owner-text-size dl { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 0; }
+.owner-text-size dt { color: var(--muted); }
+.owner-text-size dd { margin: 0; font-variant-numeric: tabular-nums; text-align: end; }

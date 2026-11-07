@@ -9,6 +9,7 @@ import { dayKey } from '../../core/time';
 import { lessonMetrics } from '../../core/learn/steps';
 import { catalogFor, topics } from '../learn/flow';
 import { PhoneMinutesAudit } from './PhoneMinutesAudit';
+import { TextSizeProbe } from './TextSizeProbe';
 import './owner.css';
 
 const UNLOCK_KEY = 'nandi.owner.unlocked';
@@ -86,6 +87,7 @@ function OwnerNumbers({ onAudit }: { onAudit: () => void }) {
     <p className="small">Worked out on this phone from your own data. Nothing leaves the device.</p>
     <button type="button" className="secondary" onClick={onAudit}>Phone minutes audit</button>
     <div className="owner-tiles">{tiles.map(([label, value]) => <div className="card owner-tile" key={label}><span className="small">{label}</span><strong>{value}</strong></div>)}</div>
+    <TextSizeProbe />
     <section className="card owner-chart" aria-label="Activity, last 30 days"><h2>Activity, last 30 days</h2>
       <div className="owner-bars">{m.days.map(point => <span key={point.day} title={`${point.day}: ${point.facts} actions`} style={{ height: `${Math.max(4, point.facts / maxFacts * 100)}%` }} className={point.facts ? 'on' : ''} />)}</div></section>
     <section className="card owner-chart" aria-label="Opens, last 30 days"><h2>Opens, last 30 days</h2>
