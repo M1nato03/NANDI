@@ -1,6 +1,6 @@
 import { RULES, RULES_HISTORY, rulesFor, type RulesHistoryEntry } from '../rules.config';
 import { calculateTasksDayXp, replayFactShards, replayFactXp } from './awards';
-import { boardPay, calmDayXp, chapterPay, chhuttiXp, focusDayXp, pauseDayXp, readingPay, trainSessionPay } from './effort';
+import { boardPay, calmDayXp, chapterPay, chhuttiXp, focusDayXp, pauseDayXp, readingPay } from './effort';
 
 /** The tasks cap before spec 36 (26 Oct rules); a day before economy.v6From keeps it. */
 const PRE_EFFORT_TASKS_CAP = 200;
@@ -8,7 +8,7 @@ const PRE_EFFORT_TASKS_CAP = 200;
 const PRE_V2_TRAIN_CAP = 100;
 const PRE_V2_MIND_CAP = 80;
 import type { LedgerRow, SettingRow } from '../../data/types';
-import { isPlannedDone } from './planned';
+import { beforeBed, daySlots } from './daySlots';
 
 const MS_DAY = 86_400_000;
 const atUtc = (key: string) => Date.parse(`${key}T12:00:00Z`);
@@ -282,7 +282,6 @@ const value = (settings: readonly SettingRow[] | Record<string, unknown>, key: s
   ? (settings as SettingRow[]).find(row => row.key === key && !row.deleted)?.value
   : (settings as Record<string, unknown>)[key];
 const valid = (fact: LedgerRow) => !fact.deleted && /^\d{4}-\d{2}-\d{2}$/.test(fact.dayKey);
-const beforeBed = (fact: LedgerRow) => fact.inputs.afterBedtime !== true && fact.inputs.beforeBedtime !== false;
 const tierFor = (rank: number) => RULES.season.tiers.find(([, low, high]) => rank >= low && rank <= high)?.[0] ?? 'Bench';
 const xpToReach = (level: number, stepBase: number) => stepBase * level * (level - 1) / 2;
 const purchasePrices: Record<string, number> = RULES.shards.prices;
@@ -533,31 +532,18 @@ function replayEconomy(
     // Before economy.v6From the tasks cap stays at the 26 Oct 200, so no day shown before the build is rescored.
     const doneXp = calculateTasksDayXp(rows.filter(row => row.kind === 'done'), RULES, history);
     const tasks = v6(key) ? Math.min(rules.tasks.dailyCap, doneXp + focusDayXp(rows, rules)) : Math.min(PRE_EFFORT_TASKS_CAP, doneXp);
-    // Spec 36 v2: a session written with its paid sets pays per set; an older fact keeps its own award.
-    const sessions = rows.filter(row => row.mode === 'train' && row.kind === 'session').map(row => (v7(key) ? trainSessionPay(row.inputs, rules) : null) ?? replayFactXp(row, history));
-    const bestSession = Math.max(0, ...sessions);
-    const restXp = Math.max(0, ...rows.filter(row => row.mode === 'train' && row.kind === 'rest').map(row => replayFactXp(row, history)));
-    const rest = bestSession ? 0 : restXp;
+    // Spec 571 §0.20: the Hat-trick slots (and the reads they come from) have one definition, shared with the rings.
+    const slots = daySlots(rows, { key, rules, history, v7: v7(key), v9: v9(key) });
+    const { bestSession, restXp, rest, mindRows, caseSolved, cards, learnDrop, dropWasChapter } = slots;
     const prs = rows.filter(row => row.mode === 'train' && row.kind === 'pr').slice(0, rules.train.prMaxPerDay).reduce((sum, row) => sum + replayFactXp(row, history), 0);
     // A short session after a walk check keeps the better of the two, never less (economy review 32, A1).
     const train = Math.min(v7(key) ? rules.train.dailyCapExclWeekly : Math.min(PRE_V2_TRAIN_CAP, rules.train.dailyCapExclWeekly), (v3(key) ? Math.max(bestSession, restXp) : bestSession + rest) + prs);
     const weekly = rows.filter(row => row.mode === 'train' && row.kind === 'weekly').reduce((sum, row) => sum + replayFactXp(row, history), 0);
-    const mindRows = rows.filter(row => row.mode === 'mind' && beforeBed(row));
     const paid = new Set<string>();
     const count = (kind: string, limit: number, amount: number) => mindRows.filter(row => row.kind === kind).slice(0, limit).reduce((sum, row) => {
       const id = kind === 'board' ? `${row.kind}:${row.inputs.daily === false ? row.refId : key}` : `${kind}:${row.refId}`;
       if (paid.has(id)) return sum; paid.add(id); return sum + amount;
     }, 0);
-    const caseSolved = mindRows.some(row => row.kind === 'mystery' && row.inputs.result !== 'revealed');
-    const dailyBoard = mindRows.some(row => row.kind === 'board' && row.inputs.daily !== false);
-    const cards = mindRows.filter(row => row.kind === 'card');
-    const learnAnswers = new Set(mindRows.filter(row => row.kind === 'learn-answer' && row.inputs.dropId === `drop:daily:${key}`).map(row => row.refId));
-    // A teach-first drop can end after a few scored answers, or after the lesson alone (spec 16 §5, a new
-    // learner with nothing earlier to practise), so a finished daily drop counts too, as long as one of
-    // its answers or its lesson came before bedtime.
-    const lessonDone = rows.some(row => row.kind === 'learn-lesson' && !row.deleted && row.inputs.dropId === `drop:daily:${key}` && beforeBed(row));
-    const dropFinished = rows.some(row => row.mode === 'gamify' && row.kind === 'learn-drop' && row.refId === key) && (learnAnswers.size > 0 || lessonDone);
-    const learnDrop = mindRows.some(row => row.kind === 'learn-drop') || learnAnswers.size >= 5 || dropFinished;
     // Mind earns nothing after bedtime, so a perfect drop pays only when every one of its answers came before it (audit 16.3).
     const dropAnswers = rows.filter(row => row.mode === 'mind' && row.kind === 'learn-answer' && row.inputs.dropId === `drop:daily:${key}`);
     const perfectBeforeBed = !v2(key) || (dropAnswers.length > 0 && dropAnswers.every(beforeBed));
@@ -568,12 +554,6 @@ function replayEconomy(
     const readDay = v9(key) ? reading.get(key) : undefined;
     const chapterXp = readDay ? readDay.chapterXp + readDay.dropTopUp + readDay.checkXp
       : 'chapterPay' in rules.mind ? chapters.slice(0, rules.mind.chapterPay.paidPerDay).reduce((sum, row) => sum + (chapterPay(row.inputs, rules) ?? 0), 0) : 0;
-    // The drop was a chapter's reading: its finished chapter says so, and so does the drop fact from the moment the
-    // reading ends (so the drop never pays its 15 first and then gives it back when the chapter is done).
-    const dropWasChapter = v7(key) && rows.some(row => !row.deleted && ((row.mode === 'read' && row.kind === 'chapter' && Array.isArray(row.inputs.readDrops) && row.inputs.readDrops.includes(`drop:daily:${key}`))
-      || (row.mode === 'gamify' && row.kind === 'learn-drop' && row.refId === key && row.inputs.chapter === true)
-      // Spec 41: a sitting that was the day's drop is paid through its chapter, topped up to 15 (rule i).
-      || (v9(key) && row.mode === 'read' && row.kind === 'idea' && row.inputs.dropId === `drop:daily:${key}`)));
     const mind = Math.min(v7(key) ? rules.mind.dailyCap : Math.min(PRE_V2_MIND_CAP, rules.mind.dailyCap),
       (caseSolved ? rules.mind.mysteryXp : 0) + board(mindRows.find(row => row.kind === 'board' && row.inputs.daily !== false), rules.mind.dropBoardXp) + chapterXp +
       count('lesson', rules.mind.lessonsPaidPerDay, rules.mind.lessonXp) +
@@ -582,10 +562,7 @@ function replayEconomy(
       Math.min(cards.length, rules.mind.cardsMaxPerDay) * rules.mind.cardXp +
       mindRows.filter(row => row.kind === 'board' && row.inputs.daily === false).slice(0, rules.mind.sideBoardsMaxPerDay).reduce((sum, row) => sum + board(row, rules.mind.sideBoardXp), 0) +
       (learnDrop && !dropWasChapter ? rules.mind.learnDropXp : 0) + (perfectBeforeBed ? rows.filter(row => row.mode === 'gamify' && row.kind === 'perfect-drop').reduce((sum, row) => sum + replayFactXp(row, history), 0) : 0));
-    const mindSlot = learnDrop || caseSolved || dailyBoard || cards.length >= rules.streak.minDueCardsForMark;
-    const plannedTask = rows.some(isPlannedDone);
-    const body = bestSession > 0 || rest > 0;
-    const hatTrick = plannedTask && body && mindSlot;
+    const { plannedTask, body, mindSlot, hatTrick } = slots;
     const lightsOut = rows.some(row => row.kind === 'lightsout' && row.inputs.metTarget === true && row.inputs.backfill !== true) ? rules.bonuses.lightsOutXp : 0;
     const quests = rows.filter(row => row.mode === 'quests' && row.kind === 'quest' && !unpaidQuests.has(row.id)).reduce((sum, row) => sum + replayFactXp(row, history), 0);
     const boost = rows.find(row => row.kind === 'focus-boost');
