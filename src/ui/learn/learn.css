@@ -417,9 +417,11 @@
 .learn-fit.learn-page > .learn-q { flex: none; overflow: visible; overscroll-behavior: auto; }
 .learn-fit.learn-page > .learn-q.more-below { -webkit-mask-image: none; mask-image: none; }
 .learn-fit.learn-page > .learn-check { position: sticky; bottom: 0; z-index: 5; margin-top: auto; box-shadow: 0 0 0 12px var(--area-tint, var(--bg)), 0 -6px 18px rgba(0, 0, 0, .08); } /* the ring hides text behind the row's rounded corners */
-.learn-fit.learn-page.page-more > .learn-check::before { content: ''; position: absolute; left: -16px; right: -16px; bottom: 100%; height: 48px; background: linear-gradient(to bottom, transparent, var(--area-tint, var(--bg))); pointer-events: none; }
+/* b2 (7 Nov): the chevron sits on a band of plain page tint (the last 40px above the row), with a 24px fade above it,
+   so no letter under or beside the chevron shows at full contrast. */
+.learn-fit.learn-page.page-more > .learn-check::before { content: ''; position: absolute; left: -16px; right: -16px; bottom: 100%; height: 64px; background: linear-gradient(to bottom, transparent, var(--area-tint, var(--bg)) 24px); pointer-events: none; }
 .learn-fit.learn-page > .learn-check > .learn-more-cue { position: absolute; left: 0; right: 0; bottom: 100%; height: 0; margin: 0; color: var(--muted); pointer-events: none; }
-.learn-fit.learn-page > .learn-check > .learn-more-cue button { bottom: 4px; }
+.learn-fit.learn-page > .learn-check > .learn-more-cue button { bottom: 0; }
 /* Room for the answers: tighter spacing inside the fitted drop only, so a 3-4 option item and the estimate slider sit
    fully on screen above Check at 360x800 (measured on the E12 extremes). Touch targets keep their 44-48px. */
 .learn-drop.learn-fit { gap: 6px; }

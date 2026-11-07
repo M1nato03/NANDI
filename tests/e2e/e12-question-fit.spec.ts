@@ -109,6 +109,14 @@ for (const fixture of fixtures.filter(item => item.size === 'longest')) {
     expect(box && box.width >= 48 && box.height >= 48, JSON.stringify(box)).toBe(true);
     // b2: the fit checks leave the chevron out, so it gets its own: fully on screen whenever it shows.
     expect(box && box.x >= 0 && box.y >= 0 && box.x + box.width <= 360 && box.y + box.height <= 800, JSON.stringify(box)).toBe(true);
+    // b2 (7 Nov): the chevron's disc sits on the plain-tint band (the 40px above the row), never over full-contrast text.
+    const band = await page.evaluate(() => {
+      const row = document.querySelector('.learn-check')!.getBoundingClientRect();
+      const disc = document.querySelector('.learn-more-cue svg')!.getBoundingClientRect();
+      return { rowTop: row.top, discTop: disc.top, discBottom: disc.bottom, fade: getComputedStyle(document.querySelector('.learn-check')!, '::before').height };
+    });
+    expect(band.fade, JSON.stringify(band)).toBe('64px');
+    expect(band.discBottom <= band.rowTop && band.discTop >= band.rowTop - 44, JSON.stringify(band)).toBe(true);
     await cue.click();
     // This file runs with reduced motion, so the scroll is instant: one read straight after the tap, no polling.
     expect(await firstAnswerInView(page), JSON.stringify(await geometry(page))).toBe(true);

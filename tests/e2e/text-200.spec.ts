@@ -115,7 +115,9 @@ test('the top bar at 200% text: brand and dot labels keep apart', async ({ page 
   expect(boxes.length).toBe(4);
   for (let a = 0; a < boxes.length; a++) for (let b = a + 1; b < boxes.length; b++) {
     const one = boxes[a]!, two = boxes[b]!;
-    const apart = one.right <= two.left + 0.5 || two.right <= one.left + 0.5 || one.bottom <= two.top + 0.5 || two.bottom <= one.top + 0.5;
+    // b2: at least 8px between neighbouring labels, so "Plan Read Night" doesn't read as one phrase.
+    const gap = a === 0 ? 0 : 7.5; // index 0 is the brand: it only must not touch
+    const apart = one.right + gap <= two.left || two.right + gap <= one.left || one.bottom <= two.top + 0.5 || two.bottom <= one.top + 0.5;
     expect(apart, `${one.text} and ${two.text}: ${JSON.stringify([one, two])}`).toBe(true);
   }
   for (const box of boxes) expect(box.right, box.text).toBeLessThanOrEqual(360);
