@@ -10,6 +10,11 @@ test('Remember › cards on a fresh install says there are no cards, not "that\'
   await expect(page.getByText('No cards to review.')).toBeVisible();
   await expect(page.getByText("That's enough for today")).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Finish reviews' })).toHaveCount(0);
+  // E11: say where cards come from, and go there in one tap.
+  await expect(page.getByText('Cards come from ideas you read.')).toBeVisible();
+  await page.getByRole('button', { name: 'Read one idea' }).click();
+  await expect(page).toHaveURL(/#(grow\/)?read$/);
+  await expect(page.locator('.read-shelf-row').first()).toBeVisible();
 });
 
 test('Read\'s library shelves start on the 16 px page gutter, not at the screen edge', async ({ page }) => {
