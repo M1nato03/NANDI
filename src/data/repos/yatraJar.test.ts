@@ -3,8 +3,8 @@ import 'fake-indexeddb/auto';
 import { afterEach, expect, it } from 'vitest';
 import { createDb } from '../db';
 import { exportBackup, importBackup } from '../backup';
-import { clearJarPlan, ensureJarFrom, JAR_PLAN_KEY, readJarPlan, saveJarPlan } from './yatra';
-import { JAR_FROM_KEY } from '../../core/yatra/jar';
+import { clearJarPlan, ensureFocusRateFrom, ensureJarFrom, JAR_PLAN_KEY, readJarPlan, saveJarPlan } from './yatra';
+import { FOCUS_RATE_FROM_KEY, JAR_FROM_KEY } from '../../core/yatra/jar';
 
 const opened: ReturnType<typeof createDb>[] = [];
 const fresh = () => { const db = createDb(`yatra-jar-${opened.length}-${Date.now()}`); opened.push(db); return db; };
@@ -16,6 +16,23 @@ it('spec 54: jarFrom is written once, on the first run, and a second run never m
   expect(await ensureJarFrom(db, at('2026-11-05T09:00:00'))).toBe('2026-11-05');
   expect(await ensureJarFrom(db, at('2026-11-09T09:00:00'))).toBe('2026-11-05');
   expect((await db.settings.get(JAR_FROM_KEY))?.value).toBe('2026-11-05');
+});
+
+it('spec 571 E1: focusRateFrom is written once on its own first run, never moves, and leaves jarFrom alone', async () => {
+  const db = fresh();
+  await ensureJarFrom(db, at('2026-11-05T09:00:00'));
+  expect(await ensureFocusRateFrom(db, at('2026-11-08T09:00:00'))).toBe('2026-11-08');
+  expect(await ensureFocusRateFrom(db, at('2026-11-12T09:00:00'))).toBe('2026-11-08');
+  expect((await db.settings.get(FOCUS_RATE_FROM_KEY))?.value).toBe('2026-11-08');
+  expect((await db.settings.get(JAR_FROM_KEY))?.value).toBe('2026-11-05');
+  // Before 04:00 the run belongs to the planning day before.
+  const early = fresh();
+  expect(await ensureFocusRateFrom(early, at('2026-11-09T02:00:00'))).toBe('2026-11-08');
+  // A restore keeps the backup's day.
+  const backup = await exportBackup(db, at('2026-11-12T10:00:00'));
+  await db.settings.put({ key: FOCUS_RATE_FROM_KEY, value: '2026-11-11', updatedAt: 1, deleted: 0, deviceId: 'other' });
+  await importBackup(db, backup);
+  expect((await db.settings.get(FOCUS_RATE_FROM_KEY))?.value).toBe('2026-11-08');
 });
 
 it('spec 54: a restore keeps the backup\'s jarFrom; a backup from before the jar gets the first run after the restore', async () => {

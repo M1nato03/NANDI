@@ -2,7 +2,7 @@ import type { NandiDb } from '../db';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
 import { getOrCreateDeviceId } from '../device';
-import { JAR_FROM_KEY } from '../../core/yatra/jar';
+import { FOCUS_RATE_FROM_KEY, JAR_FROM_KEY } from '../../core/yatra/jar';
 
 /** Spec 34: the only Yatra settings. The trek itself is derived from the ledger every time. */
 export const YATRA_START = 'yatra.startDay';
@@ -25,15 +25,20 @@ export async function ensureYatraStart(db: NandiDb, now: number): Promise<string
  * like every Yatra setting, so a restore keeps the same walk; a backup from before the jar has none, and the first run
  * after its restore writes that day, so nothing leaps. A later run never moves it.
  */
-export async function ensureJarFrom(db: NandiDb, now: number): Promise<string> {
-  const existing = await db.settings.get(JAR_FROM_KEY);
+export const ensureJarFrom = (db: NandiDb, now: number): Promise<string> => ensureDayOnce(db, JAR_FROM_KEY, now);
+
+/** Spec 571 E1: the first planning day with focus at 1 jar min per 3, written once the same way (forward only). */
+export const ensureFocusRateFrom = (db: NandiDb, now: number): Promise<string> => ensureDayOnce(db, FOCUS_RATE_FROM_KEY, now);
+
+async function ensureDayOnce(db: NandiDb, key: string, now: number): Promise<string> {
+  const existing = await db.settings.get(key);
   if (existing && !existing.deleted && typeof existing.value === 'string') return existing.value;
   const day = dayKey(now), deviceId = await getOrCreateDeviceId(db, now);
   await trackWrite(() => db.transaction('rw', db.settings, async () => {
-    const again = await db.settings.get(JAR_FROM_KEY);
-    if (!again || again.deleted || typeof again.value !== 'string') await db.settings.put({ key: JAR_FROM_KEY, value: day, updatedAt: now, deleted: 0, deviceId });
+    const again = await db.settings.get(key);
+    if (!again || again.deleted || typeof again.value !== 'string') await db.settings.put({ key, value: day, updatedAt: now, deleted: 0, deviceId });
   }));
-  return ((await db.settings.get(JAR_FROM_KEY))?.value as string | undefined) ?? day;
+  return ((await db.settings.get(key))?.value as string | undefined) ?? day;
 }
 
 /** A constellation's own name; an empty name goes back to the suggested one. */

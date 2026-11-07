@@ -50,7 +50,7 @@ const daysBetween = (from: string, to: string) => Math.round((new Date(`${to}T12
 const WEEK = 7;
 const ordinal = ['', ' II', ' III', ' IV', ' V', ' VI'];
 
-export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: string, today: string, names: Readonly<Record<string, string>> = {}, jar?: { from: string; focus: readonly FocusRow[] }): Trek {
+export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: string, today: string, names: Readonly<Record<string, string>> = {}, jar?: { from: string; focus: readonly FocusRow[]; focusRateFrom?: string }): Trek {
   // Before jarFrom (or without a jar): one stretch per session, one place a day.
   const sessions = facts
     .map(fact => ({ fact, kind: sessionKind(fact) }))
@@ -75,7 +75,7 @@ export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: 
     stars.push({ id: fact.id, kind, dayKey: day, leg: starLeg, stretch: walks });
   }
   // From jarFrom: jar minutes, 10 a stretch, at most 60 a day; the minutes left over carry to the next act.
-  const entries = jar ? deriveJar(jarActs(facts, jar.focus), jar.from > startDay ? jar.from : startDay, today) : [];
+  const entries = jar ? deriveJar(jarActs(facts, jar.focus, jar.focusRateFrom), jar.from > startDay ? jar.from : startDay, today) : [];
   let carry = 0;
   for (const entry of entries) {
     const legBefore = Math.min(leg, legs.length - 1);

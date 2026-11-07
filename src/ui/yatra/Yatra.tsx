@@ -18,8 +18,8 @@ import { finishedSeasons } from '../../core/economy/seasonResult';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { taskFocusMs } from '../../core/tasks/focus';
 import { currentTrail } from '../../data/yatra/trails';
-import { CONSTELLATION_PREFIX, ensureJarFrom, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
-import { JAR_FROM_KEY } from '../../core/yatra/jar';
+import { CONSTELLATION_PREFIX, ensureFocusRateFrom, ensureJarFrom, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
+import { focusRateFrom, JAR_FROM_KEY } from '../../core/yatra/jar';
 import { JarPlanArea, RealThingsLine } from './JarPlan';
 import { CrewBar } from './Crew';
 import { go } from '../shell/router';
@@ -41,7 +41,7 @@ export function useYatra(): { trek: Trek; night: boolean; dusk: boolean } | null
   const trail = currentTrail();
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
-  useEffect(() => { if (trail) void ensureYatraStart(db, Date.now()).then(() => ensureJarFrom(db, Date.now())); }, [trail]);
+  useEffect(() => { if (trail) void ensureYatraStart(db, Date.now()).then(() => ensureJarFrom(db, Date.now())).then(() => ensureFocusRateFrom(db, Date.now())); }, [trail]);
   const source = useLiveQuery(async () => trail ? {
     facts: await db.ledger.where('kind').anyOf(YATRA_KINDS).toArray(),
     settings: await db.settings.filter(row => row.deleted === 0).toArray(),
@@ -58,7 +58,7 @@ export function useYatra(): { trek: Trek; night: boolean; dusk: boolean } | null
   const names = Object.fromEntries(source.settings.filter(row => row.key.startsWith(CONSTELLATION_PREFIX) && typeof row.value === 'string').map(row => [row.key.slice(CONSTELLATION_PREFIX.length), row.value as string]));
   // Spec 54: from jarFrom the trail walks in jar minutes; until it is written (the first run), the old walk.
   const jarFrom = source.settings.find(row => row.key === JAR_FROM_KEY)?.value;
-  const trek = deriveTrek(source.facts, trail, read(YATRA_START, today), today, names, typeof jarFrom === 'string' ? { from: jarFrom, focus: source.focus } : undefined);
+  const trek = deriveTrek(source.facts, trail, read(YATRA_START, today), today, names, typeof jarFrom === 'string' ? { from: jarFrom, focus: source.focus, focusRateFrom: focusRateFrom(source.settings) } : undefined);
   const phase = phaseAt(now, shutdown, night.bedtime);
   // The planning day turns at 04:00, so the small hours are still tonight.
   const hour = new Date(now).getHours();

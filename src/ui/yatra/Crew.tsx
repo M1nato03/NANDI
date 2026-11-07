@@ -5,7 +5,7 @@ import { dayKey } from '../../core/time/dayKey';
 import { WEB_APP } from '../../core/puzzles/challenge';
 import { addLink, addText, asOfLine, joinOrder, joinerColour, crewFilled, crewTotal, inviteText, joinedText, latestAdds, makeCrew, myCrewMinutes, unsent, CREW_KEY, readCrew, type Crew } from '../../core/crew/crew';
 import { cleanText, CREW_MAX, CREW_SIZES, decodeCrewLink, encodeCrewLink, NAME_MAX, PLAN_MAX, type CrewSize, type JoinLink } from '../../core/crew/links';
-import { deriveJar, jarActs, jarDuration, JAR_FROM_KEY, JAR_KINDS, type JarEntry } from '../../core/yatra/jar';
+import { deriveJar, FOCUS_RATE_FROM_KEY, jarActs, jarDuration, JAR_FROM_KEY, JAR_KINDS, type JarEntry } from '../../core/yatra/jar';
 import { acceptJoin, crewId, receiveCrewLink, saveCrew } from '../../data/repos/crew';
 import { inBrowser } from '../../platform/links';
 import { saveFileNow, shareFileNow, shareTextNow, shareNote } from '../shareActions';
@@ -30,14 +30,14 @@ let pastedRoute = '';
 function useCrewData() {
   const today = dayKey(Date.now()); // eslint-disable-line react-hooks/purity
   const data = useLiveQuery(async () => ({
-    row: await db.settings.get(CREW_KEY), from: await db.settings.get(JAR_FROM_KEY),
+    row: await db.settings.get(CREW_KEY), from: await db.settings.get(JAR_FROM_KEY), rateFrom: await db.settings.get(FOCUS_RATE_FROM_KEY),
     facts: await db.ledger.where('kind').anyOf(JAR_KINDS).toArray(), focus: await db.focus.filter(row => row.deleted === 0).toArray(),
   }), []);
   return useMemo(() => {
     if (!data) return undefined;
     const crew = data.row && !data.row.deleted ? readCrew(data.row.value) : null;
     const from = typeof data.from?.value === 'string' ? data.from.value : today;
-    const entries: JarEntry[] = deriveJar(jarActs(data.facts, data.focus), from, today);
+    const entries: JarEntry[] = deriveJar(jarActs(data.facts, data.focus, data.rateFrom && !data.rateFrom.deleted && typeof data.rateFrom.value === 'string' ? data.rateFrom.value : undefined), from, today);
     return { crew, entries, today };
   }, [data, today]);
 }

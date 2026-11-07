@@ -5,7 +5,8 @@ import { dayKey } from '../time/dayKey';
 
 /**
  * Spec 54: the jar is the Yatra trail filling from real things, in minutes. A Train session, a Mind board or case and a
- * Calm session each add 10 (one stretch, today's pace); each full 30 min of focus in a day adds 5; a chapter, an idea
+ * Calm session each add 10 (one stretch, today's pace); each full 30 min of focus in a day adds 5 (from focusRateFrom,
+ * spec 571 E1: 1 for each full 3 min); a chapter, an idea
  * or a lesson finished adds 5; lights out on time adds 10. Self-checks and phone use add nothing. At most 60 count in
  * a planning day; past that, acts still count everywhere else and the trail waits for tomorrow. Only sessions light
  * stars. All derived: nothing is stored but the day the jar started (jarFrom) and the open plan.
@@ -13,9 +14,26 @@ import { dayKey } from '../time/dayKey';
 export type SessionKind = 'train' | 'mind' | 'calm';
 export type JarKind = SessionKind | 'focus' | 'read' | 'lesson' | 'lightsout';
 
-export const JAR = { stretchMinutes: 10, dayCap: 60, session: 10, focusBlockMinutes: 30, focusBlock: 5, read: 5, lesson: 5, lightsOut: 10 } as const;
+export const JAR = { stretchMinutes: 10, dayCap: 60, session: 10, focusBlockMinutes: 30, focusBlock: 5, focusRateMinutes: 3, read: 5, lesson: 5, lightsOut: 10 } as const;
 /** The first planning day walked in jar minutes; earlier days keep the rule they were walked by (forward only). */
 export const JAR_FROM_KEY = 'yatra.jarFrom';
+/**
+ * Spec 571 E1 (§0.12): the first planning day whose focus fills the jar 1 min per full 3 min (the 60-a-day cap is
+ * unchanged). Written once on the first run after the update, like jarFrom; days before it keep 5 per full 30.
+ */
+export const FOCUS_RATE_FROM_KEY = 'yatra.focusRateFrom';
+
+/** A day's focus in jar minutes: 1 per full 3 min from `rateFrom`, else 5 per full 30 min. */
+export function focusJarMinutes(ms: number, day: string, rateFrom?: string): number {
+  if (rateFrom !== undefined && day >= rateFrom) return Math.floor(ms / (JAR.focusRateMinutes * 60_000));
+  return Math.floor(ms / (JAR.focusBlockMinutes * 60_000)) * JAR.focusBlock;
+}
+
+/** The focus rate's first day from the settings rows, or undefined until it is written. */
+export function focusRateFrom(settings: readonly SettingRow[]): string | undefined {
+  const value = settings.find(row => row.key === FOCUS_RATE_FROM_KEY && !row.deleted)?.value;
+  return typeof value === 'string' ? value : undefined;
+}
 
 export function sessionKind(fact: LedgerRow): SessionKind | null {
   if (fact.deleted) return null;
@@ -46,8 +64,8 @@ function factAct(fact: LedgerRow): JarAct | null {
   return null;
 }
 
-/** Focus per planning day, split at 04:00, as one act per day: 5 min for each full 30 min (ended focus only). */
-function focusActs(focus: readonly FocusRow[]): JarAct[] {
+/** Focus per planning day, split at 04:00, as one act per day (ended focus only), at that day's rate (focusJarMinutes). */
+function focusActs(focus: readonly FocusRow[], rateFrom?: string): JarAct[] {
   const days = new Map<string, { ms: number; at: number }>();
   for (const row of focus) {
     if (row.deleted || row.endedAt == null || row.endedAt <= row.startedAt) continue;
@@ -64,12 +82,12 @@ function focusActs(focus: readonly FocusRow[]): JarAct[] {
     }
   }
   return [...days].map(([day, { ms, at }]) => ({ id: `focus:${day}`, kind: 'focus' as const, dayKey: day, at, label: LABEL.focus!,
-    minutes: Math.floor(ms / (JAR.focusBlockMinutes * 60_000)) * JAR.focusBlock })).filter(act => act.minutes > 0);
+    minutes: focusJarMinutes(ms, day, rateFrom) })).filter(act => act.minutes > 0);
 }
 
-/** Every act that can fill the jar, in the order they happened (day, then time, then id). */
-export function jarActs(facts: readonly LedgerRow[], focus: readonly FocusRow[]): JarAct[] {
-  return [...facts.map(factAct).filter((act): act is JarAct => act !== null), ...focusActs(focus)]
+/** Every act that can fill the jar, in the order they happened (day, then time, then id). `focusRateFrom`: spec 571 E1. */
+export function jarActs(facts: readonly LedgerRow[], focus: readonly FocusRow[], focusRateFrom?: string): JarAct[] {
+  return [...facts.map(factAct).filter((act): act is JarAct => act !== null), ...focusActs(focus, focusRateFrom)]
     .sort((a, b) => a.dayKey.localeCompare(b.dayKey) || a.at - b.at || a.id.localeCompare(b.id));
 }
 
@@ -107,7 +125,7 @@ export const JAR_LINE_MS = 10_000;
 export function jarLineFor(rows: { facts: readonly LedgerRow[]; settings: readonly SettingRow[]; focus: readonly FocusRow[] }, today: string, now: number, added: readonly LedgerRow[]): string | undefined {
   const from = rows.settings.find(row => row.key === JAR_FROM_KEY && !row.deleted)?.value;
   if (typeof from !== 'string') return undefined;
-  const entries = deriveJar(jarActs(rows.facts.filter(row => row.dayKey === today), rows.focus), from, today);
+  const entries = deriveJar(jarActs(rows.facts.filter(row => row.dayKey === today), rows.focus, focusRateFrom(rows.settings)), from, today);
   const entry = entries.find(row => added.some(fact => fact.id === row.id)) ?? entries.filter(row => row.kind !== 'focus' && row.at >= now - JAR_LINE_MS && row.at <= now + JAR_LINE_MS).at(-1);
   return jarFinishLine(entry, jarDay(entries, today).capped) ?? undefined;
 }
