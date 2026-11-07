@@ -102,6 +102,13 @@ test('Library: at 200% every tile shows its title as live text under the cover; 
     expect(tile.lines, `${tile.text} at most 2 lines`).toBeLessThanOrEqual(2);
     expect(tile.underCover && tile.aboveCount && tile.clearOfNext, `${tile.text} under the cover, above the count, clear of the next tile`).toBe(true);
   }
+  // b2 (gate-rem3 report): a tile cut at the right edge is the shelf row's own sideways scroll, never the page's.
+  const widths = await page.evaluate(() => ({ page: document.documentElement.scrollWidth, view: document.documentElement.clientWidth,
+    rows: [...document.querySelectorAll<HTMLElement>('.read-library .read-shelf-row')].map(row => ({ overflowX: getComputedStyle(row).overflowX, scroll: row.scrollWidth, client: row.clientWidth })) }));
+  console.log(`covers 200% widths: ${JSON.stringify(widths)}`);
+  expect(widths.page, 'no sideways page scroll at 200%').toBeLessThanOrEqual(widths.view);
+  expect(widths.rows.length).toBeGreaterThan(0);
+  for (const row of widths.rows) expect(row.overflowX, 'each shelf row scrolls on its own').toBe('auto');
 });
 
 test('the cover is a picture only: the tile still says the full title', async ({ page }) => {
