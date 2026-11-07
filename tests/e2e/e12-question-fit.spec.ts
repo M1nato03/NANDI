@@ -107,6 +107,8 @@ for (const fixture of fixtures.filter(item => item.size === 'longest')) {
     await expect(cue).toBeVisible();
     const box = await cue.boundingBox();
     expect(box && box.width >= 48 && box.height >= 48, JSON.stringify(box)).toBe(true);
+    // b2: the fit checks leave the chevron out, so it gets its own: fully on screen whenever it shows.
+    expect(box && box.x >= 0 && box.y >= 0 && box.x + box.width <= 360 && box.y + box.height <= 800, JSON.stringify(box)).toBe(true);
     await cue.click();
     // This file runs with reduced motion, so the scroll is instant: one read straight after the tap, no polling.
     expect(await firstAnswerInView(page), JSON.stringify(await geometry(page))).toBe(true);
@@ -179,9 +181,12 @@ test('the fit follows the page when something above the question comes and goes'
   const before = await checkBottom();
   // Stand-in for the one-time "Ready to work offline" notice, which sits in the page flow above the question.
   await page.evaluate(() => { const note = document.createElement('div'); note.id = 'e12-note'; note.style.height = '80px'; document.querySelector('main')!.prepend(note); });
-  await expectPageFits(page);
+  // With 80 px less room the question may turn to page scroll (nothing is picked yet); Check stays in view either way.
+  await settleQuestionFit(page);
   await expectCheckFits(page, false);
   await page.evaluate(() => document.getElementById('e12-note')!.remove());
   await expect.poll(checkBottom, { message: 'Check returns to the bottom once the notice goes' }).toBe(before);
+  await expect(page.locator('.learn-drop.learn-page')).toHaveCount(0);
+  await expectPageFits(page);
   await expectAnswersShown(page);
 });

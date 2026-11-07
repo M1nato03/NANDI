@@ -8,8 +8,8 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
  * 'fit'  – today's layout, pixel for pixel.
  * 'page' – the page scrolls; the action row is sticky.
  *
- * Decided once per item load, and again on a screen size change, a text size change or a font load, but only while
- * nothing has been picked: the layout never flips under someone's finger.
+ * Decided once per item load, and again whenever the screen, the text size, a font or the question's own size changes,
+ * but only while nothing has been picked: the layout never flips under someone's finger.
  */
 export type QuestionMode = 'fit' | 'page';
 
@@ -69,12 +69,21 @@ export function useQuestionMode(itemKey: string, locked: boolean): [(node: HTMLE
     let rem = 0;
     const sizes = new ResizeObserver(() => { const next = probe.getBoundingClientRect().width; if (rem && next !== rem) later(); rem = next; });
     sizes.observe(probe);
+    // The question's own size settles after the first paint (fonts, the friend's art, the fit height arriving): watch
+    // the drop and everything in its middle, so the first decision is made again on the settled layout.
+    const drop = node.current;
+    const content = new ResizeObserver(later);
+    if (drop) {
+      content.observe(drop);
+      for (const child of drop.querySelector(':scope > .learn-q')?.children ?? []) content.observe(child);
+    }
     window.addEventListener('resize', resized);
     window.visualViewport?.addEventListener('resize', resized);
     document.fonts?.addEventListener('loadingdone', later);
     return () => {
       cancelAnimationFrame(frame);
       sizes.disconnect();
+      content.disconnect();
       probe.remove();
       window.removeEventListener('resize', resized);
       window.visualViewport?.removeEventListener('resize', resized);

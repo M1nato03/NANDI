@@ -44,7 +44,8 @@ export async function expectAnswersShown(page: Page) {
 
 export async function expectCheckFits(page: Page, enabled: boolean) {
   // Covers the new-item Check, review pair and gold confidence chips without scrolling any of them into view.
-  const buttons = page.locator('.learn-check button');
+  // In page mode (large text) the "Answers below" chevron rides on the row's top edge; it is not a Check control.
+  const buttons = page.locator('.learn-check button:not(.learn-more-cue button)');
   await expect.poll(() => buttons.count()).toBeGreaterThan(0);
   await expect.poll(() => buttons.evaluateAll(nodes => nodes.length > 0 && nodes.every(node => {
     const box = node.getBoundingClientRect();
