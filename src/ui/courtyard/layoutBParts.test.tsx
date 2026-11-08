@@ -23,7 +23,7 @@ describe('the prop → part table', () => {
   it('every part keeps its aspect (contain fit); the ones more than 25% off their rect are listed for b2', () => {
     const off = PROP_PARTS.filter(row => containFit(PARTS[row.part].box, css(anchors.props[row.prop]!)).aspectOff > 1.25).map(row => row.prop);
     expect(off).toEqual(['mor-marigold-bed', 'mor-birdbath-water', 'moti-picture-frame', 'moti-bulbs-small-photos', 'kapi-kite', 'kapi-telescope',
-      'nandi-dumbbells', 'nandi-medals', 'kachhua-pillow', 'kachhua-charpai', 'chiku-open-book']);
+      'nandi-dumbbells', 'nandi-medals', 'kachhua-pillow', 'kachhua-charpai', 'chiku-open-book', 'chiku-reading-lamp']);
   });
 });
 

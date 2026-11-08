@@ -14,7 +14,8 @@ describe('courtyard anchors: the file', () => {
     expect(anchors.friends.nandi.area).toBe('train');
     expect(anchors.headerBottom).toBe(216);
     expect(anchors.cardTop).toBeLessThan(anchors.tabTop);
-    expect(raw.pass).toBe('p9p');
+    // The pass the app reads (scripts/import-courtyard-anchors.ts): p9q since 8 Nov, re-imported at "9q done".
+    expect(raw.pass).toBe('p9q');
   });
 
   it('names every missing key at once instead of guessing', () => {
