@@ -47,20 +47,21 @@ describe('layout B geometry', () => {
   });
 });
 
-describe('layout B gate (b2 option A): blocked at every object scale >= 1.0, reported to b2', () => {
-  // The best corner steps a grid search found at s_obj 1.0 (garden 30-50, rest 28-52, keep -30..-60, books -30..-60,
-  // puzzles -10..-22), over 360x766/800/840, 390x844, 412x915 and the 1280x800 frame, stages 1-5.
-  const SHIFT = { garden: 38, rest: 34, keep: -48, books: -42, puzzles: -10 };
-  const structural = (line: string) => !/over its own|from its own things|covers \d+%/.test(line);
-  it('blocking pair 1: Mor’s second pot touches the door at s_obj 1.0 (78 units of pots, 52 between the 16 px line and the door)', () => {
-    expect(courtyardProblems(360, 800, 5, { objectScale: 1, shift: SHIFT }).filter(structural)).toEqual(['mor-pot-2 touches door']);
+describe('layout B gate (b2 option A + the three fixes): no single-row layout fits, reported to b2', () => {
+  // Width budget in scene units at s_obj 1.0 with the friends at 1.3x and standing BESIDE their things (b2, 8 Nov):
+  // the front row needs Kachhua's corner + Kachhua + Nandi's corner + Chiku + Chiku's corner, against 328 usable.
+  const span = (corner: string, stage = 5) => { const rects = OBJECTS.filter(object => object.corner === corner && object.from <= stage).map(object => object.rect); return Math.max(...rects.map(r => r[0] + r[2])) - Math.min(...rects.map(r => r[0])); };
+  it('the stage-5 front row needs about 455 units for 328', () => {
+    const friends = (46 + 46) * B_SCALE; // Kachhua and Chiku beside their things; Nandi sits on his mat
+    const need = span('rest') + span('gym') + span('books') + friends;
+    expect(span('rest')).toBe(105);
+    expect(span('gym')).toBe(114);
+    expect(span('books')).toBe(118);
+    expect(Math.round(need)).toBe(457);
+    expect(need).toBeGreaterThan(360 - 2 * 16);
   });
-  it('blocking pair 2: on 16:9 and in the desktop 0.6 frame, Mor’s and Kachhua’s taps overlap (rows too close)', () => {
-    expect(courtyardProblems(360, 640, 3, { objectScale: 1, shift: SHIFT }).filter(structural)).toContain('mor and kachhua: taps overlap');
-    expect(courtyardProblems(1280, 800, 3, { objectScale: 1, shift: SHIFT }).filter(structural)).toContain('mor and kachhua: taps overlap');
-  });
-  it('the beside rule: today’s friend spots stand over their own things (box test)', () => {
-    const lines = courtyardProblems(360, 800, 5, { objectScale: 1, shift: SHIFT }).filter(line => !structural(line));
-    for (const line of ['plan: over its own mor-pot-1', 'remember: over its own moti-jars', 'learn: over its own chiku-shelf']) expect(lines).toContain(line);
+  it('the best searched layout still fails (s_obj 1.2 had the fewest problems: 312 across 7 sizes x 5 stages)', () => {
+    const shift = { garden: 20, rest: 40, keep: -60, books: -30, puzzles: -10 };
+    expect(courtyardProblems(360, 800, 5, { objectScale: 1.2, shift })).toContain('kachhua and chiku: taps overlap');
   });
 });
