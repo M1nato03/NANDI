@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { LARGE_TEXT_ROOT_PX, useRootPx } from '../shell/useRootPx';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { masteryMapState, type Drop } from '../../core/learn/engine';
@@ -97,6 +97,9 @@ function TodayIdea({ drop, selected }: { drop?: Drop; selected: readonly string[
 /** Spec 33: Read (Continue, the Library) and each book's page; spec 571: Moti's Remember door. */
 export function Learn({ entry, book: bookParam }: { entry?: string; book?: string }) {
   const [practice, setPractice] = useState<Practice>();
+  // CLS (gate-s2): on Remember, how learning holds appears once Card reviews above it has landed.
+  const [reviewsReady, setReviewsReady] = useState(false);
+  const reviewsLanded = useCallback(() => setReviewsReady(true), []);
   const [moti, setMoti] = useState<'haveli' | 'matka' | null>(null);
   const [chikuFor, setChikuFor] = useState<{ conceptId: string; title: string; scene: ChikuScene } | null>(null);
   const [chikuBack, setChikuBack] = useState<string>();
@@ -187,8 +190,8 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
       {haveliIdeas.length > 0 && <button type="button" className="secondary learn-haveli-action" onClick={() => setMoti('haveli')}>Haveli · {haveliCount(haveliToday, litToday, visits, haveliCap)}</button>}
       {matkaItems.length > 0 && matkaDone.length < matkaItems.length && <button type="button" className="secondary learn-matka-action" onClick={() => setMoti('matka')}>Matka · {matkaItems.length - matkaDone.length} sealed guesses</button>}
     </section>
-    <CardReviews />
-    <LearningHolding />
+    <CardReviews onReady={reviewsLanded} />
+    {reviewsReady && <LearningHolding />}
     {message && <p role="status">{message}</p>}{scene}
   </section>;
 

@@ -3,6 +3,14 @@ import { expect, test, type Browser, type Page, type TestInfo } from '@playwrigh
 // Spec 55: two browser contexts are two phones. Links travel as the text a person would paste into a chat; here each
 // phone's "share" lands in its own outbox (no share sheet on the web build, so the app copies it), and the other phone
 // pastes it into Yatra → your crew → "Paste a crew link", as an app user does before App Links are live.
+/** Spec 571 stage 2: the Courtyard's card holds the week's rows; its handle opens it (a button as well as a swipe). */
+async function openCard(page: Page) {
+  const handle = page.locator('.courtyard-card-handle');
+  await expect(handle).toBeVisible();
+  if (await handle.getAttribute('aria-expanded') !== 'true') await handle.click();
+  await expect(handle).toHaveAttribute('aria-expanded', 'true');
+}
+
 const MADE = new Date('2026-11-01T10:00:00');
 const LATER = new Date('2026-11-05T12:00:00');
 
@@ -74,7 +82,8 @@ test('two phones: make, invite, join, joined back, add, the same add twice, an i
   // Dev walks four full days, then sends from Home.
   await dev.clock.setFixedTime(LATER);
   await seedSessions(dev, ['2026-11-02', '2026-11-03', '2026-11-04', '2026-11-05'], 6);
-  await dev.goto('/?e2e#yatra');
+  await dev.goto('/?e2e#courtyard');
+  await openCard(dev);
   await dev.getByRole('button', { name: 'Send' }).click();
   const add = await lastSent(dev);
   expect(add).toMatch(/^Dev added 4 h to our crew jar · 4 h of 5 h · https:\/\/\S+#crew\/add\//);
@@ -97,7 +106,8 @@ test('two phones: make, invite, join, joined back, add, the same add twice, an i
   await seedSessions(riya, ['2026-11-05'], 6);
   await riya.goto('/?e2e#yatra/crew');
   await expect(riya.getByRole('heading', { name: 'The crew filled 5 h: Sunday chai at the hill point' })).toBeVisible();
-  await riya.goto('/?e2e#yatra');
+  await riya.goto('/?e2e#courtyard');
+  await openCard(riya);
   await riya.getByRole('button', { name: 'Send' }).click();
   await paste(dev, await lastSent(riya));
   await expect(dev.getByRole('heading', { name: 'The crew filled 5 h: Sunday chai at the hill point' })).toBeVisible();
@@ -123,7 +133,8 @@ test('a crew link opened in a browser leads with "Have the app? Copy this link"'
 
 test('from Yatra with no crew: a row leads to making a crew, and "Paste a crew link" is one tap (no URL typed)', async ({ browser }, info) => {
   const riya = await phone(browser, MADE, info);
-  await riya.goto('/?e2e#yatra');
+  await riya.goto('/?e2e#courtyard');
+  await openCard(riya);
   await riya.getByRole('button', { name: 'Fill a jar with friends' }).click();
   await riya.getByLabel('What the crew fills up for').fill('Sunday chai');
   await riya.getByLabel('Your first name').fill('Riya');
@@ -131,7 +142,8 @@ test('from Yatra with no crew: a row leads to making a crew, and "Paste a crew l
   await riya.getByRole('button', { name: 'Invite a friend' }).click();
   const invite = await lastSent(riya);
   const dev = await phone(browser, MADE, info);
-  await dev.goto('/?e2e#yatra');
+  await dev.goto('/?e2e#courtyard');
+  await openCard(dev);
   await dev.getByRole('button', { name: 'Paste a crew link' }).click();
   // The field is open and focused, ready for the keyboard's Paste.
   await expect(dev.getByLabel('Crew link')).toBeFocused();
@@ -139,7 +151,8 @@ test('from Yatra with no crew: a row leads to making a crew, and "Paste a crew l
   await dev.getByRole('button', { name: 'Use this link' }).click();
   await expect(dev.getByRole('heading', { name: 'Join the Sunday chai crew?' })).toBeVisible();
   // With a crew, Yatra still offers the paste in one tap.
-  await riya.goto('/?e2e#yatra');
+  await riya.goto('/?e2e#courtyard');
+  await openCard(riya);
   await expect(riya.getByRole('region', { name: 'Sunday chai crew' })).toContainText('0 m of 15 h for Sunday chai');
   await riya.getByRole('button', { name: 'Paste a crew link' }).click();
   await expect(riya.getByLabel('Crew link')).toBeFocused();

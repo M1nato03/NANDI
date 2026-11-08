@@ -18,7 +18,7 @@ async function addSplitTask(page: Page) {
   await preview.getByLabel('Number of steps').selectOption('9');
   await preview.getByLabel('Step 2 name').fill('Prepare the app release');
   await preview.getByRole('button', { name: 'Save' }).click();
-  await expect(page.getByRole('main').getByRole('status')).toContainText('Split task saved.');
+  await expect(page.getByRole('main').getByRole('status').filter({ hasText: 'Split task saved.' })).toBeVisible();
 }
 
 // Item 135 + spec 27 (item 183): in Mor's list a split task is one plain row (circle, Start, Tomorrow →); its steps
@@ -50,7 +50,7 @@ test('large task preview, one row for the split task, its steps in Details, and 
   await detail.getByRole('button', { name: 'Drop whole task' }).click();
   await expect(detail).toContainText('This drops the task and its remaining steps.');
   await detail.getByRole('button', { name: 'Confirm drop' }).click();
-  await expect(page.getByRole('main').getByRole('status')).toContainText('Task dropped.');
+  await expect(page.getByRole('main').getByRole('status').filter({ hasText: 'Task dropped.' })).toBeVisible();
   await expect(parent).toHaveCount(0);
   await page.reload();
   await expect(page.getByRole('region', { name: 'Today' })).not.toContainText('Complete the app work');
@@ -76,7 +76,7 @@ test('the split task circle asks once, then marks every open step done', async (
   await expect(parent).not.toContainText('Mark all 9 steps done?');
   await circle.click();
   await parent.getByRole('button', { name: 'Mark done' }).click();
-  await expect(page.getByRole('main').getByRole('status')).toContainText('All steps done.');
+  await expect(page.getByRole('main').getByRole('status').filter({ hasText: 'All steps done.' })).toBeVisible();
   await expect(today).not.toContainText('Complete the app work');
   await expect(page.locator('.mor-done summary')).toContainText('Done');
   await page.reload();

@@ -306,8 +306,8 @@ test('G1 group 10: Grow Calm & Sleep and Night', async ({ page }) => {
   await expect(page.getByRole('region', { name: 'Shutdown and bedtime' })).toBeVisible();
   // row 188: Long-term bedtime goal
   await expect(page.getByLabel('Long-term bedtime goal')).toBeVisible();
-  // row 150: Night review and drop, reached from the Night status dot.
-  await page.getByRole('button', { name: /^Night: / }).click();
+  // row 150: Night review and drop, reached from Calm & Sleep (stage 2 (ii): the Night dot is gone).
+  await page.getByTestId('night-link').click();
   await expect(page.getByRole('heading', { name: 'Tonight' })).toBeVisible();
   // row 148: Night plan
   await expect(page.getByRole('article', { name: 'Tonight card' })).toBeVisible();

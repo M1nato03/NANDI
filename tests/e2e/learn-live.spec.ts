@@ -74,7 +74,8 @@ test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo
   // Spec 571: the drop hands back to Read inside Grow.
   await expect(page).toHaveURL(/#grow\/read$/);
   await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Read: done' })).toBeVisible();
+  // Stage 2: today's drop is one of Mind's two acts, so the Mind ring is half lit.
+  await expect(page.getByRole('button', { name: "Mind: today's idea. One more, a different one, closes it." })).toBeVisible();
   const node = await openIdeas(page, 'money-markets', 'Inflation');
   await expect(page.locator('.read-chapter').first().locator('.learn-idea-row')).toHaveCount(3);
   await expect(page.locator('.learn-idea-row')).toHaveCount(10);

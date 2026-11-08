@@ -43,6 +43,13 @@ async function withPicks(page: Page, goals: string[], size = goals.length > 2 ? 
   await expect(page.locator('.next-move-go')).toBeVisible();
 }
 const move = (page: Page) => page.locator('.next-move-go');
+/** Spec 571 stage 2: the Courtyard's card holds the week's rows; its handle opens it (a button as well as a swipe). */
+async function openCard(page: Page) {
+  const handle = page.locator('.courtyard-card-handle');
+  await expect(handle).toBeVisible();
+  if (await handle.getAttribute('aria-expanded') !== 'true') await handle.click();
+  await expect(handle).toHaveAttribute('aria-expanded', 'true');
+}
 /** Spec 571 §0.20: the header rings' lines (each ring's aria-label), in order, once the rings are there. */
 const ringLines = (page: Page) => page.getByRole('navigation', { name: "Today's rings" }).getByRole('button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')));
 const ALL_RINGS = ['Yatra: keep one promise.', 'Body: one real move.', 'Mind: any two.'];
@@ -261,6 +268,7 @@ test.describe('the ten-day offer', () => {
   test('shows on the tenth useful day, not the ninth; "Not now" is final (day 11, day 20, a reload)', async ({ page }) => {
     await page.clock.setFixedTime(NOON);
     await withPicks(page, ['learn', 'mind']);
+    await openCard(page);
     const offer = page.getByRole('region', { name: 'Add one more thing' });
     await putFacts(page, days(21, 29).map(day => fact(day)));
     await page.reload();
@@ -268,6 +276,7 @@ test.describe('the ten-day offer', () => {
     await expect(offer).toHaveCount(0);
     await putFacts(page, [fact('2026-10-30')]);
     await page.reload();
+    await openCard(page);
     await expect(offer).toContainText('Ten useful days. Add one more thing?');
     // Nine of the ten were tasks done: Plan is the area used most without being picked.
     await expect(offer.getByRole('button', { name: 'Get things done' })).toBeVisible();
@@ -288,6 +297,7 @@ test.describe('the ten-day offer', () => {
     await withPicks(page, ['plan', 'learn']);
     await putFacts(page, [...days(21, 30).map(day => fact(day)), fact('2026-10-22', 'mind', 'board'), fact('2026-10-25', 'mind', 'board')]);
     await page.reload();
+    await openCard(page);
     const offer = page.getByRole('region', { name: 'Add one more thing' });
     await offer.getByRole('button', { name: 'Sharpen my mind' }).click();
     await expect(offer).toHaveCount(0);
@@ -298,6 +308,7 @@ test.describe('the ten-day offer', () => {
     await withPicks(page, ['plan', 'learn', 'mind', 'sleep']);
     await putFacts(page, days(21, 30).map(day => fact(day)));
     await page.reload();
+    await openCard(page);
     await expect(page.getByRole('region', { name: 'Add one more thing' }).getByRole('button', { name: 'Everything' })).toBeVisible();
     await putSettings(page, [['profile.size', 'all']]);
     await page.reload();

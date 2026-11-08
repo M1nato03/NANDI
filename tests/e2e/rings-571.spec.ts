@@ -53,8 +53,17 @@ test('inside the night window every ring shows the moon and says the rings rest'
   // The default bedtime is 01:30, so 02:30 is inside the window (it ends at 05:00).
   await page.clock.install({ time: new Date('2026-11-11T02:30:00') });
   await page.goto('/?e2e#yatra');
+  // After bedtime the app opens the night deck (no top bar there); the rings are one tap behind it, on a tab route.
+  const leave = page.getByRole('button', { name: 'Leave night deck' });
   const rings = page.getByRole('navigation', { name: "Today's rings" });
-  await expect(rings).toBeVisible({ timeout: 15_000 });
+  // As yatra-trek's openYatra: stay only once the tab route holds (the deck can take over once settings load).
+  await expect(async () => {
+    if (await leave.isVisible()) await leave.click();
+    await page.evaluate(() => { if (location.hash !== '#yatra') location.hash = '#yatra'; });
+    await expect(rings).toBeVisible({ timeout: 1500 });
+    await page.waitForTimeout(800);
+    await expect(rings).toBeVisible({ timeout: 100 });
+  }).toPass({ timeout: 20_000 });
   await expect(rings.locator('.ring-mark-moon')).toHaveCount(3);
   for (const button of await rings.getByRole('button').all()) await expect(button).toHaveAccessibleName('Rings rest for the night.');
   await rings.getByRole('button').first().click();

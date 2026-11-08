@@ -13,12 +13,15 @@ test('reminders have no time, survive reload and backup, and never fill the Plan
   await reminders.getByRole('button', { name: 'Add', exact: true }).click();
   await reminders.getByLabel('New reminder').fill('call Nani');
   await reminders.getByRole('button', { name: 'Add', exact: true }).click();
-  await expect(reminders.locator('.reminder-list').first()).toContainText('buy a notebook');
+  // Both added in the same instant (the clock is installed), so their order is not the point: the trimmed text is.
+  await expect(reminders.locator('.reminder-list').first()).toContainText(/buy a notebook|call Nani/);
+  await expect(reminders.getByText('buy a notebook', { exact: true })).toBeVisible();
   await expect(reminders.locator('h2')).toContainText('2');
 
   await reminders.getByRole('button', { name: 'Done: buy a notebook' }).click();
   await expect(reminders.getByText('Done lately · 1')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Plan: not done' })).toBeVisible();
+  // A reminder is not a planned task: the Yatra ring stays unlit.
+  await expect(page.getByRole('button', { name: 'Yatra: keep one promise.' })).toBeVisible();
 
   await page.reload();
   await openMore(page);

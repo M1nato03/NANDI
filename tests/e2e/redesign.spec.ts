@@ -25,9 +25,10 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Call bank');
     await page.getByRole('region', { name: 'Today', exact: true }).getByRole('button', { name: /^Done: Call bank/ }).click();
-    await expect(page.getByRole('button', { name: 'Plan: done' })).toBeVisible();
-    await page.getByRole('button', { name: 'Read: not done' }).click();
-    // Spec 571 (b2): the reading dot keeps its name, Read, and opens Grow › Read.
+    // Stage 2: a planned task done lights the Yatra ring, which names the promise kept.
+    await expect(page.getByRole('button', { name: 'Yatra: you kept a promise, Call bank.' })).toBeVisible();
+    await page.getByRole('button', { name: 'Mind: any two.' }).click();
+    await page.locator('.today-rings-line').getByRole('button', { name: 'Open Read' }).click();
     await expect(page).toHaveURL(/#grow\/read$/);
     await expect(page.getByRole('heading', { name: 'Read', exact: true })).toBeVisible();
     await expect(page.getByRole('region', { name: 'Continue' })).toBeVisible();

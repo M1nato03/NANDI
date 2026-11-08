@@ -35,7 +35,11 @@ test('the courtyard grows from practice days and opens from Plan', async ({ page
   await expect(page.locator('.courtyard-banner [data-cast="Nandi"]')).toHaveAttribute('data-pose', 'cheer');
   await expect(page.locator('.courtyard-banner [data-cast="Kapi"]')).toHaveAttribute('data-pose', 'idle');
   await banner.click();
-  await expect(page.getByRole('heading', { name: 'Courtyard', exact: true })).toBeVisible();
+  // Spec 571 stage 2: the banner opens the Courtyard (layout B); a tap on a friend opens its corner (spec 35).
+  await expect(page).toHaveURL(/#courtyard$/);
+  await expect(page.getByRole('heading', { name: 'Courtyard', exact: true })).toBeAttached();
+  await page.locator('.courtyard-friend-tap[data-area="train"]').click();
+  await expect(page).toHaveURL(/#courtyard\/view\/train$/);
   const nandi = page.getByRole('region', { name: 'Nandi card' });
   await expect(nandi).toContainText('7 practice days · stage 2 of 5 · done today');
   await expect(nandi).toContainText('7 more days of training add dumbbells.');
@@ -74,7 +78,11 @@ test('every friend sleeps after bedtime', async ({ page }) => {
   await expect(leave).toBeVisible();
   await leave.click();
   await page.evaluate(() => { location.hash = '#you/courtyard'; });
-  await expect(page.locator('div.courtyard-night')).toBeVisible();
+  // Layout B (stage 2): the home's courtyard sleeps.
+  await expect(page.locator('div.courtyard-b.courtyard-night')).toBeVisible();
+  for (const name of ['Nandi', 'Moti', 'Chiku', 'Kapi', 'Mor', 'Kachhua']) await expect(page.locator(`.courtyard-b [data-cast="${name}"]`)).toHaveAttribute('data-pose', 'rest');
+  // And a corner's view says so in words.
+  await page.evaluate(() => { location.hash = '#courtyard/view/sleep'; });
   await expect(page.locator('.courtyard-screen .courtyard-caption')).toHaveText('The courtyard is asleep. See you in the morning.');
-  for (const name of ['Nandi', 'Moti', 'Chiku', 'Kapi', 'Mor', 'Kachhua']) await expect(page.locator(`.courtyard [data-cast="${name}"]`)).toHaveAttribute('data-pose', 'rest');
+  for (const name of ['Nandi', 'Moti', 'Chiku', 'Kapi', 'Mor', 'Kachhua']) await expect(page.locator(`.courtyard-screen .courtyard [data-cast="${name}"]`)).toHaveAttribute('data-pose', 'rest');
 });

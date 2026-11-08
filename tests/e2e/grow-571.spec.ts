@@ -115,11 +115,9 @@ test('Read no longer shows Moti; Play no longer shows card reviews; the reading 
   await page.goto('/?e2e#grow/remember');
   await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
   await expect(page.getByTestId('moti-review')).toBeVisible();
-  // b2 ring option (b): the reading dot keeps the name Read and opens Grow › Read.
-  await expect(page.getByRole('button', { name: /^Grow: / })).toHaveCount(0);
-  const dot = page.getByRole('button', { name: /^Read: / });
-  await expect(dot).toBeVisible();
-  await dot.click();
+  // Stage 2: the Mind ring took the reading dot's place; its line leads to Grow › Read (Learn is picked by default).
+  await page.getByRole('button', { name: 'Mind: any two.' }).click();
+  await page.locator('.today-rings-line').getByRole('button', { name: 'Open Read' }).click();
   await expect(page).toHaveURL(/#grow\/read$/);
 });
 

@@ -32,6 +32,6 @@ test('the Grow dot and the night deck count the easy daily of the featured type'
   await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
   await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
   await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-  // Spec 571: a finished board fills the Grow dot.
-  await expect(page.getByRole('button', { name: 'Read: done' })).toBeVisible();
+  // Stage 2: Kapi's daily board is one of Mind's two acts, so the Mind ring is half lit.
+  await expect(page.getByRole('button', { name: "Mind: Kapi's board. One more, a different one, closes it." })).toBeVisible();
 });

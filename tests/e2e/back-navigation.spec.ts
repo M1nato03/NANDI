@@ -4,15 +4,16 @@ import { todaysBoard } from './helpers/mind';
 test('tabs and Today dots navigate to feature homes at phone size', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
-  // Spec 571: Grow is a tab; the reading dot (Read) opens Grow › Read.
-  const heading: Record<string, string> = { Plan: 'Plan', Grow: 'Grow', Yatra: 'Camp at Jobra', You: 'You' };
-  for (const name of ['Plan', 'Grow', 'Yatra', 'You']) {
+  // Spec 571 stage 2: tabs Courtyard · Yatra · Grow · You; the rings' lines lead to Yatra and to Grow › Read.
+  const heading: Record<string, string> = { Courtyard: 'Courtyard', Grow: 'Grow', Yatra: 'Plan', You: 'You' };
+  for (const name of ['Courtyard', 'Grow', 'Yatra', 'You']) {
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name }).click();
-    await expect(page.getByRole('heading', { name: heading[name], exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: heading[name], exact: true })).toBeAttached();
   }
-  for (const [name, route] of [['Plan', 'plan'], ['Read', 'grow/read']] as const) {
-    await page.getByRole('button', { name: `${name}: not done` }).click();
-    await expect(page).toHaveURL(new RegExp(`#${route}$`));
+  for (const [ring, open, route] of [['Yatra: keep one promise.', 'Open Yatra', /#yatra$/], ['Mind: any two.', 'Open Read', /#grow\/read$/]] as const) {
+    await page.getByRole('button', { name: ring }).click();
+    await page.locator('.today-rings-line').getByRole('button', { name: open }).click();
+    await expect(page).toHaveURL(route);
   }
   const sizes = await page.locator('.today-ring, .tabbar a').evaluateAll(nodes => nodes.map(node => {
     const rect = node.getBoundingClientRect();

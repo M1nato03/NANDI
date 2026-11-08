@@ -239,6 +239,8 @@ export function TrekStrip() {
   const leg = trek && postcard !== null ? trek.trail.legs[postcard] : undefined;
   const postcards = trek ? trek.legs.filter(row => row.gateOn).length : 0;
 
+  // CLS gate C7 (stage 2): until the trek's data is read, hold the strip's settled height, so Mor's plan below never moves.
+  if (yatra === undefined) return <div className="trek-slot" aria-hidden="true" />;
   return <section className="screen yatra-screen yatra-home trek-strip" aria-label="Yatra">
     <div className="home-title">
       <h2>{trek && yatra ? campLine(trek, yatra.night) : 'Field notes'}</h2>

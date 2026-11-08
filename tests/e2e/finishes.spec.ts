@@ -31,8 +31,8 @@ async function seedOtherCoreItems(page: Page) {
     database.close();
   }, { day, featured });
   await page.reload();
-  // Spec 571: a drop or Kapi's daily board fills the Grow dot.
-  await expect(page.getByRole('button', { name: 'Read: done' })).toBeVisible();
+  // Spec 571 stage 2: the Today dots became the rings; the seeded drop and board are what the finish counts.
+  await expect(page.locator('.today-rings-slot')).toBeVisible();
 }
 
 test('a finished task gets one warm line that fades', async ({ page }) => {

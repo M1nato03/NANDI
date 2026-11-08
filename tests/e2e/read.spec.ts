@@ -139,7 +139,8 @@ test('a finished book offers the next one; the recall and Chiku checks finish th
   await openHash(page, 'grow/read/chapter/money-markets/money-markets-ch1');
   await page.getByRole('button', { name: idea.title, exact: true }).click();
   for (const piece of idea.recall!.pieces) await page.locator('.haveli-tiles').getByRole('button', { name: piece, exact: true }).click();
-  await page.getByRole('button', { name: 'Close' }).click();
+  // The haveli's own Close (the economy toast for the rebuild has a Close too, over the top bar).
+  await page.getByRole('region', { name: "Moti's haveli" }).getByRole('button', { name: 'Close' }).click();
   await expect(page.locator('.read-done-card')).toContainText('Chapter 1 done');
   // Chiku: the chapter's scene (skipping it still finishes the chapter; nothing is lost).
   await openHash(page, 'grow/read/chapter/psychology/psychology-ch1');

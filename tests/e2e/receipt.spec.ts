@@ -22,6 +22,14 @@ async function toHome(page: Page) {
   await expect(page.locator('.next-move-go')).toBeVisible();
 }
 
+/** Spec 571 stage 2: the Courtyard's card holds the week's rows; its handle opens it (a button as well as a swipe). */
+async function openCard(page: Page) {
+  const handle = page.locator('.courtyard-card-handle');
+  await expect(handle).toBeVisible();
+  if (await handle.getAttribute('aria-expanded') !== 'true') await handle.click();
+  await expect(handle).toHaveAttribute('aria-expanded', 'true');
+}
+
 async function setting(page: Page, key: string, value: unknown) {
   await page.evaluate(async ([name, saved]) => {
     const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
@@ -40,6 +48,7 @@ test.beforeEach(async ({ page }) => {
 test('Home offers the receipt from Sunday 18:05 through Monday 23:59, not on Tuesday or before Sunday 18:00', async ({ page }) => {
   await homeAt(page, '2026-11-08T18:05:00');
   await seedRecapWeek(page, '2026-11-05');
+  await openCard(page);
   await expect(link(page)).toBeVisible();
   // The one next move stays the first thing under the camp.
   const move = await page.locator('.next-move').boundingBox();
@@ -50,6 +59,7 @@ test('Home offers the receipt from Sunday 18:05 through Monday 23:59, not on Tue
   await setting(page, 'planner.bedtime', '03:30');
   await setting(page, 'planner.shutdown', '02:00');
   await homeAt(page, '2026-11-09T23:59:00');
+  await openCard(page);
   await expect(link(page)).toBeVisible();
   await homeAt(page, '2026-11-10T12:00:00');
   await expect(page.locator('.next-move')).toBeVisible();
@@ -61,6 +71,7 @@ test('Home offers the receipt from Sunday 18:05 through Monday 23:59, not on Tue
 test('Share and Save image both run, and the image is 1080×1920', async ({ page }) => {
   await homeAt(page, '2026-11-09T12:00:00');
   await seedRecapWeek(page, '2026-11-05');
+  await openCard(page);
   await link(page).click();
   const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
   // Monday: last week has closed, so no "so far".
@@ -81,10 +92,12 @@ test('Share and Save image both run, and the image is 1080×1920', async ({ page
 test('after shutdown the receipt hides (spec 19)', async ({ page }) => {
   await homeAt(page, '2026-11-08T20:30:00');
   await seedRecapWeek(page, '2026-11-05');
+  await openCard(page);
   await expect(link(page)).toBeVisible();
   await setting(page, 'planner.bedtime', '20:00');
   await page.reload();
   await toHome(page);
+  await openCard(page);
   await expect(link(page)).toHaveCount(0);
 });
 

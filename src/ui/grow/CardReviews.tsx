@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { bundledPacks } from '../../data/packs/seed';
@@ -17,12 +18,14 @@ const deck = bundledPacks.find((pack): pack is DeckPack => pack.kind === 'deck')
  * Spec 571 (one place): card reviews and the people-reading deck are Moti's, so they live on Grow › Remember only.
  * Kapi's shelf no longer shows them; the rounds themselves still play in the same player.
  */
-export function CardReviews() {
+export function CardReviews({ onReady }: { onReady?: () => void } = {}) {
   const today = dayKey(Date.now()); // eslint-disable-line react-hooks/purity
   const data = useLiveQuery(async () => ({
     cards: await db.cards.toArray(), flags: await db.flags.toArray(),
     ramp: await db.settings.get('mind.reviewRamp'), on: await db.settings.get('mind.deckOn'),
   }), []);
+  // CLS (gate-s2): the screen shows what sits below this card only once it is here, so nothing below jumps when it lands.
+  useEffect(() => { if (data) onReady?.(); }, [data, onReady]);
   if (!data) return null;
   const hidden = new Set(data.flags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
   const dueCount = data.cards.filter(row => !row.deleted && !hidden.has(`card:${row.id}`) && row.due <= today).length;
