@@ -100,6 +100,7 @@ describe('courtyard anchors: the layout gates on every phone shape', () => {
     expect(problems).toContain('kapi: tap 40.0×40.0 under 48');
     expect(problems.some(line => line.startsWith('moti and chiku: taps overlap'))).toBe(true);
     expect(problems.some(line => line.startsWith('nandi: tap under the collapsed card'))).toBe(true);
-    expect(layoutProblems(anchors, 360, 840)).toEqual(['spec-15-lanterns: within 16 px of a side']);
+    // The final p9q lantern string starts 20.2 CSS in (b2's 22:54 fix), so it now passes even without the wall-run exemption.
+    expect(layoutProblems(anchors, 360, 840)).toEqual([]);
   });
 });
