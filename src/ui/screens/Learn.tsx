@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { LARGE_TEXT_ROOT_PX, useRootPx } from '../shell/useRootPx';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { minutesLabel } from '../../core/units';
 import { masteryMapState, type Drop } from '../../core/learn/engine';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -209,7 +210,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
     return <section className="screen learn-screen read-book-page">
       <div className="read-book-head"><Cover pack={pack} size="large" /><div><h1>{bookTitle(pack)}</h1><p>{book?.author ?? 'NANDI'}{book?.year ? ` · ${book.year}` : ''}</p></div></div>
       {book && <p className="read-blurb">{book.blurb}</p>}
-      <p className="small">{pack.body.modules.length} chapters · {bookMinutes(pack)} min</p>
+      <p className="small">{pack.body.modules.length} chapters · {minutesLabel(bookMinutes(pack))}</p>
       {book?.rights === 'public-domain' && <p className="small read-rights">Based on the {book.year ?? ''} edition, free to use in India</p>}
       {book?.rights === 'private' && <p className="small read-rights">Private copy on this phone</p>}
       {!next ? <p className="pill">Finished</p> : afterBedtime ? <p className="small" role="status">New chapters open tomorrow. Your idea checks stay open tonight.</p>
@@ -218,7 +219,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
         const state = stateOf(topicId, module);
         return <li key={module.id} className="card read-chapter" data-state={state}>
           <button type="button" className="read-chapter-open" aria-label={`Chapter ${index + 1}: ${module.title}, ${STATE_LABEL[state]}`} onClick={() => go(`read/chapter/${topicId}/${module.id}`)}>
-            <span className="read-chapter-num" aria-hidden="true">{index + 1}</span><span className="read-chapter-text"><strong>{module.title}</strong><span className="small">{module.minutes ?? 0} min · {module.concepts.length} ideas</span></span><span className="pill">{STATE_LABEL[state]}</span>
+            <span className="read-chapter-num" aria-hidden="true">{index + 1}</span><span className="read-chapter-text"><strong>{module.title}</strong><span className="small">{minutesLabel(module.minutes ?? 0)} · {module.concepts.length} ideas</span></span><span className="pill">{STATE_LABEL[state]}</span>
           </button>
           {checkDue?.topicId === topicId && checkDue.moduleId === module.id && <button type="button" className="secondary read-check-link" data-testid="book-check-link" onClick={() => go(`read/check/${topicId}/${module.id}`)}>Tried it? · Check</button>}
           <details className="read-chapter-ideas"><summary>{module.concepts.length} ideas<span className="read-chevron" aria-hidden="true">▸</span></summary>{ideaRows(topicId, module.concepts)}</details>
@@ -239,7 +240,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
     <section className="card read-continue" aria-label="Continue">
       {current && upNext ? <>
         <Cover pack={current} size="thumb" />
-        <div className="read-continue-text"><p className="eyebrow">{upNextState === 'in-progress' ? 'Continue' : 'Up next'}</p><h2>{bookTitle(current)}</h2><p>Chapter {current.body.modules.indexOf(upNext) + 1} · {upNext.minutes ?? 0} min</p><p className="small">{upNext.title}</p></div>
+        <div className="read-continue-text"><p className="eyebrow">{upNextState === 'in-progress' ? 'Continue' : 'Up next'}</p><h2>{bookTitle(current)}</h2><p>Chapter {current.body.modules.indexOf(upNext) + 1} · {minutesLabel(upNext.minutes ?? 0)}</p><p className="small">{upNext.title}</p></div>
         {afterBedtime ? <p className="small read-night-note" role="status">New chapters open tomorrow. Your idea checks stay open tonight.</p>
           : <button type="button" onClick={() => go(`read/chapter/${current.body.topic.id}/${upNext.id}`)}>{upNextState === 'in-progress' ? 'Continue' : 'Start'}</button>}
       </> : <p className="read-empty">Every book here is finished. New books are on their way.</p>}
