@@ -8,7 +8,8 @@ const link = (page: Page) => page.getByRole('button', { name: "Your week's recei
 
 async function homeAt(page: Page, time: string) {
   await page.clock.setFixedTime(new Date(time));
-  await page.goto('/?e2e#yatra');
+  // Spec 571 stage 2: the home rows (the receipt line among them) live on the Courtyard.
+  await page.goto('/?e2e#courtyard');
   await page.reload();
   await toHome(page);
 }
@@ -17,7 +18,7 @@ async function homeAt(page: Page, time: string) {
 async function toHome(page: Page) {
   const deck = page.getByRole('button', { name: 'Leave night deck' });
   await expect(page.locator('.next-move-go').or(deck).first()).toBeVisible();
-  if (await deck.isVisible()) { await deck.click(); await page.getByRole('link', { name: 'Yatra' }).click(); }
+  if (await deck.isVisible()) { await deck.click(); await page.getByRole('link', { name: 'Courtyard' }).click(); }
   await expect(page.locator('.next-move-go')).toBeVisible();
 }
 

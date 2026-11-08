@@ -33,16 +33,19 @@ const putFacts = (page: Page, rows: Fact[]) => page.evaluate(async facts => {
   database.close();
 }, rows);
 const days = (from: number, to: number) => Array.from({ length: to - from + 1 }, (_, i) => `2026-10-${String(from + i).padStart(2, '0')}`);
-/** A fresh app with these picks (written as Welcome writes them), opened on Home. */
+/** A fresh app with these picks (written as Welcome writes them), opened on Home (the Courtyard, spec 571 stage 2). */
 async function withPicks(page: Page, goals: string[], size = goals.length > 2 ? 'more' : 'two', extra: Row[] = []) {
   await page.goto('/?e2e#plan');
   await expect(page.locator('.plan-screen')).toBeVisible();
   await putSettings(page, [['profile.goals', goals], ['profile.size', size], ['profile.adultConfirmedAt', '2026-10-20T12:00:00.000Z'], ...extra]);
-  await page.goto('/?e2e#yatra');
+  await page.goto('/?e2e#courtyard');
   await page.reload();
   await expect(page.locator('.next-move-go')).toBeVisible();
 }
 const move = (page: Page) => page.locator('.next-move-go');
+/** Spec 571 §0.20: the header rings' lines (each ring's aria-label), in order, once the rings are there. */
+const ringLines = (page: Page) => page.getByRole('navigation', { name: "Today's rings" }).getByRole('button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')));
+const ALL_RINGS = ['Yatra: keep one promise.', 'Body: one real move.', 'Mind: any two.'];
 
 async function hello(page: Page) {
   const welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
@@ -115,13 +118,13 @@ test.describe('Welcome: pick two to start', () => {
   });
 });
 
-test('an install from before spec 52 counts as Everything: Home, the dots and You read as before', async ({ page }) => {
+test('an install from before spec 52 counts as Everything: Home, the rings and You read as before', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
-  await page.goto('/?e2e#yatra');
+  await page.goto('/?e2e#courtyard');
   await expect(move(page)).toContainText('Read one idea');
   await expect(move(page)).toContainText('A short sitting with Chiku');
-  // Spec 571 (b2): the learning and play dot keeps the name Read.
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Read', 'Night']);
+  // Spec 571 §0.20: Everything shows all three rings.
+  await expect.poll(() => ringLines(page)).toEqual(ALL_RINGS);
   // The one change for existing installs: the card opens the chapter itself, not the Read tab's front page.
   await move(page).click();
   await expect(page).toHaveURL(/#grow\/read\/chapter\/psychology\/psychology-ch1$/);
@@ -130,25 +133,32 @@ test('an install from before spec 52 counts as Everything: Home, the dots and Yo
   expect(await settingsOf(page, ['profile.size'])).toEqual({ 'profile.size': undefined });
 });
 
-test('You: the same toggles; a change applies at once to the next move and the dots', async ({ page }) => {
+test('You: the same toggles; a change applies at once to the next move and the rings', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
   await withPicks(page, ['learn', 'mind']);
   await expect(move(page)).toContainText('Read one idea');
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Read']);
+  await expect.poll(() => ringLines(page)).toEqual(['Mind: any two.']);
   await page.goto('/?e2e#you');
   await page.getByRole('button', { name: /^What NANDI helps with/ }).click();
   await expect(page).toHaveURL(/#you\/helps$/);
   await page.getByRole('button', { name: 'Learn something', exact: true }).click();
   await page.getByRole('button', { name: 'Sleep earlier', exact: true }).click();
   await expect.poll(() => settingsOf(page, ['profile.goals'])).toEqual({ 'profile.goals': ['mind', 'sleep'] });
-  await page.goto('/?e2e#yatra');
+  await page.goto('/?e2e#courtyard');
   await expect(move(page)).toContainText("Today's puzzle board");
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Read', 'Night']);
-  // Train alone has no dot, so there is no dots row.
+  // Mind and Sleep: the Mind ring only (Sleep has no ring).
+  await expect.poll(() => ringLines(page)).toEqual(['Mind: any two.']);
+  // Train alone: the Body ring.
   await putSettings(page, [['profile.goals', ['train']]]);
   await page.reload();
   await expect(move(page)).toBeVisible();
-  await expect(page.getByRole('navigation', { name: 'Today status' })).toHaveCount(0);
+  await expect.poll(() => ringLines(page)).toEqual(['Body: one real move.']);
+  // Sleep alone: no rings (the empty slot keeps the bar's size).
+  await putSettings(page, [['profile.goals', ['sleep']]]);
+  await page.reload();
+  await expect(move(page)).toBeVisible();
+  await expect(page.getByRole('navigation', { name: "Today's rings" })).toHaveCount(0);
+  await expect(page.locator('.today-rings-slot')).toHaveCount(1);
 });
 
 test('nothing is locked: at two picks every route in the app table opens the same screen as at Everything', async ({ page }, testInfo) => {

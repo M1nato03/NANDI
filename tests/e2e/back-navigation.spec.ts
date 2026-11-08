@@ -14,7 +14,7 @@ test('tabs and Today dots navigate to feature homes at phone size', async ({ pag
     await page.getByRole('button', { name: `${name}: not done` }).click();
     await expect(page).toHaveURL(new RegExp(`#${route}$`));
   }
-  const sizes = await page.locator('.today-dot, .tabbar a').evaluateAll(nodes => nodes.map(node => {
+  const sizes = await page.locator('.today-ring, .tabbar a').evaluateAll(nodes => nodes.map(node => {
     const rect = node.getBoundingClientRect();
     return { width: rect.width, height: rect.height };
   }));

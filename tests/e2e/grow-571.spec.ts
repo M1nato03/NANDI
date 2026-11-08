@@ -26,7 +26,7 @@ test.beforeEach(async ({ page }) => { await page.clock.setFixedTime(NOON); });
 
 test('the tab bar reads Yatra · Plan · Grow · You, and each Grow door opens its screen in one tap with Grow lit and Back to Grow', async ({ page }) => {
   await page.goto('/?e2e#yatra');
-  await expect(tabs(page).getByRole('link')).toHaveText(['Yatra', 'Plan', 'Grow', 'You']);
+  await expect(tabs(page).getByRole('link')).toHaveText(['Courtyard', 'Yatra', 'Grow', 'You']);
   const doors: [testId: string, heading: string, url: RegExp][] = [
     ['door-read', 'Read', /#grow\/read$/], ['door-remember', 'Remember', /#grow\/remember$/], ['door-play', 'Play', /#grow\/play$/],
     ['door-train', 'Train', /#grow\/train$/], ['door-sleep', 'Calm & Sleep', /#grow\/sleep$/],

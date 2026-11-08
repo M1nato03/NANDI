@@ -22,9 +22,10 @@ const dropIds = (page: Page) => page.evaluate(async () => {
 test('Read: Grow is the tab; Continue sits above the fold; no Games fold', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#grow/read');
-  await expect(page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link')).toHaveText(['Yatra', 'Plan', 'Grow', 'You']);
+  await expect(page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link')).toHaveText(['Courtyard', 'Yatra', 'Grow', 'You']);
   // Spec 571 (b2): the reading dot keeps the name Read.
-  await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Read', 'Night']);
+  // Spec 571 §0.20: the header's rings (Yatra · Body · Mind) replaced the Today dots.
+  await expect(page.getByRole('navigation', { name: "Today's rings" }).getByRole('button')).toHaveCount(3);
   await expect(page.getByRole('heading', { name: 'Read', level: 1 })).toBeVisible();
   const resume = page.getByRole('region', { name: 'Continue' });
   await expect(resume).toContainText(pack('psychology').body.book.title);
@@ -84,17 +85,40 @@ test('spec 41: a chapter is read one idea a sitting (the first is the day\'s dro
   await expect.poll(() => ledgerIds(page, 'chapter:')).toEqual(['chapter:how-things-work:how-things-work-ch1']);
   expect(await ledgerIds(page, 'read-idea:')).toHaveLength(ideas);
   expect(await dropIds(page)).toContain('drop:daily|how-things-work-ch1');
-  await page.goto('/?e2e#yatra');
+  await page.goto('/?e2e#courtyard');
   await expect(page.getByRole('button', { name: /Book check/ })).toHaveCount(0);
-  // The next day: the Book check sits on Yatra.
+  await expect(page.getByTestId('book-check-link')).toHaveCount(0);
+  // The next day: the Courtyard's next move links to the Book check, and (stage 2, row 85) its home is the book: the due
+  // chapter's "Tried it? · Check" opens it, and Back lands on the book.
   await page.clock.setFixedTime(new Date(NOON.getTime() + 86_400_000));
   await page.reload();
-  await page.getByRole('button', { name: /^Book check/ }).click();
+  await expect(page.getByRole('button', { name: /^Book check/ })).toBeVisible();
+  await page.goto('/?e2e#grow/read/book/how-things-work');
+  await expect(page.getByTestId('book-check-link')).toHaveCount(1);
+  await page.getByTestId('book-check-link').click();
+  await expect(page).toHaveURL(/#grow\/read\/check\/how-things-work\/how-things-work-ch1$/);
   for (let question = 0; question < 3; question++) await answerRight(page, 'how-things-work');
   await expect(page.getByRole('heading', { name: 'Did you try it?' })).toBeVisible();
   await page.getByRole('button', { name: 'Yes', exact: true }).click();
   await expect(page.getByText('Book check done. The chapter is yours.')).toBeVisible();
   await expect.poll(() => ledgerIds(page, 'read-check:')).toEqual(['read-check:how-things-work:how-things-work-ch1']);
+  await page.getByRole('button', { name: 'Back to the book' }).click();
+  await expect(page).toHaveURL(/#grow\/read\/book\/how-things-work$/);
+  await expect(page.getByTestId('book-check-link')).toHaveCount(0);
+});
+
+test('stage 2 (rows 89-90): “Today’s idea” is the first row on Grow › Read and opens the drop in one tap', async ({ page }) => {
+  await page.clock.setFixedTime(NOON);
+  await page.goto('/?e2e#grow/read');
+  const idea = page.getByTestId('today-idea-link');
+  await expect(idea).toHaveCount(1);
+  await expect(idea).toHaveAttribute('data-state', 'before');
+  await expect(idea).toContainText("Today's idea");
+  // First: above the shelf (Continue and the Library come after it), so ring → Read → drop needs no scroll.
+  expect(await idea.evaluate(node => [...document.querySelectorAll('.read-continue, .read-library')].every(row => !!(node.compareDocumentPosition(row) & Node.DOCUMENT_POSITION_FOLLOWING)))).toBe(true);
+  expect(await idea.evaluate(node => node.getBoundingClientRect().bottom <= innerHeight)).toBe(true);
+  await idea.click();
+  await expect(page).toHaveURL(/#grow\/read\/drop$/);
 });
 
 test('a finished book offers the next one; the recall and Chiku checks finish their chapters too', async ({ page }) => {

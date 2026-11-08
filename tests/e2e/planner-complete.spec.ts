@@ -80,7 +80,7 @@ test('reward appears after a work block', async ({ page }) => {
   await settings.getByLabel('Name your reward').fill('chai');
   await settings.getByRole('button', { name: 'Save reward' }).click();
   await settings.getByLabel('Reward after a focus block').check();
-  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
   await add(page, 'Focus block');
   await openMore(page);
   await page.getByRole('button', { name: 'Focus timer with breaks' }).click();

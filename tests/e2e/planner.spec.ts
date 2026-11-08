@@ -67,7 +67,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('region', { name: 'Top 3 for today' })).toContainText('1/3');
     await page.getByRole('button', { name: 'Finish morning plan' }).click();
     await expect(page.getByText('Plan complete for today.')).toBeVisible();
-    await page.getByRole('button', { name: 'Back to Plan' }).click();
+    await page.getByRole('button', { name: 'Back to Yatra' }).click();
     await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Plan project outline');
     await openMore(page);
     await page.getByRole('button', { name: 'Shutdown' }).click();
@@ -86,7 +86,7 @@ for (const scheme of ['light', 'dark'] as const) {
     }
     await page.getByRole('button', { name: 'Complete shutdown' }).click();
     await expect(page.getByText('Shutdown complete. Wind-down has started.')).toBeVisible();
-    await page.getByRole('button', { name: 'Back to Plan' }).click();
+    await page.getByRole('button', { name: 'Back to Yatra' }).click();
     await openMore(page);
     await page.getByRole('button', { name: 'Weekly review' }).click();
     await expect(page.getByRole('region', { name: 'This week, in words' })).toContainText('You finished 1 task.');

@@ -177,7 +177,7 @@ test('active focus waits until paused before updating', async ({ page, context }
 
   try {
     await prepareUpgrade(page, context, server.origin);
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
     await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Focus through update');
@@ -213,7 +213,7 @@ test('active focus waits until paused before updating', async ({ page, context }
     expect(await page.evaluate(
       async () => (await window.__nandiTest!.shellCounts()).tasks,
     )).toBe(count);
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
     await openMore(page);
     await page.getByRole('button', { name: 'Focus timer with breaks' }).click();
     await page.getByRole('region', { name: 'Focus task' }).getByRole('button', { name: 'Finish' }).click();

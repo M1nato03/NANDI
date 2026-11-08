@@ -116,7 +116,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('.timer-ring')).toContainText('22:');
     await page.getByRole('region', { name: 'Focus task' }).getByRole('button', { name: 'Finish' }).click();
     await expect(page.getByRole('status').filter({ hasText: 'Planned 30 min' })).toContainText('Took 2 min');
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
     await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Keep this task');
@@ -126,7 +126,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByPlaceholder('Add a task, e.g. call bank 15m')).toBeVisible();
     await expect.poll(async () => (await page.evaluate(() => window.__nandiTest!.shellCounts())).tasks).toBe(2);
     await page.reload();
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
     // Spec 27: a task with no time sits on Today.
     await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Keep this task');
     await page.screenshot({ path: testInfo.outputPath(`tasks-${scheme}.png`), fullPage: true });
@@ -143,7 +143,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await (await chooser).setFiles(saved!);
     await page.getByRole('button', { name: 'Confirm restore' }).click();
     await expect(page.getByRole('main').getByRole('status')).toContainText('Your data is ready.');
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
     await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Keep this task');
     expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } }; innerWidth: number }).document.documentElement.scrollWidth <= (globalThis as unknown as { innerWidth: number }).innerWidth)).toBe(true);
     await page.evaluate(() => (globalThis as unknown as { navigator: { serviceWorker: { ready: Promise<unknown> } } }).navigator.serviceWorker.ready);

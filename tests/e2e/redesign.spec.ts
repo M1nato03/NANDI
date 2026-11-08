@@ -3,16 +3,16 @@ import { todaysBoard } from './helpers/mind';
 import { openMore } from './helpers/plan';
 
 for (const scheme of ['light', 'dark'] as const) {
-  test(`four tabs (spec 34), opening on Yatra (spec 37), in ${scheme}`, async ({ page }, testInfo) => {
+  test(`four tabs, opening on the Courtyard (spec 571 stage 2), in ${scheme}`, async ({ page }, testInfo) => {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/');
     const tabs = page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link');
-    await expect(tabs).toHaveText(['Yatra', 'Plan', 'Grow', 'You']);
-    // Spec 37: the app opens on Yatra; Plan is one tap away.
+    await expect(tabs).toHaveText(['Courtyard', 'Yatra', 'Grow', 'You']);
+    // Stage 2: the app opens on the Courtyard; Mor's plan is one tap away, under the trek strip on the Yatra tab.
+    await expect(page).toHaveURL(/#courtyard$/);
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
     await expect(page).toHaveURL(/#yatra$/);
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
-    await expect(page).toHaveURL(/#plan$/);
     await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
     // Spec 27: routines and the focus timer with breaks sit in Plan's More fold.
     await openMore(page);
@@ -52,7 +52,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('heading', { name: 'Train', exact: true })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`tabs-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    const small = await page.locator('.tabbar a, .today-dot').evaluateAll(nodes => nodes.filter(node => { const box = node.getBoundingClientRect(); return box.width < 43.5 || box.height < 43.5; }).length);
+    const small = await page.locator('.tabbar a, .today-ring').evaluateAll(nodes => nodes.filter(node => { const box = node.getBoundingClientRect(); return box.width < 43.5 || box.height < 43.5; }).length);
     expect(small).toBe(0);
   });
 }

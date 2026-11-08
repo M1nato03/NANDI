@@ -102,26 +102,20 @@ test('the Train workout logger follows 200% text', async ({ page }) => {
   await expectTextFollows200(page);
 });
 
-// Rem gate shots (7 Nov): at 200% the Today dot labels ran into each other ("PlanReadNight") and the brand pressed on
-// them. Now each dot is as wide as its label and the dots take a second row when the brand and they don't fit.
-test('the top bar at 200% text: brand and dot labels keep apart', async ({ page }) => {
+// Spec 571 §0.20: the header's rings replaced the labelled Today dots. At 200% the brand keeps its whole word and never
+// runs into the rings' slot; the rings are pictures (24 px), so they keep their size.
+test('the top bar at 200% text: the brand and the rings keep apart, and the rings keep their size', async ({ page }) => {
   await page.goto('/#yatra');
-  await expect(page.locator('.today-dot-label').first()).toBeVisible();
+  await expect(page.getByRole('navigation', { name: "Today's rings" })).toBeVisible();
   await textAt200(page);
   await page.waitForTimeout(300);
-  const boxes = await page.evaluate(() => [document.querySelector('.topbar .brand')!, ...document.querySelectorAll('.today-dot-label')].map(node => {
+  const { brand, slot, ring } = await page.evaluate(() => {
     const range = document.createRange();
-    range.selectNodeContents(node);
-    const box = range.getBoundingClientRect();
-    return { text: node.textContent!.trim(), left: box.left, right: box.right, top: box.top, bottom: box.bottom };
-  }));
-  expect(boxes.length).toBe(4);
-  for (let a = 0; a < boxes.length; a++) for (let b = a + 1; b < boxes.length; b++) {
-    const one = boxes[a]!, two = boxes[b]!;
-    // b2: at least 8px between neighbouring labels, so "Plan Read Night" doesn't read as one phrase.
-    const gap = a === 0 ? 0 : 7.5; // index 0 is the brand: it only must not touch
-    const apart = one.right + gap <= two.left || two.right + gap <= one.left || one.bottom <= two.top + 0.5 || two.bottom <= one.top + 0.5;
-    expect(apart, `${one.text} and ${two.text}: ${JSON.stringify([one, two])}`).toBe(true);
-  }
-  for (const box of boxes) expect(box.right, box.text).toBeLessThanOrEqual(360);
+    range.selectNodeContents(document.querySelector('.topbar .brand')!);
+    const box = (rect: DOMRect) => ({ left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom, width: rect.width });
+    return { brand: box(range.getBoundingClientRect()), slot: box(document.querySelector('.today-rings-slot')!.getBoundingClientRect()), ring: box(document.querySelector('.ring-glyph')!.getBoundingClientRect()) };
+  });
+  const apart = brand.right <= slot.left || slot.right <= brand.left || brand.bottom <= slot.top + 0.5 || slot.bottom <= brand.top + 0.5;
+  expect(apart, JSON.stringify({ brand, slot })).toBe(true);
+  expect(ring.width).toBe(24);
 });

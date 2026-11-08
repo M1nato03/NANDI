@@ -74,7 +74,7 @@ test('the notice arrives and leaves without shifting the screen (CLS < 0.1)', as
   await expect(notice(page)).toBeHidden({ timeout: 6_000 });
   // The brand and the Today dots it covered are back.
   await expect(page.locator('.topbar .brand')).toHaveCSS('visibility', 'visible');
-  for (const dots of await page.locator('.topbar > .today-dots').all()) await expect(dots).toHaveCSS('visibility', 'visible');
+  for (const dots of await page.locator('.topbar > .today-rings-slot').all()) await expect(dots).toHaveCSS('visibility', 'visible');
   await page.waitForTimeout(500);
   const { shift, noticeAt } = await page.evaluate(() => {
     const store = window as Window & { shifts?: [number, number][]; noticeAt?: number };

@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
 
-// Spec 571: Grow replaced Read in the tab bar.
-const names = ['Plan', 'Grow', 'Yatra', 'You'];
-// Spec 37: Yatra's heading is the greeting.
-const heading: Record<string, string | RegExp> = { Plan: 'Plan', Grow: 'Grow', Yatra: /^(On the way to .+|Camp at .+|At .+|By a trailside fire|A day on the trail|Trail complete|.+ camp|Field notes)$/, You: 'You' };
+// Spec 571 stage 2: tabs Courtyard · Yatra · Grow · You.
+const names = ['Courtyard', 'Yatra', 'Grow', 'You'];
+// Stage 2: the Courtyard's heading names it; the Yatra tab is Mor's plan under the trek strip (Plan keeps its h1).
+const heading: Record<string, string | RegExp> = { Courtyard: 'Courtyard', Grow: 'Grow', Yatra: 'Plan', You: 'You' };
 
 test('day one shows a calm You before Season 1', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });

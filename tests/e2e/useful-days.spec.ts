@@ -56,7 +56,7 @@ test('Home, You and the record count the same useful days, each date once, and t
   await expect(page.locator('.useful-days-facts')).toContainText('Longest run');
   await expect(page.locator('.useful-days-facts')).toContainText('Clean weeks');
   await expect(page.locator('.useful-days-list > li')).toHaveCount(2);
-  await page.goto('/?e2e#yatra');
+  await page.goto('/?e2e#courtyard');
   await expect(page.locator('button.home-week')).toHaveText(/^2 useful days\s*this season/);
   // The dates are kept, so a later sync or a restore cannot lower the count.
   await expect.poll(() => setting(page, 'useful.confirmed:2026-11-02')).toEqual(['2026-11-02', '2026-11-04']);

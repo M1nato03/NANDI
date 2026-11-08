@@ -13,7 +13,7 @@ test('Yatra\'s camp: Nandi, Kapi and Kachhua open their Grow corners', async ({ 
   await page.clock.setFixedTime(NOON);
   await page.goto('/#plan');
   const tabs = page.getByRole('navigation', { name: 'Main tabs' });
-  await expect(tabs.getByRole('link')).toHaveText(['Yatra', 'Plan', 'Grow', 'You']);
+  await expect(tabs.getByRole('link')).toHaveText(['Courtyard', 'Yatra', 'Grow', 'You']);
   await tabs.getByRole('link', { name: 'Yatra' }).click();
   await expect(page).toHaveURL(/#yatra$/);
   // Spec 45b: the corners are the friends at camp.
