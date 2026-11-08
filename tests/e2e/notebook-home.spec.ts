@@ -1,8 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
 import { textAt200 } from './helpers/text';
 
-// Spec 45b: Home is a notebook page: the useful days (decision 7), the camp's heading, five friends at camp (each a
-// button to its area) and exactly one next move, in the order focus, Book check, Train day, task, Read.
+// Spec 45b, moved by spec 571 stage 2: Home is the Courtyard (layout B) with the §0.2 rows in one bottom card: exactly
+// one next move (collapsed), in the order focus, Book check, Train day, task, Read; swiped up, the useful days
+// (decision 7) and the crew. The camp's heading and its five friends (each a button to its area) are on the Yatra tab.
 const WED = new Date('2026-10-28T10:00:00');
 const meta = { updatedAt: 1, deleted: 0, deviceId: 'e2e' };
 const move = (page: Page) => page.locator('.next-move-go');
@@ -15,8 +16,18 @@ async function put(page: Page, store: string, rows: Record<string, unknown>[]) {
   }, { store, rows });
 }
 async function home(page: Page) {
+  await page.goto('/?e2e#courtyard');
+  await expect(page.locator('.courtyard-card .next-move-go')).toBeVisible();
+}
+/** Opens the Courtyard's card (its handle is a button as well as a swipe). */
+async function openCard(page: Page) {
+  const handle = page.locator('.courtyard-card-handle');
+  if (await handle.getAttribute('aria-expanded') !== 'true') await handle.click();
+  await expect(handle).toHaveAttribute('aria-expanded', 'true');
+}
+async function camp(page: Page) {
   await page.goto('/?e2e#yatra');
-  await expect(page.locator('.notebook-home h1')).toBeVisible();
+  await expect(page.locator('.trek-strip .home-title h2')).toBeVisible();
 }
 
 test.beforeEach(async ({ page }) => { await page.emulateMedia({ reducedMotion: 'reduce' }); });
@@ -29,11 +40,12 @@ test('a new phone: no useful day yet, the camp, and one move to Read', async ({ 
   await expect(page.locator('.home-permit')).toHaveCount(0);
   // No time number, no bar, no time-back claim.
   await expect(page.locator('main')).not.toContainText(/back to you|time back|returned|\d+ h \d+ m|recorded/i);
-  await expect(page.locator('.notebook-home progress, .notebook-home [role="progressbar"]')).toHaveCount(0);
+  await expect(page.locator('.courtyard-card progress, .courtyard-card [role="progressbar"]')).toHaveCount(0);
   await expect(page.getByRole('region', { name: 'One next move' })).toHaveCount(1);
   await expect(move(page)).toHaveCount(1);
   await expect(move(page)).toContainText('Read one idea');
   // The record with no useful day yet is only its one-line rule.
+  await openCard(page);
   await page.locator('.home-week').click();
   // Spec 47b: before Season 1 the record is plainly "Your record", its week in words.
   await expect(page.getByRole('heading', { name: 'Your record', level: 1 })).toBeVisible();
@@ -59,6 +71,7 @@ test('useful days count marked dates this week (before Season 1), and one tap op
   ]);
   await page.reload();
   await expect(page.locator('.home-week')).toHaveText(/^2 useful days\s*this week/);
+  await openCard(page);
   await page.locator('.home-week').click();
   await expect(page).toHaveURL(/#you\/days$/);
   await expect(page.getByRole('heading', { name: 'Your record', level: 1 })).toBeVisible();
@@ -70,7 +83,7 @@ test('useful days count marked dates this week (before Season 1), and one tap op
   await expect(days.nth(0)).toContainText('Calm, 12 min');
   await expect(days.nth(1)).toContainText('Mon 26 Oct');
   await page.goBack();
-  await expect(page).toHaveURL(/#yatra$/);
+  await expect(page).toHaveURL(/#courtyard$/);
 });
 
 test('in Season 1 the line counts the season, from its first Monday', async ({ page }) => {
@@ -82,9 +95,9 @@ test('in Season 1 the line counts the season, from its first Monday', async ({ p
   await expect(page.locator('.home-week')).toHaveText(/^3 useful days\s*this season/);
 });
 
-test('all five friends go to their areas, once each, and Back returns to the same Home', async ({ page }) => {
+test('all five camp friends (Yatra tab) go to their areas, once each, and Back returns to the same camp', async ({ page }) => {
   await page.clock.install({ time: WED });
-  await home(page);
+  await camp(page);
   // Spec 571: camp friends still open their screens directly at the new routes.
   for (const [name, hash] of [['Plan, Mor at the map', 'plan'], ['Read, Chiku on the reading rock', 'grow/read'], ['Train, Nandi by the pack', 'grow/train'], ['Play, Kapi in the branches', 'grow/play'], ['Calm, Kachhua by the fire', 'grow/calm']] as const) {
     // A double tap still opens the area once.
@@ -93,7 +106,7 @@ test('all five friends go to their areas, once each, and Back returns to the sam
     // One Back is Home again, so the double tap opened it once.
     await page.goBack();
     await expect(page).toHaveURL(/#yatra$/);
-    await expect(page.locator('.notebook-home h1')).toHaveText('Camp at Jobra');
+    await expect(page.locator('.trek-strip .home-title h2')).toHaveText('Camp at Jobra');
     // Back never replays the opening breath.
     await expect(page.getByRole('dialog', { name: 'Breathe with the square.' })).toHaveCount(0);
   }
@@ -102,9 +115,9 @@ test('all five friends go to their areas, once each, and Back returns to the sam
 test('with motion, a tap plays the friend\'s reaction where it stands, then opens its area', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.clock.install({ time: WED });
-  await home(page);
+  await camp(page);
   const kapi = page.getByRole('button', { name: 'Play, Kapi in the branches' });
-  await expect(page.locator('.home-week-time')).toBeVisible();
+  await expect(page.locator('.trek-scene')).toBeVisible();
   // Where Kapi stands within the scene (the page itself can shift when the "Ready to work offline" note comes and goes).
   const within = async () => { const [friend, scene] = [(await kapi.boundingBox())!, (await page.locator('.trek-scene').boundingBox())!]; return { x: friend.x - scene.x, y: friend.y - scene.y, width: friend.width, height: friend.height }; };
   // The walk-in step has ended once Kapi stands still: two readings 300 ms apart agree (a busy machine runs it late).
@@ -152,33 +165,65 @@ test('a soft day keeps the move gentle: no Train day and no task', async ({ page
   await expect(move(page)).toContainText('Read one idea');
 });
 
-test('at 360x800 nothing overlaps, and at 200% text the page scrolls to the next move', async ({ page }) => {
+test('layout B at 360x800: the card sits above the tab bar, every friend is tappable, and at 200% the move stays on screen', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.clock.install({ time: WED });
   await home(page);
-  // Measure the settled page: the useful-days line replaces its placeholder, and the camp and the move load after it.
-  await expect(page.locator('button.home-week')).toHaveText(/^A fresh week/);
-  await expect(page.locator('.notebook-home h1')).toHaveText('Camp at Jobra');
-  await expect(page.locator('.next-move')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const box = async (selector: string) => (await page.locator(selector).boundingBox())!;
-  const [week, title, scene, next] = [await box('.home-week'), await box('.home-title'), await box('.trek-scene'), await box('.next-move')];
-  expect(week.y + week.height).toBeLessThanOrEqual(title.y + 1);
-  expect(title.y + title.height).toBeLessThanOrEqual(scene.y + 1);
-  expect(scene.y + scene.height).toBeLessThanOrEqual(next.y + 1);
-  // The five friends do not cover one another's middles.
-  const friends = await page.locator('.camp-friend').evaluateAll(nodes => nodes.map(node => { const r = node.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; }));
-  for (const point of friends) {
-    const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest('.camp-friend')?.getAttribute('aria-label'), point);
-    expect(hit).toBeTruthy();
-  }
-  expect(new Set(await Promise.all(friends.map(point => page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest('.camp-friend')?.getAttribute('aria-label'), point))))).toHaveProperty('size', 5);
-  await textAt200(page);
-  await expect(page.locator('.next-move')).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await move(page).scrollIntoViewIfNeeded();
-  await expect(move(page)).toBeInViewport();
   const bar = (await page.getByRole('navigation', { name: 'Main tabs' }).boundingBox())!;
-  const go = await box('.next-move-go');
+  const header = await box('.topbar');
+  const card = await box('.courtyard-card');
+  expect(card.y + card.height).toBeLessThanOrEqual(bar.y + 1);
+  // The six friends: each tap's middle is that tap (nothing covers it), below the header and above the card.
+  const taps = page.locator('.courtyard-friend-tap');
+  await expect(taps).toHaveCount(6);
+  for (const tap of await taps.all()) {
+    const rect = (await tap.boundingBox())!;
+    const label = (await tap.getAttribute('aria-label'))!;
+    expect(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.getAttribute('aria-label'), { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 }), label).toBe(label);
+    expect(rect.y, label).toBeGreaterThanOrEqual(header.y + header.height - 1);
+    expect(rect.y + rect.height, label).toBeLessThanOrEqual(card.y + 1);
+    expect(Math.min(rect.width, rect.height), label).toBeGreaterThanOrEqual(48);
+    expect(rect.x, label).toBeGreaterThanOrEqual(16);
+    expect(rect.x + rect.width, label).toBeLessThanOrEqual(360 - 16);
+  }
+  // A friend opens its corner (spec 35), and Back is Home again.
+  await page.getByRole('button', { name: /^Chiku, Learn/ }).click();
+  await expect(page).toHaveURL(/#courtyard\/view\/learn$/);
+  await expect(page.getByRole('region', { name: 'Chiku card' })).toBeVisible();
+  await page.goBack();
+  await expect(page).toHaveURL(/#courtyard$/);
+  // 200% text: the card grows, the move stays whole on screen above the tab bar, and nothing scrolls sideways.
+  await textAt200(page);
+  await expect(page.locator('.courtyard-card .next-move')).toBeInViewport();
+  const go = await box('.courtyard-card .next-move-go');
   expect(go.y + go.height).toBeLessThanOrEqual(bar.y + 1);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('the card opens by its button and by a swipe up, and closes by a swipe down', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.clock.install({ time: WED });
+  await home(page);
+  const handle = page.locator('.courtyard-card-handle');
+  await expect(page.locator('#courtyard-card-more')).toBeHidden();
+  await handle.click();
+  await expect(page.locator('#courtyard-card-more')).toBeVisible();
+  await handle.click();
+  await expect(page.locator('#courtyard-card-more')).toBeHidden();
+  const drag = async (dy: number) => {
+    const rect = (await handle.boundingBox())!;
+    await page.mouse.move(rect.x + rect.width / 2, rect.y + rect.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(rect.x + rect.width / 2, rect.y + rect.height / 2 + dy, { steps: 4 });
+    await page.mouse.up();
+  };
+  await drag(-80);
+  await expect(handle).toHaveAttribute('aria-expanded', 'true');
+  // This week and the crew bar close the sheet (spec 660's board will sit above them).
+  const order = await page.locator('.courtyard-card-section').evaluateAll(nodes => nodes.map(node => node.getAttribute('data-section')));
+  expect(order.slice(-2)).toEqual(['week', 'crew']);
+  await drag(80);
+  await expect(handle).toHaveAttribute('aria-expanded', 'false');
 });

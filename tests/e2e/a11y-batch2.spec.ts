@@ -45,12 +45,15 @@ test('C9: at 200% text the trek captions, place signs and focus strip show every
   await page.getByLabel('Add a task').fill('Write the long quarterly report for the regional office');
   await page.getByRole('button', { name: 'Add', exact: true }).click();
   await page.getByRole('button', { name: 'Start focus' }).click();
-  await page.goto('/?e2e#yatra');
+  // Spec 571 stage 2: the focus is the one next move on the Courtyard's card; the camp and its signs are on the Yatra tab.
+  await page.goto('/?e2e#courtyard');
   await expect(page.locator('.next-move')).toContainText('Working on');
   await doubleText(page);
-  // Spec 45b: the focus is Home's one next move, and the heading names the camp (the scene's caption is Calm's).
   expect(await fits(page, '.next-move-text strong')).toBe(true);
-  expect(await fits(page, '.notebook-home h1')).toBe(true);
+  await page.goto('/?e2e#yatra');
+  await expect(page.locator('.trek-strip .home-title h2')).toBeVisible();
+  await doubleText(page);
+  expect(await fits(page, '.trek-strip .home-title h2')).toBe(true);
   expect(await fits(page, '.trek-place b')).toBe(true);
   // The current camp's sign is fully inside the trail's view (jenil-87), not half off its edge.
   await expect.poll(() => page.evaluate(() => {

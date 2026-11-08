@@ -17,7 +17,7 @@ test('Yatra\'s camp: Nandi, Kapi and Kachhua open their Grow corners', async ({ 
   await tabs.getByRole('link', { name: 'Yatra' }).click();
   await expect(page).toHaveURL(/#yatra$/);
   // Spec 45b: the corners are the friends at camp.
-  await expect(page.locator('.notebook-home h1')).toBeVisible();
+  await expect(page.locator('.trek-strip .home-title h2')).toBeVisible();
   for (const [name, url, heading] of [['Train, Nandi by the pack', /#grow\/train$/, null], ['Play, Kapi in the branches', /#grow\/play$/, 'Play'], ['Calm, Kachhua by the fire', /#grow\/calm$/, 'Calm']] as const) {
     await page.goto('/#yatra');
     await page.getByRole('button', { name }).click();

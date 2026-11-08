@@ -165,7 +165,8 @@ for (const theme of themes) test.describe(theme, () => {
     await page.goto('/?e2e#yatra/days');
     await expect(page.locator('.useful-days-facts')).toBeVisible();
     await shot(page, 'u9-record');
-    await page.goto('/?e2e#yatra');
+    await page.goto('/?e2e#courtyard');
+    await page.locator('.courtyard-card-handle').click();
     await expect(page.locator('button.home-week')).toBeVisible();
     await shot(page, 'u10-home-line', false);
     await page.goto('/?e2e#you');
@@ -261,7 +262,7 @@ for (const theme of themes) test.describe(theme, () => {
     const settle = async () => { await page.waitForTimeout(600); };
     await page.clock.install({ time: WED });
     // A new phone: no useful day yet, and Read is the move.
-    await page.goto('/#yatra');
+    await page.goto('/#courtyard');
     await expect(page.locator('.next-move')).toBeVisible();
     await settle();
     await shot(page, '45b-4-home-new', false);
@@ -280,7 +281,7 @@ for (const theme of themes) test.describe(theme, () => {
     await page.goto('/#plan');
     await page.getByLabel('Add a task').fill('Call the bank');
     await page.getByRole('button', { name: 'Add', exact: true }).click();
-    await page.goto('/#yatra');
+    await page.goto('/#courtyard');
     await expect(page.locator('.next-move')).toContainText('Call the bank');
     await settle();
     await shot(page, '45b-1-home', false);
@@ -318,7 +319,7 @@ for (const theme of themes) test.describe(theme, () => {
     await expect(page.getByRole('region', { name: 'Focus' })).toHaveCount(0);
     // Yesterday's chapter waits for its Book check.
     await put('ledger', [{ id: 'ch1', mode: 'read', kind: 'chapter', refId: 'richest-man-in-babylon:babylon-2', dayKey: '2026-10-27', inputs: { checkLater: true }, ...meta }]);
-    await page.goto('/#yatra');
+    await page.goto('/#courtyard');
     await expect(page.locator('.next-move')).toContainText('Book check');
     await settle();
     await shot(page, '45b-3-home-book-check', false);
@@ -653,7 +654,7 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 's41-4c-quiz-chapter-done', false);
     // The next day: the Book check on Yatra, its questions, then "Did you try it?".
     await page.clock.setSystemTime(new Date(NOON.getTime() + 86_400_000));
-    await page.goto('/?e2e#yatra');
+    await page.goto('/?e2e#courtyard');
     await expect(page.getByRole('button', { name: /Book check/ })).toBeVisible();
     await shot(page, 's41-5-yatra-book-check', false);
     await page.getByRole('button', { name: /Book check/ }).click();
@@ -768,9 +769,9 @@ for (const theme of themes) test.describe(theme, () => {
         const leave = page.getByRole('button', { name: 'Leave night deck' });
         if (await leave.isVisible()) await leave.click();
         await page.evaluate(() => { if (location.hash !== '#yatra') location.hash = 'yatra'; });
-        await expect(page.locator('.notebook-home h1')).toBeVisible({ timeout: 1500 });
+        await expect(page.locator('.trek-strip .home-title h2')).toBeVisible({ timeout: 1500 });
         await page.waitForTimeout(800);
-        await expect(page.locator('.notebook-home h1')).toBeVisible({ timeout: 100 });
+        await expect(page.locator('.trek-strip .home-title h2')).toBeVisible({ timeout: 100 });
       }).toPass({ timeout: 20_000 });
       const card = page.getByRole('button', { name: 'Keep in the journal' });
       await page.waitForTimeout(1200);
@@ -1506,7 +1507,7 @@ for (const theme of themes) test.describe(theme, () => {
       database.close();
     }, rows);
     // Home as an install from before spec 52 sees it (size 'all'): compare with main's p45b home.
-    await page.goto('/?e2e#yatra');
+    await page.goto('/?e2e#courtyard');
     await expect(page.locator('.next-move-go')).toBeVisible();
     await shot(page, 'p52-01-home-existing-install', false);
     // Welcome's pick screen at 0, 1 and 2 picks, at 3-4 things, and at 200% text.
@@ -1545,7 +1546,7 @@ for (const theme of themes) test.describe(theme, () => {
     await expect(page.locator('.plan-screen')).toBeVisible();
     for (const [name, goals] of [['learn-mind', ['learn', 'mind']], ['train-plan', ['train', 'plan']], ['sleep', ['sleep']]] as const) {
       await put([['profile.goals', goals], ['profile.size', 'two'], ['profile.adultConfirmedAt', '2026-10-20T12:00:00.000Z']]);
-      await page.goto('/?e2e#yatra');
+      await page.goto('/?e2e#courtyard');
       await page.reload();
       await expect(page.locator('.next-move-go')).toBeVisible();
       await shot(page, `p52-07-home-${name}`, false);
@@ -1593,8 +1594,9 @@ for (const theme of themes) test.describe(theme, () => {
       Object.defineProperty(navigator, 'canShare', { configurable: true, value: undefined });
     });
     await page.clock.setFixedTime(new Date('2026-11-08T18:05:00'));
-    await page.goto('/?e2e#yatra');
+    await page.goto('/?e2e#courtyard');
     await seedRecapWeek(page, '2026-11-05');
+    await page.locator('.courtyard-card-handle').click();
     const link = page.getByRole('button', { name: "Your week's receipt is ready" });
     await expect(link).toBeVisible();
     const move = await page.locator('.next-move').boundingBox();
@@ -1762,7 +1764,8 @@ for (const theme of themes) test.describe(theme, () => {
 
     const riya = await phone(made);
     // Yatra with no crew: the quiet way in.
-    await riya.goto('/?e2e#yatra');
+    await riya.goto('/?e2e#courtyard');
+    await riya.locator('.courtyard-card-handle').click();
     await riya.getByRole('button', { name: 'Fill a jar with friends' }).scrollIntoViewIfNeeded();
     await snap(riya, 'p55-00-yatra-no-crew');
     await riya.getByRole('button', { name: 'Fill a jar with friends' }).click();
@@ -1798,8 +1801,9 @@ for (const theme of themes) test.describe(theme, () => {
 
     await dev.clock.setFixedTime(later);
     await seed(dev, ['2026-11-02', '2026-11-03', '2026-11-04', '2026-11-05'], 6);
-    await dev.goto('/?e2e#yatra');
+    await dev.goto('/?e2e#courtyard');
     await dev.reload();
+    await dev.locator('.courtyard-card-handle').click();
     await dev.locator('.crew-bar').scrollIntoViewIfNeeded();
     await snap(dev, 'p55-04-home-crew-bar-send-line');
     await dev.getByRole('button', { name: 'Send' }).click();
