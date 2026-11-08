@@ -38,7 +38,7 @@ const CATALOG_NAMES: Record<string, string> = {
 const appName = (packageName: string) => PAUSE_APP_CHOICES.find(app => app.packageName === packageName)?.label ?? CATALOG_NAMES[packageName];
 /** A day key never breaks across lines ("2026-" / "11-19"). */
 const Day = ({ day }: { day: string }) => <span className="phone-audit-date">{day}</span>;
-const minutes = (ms: number | null) => ms === null ? 'unknown' : `${Math.round(ms / 60_000)} min`;
+const minutes = (ms: number | null) => ms === null ? 'unknown' : `${Math.round(ms / 60_000)}\u00a0min`;
 const currentTime = () => Date.now();
 
 /**

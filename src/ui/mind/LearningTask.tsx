@@ -26,5 +26,5 @@ export function LearningTask({ day }: { day: string }) {
     const now = Date.now(), deviceId = await getOrCreateDeviceId(db, now);
     await trackWrite(() => db.settings.put({ key, value, updatedAt: now, deleted: 0, deviceId }));
   }
-  return <section className="card track-task" aria-label="Today’s learning task"><h2>Today’s learning task</h2><p>{pack.body.track.name}: {unit.title} · {unit.minutes + 3} min</p><label>Time <input type="time" value={typeof slot === 'string' ? slot : '09:00'} onChange={event => void saveSlot(event.target.value)} /></label><button type="button" onClick={() => go('mind')}>Open in Mind</button></section>;
+  return <section className="card track-task" aria-label="Today’s learning task"><h2>Today’s learning task</h2><p>{pack.body.track.name}: {unit.title} · {unit.minutes + 3}&nbsp;min</p><label>Time <input type="time" value={typeof slot === 'string' ? slot : '09:00'} onChange={event => void saveSlot(event.target.value)} /></label><button type="button" onClick={() => go('mind')}>Open in Mind</button></section>;
 }

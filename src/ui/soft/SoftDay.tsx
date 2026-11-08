@@ -150,7 +150,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
     {care && <CareCard close={() => setCareClosed(true)} />}
     <section className="card soft-card" aria-label="Soft day">
       <div className="soft-host"><Cast name="Kachhua" pose="rest" size={72} title="Kachhua resting" moment={okay ? 'blink' : 'settle'} at={okay + 1} breathe /><p className="soft-line">{SOFT_LINES[state]}</p></div>
-      {!option ? <ul className="soft-options">{SOFT_OPTIONS[state].map(item => <li key={item.id}><button type="button" className="soft-option" onClick={() => { openedOn.current = today; setChoice(item.id); }}>{item.label}{item.minutes && <small> · {item.minutes} min</small>}</button></li>)}</ul>
+      {!option ? <ul className="soft-options">{SOFT_OPTIONS[state].map(item => <li key={item.id}><button type="button" className="soft-option" onClick={() => { openedOn.current = today; setChoice(item.id); }}>{item.label}{item.minutes && <small> · {item.minutes}&nbsp;min</small>}</button></li>)}</ul>
         : <div className="soft-doing"><h2>{option.label}</h2>
           {option.id === 'breathe' && <Breathe done={() => void finish('breathe')} />}
           {option.id === 'stretch' && <Stretch done={() => void finish('stretch')} />}

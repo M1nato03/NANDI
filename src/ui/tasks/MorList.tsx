@@ -145,7 +145,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
   }
 
   const groups = new Map(taskGroups(board.tasks).filter(group => group.total).map(group => [group.parent.id, group]));
-  const timeOf = (task: TaskRow) => (task.timeSet || task.scheduledStart != null) && <span className="small mor-time" id={`time-${task.id}`}>{task.scheduledStart != null ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : `${task.estimateMin} min`}</span>;
+  const timeOf = (task: TaskRow) => (task.timeSet || task.scheduledStart != null) && <span className="small mor-time" id={`time-${task.id}`}>{task.scheduledStart != null ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : `${task.estimateMin}\u00a0min`}</span>;
   // Spec 27: one move on the row itself. Today rows go to Tomorrow; Tomorrow and Later rows come back to Today.
   // Later and another day sit in the detail sheet.
   const MOVE: Record<'today' | 'tomorrow' | 'later', { target: MoveTarget; where: string; label: string }> = {
@@ -205,9 +205,9 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
     </section>}
     <form className="mor-add" onSubmit={event => void add(event)}>
       <label className="quick-add-field"><span className="visually-hidden">Add a task</span><span className="mor-add-row"><input maxLength={160} value={title} onChange={event => setTitle(event.target.value)} placeholder="Add a task" />
-        {title.trim() && !timeOpen && <button type="button" className="text-button mor-time-chip" onClick={() => setTimeOpen(true)}>{time ? `${time} min` : '+ time'}</button>}</span></label>
+        {title.trim() && !timeOpen && <button type="button" className="text-button mor-time-chip" onClick={() => setTimeOpen(true)}>{time ? `${time}\u00a0min` : '+ time'}</button>}</span></label>
       {timeOpen && <fieldset className="mor-time"><legend>Time <span className="small">Optional</span></legend>
-        {TIME_CHIPS.map(value => <button type="button" key={value} className={time === value ? '' : 'secondary'} aria-pressed={time === value} onClick={() => { setTime(time === value ? undefined : value); setOther(''); }}>{value} min</button>)}
+        {TIME_CHIPS.map(value => <button type="button" key={value} className={time === value ? '' : 'secondary'} aria-pressed={time === value} onClick={() => { setTime(time === value ? undefined : value); setOther(''); }}>{value}&nbsp;min</button>)}
         <label>Other <input type="number" min="1" max="90" inputMode="numeric" value={other} onChange={event => { setOther(event.target.value); setTime(undefined); }} /></label>
         <button type="button" className="text-button" onClick={() => { setTime(undefined); setOther(''); setTimeOpen(false); }}>No time</button></fieldset>}
       <button type="submit" disabled={board.busy || !title.trim()}>Add</button>

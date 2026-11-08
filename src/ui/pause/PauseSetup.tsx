@@ -84,10 +84,10 @@ export function PauseSetup() {
         <h2>{card.offToday ? 'Off for today' : card.on ? 'On' : 'Off'}</h2>
         {card.on && <>
           <p className="pause-line-preview">{pauseLine(labelOf(card.packages[0] ?? first), card.act)}</p>
-          <p className="small">{card.packages.map(labelOf).join(', ')} · {windowText(card.window)} · {card.mode === 'limit' ? `after ${card.limitMin} min a day` : 'every open'} · quiet {card.grace} min after "Open anyway"</p>
+          <p className="small">{card.packages.map(labelOf).join(', ')} · {windowText(card.window)} · {card.mode === 'limit' ? `after ${card.limitMin}\u00a0min a day` : 'every open'} · quiet {card.grace}&nbsp;min after "Open anyway"</p>
         </>}
         {card.legacy && !card.act && <p>Your day pause now shows a plan. Write the one thing you'll do first.</p>}
-        {card.on && card.switchedTo10 && <p className="pause-switched">Now shows after {card.limitMin} min a day. <button type="button" className="text-button" onClick={() => { setDraft(null); setView('when'); }}>Change it here.</button></p>}
+        {card.on && card.switchedTo10 && <p className="pause-switched">Now shows after {card.limitMin}&nbsp;min a day. <button type="button" className="text-button" onClick={() => { setDraft(null); setView('when'); }}>Change it here.</button></p>}
         <div className="pause-setup-nav">
           {card.on && !card.offToday && <button type="button" className="secondary" onClick={() => void quick({ offDay: today }, 'Off for today. It comes back tomorrow.')}>Off for today</button>}
           {card.offToday && <button type="button" className="secondary" onClick={() => void quick({ offDay: '' }, 'On again.')}>On again today</button>}
@@ -139,7 +139,7 @@ export function PauseSetup() {
         <label><input type="radio" name="pause-mode" checked={work.mode === 'open'} onChange={() => change({ mode: 'open' })} /> Every open</label>
         <label><input type="radio" name="pause-mode" checked={work.mode === 'limit'} onChange={() => change({ mode: 'limit' })} /> After <select aria-label="Minutes a day" value={work.limitMin} onChange={event => change({ mode: 'limit', limitMin: Number(event.target.value) })}>{DAY_LIMIT_CHOICES.map(minutes => <option key={minutes} value={minutes}>{minutes}</option>)}</select> min a day</label>
       </fieldset>
-      <label>After "Open anyway", stay quiet for <select value={work.grace} onChange={event => change({ grace: Number(event.target.value) })}>{GRACE_CHOICES.map(minutes => <option key={minutes} value={minutes}>{minutes} min</option>)}</select></label>
+      <label>After "Open anyway", stay quiet for <select value={work.grace} onChange={event => change({ grace: Number(event.target.value) })}>{GRACE_CHOICES.map(minutes => <option key={minutes} value={minutes}>{minutes}&nbsp;min</option>)}</select></label>
       <p className="small">At bedtime the night pause takes over.</p>
       <div className="pause-setup-nav">
         <button type="button" className="secondary" onClick={() => setView('line')}>Back</button>

@@ -249,8 +249,8 @@ export function Calm() {
         {WAYS.map(way => <button type="button" key={way.id} className={prefs.way === way.id ? '' : 'secondary'} aria-pressed={prefs.way === way.id} onClick={() => setPrefs({ way: way.id })}>{way.short}</button>)}
       </fieldset>
       <fieldset className="calm-set"><legend className="calm-legend">How long</legend><div className="calm-row calm-lengths" ref={lengths}>
-        {CALM_MINUTES.chips.map(value => <button type="button" key={value} className={prefs.minutes === value ? '' : 'secondary'} aria-pressed={prefs.minutes === value} onClick={() => setPrefs({ minutes: value })}>{value} min</button>)}
-        <button type="button" className={`calm-other${otherOn ? '' : ' secondary'}`} aria-pressed={otherOn} onClick={() => setSheet('other')}>{otherOn ? `Other · ${prefs.minutes === 'open' ? 'until I stop' : `${prefs.minutes} min`}` : 'Other'}</button>
+        {CALM_MINUTES.chips.map(value => <button type="button" key={value} className={prefs.minutes === value ? '' : 'secondary'} aria-pressed={prefs.minutes === value} onClick={() => setPrefs({ minutes: value })}>{value}&nbsp;min</button>)}
+        <button type="button" className={`calm-other${otherOn ? '' : ' secondary'}`} aria-pressed={otherOn} onClick={() => setSheet('other')}>{otherOn ? `Other · ${prefs.minutes === 'open' ? 'until I stop' : `${prefs.minutes}\u00a0min`}` : 'Other'}</button>
       </div></fieldset>
       <fieldset className="calm-set"><legend className="calm-legend">Sound</legend><div className="calm-row calm-sounds" ref={sounds}>
         {[{ id: 'none', name: 'None' }, ...CALM_SOUNDS].map(sound => <button type="button" key={sound.id} className={prefs.sound === sound.id ? '' : 'secondary'} aria-pressed={prefs.sound === sound.id} onClick={() => setPrefs({ sound: sound.id })}>{sound.name}</button>)}
@@ -270,7 +270,7 @@ export function Calm() {
           <label>Breathe out (seconds)<select value={breath.out} onChange={event => setBreath({ out: Number(event.target.value) })}>{Array.from({ length: BREATH_OUT[1] - BREATH_OUT[0] + 1 }, (_, i) => BREATH_OUT[0] + i).map(value => <option key={value} value={value}>{value}</option>)}</select></label>
         </div>
         <label className="toggle-row"><input type="checkbox" checked={prefs.startBell} onChange={event => setPrefs({ startBell: event.target.checked })} /> A bell at the start</label>
-        <label>Interval bell<select value={prefs.interval} onChange={event => setPrefs({ interval: Number(event.target.value) as CalmPrefs['interval'] })}>{CALM_INTERVALS.map(value => <option key={value} value={value}>{value ? `Every ${value} min` : 'Off'}</option>)}</select></label>
+        <label>Interval bell<select value={prefs.interval} onChange={event => setPrefs({ interval: Number(event.target.value) as CalmPrefs['interval'] })}>{CALM_INTERVALS.map(value => <option key={value} value={value}>{value ? `Every ${value}\u00a0min` : 'Off'}</option>)}</select></label>
         <p className="small">The end bell always rings.</p>
         <label>Sound volume<input type="range" min={0} max={100} value={prefs.soundVolume} onChange={event => setPrefs({ soundVolume: Number(event.target.value) })} /></label>
         <label>Bell volume<input type="range" min={0} max={100} value={prefs.bellVolume} onChange={event => setPrefs({ bellVolume: Number(event.target.value) })} /></label>
@@ -302,10 +302,10 @@ function OtherSheet({ current, onPick, onClose }: { current: CalmLength; onPick:
   const focusRef = useModalFocus<HTMLElement>(onClose);
   return <div className="sheet-backdrop" onClick={onClose}><section ref={focusRef} tabIndex={-1} className="task-sheet calm-other-sheet" role="dialog" aria-modal="true" aria-label="Other lengths" onClick={event => event.stopPropagation()}>
     <h2>Other lengths</h2>
-    <div className="calm-choices">{CALM_MINUTES.other.map(value => <button type="button" key={value} className={current === value ? '' : 'secondary'} onClick={() => onPick(value)}>{value} min</button>)}</div>
+    <div className="calm-choices">{CALM_MINUTES.other.map(value => <button type="button" key={value} className={current === value ? '' : 'secondary'} onClick={() => onPick(value)}>{value}&nbsp;min</button>)}</div>
     <label>Custom (minutes, {low} to {high})<input type="number" inputMode="numeric" min={low} max={high} step={1} value={Number.isNaN(custom) ? '' : custom} onChange={event => setCustom(event.target.valueAsNumber)} /></label>
     <div className="sheet-actions">
-      <button type="button" disabled={!valid} onClick={() => onPick(custom)}>Use {valid ? `${custom} min` : 'this'}</button>
+      <button type="button" disabled={!valid} onClick={() => onPick(custom)}>Use {valid ? `${custom}\u00a0min` : 'this'}</button>
       <button type="button" className="secondary" onClick={() => onPick('open')}>Until I stop</button>
     </div>
   </section></div>;

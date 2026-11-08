@@ -114,7 +114,7 @@ export function Plan({ questId }: { questId?: string }) {
       {/* A fuller add form (size, priority, a start time, repeat, split preview) for those who want it. */}
       <TaskQuickAdd run={board.act} tasks={board.tasks} focus={board.focus} label="Add with details" />
       <button type="button" className="secondary" onClick={() => go('plan/focus')}>Focus timer with breaks</button>
-      {night.shift > 0 && <p className="small busy-day">Busy day: about {Math.round(night.plannedMinutes / 60)} h planned, so tonight starts {night.shift} min later (bedtime {night.bedtime}). <button type="button" className="text-button" onClick={() => void keepUsualNight()}>Keep my usual time</button></p>}
+      {night.shift > 0 && <p className="small busy-day">Busy day: about {Math.round(night.plannedMinutes / 60)} h planned, so tonight starts {night.shift}&nbsp;min later (bedtime {night.bedtime}). <button type="button" className="text-button" onClick={() => void keepUsualNight()}>Keep my usual time</button></p>}
       <p className="day-horizon small">{dayHorizon(todayOpen.reduce((sum, task) => sum + (task.estimateMin ?? 0), 0), board.now, shutdownTime)}</p>
       <Reminders />
     </details>

@@ -128,10 +128,10 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
         <p className="eyebrow">{label}</p>
         <h1 className="pause-line">Open {label}</h1>
         <p className="pause-plan-label" id="pause-how-long">How long?</p>
-        <div className="pause-picks pause-chips" role="group" aria-labelledby="pause-how-long">{GRACE_CHOICES.map(minutes => <button type="button" key={minutes} className="secondary" aria-pressed={stage.minutes === minutes} onClick={() => setStage({ ...stage, minutes })}>{minutes} min</button>)}</div>
+        <div className="pause-picks pause-chips" role="group" aria-labelledby="pause-how-long">{GRACE_CHOICES.map(minutes => <button type="button" key={minutes} className="secondary" aria-pressed={stage.minutes === minutes} onClick={() => setStage({ ...stage, minutes })}>{minutes}&nbsp;min</button>)}</div>
         <p className="pause-plan-label" id="pause-why">Why? <span className="small">Only you see this. You can skip it.</span></p>
         <div className="pause-picks pause-chips" role="group" aria-labelledby="pause-why">{PAUSE_REASONS.map(reason => <button type="button" key={reason.id} className="secondary" aria-pressed={stage.why === reason.id} onClick={() => setStage({ ...stage, why: stage.why === reason.id ? null : reason.id })}>{reason.label}</button>)}</div>
-        <button type="button" className="pause-do" onClick={() => void openFor(stage.minutes, stage.why)}>Open for {stage.minutes} min</button>
+        <button type="button" className="pause-do" onClick={() => void openFor(stage.minutes, stage.why)}>Open for {stage.minutes}&nbsp;min</button>
         <button type="button" className="ink-link pause-not-now" onClick={() => setStage({ kind: 'card' })}>Back</button>
       </>}
       {stage.kind === 'done' && <>

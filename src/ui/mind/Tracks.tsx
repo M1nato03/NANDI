@@ -125,7 +125,7 @@ export function Tracks({ day, afterBedtime, showUnit = false }: { day: string; a
         <div className="track-budget" role="group" aria-label="Learning budget">
           <span>Learning budget</span>
           <progress max={bar.limit} value={bar.used} aria-label="Minutes used" />
-          <span>{bar.used} / {bar.limit} min planned today</span>
+          <span>{bar.used} / {bar.limit}&nbsp;min planned today</span>
         </div>
         {plan.kind === 'new' && nextUnit ? <><p>Today: {nextUnit.title}</p><button type="button" onClick={() => void start()}>Start today’s unit</button></> : <div className="track-stop"><h3>Done for today</h3><p>{plan.reason === 'budget' ? "Today's learning time is full. Reviews only." : plan.reason === 'backlog' ? 'Reviews are above 30. Today is for reviews.' : plan.kind === 'apply' ? 'Apply one idea from this module.' : plan.kind === 'review' ? 'Today is for review.' : plan.kind === 'off' ? 'Today is an off day.' : 'Your learning is complete for today.'}</p></div>}
         {module && (plan.kind === 'apply' || moduleDone) && <><p>{module.apply.detail}</p><button type="button" className="secondary" disabled={questAdded} onClick={() => void addQuest()}>{questAdded ? 'Added to side quests' : 'Add apply quest to this week'}</button></>}

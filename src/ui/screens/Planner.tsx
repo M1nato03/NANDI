@@ -45,7 +45,7 @@ function TriageRow({ task, board, onMove, onDetail }: { task: TaskRow; board: Re
       await repos.setPriority(task.id, priority, now);
     }, 'Placed for today.');
   }
-  return <div><button type="button" className="task-title-button" onClick={() => onDetail(task)}>{task.title}</button><p>{task.estimateMin} min {task.firstScheduledDayKey ? '· Missed slot' : '· New task'}</p>
+  return <div><button type="button" className="task-title-button" onClick={() => onDetail(task)}>{task.title}</button><p>{task.estimateMin}&nbsp;min {task.firstScheduledDayKey ? '· Missed slot' : '· New task'}</p>
     <label>Start time <input type="datetime-local" value={slot} onChange={(event) => setSlot(event.target.value)} /></label>
     <div className="planner-chips" aria-label={`Suggested times for ${task.title}`}>{slots.map((start) => <button key={start} type="button" className="secondary" onClick={() => setSlot(localDateTime(start))}>{new Date(start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</button>)}</div>
     {(task.postponeCount ?? 0) >= 1 && <label>First 10 minutes <input maxLength={120} value={firstStep} onChange={(event) => setFirstStep(event.target.value)} placeholder="A small first step" /></label>}

@@ -79,7 +79,7 @@ function OwnerNumbers({ onAudit }: { onAudit: () => void }) {
     ['Your turn right (aim ~80%)', lessons.yourTurn === null ? '—' : `${lessons.yourTurn}% (${lessons.yourTurnCount})`],
     // Spec 15 §6 kill test for soft days.
     ['Soft days finished (keep if ≥70%)', soft.started ? `${share(soft.finishRate)} (${soft.finished} of ${soft.started})` : '—'],
-    ['Soft day minutes (aim ≤4)', soft.medianMinutes === null ? '—' : `${Math.round(soft.medianMinutes * 10) / 10} min`],
+    ['Soft day minutes (aim ≤4)', soft.medianMinutes === null ? '—' : `${Math.round(soft.medianMinutes * 10) / 10}\u00a0min`],
     ['Back next day: soft vs missed', `${share(soft.returnAfterSoft)} vs ${share(soft.returnAfterMiss)}`],
   ];
   return <section className="screen owner-panel" aria-label="Owner panel">

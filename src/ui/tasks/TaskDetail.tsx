@@ -49,7 +49,7 @@ export function TaskDetail({ task, tasks, focus, events, run, close, move, start
     })}</ul></section>}
     <label>Title <input value={title} maxLength={160} onChange={event => setTitle(event.target.value)} /></label>
     <label>Estimate in minutes <input type="number" min="1" max="90" value={estimate} onChange={event => setEstimate(Number(event.target.value))} /></label>
-    {calibrated && <p className="small">Your {category} tasks usually take about {calibrated.ratio.toFixed(1)}x the estimate. <button type="button" className="text-button" onClick={() => setEstimate(calibratedMinutes(estimate, calibrated.ratio))}>Use {calibratedMinutes(estimate, calibrated.ratio)} min</button>?</p>}
+    {calibrated && <p className="small">Your {category} tasks usually take about {calibrated.ratio.toFixed(1)}x the estimate. <button type="button" className="text-button" onClick={() => setEstimate(calibratedMinutes(estimate, calibrated.ratio))}>Use {calibratedMinutes(estimate, calibrated.ratio)}&nbsp;min</button>?</p>}
     <label>Priority <select value={priority} onChange={event => setPriority(event.target.value as 'must' | 'could')}><option value="could">Could</option><option value="must">Must</option></select></label>
     <label>Category <select value={category} onChange={event => setCategory(event.target.value)}>{availableCategories.map(item => <option key={item} value={item}>{item.charAt(0).toUpperCase() + item.slice(1)}</option>)}</select></label>
     <label>Place <input value={place} onChange={event => setPlace(event.target.value)} /></label>
