@@ -13,9 +13,8 @@ test('reminders have no time, survive reload and backup, and never fill the Plan
   await reminders.getByRole('button', { name: 'Add', exact: true }).click();
   await reminders.getByLabel('New reminder').fill('call Nani');
   await reminders.getByRole('button', { name: 'Add', exact: true }).click();
-  // Both added in the same instant (the clock is installed), so their order is not the point: the trimmed text is.
-  await expect(reminders.locator('.reminder-list').first()).toContainText(/buy a notebook|call Nani/);
-  await expect(reminders.getByText('buy a notebook', { exact: true })).toBeVisible();
+  // Both lines are kept (a quick second add no longer overwrites the first) and stay in the order they were made.
+  await expect(reminders.locator('.reminder-list').first().locator('.reminder-text')).toHaveText(['buy a notebook', 'call Nani']);
   await expect(reminders.locator('h2')).toContainText('2');
 
   await reminders.getByRole('button', { name: 'Done: buy a notebook' }).click();

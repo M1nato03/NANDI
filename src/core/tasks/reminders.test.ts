@@ -41,3 +41,9 @@ describe('reminders', () => {
     expect(readReminders([{ id: 'a', text: 'ok', createdAt: 1 }, { id: 2 }, null, 'x'])).toEqual([{ id: 'a', text: 'ok', createdAt: 1 }]);
   });
 });
+
+it('b2 (gate-s2): lines made in the same instant keep one stable order, by time and then by id', () => {
+  const same = [{ id: '01B', text: 'call Nani', createdAt: 5 }, { id: '01A', text: 'buy a notebook', createdAt: 5 }, { id: '00Z', text: 'earlier', createdAt: 4 }] as Reminder[];
+  expect(splitReminders(same, 6).open.map(row => row.text)).toEqual(['earlier', 'buy a notebook', 'call Nani']);
+  expect(splitReminders([...same].reverse(), 6).open.map(row => row.text)).toEqual(['earlier', 'buy a notebook', 'call Nani']);
+});

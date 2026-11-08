@@ -113,6 +113,34 @@ test('s5 on a 16:9 phone (360x640, light): the card-aware crop keeps Kapi and th
   await page.context().close();
 });
 
+test('the Yatra tab at 100% and 200% text (the trek strip may grow past its reserved 477 px; nothing clips), light', async ({ browser }) => {
+  const page = await phone(browser, 'light');
+  await page.goto('/?e2e#yatra');
+  await page.reload();
+  await expect(page.locator('.trek-strip .home-title h2')).toBeVisible();
+  await page.waitForTimeout(500);
+  await snap(page, 's2-l-yatra');
+  await textAt200(page);
+  await settle(page);
+  const strip = (await page.locator('.trek-strip').boundingBox())!;
+  console.log(`stage 2 shots [yatra 200%]: strip height ${Math.round(strip.height)}`);
+  expect(strip.height).toBeGreaterThanOrEqual(477);
+  await snap(page, 's2-l-yatra-200');
+  await page.context().close();
+});
+
+test('Grow › Calm & Sleep with the "Tonight" link (plan item ii, for Jenil to decide), light and dark', async ({ browser }) => {
+  for (const theme of ['light', 'dark'] as const) {
+    const page = await phone(browser, theme);
+    await page.goto('/?e2e#grow/sleep');
+    await page.reload();
+    await expect(page.getByTestId('night-link')).toBeVisible();
+    await settle(page);
+    await snap(page, `s2-${theme === 'light' ? 'l' : 'd'}-calm-sleep-tonight-link`);
+    await page.context().close();
+  }
+});
+
 test('the neem keepsakes on the bark (4 camps), the caption, and no clipping at 360x800', async ({ browser }) => {
   const page = await phone(browser, 'light');
   // Four camps reached before the jar's first day: one place a day, three sessions each (the walk before jarFrom).

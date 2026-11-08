@@ -46,7 +46,8 @@ export function removeReminder(list: readonly Reminder[], id: string): Reminder[
 export function splitReminders(list: readonly Reminder[], now: number): { open: Reminder[]; done: Reminder[] } {
   const kept = pruneReminders(list, now);
   return {
-    open: kept.filter(row => row.doneAt === undefined).sort((a, b) => a.createdAt - b.createdAt),
-    done: kept.filter(row => row.doneAt !== undefined).sort((a, b) => b.doneAt! - a.doneAt!),
+    // A stable order (b2, gate-s2): by time, then by id, so two lines made in the same instant never swap.
+    open: kept.filter(row => row.doneAt === undefined).sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id)),
+    done: kept.filter(row => row.doneAt !== undefined).sort((a, b) => b.doneAt! - a.doneAt! || a.id.localeCompare(b.id)),
   };
 }
