@@ -64,8 +64,8 @@ function factAct(fact: LedgerRow): JarAct | null {
   return null;
 }
 
-/** Focus per planning day, split at 04:00, as one act per day (ended focus only), at that day's rate (focusJarMinutes). */
-function focusActs(focus: readonly FocusRow[], rateFrom?: string): JarAct[] {
+/** Ended focus per planning day, split at 04:00: the paid ms and the latest moment counted in each day. */
+export function focusDays(focus: readonly FocusRow[]): Map<string, { ms: number; at: number }> {
   const days = new Map<string, { ms: number; at: number }>();
   for (const row of focus) {
     if (row.deleted || row.endedAt == null || row.endedAt <= row.startedAt) continue;
@@ -81,7 +81,12 @@ function focusActs(focus: readonly FocusRow[], rateFrom?: string): JarAct[] {
       from = until;
     }
   }
-  return [...days].map(([day, { ms, at }]) => ({ id: `focus:${day}`, kind: 'focus' as const, dayKey: day, at, label: LABEL.focus!,
+  return days;
+}
+
+/** Focus per planning day, split at 04:00, as one act per day (ended focus only), at that day's rate (focusJarMinutes). */
+function focusActs(focus: readonly FocusRow[], rateFrom?: string): JarAct[] {
+  return [...focusDays(focus)].map(([day, { ms, at }]) => ({ id: `focus:${day}`, kind: 'focus' as const, dayKey: day, at, label: LABEL.focus!,
     minutes: focusJarMinutes(ms, day, rateFrom) })).filter(act => act.minutes > 0);
 }
 

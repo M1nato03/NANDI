@@ -20,6 +20,7 @@ import { taskFocusMs } from '../../core/tasks/focus';
 import { currentTrail } from '../../data/yatra/trails';
 import { CONSTELLATION_PREFIX, ensureFocusRateFrom, ensureJarFrom, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
 import { focusRateFrom, JAR_FROM_KEY } from '../../core/yatra/jar';
+import { weatherFor, type Weather } from '../../core/yatra/weather';
 import { JarPlanArea, RealThingsLine } from './JarPlan';
 import { CrewBar } from './Crew';
 import { go } from '../shell/router';
@@ -37,7 +38,7 @@ const keepCard = (id: string) => { try { localStorage.setItem(CARDS_KEY, JSON.st
 /** Yatra's own dusk (item 203): the scene turns to night at 19:00, or at the evening switch if that comes first. */
 export const DUSK_HOUR = 19;
 
-export function useYatra(): { trek: Trek; night: boolean; dusk: boolean } | null | undefined {
+export function useYatra(): { trek: Trek; night: boolean; dusk: boolean; weather: Weather } | null | undefined {
   const trail = currentTrail();
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
@@ -49,21 +50,32 @@ export function useYatra(): { trek: Trek; night: boolean; dusk: boolean } | null
     // Spec 54: focus fills the jar too (each full 30 min in a day).
     focus: await db.focus.filter(row => row.deleted === 0).toArray(),
   } : null, [trail?.id]);
-  if (!trail) return null;
-  if (!source) return undefined;
-  const today = dayKey(now);
-  const read = (key: string, fallback: string) => { const value = source.settings.find(row => row.key === key)?.value; return typeof value === 'string' ? value : fallback; };
-  const night = adaptiveNight(source.settings, source.tasks, today);
-  const shutdown = shiftClock(effectiveShutdown(read('planner.shutdown', RULES.night.defaultShutdown), read('planner.bedtime', RULES.night.defaultBedtime)), night.shift);
-  const names = Object.fromEntries(source.settings.filter(row => row.key.startsWith(CONSTELLATION_PREFIX) && typeof row.value === 'string').map(row => [row.key.slice(CONSTELLATION_PREFIX.length), row.value as string]));
-  // Spec 54: from jarFrom the trail walks in jar minutes; until it is written (the first run), the old walk.
-  const jarFrom = source.settings.find(row => row.key === JAR_FROM_KEY)?.value;
-  const trek = deriveTrek(source.facts, trail, read(YATRA_START, today), today, names, typeof jarFrom === 'string' ? { from: jarFrom, focus: source.focus, focusRateFrom: focusRateFrom(source.settings) } : undefined);
-  const phase = phaseAt(now, shutdown, night.bedtime);
-  // The planning day turns at 04:00, so the small hours are still tonight.
-  const hour = new Date(now).getHours();
-  const sceneNight = phase === 'evening' || phase === 'night' || hour >= DUSK_HOUR || hour < 4;
-  return { trek, night: sceneNight, dusk: !sceneNight && hour === DUSK_HOUR - 1 };
+  const yatra = (() => {
+    if (!trail) return null;
+    if (!source) return undefined;
+    const today = dayKey(now);
+    const read = (key: string, fallback: string) => { const value = source.settings.find(row => row.key === key)?.value; return typeof value === 'string' ? value : fallback; };
+    const night = adaptiveNight(source.settings, source.tasks, today);
+    const shutdown = shiftClock(effectiveShutdown(read('planner.shutdown', RULES.night.defaultShutdown), read('planner.bedtime', RULES.night.defaultBedtime)), night.shift);
+    const names = Object.fromEntries(source.settings.filter(row => row.key.startsWith(CONSTELLATION_PREFIX) && typeof row.value === 'string').map(row => [row.key.slice(CONSTELLATION_PREFIX.length), row.value as string]));
+    // Spec 54: from jarFrom the trail walks in jar minutes; until it is written (the first run), the old walk.
+    const jarFrom = source.settings.find(row => row.key === JAR_FROM_KEY)?.value;
+    // Spec 571 stage 2: `now` lets a running focus's earned 3-min steps move the group (never a part step).
+    const trek = deriveTrek(source.facts, trail, read(YATRA_START, today), today, names, typeof jarFrom === 'string' ? { from: jarFrom, focus: source.focus, focusRateFrom: focusRateFrom(source.settings), now } : undefined);
+    const phase = phaseAt(now, shutdown, night.bedtime);
+    // The planning day turns at 04:00, so the small hours are still tonight.
+    const hour = new Date(now).getHours();
+    const sceneNight = phase === 'evening' || phase === 'night' || hour >= DUSK_HOUR || hour < 4;
+    return { trek, night: sceneNight, dusk: !sceneNight && hour === DUSK_HOUR - 1, weather: weatherFor(source.focus, now) };
+  })();
+  // While a focus runs, its next earned step lands on time, not up to a minute late (the minute tick still runs).
+  const nextStepAt = yatra?.trek.climb.nextStepAt;
+  useEffect(() => {
+    if (nextStepAt === undefined) return;
+    const timer = window.setTimeout(() => setNow(Date.now()), Math.max(0, nextStepAt - Date.now()) + 50);
+    return () => window.clearTimeout(timer);
+  }, [nextStepAt]);
+  return yatra;
 }
 
 function narrative(trek: Trek, night: boolean): string {
@@ -209,7 +221,7 @@ export function TrekStrip() {
         <span>Journal</span><b>{postcards}</b>
       </button>}
     </div>
-    {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} onFriend={spot => go(spot.route)} />}
+    {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} weather={yatra.weather} onRename={row => { setName(row.name); setRenaming(row); }} onFriend={spot => go(spot.route)} />}
     {/* Below the scene, a quiet note on the trail: information, never a second action. */}
     {trek && yatra && <div className="trek-journey">
       <div className="trek-journey-top"><strong>{trekLine(trek)}</strong></div>

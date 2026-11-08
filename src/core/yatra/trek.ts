@@ -1,7 +1,7 @@
 import type { FocusRow, LedgerRow } from '../../data/types';
 import type { Trail } from './trail';
 import { dayKey } from '../time/dayKey';
-import { deriveJar, JAR, JAR_KINDS, jarActs, sessionKind, type JarEntry, type JarKind, type SessionKind } from './jar';
+import { deriveJar, focusDays, JAR, JAR_KINDS, jarActs, sessionKind, type JarEntry, type JarKind, type SessionKind } from './jar';
 
 /**
  * Spec 34: the trek and the sky, derived from the ledger like the courtyard (nothing new is stored but the start day
@@ -43,14 +43,27 @@ export interface Trek {
   today: { stars: Star[]; campDay: boolean; atPlace: boolean };
   /** Spec 54: what each act put in the jar from jarFrom (after the cap), and today's minutes. */
   jar: { from?: string; entries: JarEntry[]; todayMinutes: number; capped: boolean; carry: number };
+  /** Spec 571 stage 2: where the group stands, continuously, in stretches walked (see Climb). */
+  climb: Climb;
 }
+
+/**
+ * Spec 571 stage 2 (§7, "the climb draws only earned minutes"): the group's place as a continuous number of stretches
+ * walked, so the minutes carried into the next stretch move it too. `settled` reads ended acts only (the jar as the
+ * receipt and the finish line see it). `at` adds a running focus's EARNED steps (1 jar min per full 3 focus min from
+ * focusRateFrom, 5 per full 30 before; the 60-a-day cap and the 04:00 split as for ended focus), never a part step.
+ * `walking`: a focus is running (not paused) and the trail can still move today; `nextStepAt` is when its next step is earned.
+ */
+export interface Climb { settled: number; at: number; walking: boolean; nextStepAt?: number }
 
 const addDays = (day: string, days: number) => { const date = new Date(`${day}T12:00:00`); date.setDate(date.getDate() + days); return dayKey(date); };
 const daysBetween = (from: string, to: string) => Math.round((new Date(`${to}T12:00:00`).getTime() - new Date(`${from}T12:00:00`).getTime()) / 86_400_000);
 const WEEK = 7;
 const ordinal = ['', ' II', ' III', ' IV', ' V', ' VI'];
 
-export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: string, today: string, names: Readonly<Record<string, string>> = {}, jar?: { from: string; focus: readonly FocusRow[]; focusRateFrom?: string }): Trek {
+const runningFocus = (focus: readonly FocusRow[], now: number) => focus.find(row => !row.deleted && row.endedAt == null && row.startedAt <= now);
+
+export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: string, today: string, names: Readonly<Record<string, string>> = {}, jar?: { from: string; focus: readonly FocusRow[]; focusRateFrom?: string; now?: number }): Trek {
   // Before jarFrom (or without a jar): one stretch per session, one place a day.
   const sessions = facts
     .map(fact => ({ fact, kind: sessionKind(fact) }))
@@ -114,11 +127,27 @@ export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: 
     }
   });
   const todayStars = stars.filter(star => star.dayKey === today);
+  const total = legs.length * STRETCHES_PER_LEG;
+  const settled = complete() ? total : Math.min(total, legs.reduce((sum, state) => sum + state.stretches.length, 0) + carry / JAR.stretchMinutes);
+  let climb: Climb = { settled, at: settled, walking: false };
+  const running = jar?.now !== undefined ? runningFocus(jar.focus, jar.now) : undefined;
+  if (jar?.now !== undefined && running) {
+    const now = jar.now;
+    // The running focus as if it ended now: the same split, rate, floor and cap as an ended one, so only earned steps count.
+    const focus = jar.focus.map(row => row === running ? { ...row, endedAt: now } : row);
+    const live = deriveTrek(facts, trail, startDay, today, names, { from: jar.from, focus, focusRateFrom: jar.focusRateFrom });
+    const paused = running.pauses?.some(pause => pause.at <= now && pause.resumeAt == null) ?? false;
+    const walking = !paused && !live.complete && today >= jar.from && live.jar.todayMinutes < JAR.dayCap;
+    const stepMs = (jar.focusRateFrom !== undefined && today >= jar.focusRateFrom ? JAR.focusRateMinutes : JAR.focusBlockMinutes) * 60_000;
+    const dayMs = focusDays(focus).get(today)?.ms ?? 0;
+    climb = { settled, at: Math.max(settled, live.climb.settled), walking, ...(walking ? { nextStepAt: now + stepMs - (dayMs % stepMs) } : {}) };
+  }
   return {
     trail, place: leg, stretch, complete: complete(), legs, stars, constellations,
     // A day with real things in the jar but no session still walked: not a camp day.
     today: { stars: todayStars, campDay: todayStars.length === 0 && todayMinutes === 0, atPlace: stretch === 0 },
     jar: { from: jar?.from, entries, todayMinutes, capped: todayMinutes >= JAR.dayCap, carry },
+    climb,
   };
 }
 

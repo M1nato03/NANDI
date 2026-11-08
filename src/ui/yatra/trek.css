@@ -125,3 +125,16 @@
 .trek-scene.is-home:not(.is-night) .trek-sun { background: #edd3a0; box-shadow: 0 0 0 18px #efdcb233; }
 .trek-scene.is-home:not(.is-night) .trek-road { background: #cdbb98; }
 .trek-scene.is-home:not(.is-night) .trek-stream { opacity: .7; }
+
+/* Spec 571 stage 2 §4: rain while a focus-guard pause holds the focus. The sun hides, the light greys, thin streaks
+   fall (still under reduced motion); a line over the sky says to come back to focus, with no time-away figure. */
+.trek-rain { position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  background: linear-gradient(#5f6f7a2e, #5f6f7a1f), repeating-linear-gradient(104deg, transparent 0 13px, #dfe9f066 13px 14px, transparent 14px 31px);
+  background-size: auto, 62px 62px; animation: trek-rain .7s linear infinite; }
+@keyframes trek-rain { to { background-position: 0 0, -16px 62px; } }
+.trek-scene.is-rain .trek-sun { opacity: 0; }
+.trek-weather { position: absolute; z-index: 5; top: 10px; left: 16px; right: 16px; margin: 0; padding: 6px 12px; border-radius: 12px; background: var(--surface-1); color: var(--ink); font-size: .875rem; line-height: 1.25rem; box-shadow: var(--shadow-1); }
+@media (prefers-reduced-motion: reduce) { .trek-rain { animation: none; } }
+:root[data-motion='reduce'] .trek-rain { animation: none; }
+/* Where the scene has its caption (not Home), the rain line sits under it. */
+.trek-scene:not(.is-home) .trek-weather { top: 64px; }

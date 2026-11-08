@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { STAR_COLOURS, STRETCHES_PER_LEG, type Constellation, type Trek } from '../../core/yatra/trek';
+import { RAIN_LINE, type Weather } from '../../core/yatra/weather';
 import { Cast, type CastName } from '../cast/Cast';
 
 /** Spec 34 trek scene: one side-on world, trail below and sky above, so scrolling back scrolls the sky too. */
@@ -19,8 +20,19 @@ const MARK_AT = 48;
 const SEEN_KEY = 'nandi.yatra.seen';
 
 const placeX = (index: number) => PAD + index * LEG_W;
-const groupX = (walked: number, legs: number) => { const capped = Math.min(walked, legs * STRETCHES_PER_LEG); return placeX(Math.floor(capped / STRETCHES_PER_LEG)) + STOPS[capped % STRETCHES_PER_LEG]! * LEG_W; };
-const walkedOf = (trek: Trek) => trek.legs.reduce((sum, leg) => sum + leg.stretches.length, 0);
+/**
+ * Spec 571 stage 2: the climb is continuous. `walked` is stretches walked, with the minutes carried into the next stretch
+ * as a fraction, so between two stops the group stands that far along; on a whole stretch it is the same stop as before.
+ */
+const groupX = (walked: number, legs: number) => {
+  const capped = Math.max(0, Math.min(walked, legs * STRETCHES_PER_LEG));
+  const leg = Math.min(Math.floor(capped / STRETCHES_PER_LEG), legs);
+  const into = capped - leg * STRETCHES_PER_LEG, stop = Math.floor(into);
+  const from = STOPS[stop] ?? 1, to = STOPS[stop + 1] ?? 1;
+  return placeX(leg) + (from + (to - from) * (into - stop)) * LEG_W;
+};
+/** Where the group stands: earned minutes only (a running focus adds its earned 3-min steps, never a part step). */
+const walkedOf = (trek: Trek) => trek.climb.at;
 /** A small stable number from a string, for star places and the faint sky. */
 function hash(text: string): number {
   let h = 2166136261;
@@ -103,7 +115,7 @@ const Tree = () => <svg viewBox="0 0 70 140" aria-hidden="true"><path d="M40 140
 const FireRing = () => <svg viewBox="0 0 30 40" aria-hidden="true"><path d="M5 35L25 38M25 34L5 38" stroke="#67503d" strokeWidth="3" strokeLinecap="round" /><g fill="#9c988a" stroke="#5f5a4b" strokeWidth=".8"><ellipse cx="3" cy="37" rx="3" ry="2" /><ellipse cx="27" cy="37" rx="3" ry="2" /><ellipse cx="15" cy="39" rx="3.2" ry="1.8" /></g></svg>;
 const Fire = () => <svg viewBox="0 0 30 40" aria-hidden="true"><path d="M2 34L27 39M27 34L2 39" stroke="#67503d" strokeWidth="4" strokeLinecap="round" /><path className="trek-flame" d="M15 33C5 29 6 20 14 10C13 19 20 14 21 4C27 16 28 28 18 33Z" fill="#ff9d34" /><path className="trek-flame" d="M15 32C11 27 12 23 16 17C16 23 20 23 20 19C22 25 20 31 15 32Z" fill="#ffe6a1" /></svg>;
 
-export function TrekScene({ trek, night, dusk = false, brighten = 0, breath, onRename, onFriend }: { trek: Trek; night: boolean; dusk?: boolean; brighten?: number; breath?: { phase: 'in' | 'out'; in: number; out: number }; onRename: (constellation: Constellation) => void; onFriend?: (spot: CampFriend) => void }) {
+export function TrekScene({ trek, night, dusk = false, weather = 'clear', brighten = 0, breath, onRename, onFriend }: { trek: Trek; night: boolean; dusk?: boolean; weather?: Weather; brighten?: number; breath?: { phase: 'in' | 'out'; in: number; out: number }; onRename: (constellation: Constellation) => void; onFriend?: (spot: CampFriend) => void }) {
   const legs = trek.trail.legs.length;
   const width = PAD + legs * LEG_W + PAD_END;
   const walked = walkedOf(trek);
@@ -167,7 +179,8 @@ export function TrekScene({ trek, night, dusk = false, brighten = 0, breath, onR
   };
   const home = !!onFriend;
 
-  return <section className={`trek-scene${night ? ' is-night' : dusk ? ' is-dusk' : ''}${home ? ' is-home' : ''}`} aria-label={`${trek.trail.name} trail. Swipe to look back along it.`}>
+  const rain = weather === 'rain';
+  return <section className={`trek-scene${night ? ' is-night' : dusk ? ' is-dusk' : ''}${home ? ' is-home' : ''}${rain ? ' is-rain' : ''}`} aria-label={`${trek.trail.name} trail. Swipe to look back along it.`}>
     <div className="trek-scroll" ref={scroller} onScroll={onScroll} tabIndex={0} aria-label="Swipe the trail sideways">
       <div className="trek-world" ref={world} style={{ width }}>
         <div className="trek-sun" style={{ left: Math.max(PAD, gx - 40) }} aria-hidden="true" />
@@ -218,6 +231,9 @@ export function TrekScene({ trek, night, dusk = false, brighten = 0, breath, onR
         {trek.trail.places.map((spot, i) => <div key={spot.id} className={`trek-place${i === trek.place && atPlace ? ' current' : ''}`} style={{ left: placeX(i) + MARK_AT }}><b>{spot.name}</b><i /></div>)}
       </div>
     </div>
+    {/* Spec 571 §4: a focus-guard pause is rain over the view (it stays put when you swipe); the group waits where it stood. */}
+    {rain && <div className="trek-rain" aria-hidden="true" />}
+    {rain && <p className="trek-weather" role="status">{RAIN_LINE}</p>}
     {/* Home says where the camp is in its heading, so the scene does not say it twice. */}
     {!home && <div className="trek-caption"><b>{place.name.toUpperCase()} · {night ? 'NIGHT' : 'DAY'}</b><span>{campLine(trek, night)}</span></div>}
   </section>;
