@@ -7,7 +7,7 @@ export type Phase = 'morning' | 'day' | 'evening' | 'night';
 export type FriendName = 'Nandi' | 'Moti' | 'Chiku' | 'Kapi' | 'Mor' | 'Kachhua';
 
 export const AREAS: readonly { id: AreaId; friend: FriendName; label: string; practice: string; objects: readonly [string, string, string, string, string] }[] = [
-  { id: 'train', practice: 'training', friend: 'Nandi', label: 'Train', objects: ['an exercise mat', 'wooden clubs', 'dumbbells', 'a pull-up bar', 'a medal hook'] },
+  { id: 'train', practice: 'training', friend: 'Nandi', label: 'Train', objects: ['an exercise mat', 'wooden clubs', 'dumbbells', 'a wooden gym frame', 'medals on the frame'] },
   { id: 'plan', practice: 'finished tasks', friend: 'Mor', label: 'Plan', objects: ['a marigold pot', 'a second pot', 'a flower bed', 'a creeper trellis', 'a water bowl'] },
   { id: 'learn', practice: 'learning', friend: 'Chiku', label: 'Learn', objects: ['a first book', 'a book stack', 'a low shelf', 'a reading lamp', 'a globe'] },
   { id: 'remember', practice: 'idea checks', friend: 'Moti', label: 'Remember', objects: ['a keepsake box', 'a photo frame', 'a shelf of jars', 'a trunk', 'a string of photos'] },

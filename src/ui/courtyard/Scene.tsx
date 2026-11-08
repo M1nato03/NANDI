@@ -141,12 +141,40 @@ function Puzzles({ stage }: { stage: number }) {
   </g>;
 }
 
-/** Nandi looks after Train: a mat, wooden clubs, dumbbells, a wall bar and medals. */
+/** One medal, drawn clearly as a medal: a V of two ribbon strips from its hook down to a round disc with a rim. */
+function Medal({ x, y, drop = 9, r = 4, metal = 'gold' }: { x: number; y: number; drop?: number; r?: number; metal?: 'gold' | 'silver' }) {
+  const [face, rim] = metal === 'gold' ? ['#f2c14e', '#b8862a'] : ['#dfe4ea', '#8e98a3'];
+  const cy = y + drop + r;
+  return <g className="courtyard-medal">
+    <path d={`M${x - 3} ${y}L${x} ${y + drop}L${x - 1.2} ${y + drop}L${x - 4.2} ${y}Z`} fill="#d6584a" />
+    <path d={`M${x + 3} ${y}L${x} ${y + drop}L${x + 1.2} ${y + drop}L${x + 4.2} ${y}Z`} fill="#4f7fc4" />
+    <circle cx={x} cy={cy} r={r} fill={face} stroke={rim} strokeWidth=".9" />
+    <circle cx={x} cy={cy} r={r * .55} fill="none" stroke={rim} strokeWidth=".6" opacity=".8" />
+    <path d={`M${x - r * .45} ${cy - r * .45}a${r * .6} ${r * .6} 0 0 1 ${r * .5} -${r * .2}`} stroke="#fff" strokeWidth=".7" fill="none" opacity=".7" />
+  </g>;
+}
+
+/**
+ * Spec 571 §0.19 (Jenil 6 Nov, "wooden frame it is"): a freestanding wooden gym frame on the floor behind Nandi's mat
+ * (two posts with feet, a steel crossbar about mat-width, contact shadows) from stage 4; the medals hang from its bar at
+ * stage 5. It replaces the back-wall bar, so nothing of Nandi's stays by Mor's door.
+ */
+function GymFrame({ stage }: { stage: number }) {
+  if (stage < 4) return null;
+  const top = 112, foot = 150, left = 136, right = 224;
+  return <g className="courtyard-gym-frame">
+    <ellipse cx={left} cy={foot + 1} rx="6" ry="1.8" fill="#000" opacity=".14" /><ellipse cx={right} cy={foot + 1} rx="6" ry="1.8" fill="#000" opacity=".14" />
+    <rect x={left - 2.5} y={top - 2} width="5" height={foot - top + 2} rx="1.2" fill={C.wood} /><rect x={right - 2.5} y={top - 2} width="5" height={foot - top + 2} rx="1.2" fill={C.wood} />
+    <path d={`M${left - 6} ${foot}h12M${right - 6} ${foot}h12`} stroke={C.woodDark} strokeWidth="2.4" strokeLinecap="round" />
+    <rect x={left - 1} y={top} width={right - left + 2} height="3" rx="1.5" fill="#9aa3ad" /><path d={`M${left} ${top + .8}h${right - left}`} stroke="#cfd5dc" strokeWidth=".7" />
+    {stage >= 5 && <><Medal x={162} y={top + 3} metal="gold" /><Medal x={184} y={top + 3} metal="silver" drop={11} /><Medal x={206} y={top + 3} metal="gold" /></>}
+  </g>;
+}
+
+/** Nandi looks after Train: a mat, wooden clubs, dumbbells, a wooden gym frame and medals. */
 function Gym({ stage }: { stage: number }) {
   return <g>
-    {stage >= 4 && <g><rect x="140" y="88" width="3" height="8" fill="#6f7680" /><rect x="164" y="88" width="3" height="8" fill="#6f7680" /><rect x="138" y="90.5" width="31" height="2.6" rx="1.3" fill="#9aa3ad" /></g>}
-    {stage >= 5 && <g><path d="M152 98v4" stroke={C.woodDark} strokeWidth="1.4" /><path d="M147 102l3 7M157 102l-3 7M152 102v8" stroke="#d6584a" strokeWidth="1.4" />
-      <circle cx="149" cy="112" r="3" fill="#f2c14e" /><circle cx="155" cy="113" r="3" fill="#cfd5dc" /><circle cx="152" cy="114" r="3.2" fill="#f2c14e" /><path d="M150.6 114h2.8" stroke="#b8862a" strokeWidth=".8" /></g>}
+    <GymFrame stage={stage} />
     {stage >= 1 && <g><rect x="132" y="184" width="96" height="12" rx="5" fill="#c9524a" /><path d="M140 186v8M156 186v8M172 186v8M188 186v8M204 186v8M220 186v8" stroke="#e98b6c" strokeWidth="1.2" opacity=".7" /></g>}
     {stage >= 2 && <g>{[121, 129].map(x => <g key={x}><path d={`M${x - 2.4} 166h4.8l2.6 18a5 3 0 0 1 -10 0Z`} fill={C.wood} /><rect x={x - 2} y="160" width="4" height="7" rx="1.6" fill={C.woodDark} /><path d={`M${x - 3.6} 176h7.2`} stroke="#d1a24a" strokeWidth="1.2" /></g>)}</g>}
     {stage >= 3 && <g transform="translate(134 180) scale(.85)"><rect x="0" y="2.2" width="16" height="2.2" fill="#9aa3ad" /><rect x="-2" y="-1" width="5" height="8.5" rx="1.5" fill="#4b5560" /><rect x="13" y="-1" width="5" height="8.5" rx="1.5" fill="#4b5560" />
