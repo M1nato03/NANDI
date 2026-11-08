@@ -306,10 +306,12 @@ export function Journal({ focus }: { focus?: string } = {}) {
   useEffect(() => { if (focus && yatra) document.getElementById(`postcard-${focus}`)?.scrollIntoView({ block: 'center' }); }, [focus, yatra]);
   if (yatra === undefined) return <section className="screen" role="status">Opening the journal…</section>;
   const cards = yatra ? yatra.trek.legs.filter(row => row.gateOn).map(row => yatra.trek.trail.legs[row.index]!) : [];
-  const waiting = focus && !cards.some(leg => leg.landmark.id === focus) ? yatra?.trek.trail.legs.find(leg => leg.landmark.id === focus) : undefined;
+  const waitingIndex = focus && yatra && !cards.some(leg => leg.landmark.id === focus) ? yatra.trek.trail.legs.findIndex(leg => leg.landmark.id === focus) : -1;
+  const waitingCamp = waitingIndex >= 0 ? yatra?.trek.trail.places[waitingIndex + 1]?.name : undefined;
   return <section className="screen yatra-journal">
     <p className="eyebrow">Yatra</p><h1>Journal</h1>
-    {waiting && <p className="card trek-postcard-waiting" role="status">{waiting.landmark.name}: its postcard opens when a Mind session walks that stretch of the trail.</p>}
+    {/* b2 (8 Nov): the postcard gate stays (a Mind session opens it); the line is neutral. */}
+    {waitingCamp && <p className="card trek-postcard-waiting" role="status">Its postcard opens with a Mind session at {waitingCamp}.</p>}
     {cards.length ? cards.map(leg => <article key={leg.landmark.id} id={`postcard-${leg.landmark.id}`} className={`card trek-postcard${focus === leg.landmark.id ? ' is-focus' : ''}`} aria-label={leg.landmark.name}>
       <p className="eyebrow">{leg.landmark.kind}</p><h2>{leg.postcard.title ?? leg.landmark.name}</h2>
       {leg.postcard.lines.map(line => <p key={line}>{line}</p>)}
