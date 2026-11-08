@@ -6,8 +6,9 @@
  *
  * The canvas is 1080 × 2520 (21:9, aspect 0.4286), top-left origin, CSS = pixels / 3 at 360 px wide. It is the whole
  * screen: the header sits over its top (`header_mask`) and the tab bar over its bottom (`tab_bar_begins_y`).
- * Crop rule (§0.19): for aspect ≤ 0.47 the stage fits the phone's WIDTH and crops top and bottom equally (never the
- * sides); above 0.47 the 0.47 frame sits centred at full height (blurred side fill).
+ * Crop rule (§0.19; b2 8 Nov: 16:9 phones are in the gate): up to aspect 0.6 the stage fits the phone's WIDTH and crops
+ * top and bottom equally (never the sides); above 0.6 (foldables, tablets, desktop) the 0.6 frame sits centred at full
+ * height (blurred side fill).
  *
  * Read keys only (anything else in the file is ignored): canvas, layout.{header_mask, card_begins_y,
  * tab_bar_begins_y}, friends.<id>.{area, foot_point, tap_rect, today_glow_rect, scale}, tag.{peg_point,
@@ -33,8 +34,8 @@ export interface StageAnchors {
 }
 
 export const CSS_PER_PX = 1 / 3;
-/** The widest aspect that still width-fits; wider screens get this frame centred. */
-export const MAX_FIT_ASPECT = 0.47;
+/** The widest aspect that still width-fits (16:9 = 0.5625 included); wider screens get this frame centred. */
+export const MAX_FIT_ASPECT = 0.6;
 export const EDGE_CSS = 16;
 export const MIN_TAP_CSS = 48;
 

@@ -24,7 +24,7 @@ describe('courtyard anchors: the file', () => {
   });
 });
 
-describe('courtyard anchors: the stage fit (width fit, centred vertical crop; the 0.47 frame above)', () => {
+describe('courtyard anchors: the stage fit (width fit, centred vertical crop, up to 0.6; the 0.6 frame above)', () => {
   it('matches the pass’s own crop table: 0.4286 shows 2520 px, 0.45 shows 2400, 0.47 shows 2298', () => {
     expect(stageFit(anchors, 360, 840)).toMatchObject({ mode: 'width', cropTop: 0, visibleHeight: 2520 });
     expect(stageFit(anchors, 360, 800).visibleHeight).toBeCloseTo(2400, 6);
@@ -36,7 +36,7 @@ describe('courtyard anchors: the stage fit (width fit, centred vertical crop; th
     pointOnScreen(fit, anchors.friends.kapi.foot).forEach((value, i) => expect(value).toBeCloseTo(anchors.friends.kapi.foot[i]! / 3, 9));
   });
 
-  it('above 0.47 the frame sits centred at full height', () => {
+  it('above 0.6 the frame sits centred at full height', () => {
     const fit = stageFit(anchors, 1280, 800);
     expect(fit.mode).toBe('frame');
     expect(fit.offsetX).toBeCloseTo((1280 - 1080 * fit.scale) / 2, 6);
@@ -45,11 +45,18 @@ describe('courtyard anchors: the stage fit (width fit, centred vertical crop; th
 });
 
 describe('courtyard anchors: the layout gates on every phone shape', () => {
-  for (const [width, height] of [[360, 840], [360, 800], [360, 766], [390, 844], [412, 915], [1280, 800]] as const) {
+  // The painted pass was framed for 0.4286-0.47 (its crop table). b2 (8 Nov): 16:9 phones are in the gate, width-fit up
+  // to 0.6; the p9p numbers there are recorded below as the painted contract's open item (stage 2 draws the SVG layout).
+  for (const [width, height] of [[360, 840], [360, 800], [360, 766], [390, 844], [412, 915]] as const) {
     it(`${width} × ${height}: taps ≥ 48, apart, ≥ 16 inside the sides, clear of the header and the collapsed card; props ≥ 16 inside`, () => {
       expect(layoutProblems(anchors, width, height, WALL_RUN)).toEqual([]);
     });
   }
+
+  it('p9p on a 16:9 phone and on a desktop frame: Nandi’s tap goes under the collapsed card (for the full-layer brief)', () => {
+    expect(layoutProblems(anchors, 360, 640, WALL_RUN)).toEqual(['nandi: tap under the collapsed card (499.6 > 440.5)']);
+    expect(layoutProblems(anchors, 1280, 800, WALL_RUN)).toEqual(['nandi: tap under the collapsed card (639.5 > 600.5)']);
+  });
 
   it('the gates bite: a tap moved to the edge, shrunk, overlapping or under the card is named', () => {
     const moved = parseAnchors({ ...raw, friends: { ...raw.friends,
