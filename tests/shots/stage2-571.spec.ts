@@ -99,6 +99,20 @@ for (const theme of ['light', 'dark'] as const) {
   });
 }
 
+test('s5 on a 16:9 phone (360x640, light): the card-aware crop keeps Kapi and the kite below the header', async ({ browser }) => {
+  const page = await phone(browser, 'light', NOON, { width: 360, height: 640 });
+  await put(page, 'ledger', corners(5));
+  await home(page);
+  const header = (await page.locator('.topbar').boundingBox())!;
+  const kapi = (await page.getByRole('button', { name: /^Kapi, Mind/ }).boundingBox())!;
+  const kite = (await page.locator('[data-prop="kapi-kite"]').boundingBox())!;
+  console.log(`stage 2 shots [360x640]: header bottom ${header.y + header.height}, Kapi top ${kapi.y}, kite top ${kite.y}`);
+  expect(kapi.y).toBeGreaterThanOrEqual(header.y + header.height);
+  expect(kite.y).toBeGreaterThanOrEqual(header.y + header.height);
+  await snap(page, 's2-l-home-s5-360x640');
+  await page.context().close();
+});
+
 test('the neem keepsakes on the bark (4 camps), the caption, and no clipping at 360x800', async ({ browser }) => {
   const page = await phone(browser, 'light');
   // Four camps reached before the jar's first day: one place a day, three sessions each (the walk before jarFrom).
