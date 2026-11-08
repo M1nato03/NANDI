@@ -300,13 +300,17 @@ export function UsefulDays() {
 }
 
 /** The journal: every landmark postcard the trek has opened, with where its facts come from. */
-export function Journal() {
+export function Journal({ focus }: { focus?: string } = {}) {
   const yatra = useYatra();
+  // §0.14: a neem keepsake opens its camp's postcard here; it comes into view, marked.
+  useEffect(() => { if (focus && yatra) document.getElementById(`postcard-${focus}`)?.scrollIntoView({ block: 'center' }); }, [focus, yatra]);
   if (yatra === undefined) return <section className="screen" role="status">Opening the journal…</section>;
   const cards = yatra ? yatra.trek.legs.filter(row => row.gateOn).map(row => yatra.trek.trail.legs[row.index]!) : [];
+  const waiting = focus && !cards.some(leg => leg.landmark.id === focus) ? yatra?.trek.trail.legs.find(leg => leg.landmark.id === focus) : undefined;
   return <section className="screen yatra-journal">
     <p className="eyebrow">Yatra</p><h1>Journal</h1>
-    {cards.length ? cards.map(leg => <article key={leg.landmark.id} className="card trek-postcard" aria-label={leg.landmark.name}>
+    {waiting && <p className="card trek-postcard-waiting" role="status">{waiting.landmark.name}: its postcard opens when a Mind session walks that stretch of the trail.</p>}
+    {cards.length ? cards.map(leg => <article key={leg.landmark.id} id={`postcard-${leg.landmark.id}`} className={`card trek-postcard${focus === leg.landmark.id ? ' is-focus' : ''}`} aria-label={leg.landmark.name}>
       <p className="eyebrow">{leg.landmark.kind}</p><h2>{leg.postcard.title ?? leg.landmark.name}</h2>
       {leg.postcard.lines.map(line => <p key={line}>{line}</p>)}
       <ul className="trek-sources" aria-label="Sources">{leg.sources.map(source => <li key={source}>Source: {new URL(source).hostname}</li>)}</ul>

@@ -312,6 +312,7 @@ export function AppShell() {
   else if (key === 'yatra/train' || key.startsWith('yatra/train/')) screen = <Train entry={key.split('/')[2]} />;
   else if (key === 'yatra/calm') screen = <Calm />;
   else if (key === 'yatra/journal') screen = <Journal />;
+  else if (key.startsWith('yatra/journal/')) screen = <Journal key={key} focus={key.slice('yatra/journal/'.length)} />;
   else if (key === 'yatra/days') screen = <UsefulDays />;
   // Spec 47c: every finished season's result, from the record.
   else if (key === 'yatra/days/seasons') screen = <PastResults />;

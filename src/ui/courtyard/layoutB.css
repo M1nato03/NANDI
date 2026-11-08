@@ -26,3 +26,14 @@
 .courtyard-card-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; width: 100%; min-height: 56px; padding: 8px 12px; text-align: left; }
 .courtyard-card-text { display: grid; gap: 2px; }
 .courtyard-card-meta { color: var(--ink-2); font-size: .875rem; line-height: 1.25rem; }
+
+/* §0.14 neem keepsakes: the taps over the tags, the caption outside the art, a small sway from the peg. */
+.courtyard-keepsake-taps { position: absolute; inset: 0; pointer-events: none; }
+.courtyard-keepsake-tap { position: absolute; min-width: 0; min-height: 0; padding: 0; border: 0; background: transparent; box-shadow: none; pointer-events: auto; }
+.courtyard-keepsake-caption { position: fixed; z-index: 5; left: 50%; top: calc(64px + 12px); transform: translateX(-50%); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px;
+  max-width: calc(100% - 32px); margin: 0; padding: 6px 12px; border-radius: 12px; background: var(--surface-1); color: var(--ink); box-shadow: var(--shadow-1); font-size: .875rem; line-height: 1.25rem; }
+.courtyard-keepsake-caption .text-button { min-height: 44px; padding: 0 4px; }
+.courtyard-keepsake-swing { transform-box: fill-box; transform-origin: 50% 0; animation: keepsake-sway 5s ease-in-out infinite; }
+@keyframes keepsake-sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+@media (prefers-reduced-motion: reduce) { .courtyard-keepsake-swing { animation: none; } }
+:root[data-motion='reduce'] .courtyard-keepsake-swing { animation: none; }

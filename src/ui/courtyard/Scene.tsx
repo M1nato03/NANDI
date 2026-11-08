@@ -291,7 +291,8 @@ function Books({ stage, glowLayer }: { stage: number; glowLayer?: boolean }) {
  * (`box`), so layout B can fit it into the painted pass's prop rect (contain, bottom-centred). The mats, pillow and
  * blanket are the floor versions; on the painted cot they sit where the pass puts them.
  */
-export interface Part { box: readonly [number, number, number, number]; draw: () => ReactElement }
+export interface Part { box: readonly [number, number, number, number]; draw: () => ReactElement; glow?: () => ReactElement }
+const LIGHT_GLOW = { photoString: () => <Keepsakes stage={5} glowLayer />, standingLantern: () => <Rest stage={4} glowLayer />, readingLamp: () => <Books stage={4} glowLayer /> };
 export const PARTS = {
   pot1: { box: [8, 95, 20, 33], draw: () => <Pot x={18} /> },
   pot2: { box: [66, 95, 20, 33], draw: () => <Pot x={76} /> },
@@ -302,7 +303,7 @@ export const PARTS = {
   photoFrame: { box: [324, 100, 24, 20], draw: () => <PhotoFrame /> },
   jarShelf: { box: [278, 98, 36, 19], draw: () => <JarShelf /> },
   trunk: { box: [338, 126, 22, 20], draw: () => <Trunk /> },
-  photoString: { box: [266, 84, 90, 17], draw: () => <PhotoString /> },
+  photoString: { box: [266, 84, 90, 17], draw: () => <PhotoString />, glow: LIGHT_GLOW.photoString },
   puzzleCube: { box: [226, 66, 9, 9], draw: () => <PuzzleCube /> },
   chessBoard: { box: [240, 133.7, 22, 7.3], draw: () => <ChessBoard /> },
   kite: { box: [279, 22, 18, 40], draw: () => <Kite /> },
@@ -316,12 +317,12 @@ export const PARTS = {
   sleepMat: { box: [14, 184, 84, 11], draw: () => <SleepMat onCot={false} /> },
   pillow: { box: [78, 180, 18, 9], draw: () => <Pillow onCot={false} /> },
   cot: { box: [10, 164, 92, 28], draw: () => <Cot /> },
-  standingLantern: { box: [101, 152, 14, 25], draw: () => <StandingLantern /> },
+  standingLantern: { box: [101, 152, 14, 25], draw: () => <StandingLantern />, glow: LIGHT_GLOW.standingLantern },
   blanket: { box: [15, 180, 20, 8], draw: () => <Blanket onCot={false} /> },
   openBook: { box: [286, 192, 24, 6], draw: () => <OpenBook /> },
   bookStack: { box: [257, 181, 23, 15], draw: () => <BookStack /> },
   bookshelf: { box: [320, 148, 38, 48], draw: () => <Bookshelf /> },
-  readingLamp: { box: [240, 161, 16, 36], draw: () => <ReadingLamp /> },
+  readingLamp: { box: [240, 161, 16, 36], draw: () => <ReadingLamp />, glow: LIGHT_GLOW.readingLamp },
   globe: { box: [260, 162, 16, 20], draw: () => <Globe /> },
 } satisfies Record<string, Part>;
 export type PartId = keyof typeof PARTS;

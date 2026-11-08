@@ -46,4 +46,37 @@ describe('the layout B scene', () => {
     expect(html).toContain('data-lanterns="2"');
     expect(html).toContain('data-toran="3"');
   });
+
+  it('§0.14: one tag per keepsake on the bole (no letters), a peg-board only from the 12th, a tap each', () => {
+    const tag = (i: number) => ({ campId: `camp-${i}`, campName: `Camp ${i}`, landmarkId: `mark-${i}`, motif: ['river', 'meadow', 'glacier', 'pass'][i % 4]!, index: i, reachedOn: '2026-11-01' });
+    const html = (count: number) => renderToStaticMarkup(<LayoutBScene anchors={anchors} fit={fit} width={360} height={800} state={at(5)} phase="day" onFriend={() => undefined}
+      keepsakes={Array.from({ length: count }, (_, i) => tag(i))} onKeepsake={() => undefined} />);
+    const four = html(4);
+    expect(four.match(/class="courtyard-keepsake"/g)).toHaveLength(4);
+    expect(four.match(/data-on="trunk"/g)).toHaveLength(4);
+    expect(four).not.toContain('courtyard-pegboard');
+    expect(four.match(/class="courtyard-keepsake-tap"/g)).toHaveLength(4);
+    expect(four).toContain('aria-label="Keepsake from Camp 0"');
+    // No text inside the art: the camp name lives only on the button and in the caption.
+    expect(four.match(/<text/g)).toBeNull();
+    const many = html(13);
+    expect(many).toContain('courtyard-pegboard');
+    expect(many.match(/data-on="board"/g)!.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('evening and night: the tint, then the lights glowing where their parts stand; daytime has none', () => {
+    const night = renderToStaticMarkup(<LayoutBScene anchors={anchors} fit={fit} width={360} height={800} state={at(5)} phase="night" onFriend={() => undefined} />);
+    expect(night).toContain('courtyard-b-glow');
+    expect(night).toContain('courtyard-flicker');
+    expect(night).toContain('courtyard-twinkle');
+    expect(scene(5)).not.toContain('courtyard-b-glow');
+  });
+
+  it('frame mode (wide screens): the wall band repeats across the visible width', () => {
+    const wide = homeFit(anchors, 1280, 800, Math.min(anchors.friends.kapi.tap[1], anchors.props['kapi-kite']![1]));
+    const html = renderToStaticMarkup(<LayoutBScene anchors={anchors} fit={wide} width={1280} height={800} state={at(3)} phase="day" onFriend={() => undefined} />);
+    expect(wide.mode).toBe('frame');
+    expect(html.match(/translate\((-?\d+) 0\)"><rect y="80"/g)).toHaveLength(7);
+  });
 });
+

@@ -4,9 +4,11 @@ import type { AreaId, CourtyardState, Phase } from '../../core/courtyard/courtya
 import { poseFor } from '../../core/courtyard/courtyard';
 import { K_GROWTH } from '../../core/courtyard/layoutB';
 import { Cast } from '../cast/Cast';
-import { C, Door, Lanterns, PARTS, Sky, TINT, Toran, Tree, WallBand, type PartId } from './Scene';
+import { C, Door, Lanterns, PARTS, Sky, TINT, Toran, Tree, WallBand, type Part, type PartId } from './Scene';
 import { PROP_PARTS } from './layoutBParts';
 import { StageFriends } from './StageFriends';
+import { keepsakeSpots, TAG_H, TAG_W, type Keepsake } from '../../core/courtyard/keepsakes';
+import { KeepsakeTag, PegBoard } from './Keepsakes';
 
 /**
  * Spec 571 §0.19 layout B, stage 2 (b2, 8 Nov): today's Scene.tsx parts at the painted pass's positions. The whole
@@ -25,6 +27,9 @@ const TREE_SCALE = 1.3;
 const DOOR_BOX: Rect = [94, 81, 42, 49];
 const TORAN_BOX: Rect = [94, 83, 42, 10];
 const LANTERNS_BOX: Rect = [10, 137, 111, 13];
+/** The wall band repeats past the frame's sides (frame mode shows more than 360 wide); the floor's tile lines too. */
+const WALL_REPEATS = [-3, -2, -1, 0, 1, 2, 3];
+const FLOOR_LINES = Array.from({ length: 27 }, (_, i) => -900 + i * 80);
 
 /** The canvas-CSS rect of a prop (the file gives canvas px). */
 const css = (rect: Rect): Rect => [rect[0] / 3, rect[1] / 3, rect[2] / 3, rect[3] / 3];
@@ -33,9 +38,11 @@ const placed = (box: Rect, rect: Rect) => { const fit = containFit(box, rect); r
 export interface LayoutBProps {
   anchors: StageAnchors; fit: StageFit; width: number; height: number;
   state: CourtyardState; phase: Phase; onFriend: (id: AreaId) => void;
+  /** §0.14: the neem keepsakes (one per reached camp) and what a tap on one does. */
+  keepsakes?: readonly Keepsake[]; onKeepsake?: (tag: Keepsake) => void;
 }
 
-export function LayoutBScene({ anchors, fit, width, height, state, phase, onFriend }: LayoutBProps) {
+export function LayoutBScene({ anchors, fit, width, height, state, phase, onFriend, keepsakes = [], onKeepsake }: LayoutBProps) {
   const id = useId().replace(/[^a-zA-Z0-9]/g, '');
   const stageOf = (area: AreaId) => state.areas.find(row => row.id === area)?.stage ?? 0;
   const parts = PROP_PARTS.filter(row => stageOf(row.area) >= row.from && anchors.props[row.prop])
@@ -47,22 +54,38 @@ export function LayoutBScene({ anchors, fit, width, height, state, phase, onFrie
   // The sun, moon and clouds sit in the sky that is actually seen, just under the header.
   const bodies = (headerCss / fit.scale + fit.cropTop) / 3;
   const tint = TINT[phase];
+  const lit = phase === 'evening' || phase === 'night';
+  const treeTransform = `translate(${TREE_AT[0] - 180 * TREE_SCALE} ${TREE_AT[1] - 132 * TREE_SCALE}) scale(${TREE_SCALE})`;
   const toranRect = anchors.props['spec-24-toran'];
   const lanternRect = anchors.props['spec-15-lanterns'];
+  const tagRects = [1, 2, 3, 4].map(i => anchors.props[`neem-keepsake-tag-${i}`]).filter((rect): rect is Rect => !!rect).map(css);
+  const spots = keepsakeSpots(keepsakes.length, state.treeStage, tagRects);
   return <div className={`courtyard-b courtyard-${phase}`} style={{ width, height } as CSSProperties}>
     <svg className="courtyard-b-scene" width={width} height={height} viewBox={`0 0 ${width} ${height}`} aria-hidden="true" focusable="false">
       <g transform={`translate(${fit.offsetX} ${-fit.cropTop * fit.scale}) scale(${unit})`}>
         <rect x={-2000} y={-2000} width={4360} height={2000 + COPING} fill={`url(#${id}sky)`} />
         <g transform={`translate(0 ${bodies})`}><Sky phase={phase} id={id} height={0} /></g>
         <rect x={-2000} y={WALL_FOOT} width={4360} height={4000} fill={C.floor} />
-        <path d={`${Array.from({ length: 30 }, (_, i) => `M-2000 ${WALL_FOOT + 26 + i * 26}h4360`).join('')}M60 ${WALL_FOOT}l-60 800M140 ${WALL_FOOT}l-24 800M220 ${WALL_FOOT}l24 800M300 ${WALL_FOOT}l60 800`} stroke={C.floorLine} strokeWidth=".8" opacity=".35" />
-        <g transform={`translate(0 ${COPING - 74 * ((WALL_FOOT - COPING) / 56)}) scale(1 ${(WALL_FOOT - COPING) / 56})`}><WallBand door={false} /></g>
+        {/* The stone joints: rows across the whole width, and the tile lines fanning out from the middle, repeated past the
+            frame's sides so a wide screen sees one floor (b2: no 360 strip over a wide sky). */}
+        <path d={`${Array.from({ length: 30 }, (_, i) => `M-2000 ${WALL_FOOT + 26 + i * 26}h4360`).join('')}${FLOOR_LINES.map(x => `M${x} ${WALL_FOOT}l${(x - 180) * 0.6} 800`).join('')}`} stroke={C.floorLine} strokeWidth=".8" opacity=".35" />
+        <g transform={`translate(0 ${COPING - 74 * ((WALL_FOOT - COPING) / 56)}) scale(1 ${(WALL_FOOT - COPING) / 56})`}>
+          {WALL_REPEATS.map(i => <g key={i} transform={`translate(${i * 360} 0)`}><WallBand door={false} /></g>)}
+        </g>
         <g transform={placed(DOOR_BOX, DOOR_RECT)}><Door /></g>
         {toranRect && <g transform={placed(TORAN_BOX, css(toranRect))}><Toran count={state.toran} /></g>}
-        <g transform={`translate(${TREE_AT[0] - 180 * TREE_SCALE} ${TREE_AT[1] - 132 * TREE_SCALE}) scale(${TREE_SCALE})`}><Tree stage={state.treeStage} k={K_GROWTH[state.treeStage]} /></g>
+        <g transform={treeTransform}><Tree stage={state.treeStage} k={K_GROWTH[state.treeStage]} /></g>
+        {spots.some(spot => spot.on === 'board') && <PegBoard />}
+        {keepsakes.map((tag, i) => <KeepsakeTag key={tag.campId} tag={tag} spot={spots[i]!} />)}
         {lanternRect && state.lanterns > 0 && <g transform={placed(LANTERNS_BOX, css(lanternRect))}><Lanterns count={state.lanterns} /></g>}
         {parts.map(row => <g key={row.prop} className="courtyard-part" data-prop={row.prop} data-part={row.part} transform={placed(PARTS[row.part as PartId].box, row.rect)}>{PARTS[row.part as PartId].draw()}</g>)}
         {tint && <rect x={-2000} y={-2000} width={4360} height={6000} fill={tint} />}
+        {/* Evening and night: the lights glow through the tint, each where its part stands (b2, 8 Nov). */}
+        {lit && <g className="courtyard-b-glow">
+          <g transform={treeTransform}><Tree stage={state.treeStage} k={K_GROWTH[state.treeStage]} glowLayer /></g>
+          {lanternRect && state.lanterns > 0 && <g transform={placed(LANTERNS_BOX, css(lanternRect))}><Lanterns count={state.lanterns} glowLayer /></g>}
+          {parts.filter(row => (PARTS[row.part as PartId] as Part).glow).map(row => { const part = PARTS[row.part as PartId] as Part; return <g key={row.prop} transform={placed(part.box, row.rect)}>{part.glow!()}</g>; })}
+        </g>}
       </g>
     </svg>
     <div className="courtyard-b-friends" aria-hidden="true">
@@ -78,5 +101,12 @@ export function LayoutBScene({ anchors, fit, width, height, state, phase, onFrie
       })}
     </div>
     <StageFriends anchors={anchors} fit={fit} areas={state.areas} onFriend={onFriend} />
+    {onKeepsake && <div className="courtyard-keepsake-taps">{keepsakes.map((tag, i) => {
+      const spot = spots[i]!, k = spot.on === 'board' ? 0.7 : 1;
+      // The hit area is the tag plus 5 CSS around it (side by side tags on the bark stay apart); the name and the way to
+      // its postcard come in a caption outside the art.
+      const [x, y, w, h] = rectOnScreen(fit, [(spot.x - 5) * 3, (spot.y - 5) * 3, (TAG_W * k + 10) * 3, (TAG_H * k + 10) * 3]);
+      return <button key={tag.campId} type="button" className="courtyard-keepsake-tap" data-camp={tag.campId} aria-label={`Keepsake from ${tag.campName}`} style={{ left: x, top: y, width: w, height: h }} onClick={() => onKeepsake(tag)} />;
+    })}</div>}
   </div>;
 }
