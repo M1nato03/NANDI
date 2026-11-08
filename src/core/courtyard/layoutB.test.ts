@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { layoutProblems } from './anchors';
-import { B_SCALE, CHROME_CSS, friendBox, layoutB, OBJECTS, place, stageAnchors } from './layoutB';
+import { B_SCALE, CHROME_CSS, courtyardProblems, friendBox, layoutB, OBJECTS, place, stageAnchors } from './layoutB';
 
 // Spec 571 §0.19 layout B with today's Scene.tsx parts (b2, 8 Nov). Geometry checks; the layout gate's open items are
 // listed in the last test until b2 picks a fix (the front row does not fit 328 units at 1.3x).
@@ -48,11 +47,20 @@ describe('layout B geometry', () => {
   });
 });
 
-describe('layout B gate (open: for b2)', () => {
-  it('with the scratch B v3 corner steps, today’s parts reach the side edges at 1.3x (listed, not yet fixed)', () => {
-    expect(layoutProblems(stageAnchors(360, 800, 5), 360, 800)).toEqual([
-      'mor-pot-1: within 16 px of a side', 'moti-frame: within 16 px of a side', 'moti-trunk: within 16 px of a side',
-      'kachhua-mat: within 16 px of a side', 'kachhua-cot: within 16 px of a side', 'kachhua-blanket: within 16 px of a side', 'chiku-shelf: within 16 px of a side',
-    ]);
+describe('layout B gate (b2 option A): blocked at every object scale >= 1.0, reported to b2', () => {
+  // The best corner steps a grid search found at s_obj 1.0 (garden 30-50, rest 28-52, keep -30..-60, books -30..-60,
+  // puzzles -10..-22), over 360x766/800/840, 390x844, 412x915 and the 1280x800 frame, stages 1-5.
+  const SHIFT = { garden: 38, rest: 34, keep: -48, books: -42, puzzles: -10 };
+  const structural = (line: string) => !/over its own|from its own things|covers \d+%/.test(line);
+  it('blocking pair 1: Mor’s second pot touches the door at s_obj 1.0 (78 units of pots, 52 between the 16 px line and the door)', () => {
+    expect(courtyardProblems(360, 800, 5, { objectScale: 1, shift: SHIFT }).filter(structural)).toEqual(['mor-pot-2 touches door']);
+  });
+  it('blocking pair 2: on 16:9 and in the desktop 0.6 frame, Mor’s and Kachhua’s taps overlap (rows too close)', () => {
+    expect(courtyardProblems(360, 640, 3, { objectScale: 1, shift: SHIFT }).filter(structural)).toContain('mor and kachhua: taps overlap');
+    expect(courtyardProblems(1280, 800, 3, { objectScale: 1, shift: SHIFT }).filter(structural)).toContain('mor and kachhua: taps overlap');
+  });
+  it('the beside rule: today’s friend spots stand over their own things (box test)', () => {
+    const lines = courtyardProblems(360, 800, 5, { objectScale: 1, shift: SHIFT }).filter(line => !structural(line));
+    for (const line of ['plan: over its own mor-pot-1', 'remember: over its own moti-jars', 'learn: over its own chiku-shelf']) expect(lines).toContain(line);
   });
 });

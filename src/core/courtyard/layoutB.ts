@@ -1,5 +1,5 @@
 import type { AreaId } from './courtyard';
-import { CSS_PER_PX, FRIEND_AREA, FRIEND_IDS, type FriendAnchor, type FriendId, type Rect, type StageAnchors } from './anchors';
+import { CSS_PER_PX, FRIEND_AREA, FRIEND_IDS, layoutProblems, type FriendAnchor, type FriendId, type Rect, type StageAnchors } from './anchors';
 
 /**
  * Spec 571 §0.19 layout B with today's Scene.tsx parts (b2, 8 Nov: the painted pass waits for Jenil's sign-off on the
@@ -18,8 +18,19 @@ export const SCENE_W = 360;
 
 export type Corner = 'garden' | 'keep' | 'puzzles' | 'gym' | 'rest' | 'books' | 'tree';
 export type Row = 'wall' | 'front';
-/** How far each side corner steps in (scene units, before the 1.3x), so nothing crops at the sides. */
+/** How far each side corner steps in (scene units, before the 1.3x), so nothing crops at the sides (tuned by the gate). */
 export const CORNER_SHIFT: Record<Corner, number> = { garden: 40, keep: -40, puzzles: -10, gym: 0, rest: 32, books: -32, tree: 0 };
+/**
+ * b2 (8 Nov, option A): the friends, their taps and the neem stay at 1.3x (Jenil's "full size and growth reads
+ * clearly"); the corner objects share one scale in [1.0, 1.3], about each corner's own anchor (the point where the
+ * corner meets the floor or the wall), while the anchors themselves spread at 1.3x about the foot. The largest value
+ * at which every stage passes the gate at every gate size (tuned by the gate, see layoutB.test).
+ */
+export const OBJECT_SCALE = 1.3;
+/** Each corner's anchor in scene units: its objects grow and shrink about this point. */
+export const CORNER_ANCHOR: Record<Corner, [number, number]> = {
+  garden: [48, 128], keep: [312, 128], puzzles: [250, 141], gym: [180, 196], rest: [56, 192], books: [300, 196], tree: [180, 140],
+};
 export const CORNER_ROW: Record<Corner, Row> = { garden: 'wall', keep: 'wall', puzzles: 'wall', tree: 'wall', gym: 'front', rest: 'front', books: 'front' };
 export const AREA_CORNER: Record<AreaId, Corner> = { plan: 'garden', remember: 'keep', mind: 'puzzles', train: 'gym', sleep: 'rest', learn: 'books' };
 
@@ -73,6 +84,8 @@ export interface LayoutB {
   dyWall: number; dyFront: number;
   /** The front row's foot (scene units), the centre of the 1.3x. */
   foot: number;
+  /** The corner steps in force (CORNER_SHIFT unless a gate run overrides them). */
+  shift?: Record<Corner, number>;
 }
 
 /**
@@ -93,12 +106,22 @@ export function layoutB(widthCss: number, heightCss: number, cardCss: number): L
 /** A scene point of a corner, in the art's units after the row shift, the corner step and the 1.3x. */
 export function place(layout: LayoutB, corner: Corner, x: number, y: number): [number, number] {
   const dy = CORNER_ROW[corner] === 'wall' ? layout.dyWall : layout.dyFront;
-  return [SCENE_W / 2 + (x + CORNER_SHIFT[corner] - SCENE_W / 2) * B_SCALE, layout.foot + (y + dy - layout.foot) * B_SCALE];
+  const step = (layout.shift ?? CORNER_SHIFT)[corner];
+  return [SCENE_W / 2 + (x + step - SCENE_W / 2) * B_SCALE, layout.foot + (y + dy - layout.foot) * B_SCALE];
 }
-export function placeRect(layout: LayoutB, corner: Corner, rect: Rect): Rect {
-  const [x, y] = place(layout, corner, rect[0], rect[1]);
-  return [x, y, rect[2] * B_SCALE, rect[3] * B_SCALE];
+/** A corner OBJECT's point: its corner's anchor spreads at 1.3x, the object itself at OBJECT_SCALE about that anchor. */
+export function placeObject(layout: LayoutB, corner: Corner, x: number, y: number, scale = OBJECT_SCALE): [number, number] {
+  const [ax, ay] = CORNER_ANCHOR[corner];
+  const [px, py] = place(layout, corner, ax, ay);
+  return [px + (x - ax) * scale, py + (y - ay) * scale];
 }
+export function placeRect(layout: LayoutB, corner: Corner, rect: Rect, scale = OBJECT_SCALE): Rect {
+  const [x, y] = placeObject(layout, corner, rect[0], rect[1], scale);
+  return [x, y, rect[2] * scale, rect[3] * scale];
+}
+/** The arched door is wall, not a corner object: it spreads and scales with the wall at 1.3x. */
+export const DOOR: Rect = [94, 81, 42, 49];
+export const doorRect = (layout: LayoutB): Rect => { const [x, y] = place(layout, 'tree', DOOR[0], DOOR[1]); return [x, y, DOOR[2] * B_SCALE, DOOR[3] * B_SCALE]; };
 
 /** A friend's sprite box in the art's units: `size` wide and tall, feet at the bottom (as Courtyard.tsx draws them). */
 export function friendBox(layout: LayoutB, area: AreaId, stage: number): Rect {
@@ -112,21 +135,95 @@ export interface ScreenChrome { header: number; tabBar: number; card: number }
 /** Measured on the stage 1 build (360 px): the top bar, the tab bar and the collapsed card (handle + one next move). */
 export const CHROME_CSS: ScreenChrome = { header: 64, tabBar: 67, card: 134 };
 
-/**
- * The layout on a `width` × `height` CSS screen at `stage` (every corner at that stage), in the painted pass's anchor
- * shape (canvas px = CSS × 3, nothing cropped), so anchors.layoutProblems gates it.
- */
-export function stageAnchors(width: number, height: number, stage: number, chrome: ScreenChrome = CHROME_CSS): StageAnchors {
+export interface StageOptions {
+  chrome?: ScreenChrome;
+  objectScale?: number;
+  shift?: Partial<Record<Corner, number>>;
+  /** Spec 660 (later): one friend steps toward the card by `dy` CSS px, holding something. Unused in stage 2; gated. */
+  forward?: { area: AreaId; dy: number };
+}
+
+/** The B frame on a `width` × `height` screen: the full width up to aspect 0.6, else a 0.6 frame centred. */
+export const FRAME_ASPECT = 0.6;
+export function frameOf(width: number, height: number): { stageWidth: number; offsetX: number } {
+  const stageWidth = width / height > FRAME_ASPECT ? height * FRAME_ASPECT : width;
+  return { stageWidth, offsetX: (width - stageWidth) / 2 };
+}
+
+/** Everything the gate needs about one screen and stage, in screen CSS px. */
+export interface StageGeometry {
+  layout: LayoutB; offsetX: number; stageWidth: number; chrome: ScreenChrome; objectScale: number;
+  friends: Record<AreaId, Rect>;
+  objects: { id: string; corner: Corner; rect: Rect; wallRun: boolean }[];
+  door: Rect;
+}
+export function stageGeometry(width: number, height: number, stage: number, options: StageOptions = {}): StageGeometry {
+  const chrome = options.chrome ?? CHROME_CSS;
+  const objectScale = options.objectScale ?? OBJECT_SCALE;
+  const { stageWidth, offsetX } = frameOf(width, height);
   const art = height - chrome.header - chrome.tabBar;
-  const layout = layoutB(width, art, chrome.card);
-  const px = (rect: Rect): Rect => [rect[0] * layout.u / CSS_PER_PX, (chrome.header + rect[1] * layout.u) / CSS_PER_PX, rect[2] * layout.u / CSS_PER_PX, rect[3] * layout.u / CSS_PER_PX];
+  const layout: LayoutB = { ...layoutB(stageWidth, art, chrome.card), shift: { ...CORNER_SHIFT, ...options.shift } };
+  const css = (rect: Rect): Rect => [offsetX + rect[0] * layout.u, chrome.header + rect[1] * layout.u, rect[2] * layout.u, rect[3] * layout.u];
+  const friends = {} as Record<AreaId, Rect>;
+  for (const area of Object.keys(SPOTS) as AreaId[]) {
+    const box = css(friendBox(layout, area, stage));
+    friends[area] = options.forward?.area === area ? [box[0], box[1] + options.forward.dy, box[2], box[3]] : box;
+  }
+  const objects = OBJECTS.filter(object => object.from <= stage).map(object => ({ id: object.id, corner: object.corner, rect: css(placeRect(layout, object.corner, object.rect, objectScale)), wallRun: !!object.wallRun }));
+  return { layout, offsetX, stageWidth, chrome, objectScale, friends, objects, door: css(doorRect(layout)) };
+}
+
+/** The geometry in the painted pass's anchor shape (canvas px = CSS × 3, the frame only), for anchors.layoutProblems. */
+export function stageAnchors(width: number, height: number, stage: number, options: StageOptions = {}): StageAnchors {
+  const geometry = stageGeometry(width, height, stage, options);
+  const { chrome, offsetX } = geometry;
+  const px = (rect: Rect): Rect => [(rect[0] - offsetX) / CSS_PER_PX, rect[1] / CSS_PER_PX, rect[2] / CSS_PER_PX, rect[3] / CSS_PER_PX];
   const friends = {} as Record<FriendId, FriendAnchor>;
   for (const id of FRIEND_IDS) {
     const area = FRIEND_AREA[id] as AreaId;
-    const tap = px(friendBox(layout, area, stage));
-    friends[id] = { area, foot: [tap[0] + tap[2] / 2, tap[1] + tap[3]], tap, glow: [tap[0], tap[1] + tap[3] - 16, tap[2], 16], scale: 1 };
+    const tap = px(geometry.friends[area]);
+    friends[id] = { area, foot: [tap[0] + tap[2] / 2, tap[1] + tap[3]], tap, glow: [tap[0], tap[1] + tap[3] - 48, tap[2], 48], scale: 1 };
   }
   const props: Record<string, Rect> = {};
-  for (const object of OBJECTS) if (object.from <= stage && !object.wallRun) props[object.id] = px(placeRect(layout, object.corner, object.rect));
-  return { canvas: [width / CSS_PER_PX, height / CSS_PER_PX], headerBottom: chrome.header / CSS_PER_PX, cardTop: (chrome.header + art - chrome.card) / CSS_PER_PX, tabTop: (chrome.header + art) / CSS_PER_PX, friends, props };
+  for (const object of geometry.objects) if (!object.wallRun) props[object.id] = px(object.rect);
+  const art = height - chrome.header - chrome.tabBar;
+  return { canvas: [geometry.stageWidth / CSS_PER_PX, height / CSS_PER_PX], headerBottom: chrome.header / CSS_PER_PX, cardTop: (chrome.header + art - chrome.card) / CSS_PER_PX, tabTop: (chrome.header + art) / CSS_PER_PX, friends, props };
+}
+
+const gap = (a: Rect, b: Rect) => Math.max(0, Math.max(a[0], b[0]) - Math.min(a[0] + a[2], b[0] + b[2]), Math.max(a[1], b[1]) - Math.min(a[1] + a[3], b[1] + b[3]));
+const overlap = (a: Rect, b: Rect) => Math.max(0, Math.min(a[0] + a[2], b[0] + b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[1] + a[3], b[1] + b[3]) - Math.max(a[1], b[1]));
+
+/** A friend may touch these of its own things by design: Nandi sits on his mat, Kachhua sleeps on the mat and the cot. */
+export const OWN_CONTACT: readonly string[] = ['nandi-mat', 'kachhua-mat', 'kachhua-cot', 'kachhua-pillow', 'kachhua-blanket'];
+/** 6 Nov item 3 (courtyard-painted-pass-notes.md): these pairs must not touch at 1.3x. */
+export const APART: readonly (readonly [string, string])[] = [['mor-pot-1', 'door'], ['mor-pot-2', 'door'], ['kachhua-cot', 'nandi-clubs'], ['moti-jars', 'kapi-stool']];
+export const BESIDE_CSS = 6;
+export const CORNER_COVER = 0.15;
+
+/**
+ * The whole layout B gate for one screen and stage (empty = pass): anchors.layoutProblems (G-edge, taps, overlap,
+ * header, card), the beside rule (each friend within 6 CSS of its own things and never over them, except the contacts
+ * above), G-corner (a friend's box covers at most 15% of any other corner's object) and the item 3 pairs at 0 px.
+ * Friend boxes are the sprites' square boxes, so coverage is an upper bound on the real alpha.
+ */
+export function courtyardProblems(width: number, height: number, stage: number, options: StageOptions = {}): string[] {
+  const geometry = stageGeometry(width, height, stage, options);
+  const out = layoutProblems(stageAnchors(width, height, stage, options), geometry.stageWidth, height);
+  for (const area of Object.keys(geometry.friends) as AreaId[]) {
+    const box = geometry.friends[area];
+    const own = geometry.objects.filter(object => object.corner === AREA_CORNER[area]);
+    if (own.length) {
+      const nearest = Math.min(...own.map(object => gap(box, object.rect)));
+      if (nearest > BESIDE_CSS) out.push(`${area}: ${nearest.toFixed(1)} px from its own things (beside rule <= ${BESIDE_CSS})`);
+    }
+    for (const object of own) if (!OWN_CONTACT.includes(object.id) && overlap(box, object.rect) > 0) out.push(`${area}: over its own ${object.id}`);
+    for (const object of geometry.objects) {
+      if (object.corner === AREA_CORNER[area] || object.wallRun) continue;
+      const cover = overlap(box, object.rect) / (object.rect[2] * object.rect[3]);
+      if (cover > CORNER_COVER) out.push(`${area}: covers ${(cover * 100).toFixed(0)}% of ${object.id}`);
+    }
+  }
+  const rect = (id: string) => id === 'door' ? geometry.door : geometry.objects.find(object => object.id === id)?.rect;
+  for (const [a, b] of APART) { const ra = rect(a), rb = rect(b); if (ra && rb && overlap(ra, rb) > 0) out.push(`${a} touches ${b}`); }
+  return out;
 }
