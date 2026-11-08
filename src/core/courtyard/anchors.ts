@@ -141,3 +141,13 @@ export function layoutProblems(anchors: StageAnchors, width: number, height: num
   }
   return out;
 }
+
+/**
+ * Spec 660 (later; shaped now, b2 8 Nov): one friend steps forward toward the card by `dy` canvas px (holding its
+ * quest item). The same anchors with that friend's foot, tap and glow moved, so layoutProblems gates the pose too.
+ */
+export function stepForward(anchors: StageAnchors, id: FriendId, dy: number): StageAnchors {
+  const friend = anchors.friends[id];
+  const move = (rect: Rect): Rect => [rect[0], rect[1] + dy, rect[2], rect[3]];
+  return { ...anchors, friends: { ...anchors.friends, [id]: { ...friend, foot: [friend.foot[0], friend.foot[1] + dy], tap: move(friend.tap), glow: move(friend.glow) } } };
+}

@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import raw from './anchors.json';
 import { parseAnchors, stageFit } from '../../core/courtyard/anchors';
 import { AREAS, type AreaState } from '../../core/courtyard/courtyard';
-import { HomeCard, SWIPE_PX, swipeTo } from './HomeCard';
+import { HomeCard, HomeCardRow, orderSections, SWIPE_PX, swipeTo } from './HomeCard';
 import { friendLabel, StageFriends } from './StageFriends';
 
 // Spec 571 §0.19 layout B (stage 2 commit 3): the bottom card and the six tap targets, before the art is wired.
@@ -19,15 +19,26 @@ describe('the bottom card', () => {
     expect(swipeTo(true, -200)).toBe(true);
   });
 
-  it('collapsed: the handle (a button too) and the next move; the rest is hidden until opened', () => {
-    const closed = renderToStaticMarkup(<HomeCard expanded={false} onExpanded={() => undefined} next={<p>NEXT</p>} rest={<p>WEEK</p>} />);
+  it('collapsed: the handle (a button too) and one row; the sheet is hidden until opened', () => {
+    const sections = [{ id: 'week', node: <p>WEEK</p> }, { id: 'crew', node: <p>CREW</p> }];
+    const closed = renderToStaticMarkup(<HomeCard expanded={false} onExpanded={() => undefined} row={<p>NEXT</p>} sections={sections} />);
     expect(closed).toContain('aria-expanded="false"');
     expect(closed).toContain('aria-label="Show this week and your crew"');
     expect(closed).toContain('NEXT');
     expect(closed).toMatch(/id="courtyard-card-more"[^>]*hidden=""/);
-    const open = renderToStaticMarkup(<HomeCard expanded onExpanded={() => undefined} next={<p>NEXT</p>} rest={<p>WEEK</p>} />);
+    const open = renderToStaticMarkup(<HomeCard expanded onExpanded={() => undefined} row={<p>NEXT</p>} sections={sections} />);
     expect(open).toContain('aria-expanded="true"');
     expect(open).not.toMatch(/id="courtyard-card-more"[^>]*hidden/);
+  });
+
+  it('spec 660 shape: the row is generic (friend, line, meta, one tap), and This week + the crew bar close the sheet', () => {
+    const row = renderToStaticMarkup(<HomeCardRow row={{ friend: 'Chiku', line: 'Chiku has a quest', meta: '5 min', onOpen: () => undefined, kind: 'quest' }} />);
+    expect(row).toContain('data-kind="quest"');
+    expect(row).toContain('data-cast="Chiku"');
+    expect(row).toContain('Chiku has a quest');
+    expect(row).toContain('5 min');
+    expect(orderSections([{ id: 'crew', node: null }, { id: 'board', node: null }, { id: 'week', node: null }, { id: 'extra', node: null }]).map(section => section.id))
+      .toEqual(['board', 'extra', 'week', 'crew']);
   });
 });
 

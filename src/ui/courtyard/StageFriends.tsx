@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react';
 import type { AreaId, AreaState } from '../../core/courtyard/courtyard';
-import { FRIEND_AREA, FRIEND_IDS, rectOnScreen, type StageAnchors, type StageFit } from '../../core/courtyard/anchors';
+import { FRIEND_AREA, FRIEND_IDS, rectOnScreen, stepForward, type FriendId, type StageAnchors, type StageFit } from '../../core/courtyard/anchors';
 
 /**
  * Spec 571 §0.19 layout B: one tap target per friend, exactly where the painted pass puts it (anchors tap_rect), and
@@ -8,7 +9,12 @@ import { FRIEND_AREA, FRIEND_IDS, rectOnScreen, type StageAnchors, type StageFit
  */
 export const friendLabel = (area: AreaState) => `${area.friend}, ${area.label}: ${area.days} ${area.days === 1 ? 'day' : 'days'}${area.today ? ', done today' : ''}`;
 
-export function StageFriends({ anchors, fit, areas, onFriend }: { anchors: StageAnchors; fit: StageFit; areas: readonly AreaState[]; onFriend: (id: AreaId) => void }) {
+/**
+ * `forward` (spec 660, unused in stage 2): one friend steps toward the card by `dy` canvas px and gets a held-item slot
+ * above its tap (the quest item goes there). Gated: layoutProblems(stepForward(anchors, id, dy), ...).
+ */
+export function StageFriends({ anchors: base, fit, areas, onFriend, forward, held }: { anchors: StageAnchors; fit: StageFit; areas: readonly AreaState[]; onFriend: (id: AreaId) => void; forward?: { id: FriendId; dy: number }; held?: ReactNode }) {
+  const anchors = forward ? stepForward(base, forward.id, forward.dy) : base;
   return <div className="courtyard-stage-taps">
     {FRIEND_IDS.map(id => {
       const area = areas.find(row => row.id === FRIEND_AREA[id]);
@@ -18,6 +24,7 @@ export function StageFriends({ anchors, fit, areas, onFriend }: { anchors: Stage
       return <span key={id} className="courtyard-friend-spot" data-friend={id}>
         {area.today && <i className="courtyard-today-glow" aria-hidden="true" style={{ left: gx, top: gy, width: gw, height: gh }} />}
         <button type="button" className="courtyard-friend-tap" data-area={area.id} aria-label={friendLabel(area)} style={{ left: x, top: y, width: w, height: h }} onClick={() => onFriend(area.id)} />
+        {forward?.id === id && <span className="courtyard-held" data-friend={id} style={{ left: x + w / 2, top: y }}>{held}</span>}
       </span>;
     })}
   </div>;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import raw from '../../ui/courtyard/anchors.json';
-import { FRIEND_IDS, layoutProblems, parseAnchors, pointOnScreen, rectOnScreen, stageFit } from './anchors';
+import { FRIEND_IDS, layoutProblems, parseAnchors, pointOnScreen, rectOnScreen, stageFit, stepForward } from './anchors';
 
 // Spec 571 §0.19 layout B, stage 2 commit 3: the painted pass's anchors (p9p now; 9q is a data swap, then these re-run).
 const anchors = parseAnchors(raw);
@@ -56,6 +56,12 @@ describe('courtyard anchors: the layout gates on every phone shape', () => {
   it('p9p on a 16:9 phone and on a desktop frame: Nandi’s tap goes under the collapsed card (for the full-layer brief)', () => {
     expect(layoutProblems(anchors, 360, 640, WALL_RUN)).toEqual(['nandi: tap under the collapsed card (499.6 > 440.5)']);
     expect(layoutProblems(anchors, 1280, 800, WALL_RUN)).toEqual(['nandi: tap under the collapsed card (639.5 > 600.5)']);
+  });
+
+  it('spec 660 pose (unused in stage 2): one friend stepped forward 30 canvas px is gated too', () => {
+    for (const id of FRIEND_IDS) expect(layoutProblems(stepForward(anchors, id, 30), 360, 800, WALL_RUN), id).toEqual([]);
+    // Too far forward and the card catches it.
+    expect(layoutProblems(stepForward(anchors, 'nandi', 200), 360, 840, WALL_RUN).some(line => line.startsWith('nandi: tap under the collapsed card'))).toBe(true);
   });
 
   it('the gates bite: a tap moved to the edge, shrunk, overlapping or under the card is named', () => {
