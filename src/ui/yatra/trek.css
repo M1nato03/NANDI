@@ -138,3 +138,7 @@
 :root[data-motion='reduce'] .trek-rain { animation: none; }
 /* Where the scene has its caption (not Home), the rain line sits under it. */
 .trek-scene:not(.is-home) .trek-weather { top: 64px; }
+/* Spec 571 E1: walking in place while a focus earns its next step (the step itself moves the group). */
+.trek-group.is-walking .trek-actor { animation: trek-step 1.1s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .trek-group.is-walking .trek-actor { animation: none; } }
+:root[data-motion='reduce'] .trek-group.is-walking .trek-actor { animation: none; }

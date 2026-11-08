@@ -1,7 +1,7 @@
 /*
  * The first open's "Ready to work offline" notice (b2, 7 Nov, option A). In the page flow its one-time arrival pushed
  * the whole screen down (gate-571h CLS 0.150), so it is an overlay on the top bar: it covers the whole bar on one line
- * (ellipsis at large text) while the brand and the Today dots under it step aside, so it never changes the bar's height,
+ * (ellipsis at large text) while the brand and the header rings under it step aside, so it never changes the bar's height,
  * never covers a visible dot, button or link (spec 571 E10), and taps go through it.
  * It waits for any sheet (E10, hidden in the same frame a sheet opens) and behind a live economy toast, which takes
  * the top slot on question screens, so the two never show at once.
@@ -19,13 +19,13 @@
 .topbar .offline-ready-toast { position: absolute; inset: 8px 16px; display: flex; align-items: center; width: auto; max-width: none; margin: 0;
   overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; z-index: 1;
   background: var(--surface-2); color: var(--ink); box-shadow: var(--shadow-1); }
-/* While the notice shows (a few seconds, once), the brand and the Today dots under it step aside: nothing peeps out at
+/* While the notice shows (a few seconds, once), the brand and the header rings under it step aside: nothing peeps out at
    its rounded edge, and nothing tappable sits under it. They come back the moment it hides. */
 .topbar:has(.offline-ready-toast) .brand-slot > .brand,
-.topbar:has(.offline-ready-toast) > .today-dots { visibility: hidden; }
+.topbar:has(.offline-ready-toast) > .today-rings-slot { visibility: hidden; }
 body:has(.economy-toast) .offline-ready-toast,
 body:has([aria-modal="true"], .sheet-backdrop) .offline-ready-toast { visibility: hidden; }
 body:has(.economy-toast) .topbar .brand-slot > .brand,
 body:has([aria-modal="true"], .sheet-backdrop) .topbar .brand-slot > .brand,
-body:has(.economy-toast) .topbar > .today-dots,
-body:has([aria-modal="true"], .sheet-backdrop) .topbar > .today-dots { visibility: visible; }
+body:has(.economy-toast) .topbar > .today-rings-slot,
+body:has([aria-modal="true"], .sheet-backdrop) .topbar > .today-rings-slot { visibility: visible; }

@@ -210,7 +210,9 @@ export function TrekScene({ trek, night, dusk = false, weather = 'clear', bright
           return [];
         }))}</div>
         <div className={`trek-fire${fire ? '' : ' is-cold'}`} style={{ left: gx + FIRE_AT }}>{fire ? <Fire /> : <FireRing />}</div>
-        <div className="trek-group" style={{ left: gx }}>
+        {/* Spec 571 E1: while a focus runs the friends walk in place until its next 3-min step is earned; reduced motion
+            moves them on each step without the walk. */}
+        <div className={`trek-group${trek.climb.walking && !night ? ' is-walking' : ''}`} style={{ left: gx }}>
           {/* Spec 45b: the camp's props, behind the friends who use them. */}
           <span className="trek-prop tree" style={{ left: -108 }}><Tree /></span>
           <span className="trek-prop map" style={{ left: -302 }}><MapSheet /></span>

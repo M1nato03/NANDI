@@ -1,0 +1,24 @@
+/*
+ * Spec 571 §0.20: the header rings. The slot always holds three rings' room (3 x 44 px taps), so the bar never changes
+ * size when they arrive after reconcile, or when picks hide one. Rings are pictures: px, so 200% text does not grow
+ * them (their line does). Lit = the ring's area colour filled, the mark knocked out in the bar's own surface; half =
+ * the left half of the ring, the mark in the ring's colour; unlit = the track only, never a ghost mark.
+ */
+.today-rings-slot { display: flex; justify-content: flex-end; flex: none; width: 132px; height: 44px; margin-left: auto; }
+.today-rings { display: flex; }
+.today-ring { position: relative; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; box-shadow: none; }
+.ring-glyph { position: relative; display: grid; place-items: center; width: 24px; height: 24px; }
+.ring-glyph svg { display: block; }
+.ring-plan { --area-color: var(--plan-area); }
+.ring-train { --area-color: var(--train-area); }
+.ring-learn { --area-color: var(--learn-area); }
+.ring-track { fill: none; stroke: var(--area-color); stroke-width: 1.5; }
+.ring-fill { fill: var(--area-color); }
+.ring-half { fill: none; stroke: var(--area-color); stroke-width: 3; stroke-linecap: round; }
+.ring-marks { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 1px; color: var(--surface-1); }
+.ring-glyph[data-state='half'] .ring-marks, .ring-glyph[data-state='none'] .ring-marks { color: var(--area-color); }
+.ring-marks.two .ring-mark { flex: none; }
+/* The tap line: one line under the bar, with a way to the ring's area; it never covers the bar itself. */
+.today-rings-line { position: absolute; top: calc(100% + 6px); left: 16px; right: 16px; z-index: 8; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px;
+  margin: 0; padding: 8px 12px; border-radius: 12px; background: var(--surface-1); color: var(--ink); box-shadow: var(--shadow-1); font-size: .875rem; line-height: 1.25rem; }
+.today-rings-line .text-button { min-height: 44px; padding: 0 4px; }

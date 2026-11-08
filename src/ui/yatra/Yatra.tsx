@@ -6,7 +6,7 @@ import { RULES } from '../../core/rules.config';
 import { effectiveShutdown } from '../../core/tasks/planner';
 import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { phaseAt } from '../../core/courtyard/courtyard';
-import { deriveTrek, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Constellation, type Trek } from '../../core/yatra/trek';
+import { deriveTrek, focusEarned, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Climb, type Constellation, type Trek } from '../../core/yatra/trek';
 import { moveWords } from '../../core/nextMove';
 import { readNextMove } from './nextMoveRows';
 import { cleanWeeks, longestRun, usefulDates, usefulDays, usefulRecord } from '../../core/economy/usefulDays';
@@ -146,16 +146,22 @@ function MoreOfferCard({ picks }: { picks: Picks }) {
 
 const JAR_ADDS: Partial<Record<string, string>> = { read: '+5 min', board: '+10 min', train: '+10 min', 'train-easy': '+10 min' };
 export const jarAdds = (kind: string, capped?: boolean) => capped ? undefined : JAR_ADDS[kind];
+/** The open focus's earned jar minutes (after the day's cap), as "+N min", or nothing before its first full 3 min. */
+export function focusAdds(climb?: Climb): string | undefined {
+  const earned = climb ? focusEarned(climb) : 0;
+  return earned > 0 ? `+${earned} min` : undefined;
+}
 
 /** Spec 45b: exactly one next move, one action. Its order is nextMove's. */
-function NextMoveCard({ rows, capped }: { rows: HomeRows; capped?: boolean }) {
+function NextMoveCard({ rows, capped, climb }: { rows: HomeRows; capped?: boolean; climb?: Climb }) {
   const [now, setNow] = useState(() => Date.now());
   const { move, current } = rows;
   const running = move.kind === 'focus' && move.running;
   useEffect(() => { if (!running) return; const timer = window.setInterval(() => setNow(Date.now()), 1000); return () => window.clearInterval(timer); }, [running]);
   const words = moveWords(move);
   // Spec 54: what the move adds to the jar, only for acts in its table and not once today's trail is done.
-  const adds = jarAdds(move.kind, capped);
+  // Spec 571 E1: a focus adds 1 jar min per full 3 min; the card says what this one has earned so far (never a part step).
+  const adds = move.kind === 'focus' ? focusAdds(climb) : jarAdds(move.kind, capped);
   let detail: ReactNode = words.detail;
   if (move.kind === 'focus' && current) {
     const seconds = Math.floor(taskFocusMs(rows.focus, current.taskId, Math.max(now, current.startedAt)) / 1000);
@@ -179,7 +185,7 @@ export function HomeRows() {
   const rows = useHomeRows();
   return <div className="home-rows notebook-home">
     <header className="home-notes"><UsefulLine /><RealThingsLine /></header>
-    {rows && <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} />}
+    {rows && <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} climb={yatra?.trek.climb} />}
     {rows && <MoreOfferCard picks={rows.picks} />}
     {/* Spec 53: Sunday evening to Monday, the week's receipt; nothing on other days. */}
     <WeekEndShare />

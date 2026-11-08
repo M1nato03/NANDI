@@ -61,6 +61,9 @@ const daysBetween = (from: string, to: string) => Math.round((new Date(`${to}T12
 const WEEK = 7;
 const ordinal = ['', ' II', ' III', ' IV', ' V', ' VI'];
 
+/** The open focus's earned jar minutes so far (after the day's cap): whole minutes only, 0 before its first full step. */
+export const focusEarned = (climb: Climb) => Math.round((climb.at - climb.settled) * JAR.stretchMinutes);
+
 const runningFocus = (focus: readonly FocusRow[], now: number) => focus.find(row => !row.deleted && row.endedAt == null && row.startedAt <= now);
 
 export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: string, today: string, names: Readonly<Record<string, string>> = {}, jar?: { from: string; focus: readonly FocusRow[]; focusRateFrom?: string; now?: number }): Trek {

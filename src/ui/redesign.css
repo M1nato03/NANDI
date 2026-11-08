@@ -274,14 +274,7 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .tabbar a .deck-glyph svg { width: 20px; height: 20px; }
 .tabbar a[aria-current='page'] { color: var(--area-color); }
 .tabbar a[aria-current='page']::after { background: var(--area-color); }
-.today-dots { display: flex; gap: 0; margin-left: auto; }
-/* A dot is 44px wide, and wider when its label is (large text, rem gate 7 Nov), so the labels never run into each other
-   and keep at least 8px between them. */
-.today-dot { display: grid; place-items: center; align-content: center; gap: 3px; width: auto; min-width: 44px; height: 44px; padding: 0 4px; border: 0; background: transparent; }
-.today-dot span[data-done] { width: 8px; height: 8px; border: 1.5px solid var(--area-color); border-radius: 50%; }
-.today-dot span[data-done='true'] { background: var(--area-color); }
-/* Each dot names its tab, so nobody has to guess what the four dots mean (audit 10-21). */
-.today-dot-label { font-size: .625rem; line-height: 1; font-weight: 600; color: var(--muted); letter-spacing: .01em; }
+/* The header's Today dots became the rings (spec 571 §0.20): src/ui/rings/rings.css. */
 .topbar .top-date { display: none; }
 .night-route .topbar, .night-route .tabbar { display: none; }
 .night-route .content { padding-top: 24px; padding-bottom: 24px; }

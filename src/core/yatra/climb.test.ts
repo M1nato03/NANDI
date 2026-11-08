@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deriveTrek } from './trek';
+import { deriveTrek, focusEarned } from './trek';
 import { deriveJar, jarActs } from './jar';
 import { RAIN_LINE, weatherFor } from './weather';
 import type { FocusRow, LedgerRow } from '../../data/types';
@@ -69,6 +69,15 @@ describe('spec 571 stage 2: the continuous climb', () => {
     expect(climbOf([run], '2026-11-08T04:09:00').at).toBeCloseTo(0.6, 10);
     // The next step is today's: 9 min in, so the step at 12 min.
     expect(climb.nextStepAt).toBe(t('2026-11-08T04:12:00'));
+  });
+
+  it('the next move’s "+N min": what the open focus has earned so far, after the cap', () => {
+    const run = focus(`${DAY}T10:00:00`);
+    expect(focusEarned(climbOf([run], `${DAY}T10:02:59`))).toBe(0);
+    expect(focusEarned(climbOf([run], `${DAY}T10:26:00`))).toBe(8);
+    // With 55 min already in today's jar, a 30-min focus has earned only the 5 left under the cap.
+    const near = [...Array.from({ length: 5 }, () => fact('calm', 'session', DAY)), fact('read', 'chapter', DAY)];
+    expect(focusEarned(climbOf([run], `${DAY}T10:30:00`, near))).toBe(5);
   });
 
   it('stops walking when today is capped, and stands still while paused', () => {
