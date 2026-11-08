@@ -78,6 +78,7 @@ const You = lazy(() => import('../screens/You').then(module => ({ default: modul
 // Spec 571 stage 2: the Yatra tab is the trek strip above Mor's plan; the Courtyard tab is home.
 const YatraTab = lazy(() => import('../yatra/YatraTab').then(module => ({ default: module.YatraTab })));
 const CourtyardHome = lazy(() => import('../courtyard/CourtyardHome').then(module => ({ default: module.CourtyardHome })));
+const CourtyardScreen = lazy(() => import('../courtyard/Courtyard').then(module => ({ default: module.CourtyardScreen })));
 const Calm = lazy(() => import('../yatra/Calm').then(module => ({ default: module.Calm })));
 const Journal = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.Journal })));
 const UsefulDays = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.UsefulDays })));
@@ -273,6 +274,8 @@ export function AppShell() {
   else if (key === 'you/contentreview') screen = <ContentReview />;
   else if (key === 'you/cast') screen = <MeetCast />;
   else if (key === 'you/courtyard') screen = <CourtyardHome />;
+  // Spec 35, kept in layout B: a tap on a friend opens its corner (its area, its days, what the next stage adds).
+  else if (key.startsWith('you/courtyard/view')) screen = <CourtyardScreen key={key} area={key.split('/')[3]} />;
   else if (key === 'you/stories') screen = <StorybookList />;
   else if (key === 'you/helps') screen = <HelpsWith />;
   // Spec 55: the crew screen, and where crew links land (every one goes through the one link validator).

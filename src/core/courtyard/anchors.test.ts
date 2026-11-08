@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import raw from '../../ui/courtyard/anchors.json';
-import { FRIEND_IDS, layoutProblems, parseAnchors, pointOnScreen, rectOnScreen, stageFit, stepForward } from './anchors';
+import { containFit, FRIEND_IDS, homeFit, layoutProblems, parseAnchors, pointOnScreen, rectOnScreen, stageFit, stepForward } from './anchors';
 
 // Spec 571 §0.19 layout B, stage 2 commit 3: the painted pass's anchors (p9p now; 9q is a data swap, then these re-run).
 const anchors = parseAnchors(raw);
@@ -53,9 +53,33 @@ describe('courtyard anchors: the layout gates on every phone shape', () => {
     });
   }
 
-  it('p9p on a 16:9 phone and on a desktop frame: Nandi’s tap goes under the collapsed card (for the full-layer brief)', () => {
+  it('p9p on a 16:9 phone and on a desktop frame: with the centred crop Nandi’s tap goes under the card', () => {
     expect(layoutProblems(anchors, 360, 640, WALL_RUN)).toEqual(['nandi: tap under the collapsed card (499.6 > 440.5)']);
     expect(layoutProblems(anchors, 1280, 800, WALL_RUN)).toEqual(['nandi: tap under the collapsed card (639.5 > 600.5)']);
+  });
+
+  it('b2 (8 Nov) the card-aware home fit: every size passes, the crop moving down only where a tap would meet the card', () => {
+    const top = Math.min(anchors.friends.kapi.tap[1], anchors.props['kapi-kite']![1]);
+    for (const [width, height] of [[360, 640], [360, 720], [360, 740], [360, 766], [360, 800], [360, 840], [390, 844], [412, 915], [1280, 800], [768, 1024]] as const) {
+      const fit = homeFit(anchors, width, height, top);
+      expect(fit.blocked, `${width}x${height}`).toBeUndefined();
+      expect(layoutProblems(anchors, width, height, WALL_RUN, fit), `${width}x${height}`).toEqual([]);
+      // Kapi and the kite stay below the header.
+      expect((top - fit.cropTop) * fit.scale).toBeGreaterThanOrEqual(anchors.headerBottom / 3 - 1e-9);
+    }
+    // Phones that already clear keep the centred crop.
+    expect(homeFit(anchors, 360, 800, top).cropTop).toBeCloseTo(stageFit(anchors, 360, 800).cropTop, 9);
+    expect(homeFit(anchors, 360, 640, top).cropTop).toBeCloseTo(501.4, 1);
+    // When both cannot hold, it says so with the numbers.
+    expect(homeFit(anchors, 360, 640, 300).blocked).toMatch(/^360x640: the lowest tap needs a crop of 501\.4 px but the header allows /);
+  });
+
+  it('containFit keeps the part’s aspect, bottom-centred in its rect, and says how far the aspects differ', () => {
+    const fit = containFit([10, 20, 20, 10], [100, 100, 40, 40]);
+    expect(fit.k).toBe(2);
+    expect(fit.x + 10 * fit.k).toBe(100);
+    expect(fit.y + 20 * fit.k + 10 * fit.k).toBe(140);
+    expect(fit.aspectOff).toBe(2);
   });
 
   it('spec 660 pose (unused in stage 2): one friend stepped forward 30 canvas px is gated too', () => {

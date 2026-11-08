@@ -25,6 +25,7 @@ import { JarPlanArea, RealThingsLine } from './JarPlan';
 import { CrewBar } from './Crew';
 import { go } from '../shell/router';
 import { useModalFocus } from '../shell/useModalFocus';
+import { HomeCard } from '../courtyard/HomeCard';
 import { campLine, TrekScene } from './TrekScene';
 import { WeekEndShare } from '../screens/WeekEndShare';
 import './yatra.css';
@@ -192,6 +193,25 @@ export function HomeRows() {
     {/* Spec 55: the crew bar, only when this phone is in a crew. */}
     <CrewBar />
   </div>;
+}
+
+/**
+ * Spec 571 §0.19 layout B: the Courtyard's bottom card with the same rows. Collapsed: the one next move. Opened: the
+ * ten-day offer and the week's receipt, then This week (the useful days and the week's real things) and the crew bar,
+ * which always close the sheet (spec 660's board goes above them later).
+ */
+export function CourtyardCard() {
+  const yatra = useYatra();
+  const rows = useHomeRows();
+  const [expanded, setExpanded] = useState(false);
+  return <HomeCard expanded={expanded} onExpanded={setExpanded}
+    row={rows ? <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} climb={yatra?.trek.climb} /> : <div className="next-move-slot" />}
+    sections={[
+      ...(rows ? [{ id: 'offer', node: <MoreOfferCard picks={rows.picks} /> }] : []),
+      { id: 'share', node: <WeekEndShare /> },
+      { id: 'week', node: <header className="home-notes"><UsefulLine /><RealThingsLine /></header> },
+      { id: 'crew', node: <CrewBar /> },
+    ]} />;
 }
 
 /**

@@ -85,9 +85,9 @@ function FriendCard({ area }: { area: AreaState }) {
   </section>;
 }
 
-export function CourtyardScreen() {
+export function CourtyardScreen({ area: initial }: { area?: string } = {}) {
   const data = useCourtyard();
-  const [selected, setSelected] = useState<AreaId>('train');
+  const [selected, setSelected] = useState<AreaId>(() => AREAS.some(row => row.id === initial) ? initial as AreaId : 'train');
   if (!data) return <section className="screen"><h1>Courtyard</h1></section>;
   const area = data.state.areas.find(item => item.id === selected)!;
   const treeNext = data.state.treeStage < 5 ? [3, 7, 14, 30, 60][data.state.treeStage]! : null;

@@ -119,8 +119,8 @@ const overlaps = (a: Rect, b: Rect) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] 
  * collapsed card (whose height from the screen's bottom is the anchor file's, fixed in CSS); each free-standing prop
  * ≥ 16 CSS inside both edges (wall-run things listed in `wallRun` may reach the edge).
  */
-export function layoutProblems(anchors: StageAnchors, width: number, height: number, wallRun: readonly string[] = []): string[] {
-  const fit = stageFit(anchors, width, height);
+export function layoutProblems(anchors: StageAnchors, width: number, height: number, wallRun: readonly string[] = [], fitOverride?: StageFit): string[] {
+  const fit = fitOverride ?? stageFit(anchors, width, height);
   const out: string[] = [];
   const [, ch] = anchors.canvas;
   // The header and the collapsed card + tab bar keep their CSS size on every phone (they are page chrome, not art).
@@ -150,4 +150,36 @@ export function stepForward(anchors: StageAnchors, id: FriendId, dy: number): St
   const friend = anchors.friends[id];
   const move = (rect: Rect): Rect => [rect[0], rect[1] + dy, rect[2], rect[3]];
   return { ...anchors, friends: { ...anchors.friends, [id]: { ...friend, foot: [friend.foot[0], friend.foot[1] + dy], tap: move(friend.tap), glow: move(friend.glow) } } };
+}
+
+/**
+ * b2 (8 Nov): the Courtyard home's fit: stageFit (width fit, centred crop; the 0.6 frame above), made card-aware. When
+ * the lowest friend tap would come within `clearCss` of the collapsed card, the crop moves down (sky first) just enough,
+ * as long as the header still clears the top-most thing that must stay whole (`topMost`, canvas px: Kapi and the kite;
+ * the sun is drawn in the visible sky). It only ever crops more sky, so phones that already clear keep the centred crop
+ * (b2 asked for it above 0.5; 360x720, aspect 0.5, needs it too). `blocked` names the numbers when both cannot hold.
+ */
+export const CARD_CLEAR_CSS = 8;
+export function homeFit(anchors: StageAnchors, width: number, height: number, topMost: number, clearCss = CARD_CLEAR_CSS): StageFit & { blocked?: string } {
+  const fit = stageFit(anchors, width, height);
+  const [, ch] = anchors.canvas;
+  const headerCss = anchors.headerBottom * CSS_PER_PX, cardCss = (ch - anchors.cardTop) * CSS_PER_PX;
+  const tapBottom = Math.max(...FRIEND_IDS.map(id => anchors.friends[id].tap[1] + anchors.friends[id].tap[3]));
+  const need = tapBottom - (height - cardCss - clearCss) / fit.scale;
+  const limit = topMost - headerCss / fit.scale;
+  const cropTop = Math.max(fit.cropTop, need);
+  if (cropTop > limit + 1e-9) return { ...fit, cropTop: limit, blocked: `${width}x${height}: the lowest tap needs a crop of ${need.toFixed(1)} px but the header allows ${limit.toFixed(1)}` };
+  return { ...fit, cropTop };
+}
+
+/**
+ * A part drawn in its own box, fitted into a rect with its aspect kept (contain), bottom-centred on the rect's foot
+ * (b2: never stretched). Returns the translate and the one scale, and how far the aspects differ (1 = same).
+ */
+export function containFit(box: Rect, rect: Rect): { x: number; y: number; k: number; aspectOff: number } {
+  const k = Math.min(rect[2] / box[2], rect[3] / box[3]);
+  const x = rect[0] + (rect[2] - box[2] * k) / 2 - box[0] * k;
+  const y = rect[1] + rect[3] - box[3] * k - box[1] * k;
+  const ratio = (box[2] / box[3]) / (rect[2] / rect[3]);
+  return { x, y, k, aspectOff: Math.max(ratio, 1 / ratio) };
 }
