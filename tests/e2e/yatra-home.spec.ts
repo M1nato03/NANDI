@@ -64,7 +64,7 @@ test('a running focus is the one next move, and it opens the focus card', async 
   await page.clock.fastForward(24 * 60_000);
   await tabs(page).getByRole('link', { name: 'Courtyard' }).click();
   // Spec 571 E1: 24 min of focus has earned 8 jar minutes (1 per full 3).
-  await expect(strip(page)).toHaveText(/^Working on 'Write the report' · \+8 min\s*24:\d\d on the clock\s*↗$/);
+  await expect(strip(page)).toHaveText(/^Working on 'Write the report' · \+8\u00a0min\s*24:\d\d on the clock\s*↗$/);
   await strip(page).click();
   await expect(page).toHaveURL(/#plan$/);
   await expect(page.getByRole('region', { name: 'Focus' })).toBeVisible();
@@ -90,7 +90,7 @@ test('a focus left running is held at "Still working?" when the app next opens o
   await page.goto('/');
   await expect(page).toHaveURL(/#courtyard$/);
   // The pause holds the earned jar minutes too (about 60 min of focus: 20 or 21).
-  await expect(strip(page)).toHaveText(/^Paused 'Write the report' · \+2\d min\s*6\d:\d\d on the clock\s*↗$/);
+  await expect(strip(page)).toHaveText(/^Paused 'Write the report' · \+2\d\u00a0min\s*6\d:\d\d on the clock\s*↗$/);
   // The pause holds: the clock does not move on.
   await page.clock.fastForward(5 * 60_000);
   await expect(strip(page)).toHaveText(/6\d:\d\d on the clock/);
