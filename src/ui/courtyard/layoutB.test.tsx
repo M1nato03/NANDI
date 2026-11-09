@@ -2,12 +2,14 @@ import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import raw from './anchors.json';
 import { parseAnchors, stageFit } from '../../core/courtyard/anchors';
+import { nudgeAnchors } from '../../core/courtyard/nudges';
 import { AREAS, type AreaState } from '../../core/courtyard/courtyard';
 import { HomeCard, HomeCardRow, orderSections, SWIPE_PX, swipeTo } from './HomeCard';
 import { friendLabel, StageFriends } from './StageFriends';
 
 // Spec 571 §0.19 layout B (stage 2 commit 3): the bottom card and the six tap targets, before the art is wired.
-const anchors = parseAnchors(raw);
+// The anchors as the home uses them: the pass plus the layout-B nudges.
+const anchors = nudgeAnchors(parseAnchors(raw));
 const areas: AreaState[] = AREAS.map((area, i) => ({ id: area.id, friend: area.friend, label: area.label, practice: area.practice, days: i, stage: 1, today: i % 2 === 0, week: 0, nextAt: null, nextObject: null } as unknown as AreaState));
 
 describe('the bottom card', () => {

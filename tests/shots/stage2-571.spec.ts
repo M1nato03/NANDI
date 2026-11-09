@@ -258,7 +258,7 @@ test('alpha check: beside rule and G-corner on the real sprites, s3 and s5', asy
       const own: Record<string, string> = { Mor: 'mor-', Moti: 'moti-', Kapi: 'kapi-', Nandi: 'nandi-', Kachhua: 'kachhua-', Chiku: 'chiku-' };
       const mats = ['nandi-mat', 'kachhua-sleeping-mat'];
       const partMasks = await Promise.all(parts.map(async part => ({ ...part, mask: await raster(part.svg) })));
-      const out: string[] = [];
+      const out: string[] = [], gaps: string[] = [];
       for (const friend of friends) {
         const mask = await raster(friend.svg);
         const dilated = new Uint8Array(W * H);
@@ -273,11 +273,23 @@ test('alpha check: beside rule and G-corner on the real sprites, s3 and s5', asy
           if (!mine && partPixels && shared / partPixels > 0.15) out.push(`${friend.friend}: covers ${(100 * shared / partPixels).toFixed(0)}% of ${part.prop}`);
         }
         if (!near && partMasks.some(part => part.prop.startsWith(own[friend.friend]!))) out.push(`${friend.friend}: more than 6 px from its own things`);
+        // The measured gap to the nearest own thing, and to which (b2 9 Nov: the numbers behind the beside rule).
+        const edge = (m: Uint8Array) => { const pts: number[] = []; for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) { const i = y * W + x; if (m[i] && (!m[i - 1] || !m[i + 1] || !m[i - W] || !m[i + W])) pts.push(x, y); } return pts; };
+        const fe = edge(mask);
+        let best = Infinity, bestProp = '';
+        for (const part of partMasks) {
+          if (!part.prop.startsWith(own[friend.friend]!)) continue;
+          const pe = edge(part.mask);
+          for (let i = 0; i < fe.length; i += 2) for (let j = 0; j < pe.length; j += 2) { const d = Math.hypot(fe[i]! - pe[j]!, fe[i + 1]! - pe[j + 1]!); if (d < best) { best = d; bestProp = part.prop; } }
+        }
+        if (best < Infinity) gaps.push(`${friend.friend}: ${best.toFixed(1)} px to ${bestProp}`);
       }
-      return out;
+      return { problems: out, gaps };
     });
     await page.context().close();
   }
   writeFileSync(`${OUT}/alpha-report.json`, `${JSON.stringify(report, null, 2)}\n`);
   console.log(`stage 2 alpha check: ${JSON.stringify(report)}`);
+  // b2 9 Nov: all green, no relaxed rule (beside ≤ 6 px, nothing over its own things but the mats).
+  expect(Object.values(report).flatMap(stage => (stage as { problems: string[] }).problems)).toEqual([]);
 });

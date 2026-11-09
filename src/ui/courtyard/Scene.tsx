@@ -149,7 +149,7 @@ function Keepsakes({ stage, glowLayer }: { stage: number; glowLayer?: boolean })
   </g>;
 }
 
-const Kite = () => <g className="courtyard-kite"><path d="M252 70Q268 46 288 34" stroke="#fff" strokeWidth=".7" fill="none" opacity=".8" />
+const Kite = () => <g className="courtyard-kite"><path d="M261 60Q272 45 288 34" stroke="#fff" strokeWidth=".7" fill="none" opacity=".8" />
   <path d="M288 22l9 10-9 12-9-12Z" fill="#ef6f5a" /><path d="M288 22v22M279 32h18" stroke="#fff" strokeWidth=".8" /><path d="M288 44q-4 6 2 10q-5 4 0 8" stroke="#f3b84a" strokeWidth="1.2" fill="none" /></g>;
 const Slate = () => <g transform="translate(26 0)"><rect x="212" y="102" width="26" height="24" rx="1.5" fill={C.woodDark} /><rect x="214.5" y="104.5" width="21" height="19" fill="#2f3b37" />
   <path d="M217 109h6M220 106v6M226 109h4M217 117l4 4M221 117l-4 4M226 119h6M226 121h6" stroke="#eef2ea" strokeWidth=".9" strokeLinecap="round" /></g>;
@@ -184,7 +184,9 @@ function Medal({ x, y, drop = 9, r = 4, metal = 'gold' }: { x: number; y: number
   </g>;
 }
 const GYM = { top: 112, foot: 150, left: 136, right: 224 };
-const Medals = () => <><Medal x={162} y={GYM.top + 3} metal="gold" /><Medal x={184} y={GYM.top + 3} metal="silver" drop={11} /><Medal x={206} y={GYM.top + 3} metal="gold" /></>;
+// b2 9 Nov (a9's shot review): the silver hung over Nandi's head like a halo; it moves along the bar toward the left
+// post, beside Nandi, never on him (alpha-report: 0 px of Nandi over his medals).
+const Medals = () => <><Medal x={157} y={GYM.top + 3} metal="silver" /><Medal x={165.5} y={GYM.top + 3} metal="gold" /><Medal x={206} y={GYM.top + 3} metal="gold" /></>;
 const FrameParts = () => {
   const { top, foot, left, right } = GYM;
   return <>

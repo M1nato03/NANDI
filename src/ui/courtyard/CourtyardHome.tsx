@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import raw from './anchors.json';
 import { homeFit, parseAnchors, type ScreenChromeCss } from '../../core/courtyard/anchors';
+import { nudgeAnchors } from '../../core/courtyard/nudges';
 import { useCourtyard } from './Courtyard';
 import { LayoutBScene } from './LayoutBScene';
 import { go } from '../shell/router';
@@ -10,7 +11,8 @@ import './layoutB.css';
 
 
 /** The painted pass's anchors (p9p now; 9q swaps in with scripts/import-courtyard-anchors.ts). */
-const ANCHORS = parseAnchors(raw);
+// The painted pass plus the layout-B nudges (b2 9 Nov: the beside rule at ≤ 6 px on the real sprites).
+const ANCHORS = nudgeAnchors(parseAnchors(raw));
 /** What the header must never cover: Kapi on the wall top and his kite (canvas px). */
 const TOP_MOST = Math.min(ANCHORS.friends.kapi.tap[1], ANCHORS.props['kapi-kite']?.[1] ?? Infinity);
 

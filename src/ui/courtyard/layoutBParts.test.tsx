@@ -2,13 +2,15 @@ import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import raw from './anchors.json';
 import { containFit, homeFit, parseAnchors, type Rect } from '../../core/courtyard/anchors';
+import { nudgeAnchors } from '../../core/courtyard/nudges';
 import { AREAS, type CourtyardState } from '../../core/courtyard/courtyard';
 import { PARTS } from './Scene';
 import { NO_PART, PROP_PARTS, SCENE_PROPS } from './layoutBParts';
 import { LayoutBScene } from './LayoutBScene';
 
 // Spec 571 stage 2 (b2, 8 Nov): today's parts at the painted pass's positions, one existing part per prop.
-const anchors = parseAnchors(raw);
+// The anchors as the home uses them: the pass plus the layout-B nudges.
+const anchors = nudgeAnchors(parseAnchors(raw));
 const at = (stage: number): CourtyardState => ({ areas: AREAS.map(area => ({ id: area.id, friend: area.friend, label: area.label, practice: area.practice, days: 10, stage, today: false, week: 0, nextAt: null, nextObject: null })) as unknown as CourtyardState['areas'], activeDays: 10, treeStage: stage, todayCount: 0, lanterns: 2, toran: 3 });
 const css = (rect: Rect): Rect => rect.map(value => value / 3) as unknown as Rect;
 
