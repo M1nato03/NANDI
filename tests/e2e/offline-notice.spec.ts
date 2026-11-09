@@ -56,9 +56,17 @@ for (const scheme of ['light', 'dark'] as const) {
         // It lives in the top bar, beside the brand, and keeps to one line there.
         await expect(page.locator('.topbar .brand-slot .offline-ready-toast')).toHaveCount(1);
         expect(await covered(page)).toEqual([]);
-        // The overlay owns the whole bar (gate-rem2): never a pill half over the dots when they wrap at 200% text.
+        // b2 9 Nov: it keeps to the brand side and the header rings stay in view (the covered check above counts them).
         const bar = (await page.locator('.topbar').boundingBox())!, box = (await notice(page).boundingBox())!;
-        expect(box.width).toBeGreaterThanOrEqual(bar.width - 33);
+        const slot = (await page.locator('.topbar .brand-slot').boundingBox())!;
+        expect(box.width).toBeGreaterThanOrEqual(slot.width - 9);
+        expect(box.x).toBeGreaterThanOrEqual(slot.x - 0.5);
+        expect(box.x + box.width).toBeLessThanOrEqual(slot.x + slot.width + 0.5);
+        for (const ring of await page.locator('.topbar .today-ring').all()) {
+          await expect(ring).toHaveCSS('visibility', 'visible');
+          const at = (await ring.boundingBox())!;
+          if (Math.abs(at.y - box.y) < box.height) expect(box.x + box.width, 'left of the first ring').toBeLessThanOrEqual(at.x + 0.5);
+        }
         expect(box.y).toBeGreaterThanOrEqual(bar.y - 0.5);
         expect(box.y + box.height).toBeLessThanOrEqual(bar.y + bar.height + 0.5);
         const { ratio, alpha } = await contrast(page);

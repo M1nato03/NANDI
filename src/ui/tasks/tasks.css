@@ -146,7 +146,11 @@
 @keyframes mor-breathe { 50% { transform: scale(1.03); } }
 @media (prefers-reduced-motion: reduce) { .mor-friend, .mor-friend .cast-eye { animation: none !important; } }
 :root[data-motion='reduce'] .mor-friend, :root[data-motion='reduce'] .mor-friend .cast-eye { animation: none !important; }
-.mor-add { display: grid; gap: 8px; margin: 0 0 12px; }
+.mor-add { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin: 0 0 12px; }
+/* 200% text (a9 9 Nov): the field's own minimum width widened the page by 21 px, which zoomed the phone out and pushed
+   the fixed tab bar below the screen. The add row now fits the column. */
+.mor-add .quick-add-field, .mor-add-row { min-width: 0; }
+.mor-add-row input { width: 100%; }
 .mor-add-row { display: flex; align-items: center; gap: 8px; }
 .mor-add-row input { flex: 1 1 auto; min-width: 0; }
 .mor-time-chip { flex: none; white-space: nowrap; }

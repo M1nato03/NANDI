@@ -34,6 +34,9 @@ async function expectTextFollows200(page: Page) {
     // Cover text is a px picture (b2, gate-rem2): covers.spec.ts checks the book's title beside or under each cover is
     // live text that doubles, so the cover's own title and author are not measured here.
     if (node.closest('.book-cover-title, .book-cover-author')) return [];
+    // The trek's camp names are part of the 300 px picture (a9/b2 9 Nov): capped at 18 px so they never run together;
+    // each is also its friend button's label. They must still grow (checked: at least 1.4x).
+    if (node.closest('.camp-label')) return before > 0 && after / before < 1.4 ? [`camp label "${node.textContent!.trim()}" ${before}px → ${after}px`] : [];
     return before > 0 && after / before < 1.8 ? [`${node.tagName.toLowerCase()}.${[...node.classList].join('.')} "${node.textContent!.trim().slice(0, 30)}" ${before}px → ${after}px`] : [];
   }));
   expect(stuck, 'text that stays small at 200%').toEqual([]);
@@ -118,4 +121,25 @@ test('the top bar at 200% text: the brand and the rings keep apart, and the ring
   const apart = brand.right <= slot.left || slot.right <= brand.left || brand.bottom <= slot.top + 0.5 || slot.bottom <= brand.top + 0.5;
   expect(apart, JSON.stringify({ brand, slot })).toBe(true);
   expect(ring.width).toBe(24);
+});
+
+test('at 200% text the page never widens, the tab bar stays whole on screen, and each tab label keeps to its own column (a9 9 Nov)', async ({ page }) => {
+  for (const route of ['courtyard', 'yatra', 'grow', 'you']) {
+    await page.goto(`/?e2e#${route}`);
+    await expect(page.locator('main h1, main h2').first()).toBeVisible();
+    await textAt200(page);
+    await page.waitForTimeout(400);
+    const at = await page.evaluate(() => {
+      const bar = document.querySelector('.tabbar')!.getBoundingClientRect();
+      const cells = [...document.querySelectorAll('.tabbar a')].map(link => { const cell = link.getBoundingClientRect(), label = link.querySelector('span')!.getBoundingClientRect(); return { cell: [cell.left, cell.right], label: [label.left, label.right] }; });
+      return { docW: document.documentElement.scrollWidth, bottom: bar.bottom, top: bar.top, cells };
+    });
+    expect(at.docW, `${route}: the page width`).toBeLessThanOrEqual(360);
+    expect(at.bottom, `${route}: the tab bar's bottom`).toBeLessThanOrEqual(800.5);
+    expect(at.top, `${route}: the tab bar's top`).toBeLessThan(800 - 44);
+    for (const { cell, label } of at.cells) {
+      expect(label[0]).toBeGreaterThanOrEqual(Math.max(cell[0]!, 16) - 0.5);
+      expect(label[1]).toBeLessThanOrEqual(Math.min(cell[1]!, 344) + 0.5);
+    }
+  }
 });

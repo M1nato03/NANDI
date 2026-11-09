@@ -106,7 +106,10 @@
 .trek-actor.camp-friend .cast-svg { display: block; }
 .trek-actor.camp-friend:focus-visible { outline: 3px solid var(--focus, #1f6feb); outline-offset: 2px; }
 /* Each area's word on one line under the ground props (clear of the map, rock and pack); Kapi's above it in the tree. */
-.camp-label { position: absolute; bottom: calc(-27px - var(--lift, 0px)); left: 50%; transform: translateX(-50%); padding: 0 3px; white-space: nowrap; color: #3a3328; font: 700 min(.75rem, .9375rem)/1.2 'DM Sans', sans-serif; letter-spacing: .04em; text-shadow: 0 0 3px #f6efdf, 0 0 6px #f6efdf; pointer-events: none; }
+.camp-label { position: absolute; bottom: calc(-27px - var(--lift, 0px)); left: 50%; transform: translateX(-50%); padding: 0 3px; white-space: nowrap; color: #3a3328; font: 700 min(.75rem, 18px)/1.2 'DM Sans', sans-serif; letter-spacing: .04em; text-shadow: 0 0 3px #f6efdf, 0 0 6px #f6efdf; pointer-events: none; }
+/* a9 9 Nov: the cap is in px (it was min(.75rem, .9375rem), always .75rem, so 200% text ran Plan Read Train together
+   over the map). The scene is a fixed 300 px picture with the friends 60 px apart: 18 px (1.5x) is the most that keeps
+   the names apart. Each name is also the friend button's own label, read at any text size. */
 .trek-actor.kapi .camp-label { bottom: calc(100% + 2px); }
 .trek-scene.is-night .camp-label { color: #f3e7c8; text-shadow: 0 0 4px #14213a, 0 0 8px #14213a; }
 /* The friends in the notebook's quieter ink: a little less colour, one shared ground shadow. */

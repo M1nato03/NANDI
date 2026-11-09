@@ -16,13 +16,18 @@
    200% text, when the dots wrap to a second row, it is never a pill half over them. Its containing block is the top bar
    (position: relative in redesign.css), not the brand slot. Scoped to .topbar so it outranks redesign.css's shared pill
    rule (width: max-content), which loads later at the same specificity (gate-rem3: the notice stayed a 154 px pill). */
-.topbar .offline-ready-toast { position: absolute; inset: 8px 16px; display: flex; align-items: center; width: auto; max-width: none; margin: 0;
-  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; z-index: 1;
+/* b2 9 Nov (a9's stage-2 review): the header rings are buttons now, so the notice keeps to the brand side, left of the
+   first ring, and the rings stay in view. The brand slot is its containing block; at 200% text, when the rings wrap to
+   their own row, the brand row is the whole width and so is the notice. */
+.topbar .brand-slot { position: relative; }
+/* At large text the brand side is narrow beside the rings, so the notice wraps to a second line (it never ends at
+   "Ready to work"); the bar is tall enough for two at 200%. */
+.topbar .offline-ready-toast { position: absolute; inset: 8px 8px 8px 0; display: flex; align-items: center; width: auto; max-width: none; margin: 0;
+  overflow: hidden; white-space: normal; line-height: 1.15; pointer-events: none; z-index: 1;
   background: var(--surface-2); color: var(--ink); box-shadow: var(--shadow-1); }
 /* While the notice shows (a few seconds, once), the brand and the header rings under it step aside: nothing peeps out at
    its rounded edge, and nothing tappable sits under it. They come back the moment it hides. */
-.topbar:has(.offline-ready-toast) .brand-slot > .brand,
-.topbar:has(.offline-ready-toast) > .today-rings-slot { visibility: hidden; }
+.topbar:has(.offline-ready-toast) .brand-slot > .brand { visibility: hidden; }
 body:has(.economy-toast) .offline-ready-toast,
 body:has([aria-modal="true"], .sheet-backdrop) .offline-ready-toast { visibility: hidden; }
 body:has(.economy-toast) .topbar .brand-slot > .brand,

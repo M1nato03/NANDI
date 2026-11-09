@@ -26,7 +26,7 @@ export function Sky({ phase, id, height = 130 }: { phase: Phase; id: string; hei
     <rect width={SCENE_W} height={height} fill={`url(#${id}sky)`} />
     {phase === 'morning' && <><circle cx="62" cy="64" r="15" fill="#ffe0a3" /><circle cx="62" cy="64" r="24" fill="#ffe0a3" opacity=".3" /></>}
     {phase === 'day' && <><circle cx="306" cy="28" r="13" fill="#fff3b8" /><circle cx="306" cy="28" r="21" fill="#fff3b8" opacity=".35" /></>}
-    {phase === 'evening' && <><circle cx="318" cy="70" r="16" fill="#ffb36b" /><circle cx="318" cy="70" r="26" fill="#ff9a5a" opacity=".3" /></>}
+    {/* Evening (b2 9 Nov): the sun is down while the friends rest; a warm sky, and the first lights (the evening glow). */}
     {phase === 'night' && <g className="courtyard-stars" fill="#fff">
       <path d="M300 20a12 12 0 1 0 10 18a10 10 0 1 1 -10 -18Z" fill="#f4ecd0" />
       {[[30, 18, 1.2], [70, 34, .9], [112, 14, 1.1], [150, 40, .8], [238, 22, 1], [270, 44, .8], [340, 50, 1.1], [92, 56, .7], [210, 52, .7]].map(([x, y, r], i) => <circle key={i} cx={x} cy={y} r={r} opacity=".85" />)}
@@ -274,7 +274,14 @@ const Bookshelf = () => <g><rect x="320" y="148" width="38" height="48" rx="2" f
 const ReadingLamp = () => <g><path d="M248 194v-26" stroke="#6b4a2c" strokeWidth="1.6" /><ellipse cx="248" cy="195" rx="6" ry="1.8" fill="#6b4a2c" /><path d="M240 170h16l-4-9h-8Z" fill="#f6c45a" /></g>;
 const BookStack = () => <g>{spine(258, 191, 22, '#4f94d4')}{spine(260, 186, 19, '#ef6f5a')}{spine(257, 181, 21, '#7cbf73')}<path d="M262 182.5h14M262 192.5h16" stroke="#fff" strokeWidth=".6" opacity=".7" /></g>;
 const Globe = () => <g><path d="M268 181v-3M264 178h8" stroke="#6b4a2c" strokeWidth="1.2" /><circle cx="268" cy="170" r="7.5" fill="#6fb3d9" /><path d="M263 166q3 2 4 6t5 3M266 163q2 2 6 1" stroke="#7fb862" strokeWidth="2.2" fill="none" strokeLinecap="round" /><path d="M260 170a8 8 0 0 0 16 0" stroke="#6b4a2c" strokeWidth="1" fill="none" /></g>;
-const OpenBook = () => <g><path d="M286 196l12-4 12 4-12 2Z" fill="#fff" /><path d="M298 192v6" stroke="#c9a170" strokeWidth=".8" /><path d="M288 195.4l8-2.6M300 192.8l8 2.6" stroke="#c9b8a0" strokeWidth=".6" /></g>;
+// a9 9 Nov: on its own (s1) the white pages read as a bird, so the book gets a coloured cover under the pages, a spine
+// and page edges.
+const OpenBook = () => <g>
+  <path d="M285 196.4Q291 195.2 298 197Q305 195.2 311 196.4V198.4Q305 197.2 298 199Q291 197.2 285 198.4Z" fill="#3f7f8c" />
+  <path d="M286 195.6Q291.5 191.4 298 193.2V197.6Q291.5 195.6 286 197Z" fill="#fffaf0" stroke="#b9a888" strokeWidth=".35" />
+  <path d="M310 195.6Q304.5 191.4 298 193.2V197.6Q304.5 195.6 310 197Z" fill="#f6efe0" stroke="#b9a888" strokeWidth=".35" />
+  <path d="M298 193.2V197.8" stroke="#2c5d68" strokeWidth=".9" />
+  <path d="M288.6 194.9Q292 193 296 193.9M300 193.9Q304 193 307.4 194.9M288.6 196.1Q292 194.3 296 195.1M300 195.1Q304 194.3 307.4 196.1" stroke="#c9b8a0" strokeWidth=".45" fill="none" /></g>;
 
 /** Chiku looks after Learn: a book, a stack, a low shelf, a lamp and a globe. */
 function Books({ stage, glowLayer }: { stage: number; glowLayer?: boolean }) {

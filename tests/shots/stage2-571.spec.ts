@@ -68,7 +68,9 @@ for (const theme of ['light', 'dark'] as const) {
   test(`layout B home at s1, s3, s4, s5, ${theme}`, async ({ browser }) => {
     for (const stage of [1, 3, 4, 5]) {
       const page = await phone(browser, theme);
-      await put(page, 'ledger', corners(stage));
+      // s5 also has 25 Calm minutes this week, so the open card shows §0.2 row 3 in full: the useful days (45b) and
+      // "This week: … of real things" (54), which hides at 0 minutes.
+      await put(page, 'ledger', [...corners(stage), ...(stage === 5 ? [fact(DAY, 'calm', 'session', { minutes: 25 })] : [])]);
       await home(page);
       // The chrome the layout assumed (header 64, tab bar 67, card 134): measured here, printed for the gate log.
       const chrome = await page.evaluate(() => ({ header: document.querySelector('.topbar')!.getBoundingClientRect().height, tabBar: document.querySelector('.tabbar')!.getBoundingClientRect().height, card: document.querySelector('.courtyard-card')!.getBoundingClientRect().height }));
@@ -84,9 +86,21 @@ for (const theme of ['light', 'dark'] as const) {
   });
 
   test(`s5 at night and at 200% text, ${theme}`, async ({ browser }) => {
-    const night = await phone(browser, theme, new Date('2026-11-10T23:30:00'));
+    // a9 9 Nov: 23:30 is still evening with the default 01:30 bedtime (warm sky, no sun since b2's call, friends resting);
+    // true night is 01:45: stars, the moon and the rings resting.
+    const evening = await phone(browser, theme, new Date('2026-11-10T23:30:00'));
+    await put(evening, 'ledger', [...corners(5), ...daysBefore(DAY, 3).map(day => fact(day, 'soft', 'soft', {}))]);
+    await home(evening);
+    await snap(evening, `s2-${t}-home-s5-evening`);
+    await evening.context().close();
+    const night = await phone(browser, theme, new Date('2026-11-11T01:45:00'));
     await put(night, 'ledger', [...corners(5), ...daysBefore(DAY, 3).map(day => fact(day, 'soft', 'soft', {}))]);
     await home(night);
+    await expect(night.locator('.courtyard-stars')).toHaveCount(1);
+    const rings = night.getByRole('navigation', { name: "Today's rings" });
+    await expect(rings.locator('.ring-mark-moon')).toHaveCount(3);
+    await rings.getByRole('button').first().click();
+    await expect(night.locator('.today-rings-line')).toHaveText('Rings rest for the night.');
     await snap(night, `s2-${t}-home-s5-night`);
     await night.context().close();
     const big = await phone(browser, theme);
@@ -169,7 +183,9 @@ test('header rings: Mind unlit, half and closed, light and dark (360 crops)', as
       ['unlit', []],
       ['half', [fact(DAY, 'calm', 'session', { minutes: 6 })]],
       ['closed', [fact(DAY, 'calm', 'session', { minutes: 6 }), fact(DAY, 'read', 'chapter', {})]],
-      ['all', [fact(DAY, 'calm', 'session', { minutes: 6 }), fact(DAY, 'read', 'chapter', {}), fact(DAY, 'tasks', 'done', { plannedSize: 'M', wasPlanned: true }, 's2-task'), fact(DAY, 'train', 'rest', { xp: 10 })]],
+      // a9 9 Nov: a paid session closes Body with its mark (the rest fixture paid 0 XP on replay, so Body stayed empty).
+      ['body', [fact(DAY, 'train', 'session', { xp: 60, workingSets: 6 })]],
+      ['all', [fact(DAY, 'calm', 'session', { minutes: 6 }), fact(DAY, 'read', 'chapter', {}), fact(DAY, 'tasks', 'done', { plannedSize: 'M', wasPlanned: true }, 's2-task'), fact(DAY, 'train', 'session', { xp: 60, workingSets: 6 })]],
     ] as const) {
       const page = await phone(browser, theme);
       await put(page, 'tasks', [{ id: 's2-task', title: 'Call the bank', status: 'done', dayKey: DAY, updatedAt: 1, deleted: 0, deviceId: 's2' }]);
@@ -177,6 +193,7 @@ test('header rings: Mind unlit, half and closed, light and dark (360 crops)', as
       await home(page);
       await expect(page.getByRole('navigation', { name: "Today's rings" })).toBeVisible();
       const slot = (await page.locator('.today-rings-slot').boundingBox())!;
+      if (state === 'body' || state === 'all') await expect(page.locator('.today-ring').nth(1).locator('.ring-mark')).not.toHaveCount(0);
       await snap(page, `s2-${theme === 'light' ? 'l' : 'd'}-rings-${state}`, { x: 0, y: 0, width: 360, height: Math.ceil(slot.y + slot.height + 8) });
       if (state === 'closed') {
         await page.getByRole('button', { name: /^Mind:/ }).click();
