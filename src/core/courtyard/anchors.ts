@@ -160,15 +160,22 @@ export function stepForward(anchors: StageAnchors, id: FriendId, dy: number): St
  * (b2 asked for it above 0.5; 360x720, aspect 0.5, needs it too). `blocked` names the numbers when both cannot hold.
  */
 export const CARD_CLEAR_CSS = 8;
-export function homeFit(anchors: StageAnchors, width: number, height: number, topMost: number, clearCss = CARD_CLEAR_CSS): StageFit & { blocked?: string } {
+export interface ScreenChromeCss { headerCss: number; cardCss: number }
+export function homeFit(anchors: StageAnchors, width: number, height: number, topMost: number, clearCss = CARD_CLEAR_CSS, chrome?: ScreenChromeCss, wallRun: readonly string[] = ['spec-15-lanterns']): StageFit & { blocked?: string } {
   const fit = stageFit(anchors, width, height);
   const [, ch] = anchors.canvas;
-  const headerCss = anchors.headerBottom * CSS_PER_PX, cardCss = (ch - anchors.cardTop) * CSS_PER_PX;
-  const tapBottom = Math.max(...FRIEND_IDS.map(id => anchors.friends[id].tap[1] + anchors.friends[id].tap[3]));
+  // The page's real chrome when measured (the card grows with large text: the front row lifts above it, §0.19);
+  // otherwise the pass's own numbers.
+  const headerCss = chrome?.headerCss ?? anchors.headerBottom * CSS_PER_PX, cardCss = chrome?.cardCss ?? (ch - anchors.cardTop) * CSS_PER_PX;
+  // The lowest thing that must stay clear of the card: every friend's tap and every free-standing prop (gate-s2 shots:
+  // Nandi's dumbbells and mat sat under the card at 360x640).
+  const bottoms = [...FRIEND_IDS.map(id => anchors.friends[id].tap[1] + anchors.friends[id].tap[3]),
+    ...Object.entries(anchors.props).filter(([name]) => !wallRun.includes(name)).map(([, rect]) => rect[1] + rect[3])];
+  const tapBottom = Math.max(...bottoms);
   const need = tapBottom - (height - cardCss - clearCss) / fit.scale;
   const limit = topMost - headerCss / fit.scale;
   const cropTop = Math.max(fit.cropTop, need);
-  if (cropTop > limit + 1e-9) return { ...fit, cropTop: limit, blocked: `${width}x${height}: the lowest tap needs a crop of ${need.toFixed(1)} px but the header allows ${limit.toFixed(1)}` };
+  if (cropTop > limit + 1e-9) return { ...fit, cropTop: limit, blocked: `${width}x${height}: the lowest tap or prop needs a crop of ${need.toFixed(1)} px but the header allows ${limit.toFixed(1)}` };
   return { ...fit, cropTop };
 }
 

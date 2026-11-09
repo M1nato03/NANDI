@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import raw from './anchors.json';
-import { homeFit, parseAnchors } from '../../core/courtyard/anchors';
+import { homeFit, parseAnchors, type ScreenChromeCss } from '../../core/courtyard/anchors';
 import { useCourtyard } from './Courtyard';
 import { LayoutBScene } from './LayoutBScene';
 import { go } from '../shell/router';
@@ -25,6 +25,28 @@ function useViewport() {
 }
 
 /**
+ * The real top bar and bottom card, measured (gate-s2 shots: header 68, card 146 + its 8 gap + the 64 tab bar at 100%;
+ * at 200% text the card grows). The fit keeps every friend and prop above the card's top, so the front row lifts when
+ * the card grows.
+ */
+function useChrome(width: number, height: number): ScreenChromeCss | undefined {
+  const [chrome, setChrome] = useState<ScreenChromeCss>();
+  useEffect(() => {
+    const measure = () => {
+      const header = document.querySelector('.topbar')?.getBoundingClientRect().bottom;
+      const card = document.querySelector('.courtyard-card')?.getBoundingClientRect().top;
+      if (header === undefined || card === undefined) return;
+      setChrome(current => current && Math.abs(current.headerCss - header) < 0.5 && Math.abs(current.cardCss - (height - card)) < 0.5 ? current : { headerCss: header, cardCss: height - card });
+    };
+    measure();
+    const watch = new ResizeObserver(measure);
+    for (const node of document.querySelectorAll('.topbar, .courtyard-card')) watch.observe(node);
+    return () => watch.disconnect();
+  }, [width, height]);
+  return chrome;
+}
+
+/**
  * Spec 571 §0.19 layout B (stage 2 commit 3): the Courtyard is the whole screen between the header and the tab bar,
  * with the §0.2 rows in one compact bottom card. Today's courtyard parts stand where the painted pass puts them.
  */
@@ -32,7 +54,8 @@ export function CourtyardHome() {
   const data = useCourtyard();
   const yatra = useYatra();
   const { width, height } = useViewport();
-  const fit = homeFit(ANCHORS, width, height, TOP_MOST);
+  const chrome = useChrome(width, height);
+  const fit = homeFit(ANCHORS, width, height, TOP_MOST, undefined, chrome);
   const keepsakes = yatra ? treeKeepsakes(yatra.trek) : [];
   const [tapped, setTapped] = useState<Keepsake | null>(null);
   useEffect(() => { if (!tapped) return; const timer = window.setTimeout(() => setTapped(null), 6000); return () => window.clearTimeout(timer); }, [tapped]);

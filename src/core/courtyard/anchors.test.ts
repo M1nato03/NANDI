@@ -70,9 +70,22 @@ describe('courtyard anchors: the layout gates on every phone shape', () => {
     }
     // Phones that already clear keep the centred crop.
     expect(homeFit(anchors, 360, 800, top).cropTop).toBeCloseTo(stageFit(anchors, 360, 800).cropTop, 9);
-    expect(homeFit(anchors, 360, 640, top).cropTop).toBeCloseTo(501.4, 1);
+    // gate-s2 shots: the lowest free-standing prop (Nandi's gym things) counts too, not only the taps (was 501.4).
+    expect(homeFit(anchors, 360, 640, top).cropTop).toBeCloseTo(529.0, 1);
     // When both cannot hold, it says so with the numbers.
-    expect(homeFit(anchors, 360, 640, 300).blocked).toMatch(/^360x640: the lowest tap needs a crop of 501\.4 px but the header allows /);
+    expect(homeFit(anchors, 360, 640, 300).blocked).toMatch(/^360x640: the lowest tap or prop needs a crop of 529\.0 px but the header allows /);
+  });
+
+  it('the measured chrome moves the crop: a taller card (200% text) lifts the scene, held at the header limit', () => {
+    const top = Math.min(anchors.friends.kapi.tap[1], anchors.props['kapi-kite']![1]);
+    const file = homeFit(anchors, 360, 800, top);
+    const real = homeFit(anchors, 360, 800, top, 8, { headerCss: 68, cardCss: 218 });
+    const big = homeFit(anchors, 360, 800, top, 8, { headerCss: 98, cardCss: 362 });
+    expect(real.cropTop).toBeGreaterThan(file.cropTop);
+    expect(big.cropTop).toBeGreaterThan(real.cropTop);
+    // Kapi and the kite never go under the header, even when the card wins.
+    expect((top - big.cropTop) * big.scale).toBeGreaterThanOrEqual(98 - 1e-6);
+    expect(big.blocked).toMatch(/^360x800: the lowest tap or prop needs/);
   });
 
   it('containFit keeps the part’s aspect, bottom-centred in its rect, and says how far the aspects differ', () => {
