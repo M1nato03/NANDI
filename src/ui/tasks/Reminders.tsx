@@ -37,10 +37,14 @@ export function Reminders() {
 
   async function add(event: FormEvent) {
     event.preventDefault();
-    const failed = await update(addNow(text));
-    if (failed) { setError(failed); return; }
+    // Checked against the list on screen first, so the field clears at once: clearing it only after the write would
+    // wipe a second line typed meanwhile (gate-s2c: the second of two quick adds was lost that way).
+    const check = addReminder(list, text, 0, 'check');
+    if (check.error) { setError(check.error); return; }
     setError('');
     setText('');
+    const failed = await update(addNow(text));
+    if (failed) { setError(failed); setText(text); }
   }
 
   const row = (item: Reminder) => <li key={item.id} className={`reminder-row${item.doneAt ? ' done' : ''}`}>
