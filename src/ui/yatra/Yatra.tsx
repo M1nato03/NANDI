@@ -150,7 +150,7 @@ export const jarAdds = (kind: string, capped?: boolean) => capped ? undefined : 
 /** The open focus's earned jar minutes (after the day's cap), as "+N min", or nothing before its first full 3 min. */
 export function focusAdds(climb?: Climb): string | undefined {
   const earned = climb ? focusEarned(climb) : 0;
-  return earned > 0 ? `+${earned} min` : undefined;
+  return earned > 0 ? `+${earned}\u00a0min` : undefined;
 }
 
 /** Spec 45b: exactly one next move, one action. Its order is nextMove's. */
