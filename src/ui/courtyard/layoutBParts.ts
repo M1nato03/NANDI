@@ -8,7 +8,7 @@ import type { PartId } from './Scene';
  * string; the flat board game → the chess board from Kapi's stool. Count-driven fixtures (the lantern string, the toran)
  * and the scenery (wall, door, neem) are placed by the scene itself.
  */
-export interface PropPart { prop: string; part: PartId; area: AreaId; from: number }
+export interface PropPart { prop: string; part: PartId; area: AreaId; from: number; until?: number }
 export const PROP_PARTS: readonly PropPart[] = [
   { prop: 'mor-pot-1', part: 'pot1', area: 'plan', from: 1 },
   { prop: 'mor-pot-2', part: 'pot2', area: 'plan', from: 2 },
@@ -35,6 +35,8 @@ export const PROP_PARTS: readonly PropPart[] = [
   { prop: 'kachhua-charpai', part: 'cot', area: 'sleep', from: 3 },
   { prop: 'kachhua-standing-lantern', part: 'standingLantern', area: 'sleep', from: 4 },
   { prop: 'kachhua-blanket', part: 'blanket', area: 'sleep', from: 5 },
+  // 9 Nov hotfix (support.ts): Chiku's reading mat at his feet for his first two stages.
+  { prop: 'chiku-reading-mat', part: 'readingMat', area: 'learn', from: 1, until: 2 },
   { prop: 'chiku-open-book', part: 'openBook', area: 'learn', from: 1 },
   { prop: 'chiku-book-stack', part: 'bookStack', area: 'learn', from: 2 },
   { prop: 'chiku-bookshelf', part: 'bookshelf', area: 'learn', from: 3 },

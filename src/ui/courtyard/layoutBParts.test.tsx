@@ -24,8 +24,8 @@ describe('the prop → part table', () => {
 
   it('every part keeps its aspect (contain fit); the ones more than 25% off their rect are listed for b2', () => {
     const off = PROP_PARTS.filter(row => containFit(PARTS[row.part].box, css(anchors.props[row.prop]!)).aspectOff > 1.25).map(row => row.prop);
-    expect(off).toEqual(['mor-marigold-bed', 'mor-birdbath-water', 'moti-picture-frame', 'moti-bulbs-small-photos', 'kapi-kite', 'kapi-telescope',
-      'nandi-dumbbells', 'nandi-medals', 'kachhua-pillow', 'kachhua-charpai', 'chiku-open-book', 'chiku-reading-lamp']);
+    // 9 Nov hotfix: the re-placed props (nudges.ts places) keep their part's aspect.
+    expect(off).toEqual(['kapi-kite', 'kapi-telescope', 'nandi-dumbbells', 'nandi-medals', 'kachhua-pillow', 'kachhua-charpai', 'chiku-open-book', 'chiku-reading-lamp']);
   });
 });
 
@@ -34,8 +34,11 @@ describe('the layout B scene', () => {
   const scene = (stage: number) => renderToStaticMarkup(<LayoutBScene anchors={anchors} fit={fit} width={360} height={800} state={at(stage)} phase="day" onFriend={() => undefined} />);
   it('draws each corner’s parts from the stage it reaches, nothing before', () => {
     expect(scene(0).match(/class="courtyard-part"/g)).toBeNull();
-    expect(scene(1).match(/class="courtyard-part"/g)).toHaveLength(6);
-    expect(scene(5).match(/class="courtyard-part"/g)).toHaveLength(PROP_PARTS.length);
+    // s1: one per corner plus Chiku's reading mat (9 Nov hotfix), which goes when the shelf comes (s3).
+    expect(scene(1).match(/class="courtyard-part"/g)).toHaveLength(7);
+    expect(scene(5).match(/class="courtyard-part"/g)).toHaveLength(PROP_PARTS.length - 1);
+    expect(scene(2)).toContain('data-prop="chiku-reading-mat"');
+    expect(scene(3)).not.toContain('data-prop="chiku-reading-mat"');
     expect(scene(3)).toContain('data-part="cot"');
     expect(scene(3)).not.toContain('data-part="gymFrame"');
     expect(scene(4)).toContain('data-part="gymFrame"');
@@ -74,11 +77,15 @@ describe('the layout B scene', () => {
     expect(scene(5)).not.toContain('courtyard-b-glow');
   });
 
-  it('frame mode (wide screens): the wall band repeats across the visible width', () => {
+  it('frame mode (wide screens): one flat wall runs across the visible width, with no highlights on its face', () => {
     const wide = homeFit(anchors, 1280, 800, Math.min(anchors.friends.kapi.tap[1], anchors.props['kapi-kite']![1]));
     const html = renderToStaticMarkup(<LayoutBScene anchors={anchors} fit={wide} width={1280} height={800} state={at(3)} phase="day" onFriend={() => undefined} />);
     expect(wide.mode).toBe('frame');
-    expect(html.match(/translate\((-?\d+) 0\)"><rect y="80"/g)).toHaveLength(7);
+    const wall = html.match(/<g class="courtyard-b-wall">(.*?)<\/g>/)![1]!;
+    expect(wall.match(/<rect x="-2000"/g)).toHaveLength(4);
+    expect(wall).not.toContain('<ellipse');
+    expect(-2000 * wide.scale * 3 + wide.offsetX).toBeLessThan(0);
+    expect(2360 * wide.scale * 3 + wide.offsetX).toBeGreaterThan(1280);
   });
 });
 

@@ -65,8 +65,9 @@ const snap = (page: Page, name: string, clip?: { x: number; y: number; width: nu
 
 for (const theme of ['light', 'dark'] as const) {
   const t = theme === 'light' ? 'l' : 'd';
-  test(`layout B home at s1, s3, s4, s5, ${theme}`, async ({ browser }) => {
-    for (const stage of [1, 3, 4, 5]) {
+  test(`layout B home at s1 to s5, ${theme}`, async ({ browser }) => {
+    test.setTimeout(120_000);
+    for (const stage of [1, 2, 3, 4, 5]) {
       const page = await phone(browser, theme);
       // s5 also has 25 Calm minutes this week, so the open card shows §0.2 row 3 in full: the useful days (45b) and
       // "This week: … of real things" (54), which hides at 0 minutes.
@@ -241,13 +242,20 @@ test('rain on the Yatra home during a focus-guard pause (light)', async ({ brows
 });
 
 /**
- * The beside rule and G-corner on ALPHA (b2): each friend's sprite and each part are rasterised alone in the page, and
- * their opaque pixels compared. Beside: within 6 CSS of its own things (a 6 px dilation touches them) and no shared
- * pixel with them (floor mats excepted). G-corner: a friend covers at most 15% of another corner's part.
+ * The beside rule, G-corner, support and the neem on ALPHA (b2), at every stage: each friend's sprite, each part and the
+ * neem's crown and trunk are rasterised alone in the page, and their opaque pixels compared.
+ * - Beside: within 6 CSS of its own things (a 6 px dilation touches them) and no shared pixel with them (floor mats
+ *   excepted). G-corner: a friend covers at most 15% of another corner's part.
+ * - Support (b2 + a9 9 Nov, after Jenil's floating vase): each part's lowest opaque row within 2 CSS of what it stands
+ *   on (data-support): the floor (at or below the wall foot), the coping top, or the top of its host part under it; a
+ *   wall part wholly inside the wall face; a hanging part's top inside its host. The kite flies.
+ * - Neem: no part pixel over the crown or trunk (the swing is part of the tree and left out).
+ * The same check gates the painted full-set swap.
  */
-test('alpha check: beside rule and G-corner on the real sprites, s3 and s5', async ({ browser }) => {
+test('alpha check: beside, G-corner, support and the neem on the real pixels, s1 to s5', async ({ browser }) => {
+  test.setTimeout(240_000);
   const report: Record<string, unknown> = {};
-  for (const stage of [3, 5]) {
+  for (const stage of [1, 2, 3, 4, 5]) {
     const page = await phone(browser, 'light');
     await put(page, 'ledger', corners(stage));
     await home(page);
@@ -255,6 +263,10 @@ test('alpha check: beside rule and G-corner on the real sprites, s3 and s5', asy
       const W = innerWidth, H = innerHeight;
       const scene = document.querySelector('.courtyard-b-scene') as SVGSVGElement;
       const outer = scene.firstElementChild as SVGGElement;
+      const m = outer.transform.baseVal.consolidate()!.matrix;
+      const lineY = (name: string) => m.d * Number(scene.getAttribute(`data-${name}`)) + m.f;
+      const lines = { coping: lineY('coping'), wallTop: lineY('wall-top'), wallFoot: lineY('wall-foot') };
+      const tol = 2 * m.d + 0.5;
       const raster = async (svg: string) => {
         const img = new Image();
         img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
@@ -266,16 +278,59 @@ test('alpha check: beside rule and G-corner on the real sprites, s3 and s5', asy
         for (let i = 0; i < W * H; i++) mask[i] = data[i * 4 + 3]! > 40 ? 1 : 0;
         return mask;
       };
+      const bounds = (mask: Uint8Array) => {
+        let minX = W, maxX = -1, minY = H, maxY = -1;
+        for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (mask[y * W + x]) { if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; }
+        return { minX, maxX, minY, maxY, foot: maxY + 1 };
+      };
       const wrap = (inner: string) => `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${inner}</svg>`;
-      const parts = [...scene.querySelectorAll<SVGGElement>('.courtyard-part')].map(node => ({ prop: node.dataset.prop!, svg: wrap(`<g transform="${outer.getAttribute('transform')}">${node.outerHTML}</g>`) }));
+      const parts = [...scene.querySelectorAll<SVGGElement>('.courtyard-part')].map(node => ({ prop: node.dataset.prop!, support: node.dataset.support!, svg: wrap(`<g transform="${outer.getAttribute('transform')}">${node.outerHTML}</g>`) }));
       const friends = [...document.querySelectorAll<HTMLElement>('.courtyard-b-friend')].map(node => {
         const r = node.getBoundingClientRect(), svg = node.querySelector('svg')!;
         return { friend: node.dataset.friend!, svg: wrap(`<g transform="translate(${r.x} ${r.y}) scale(${r.width / 100})">${svg.innerHTML}</g>`) };
       });
+      const neemNode = scene.querySelector<SVGGElement>('.courtyard-neem')!;
+      const neemCtm = neemNode.getCTM()!;
+      const neemClone = neemNode.cloneNode(true) as SVGGElement;
+      for (const swing of neemClone.querySelectorAll('.courtyard-swing')) swing.remove();
+      const neem = await raster(wrap(`<g transform="matrix(${neemCtm.a} ${neemCtm.b} ${neemCtm.c} ${neemCtm.d} ${neemCtm.e} ${neemCtm.f})">${neemClone.innerHTML}</g>`));
       const own: Record<string, string> = { Mor: 'mor-', Moti: 'moti-', Kapi: 'kapi-', Nandi: 'nandi-', Kachhua: 'kachhua-', Chiku: 'chiku-' };
       const mats = ['nandi-mat', 'kachhua-sleeping-mat'];
-      const partMasks = await Promise.all(parts.map(async part => ({ ...part, mask: await raster(part.svg) })));
-      const out: string[] = [], gaps: string[] = [];
+      const partMasks = await Promise.all(parts.map(async part => { const mask = await raster(part.svg); return { ...part, mask, box: bounds(mask) }; }));
+      const out: string[] = [], gaps: string[] = [], feet: string[] = [];
+      // Support and the neem, per part.
+      for (const part of partMasks) {
+        const { box, support } = part;
+        if (box.maxY < 0) { out.push(`${part.prop}: no opaque pixels`); continue; }
+        let overNeem = 0;
+        for (let i = 0; i < W * H; i++) if (part.mask[i] && neem[i]) overNeem++;
+        if (overNeem) out.push(`${part.prop}: ${overNeem} px over the neem's crown or trunk`);
+        const at = (value: number) => value.toFixed(1);
+        if (support === 'floor') {
+          feet.push(`${part.prop}: foot ${box.foot} (floor from ${at(lines.wallFoot)})`);
+          if (box.foot < lines.wallFoot - tol) out.push(`${part.prop}: foot ${box.foot} above the floor (wall foot ${at(lines.wallFoot)})`);
+        } else if (support === 'coping') {
+          feet.push(`${part.prop}: foot ${box.foot} (coping ${at(lines.coping)})`);
+          if (Math.abs(box.foot - lines.coping) > tol) out.push(`${part.prop}: foot ${box.foot} not on the coping top (${at(lines.coping)})`);
+        } else if (support === 'wall') {
+          feet.push(`${part.prop}: ${box.minY}..${box.foot} (wall face ${at(lines.wallTop)}..${at(lines.wallFoot)})`);
+          if (box.minY < lines.wallTop - tol || box.foot > lines.wallFoot + tol) out.push(`${part.prop}: ${box.minY}..${box.foot} outside the wall face (${at(lines.wallTop)}..${at(lines.wallFoot)})`);
+        } else if (support.startsWith('on:') || support.startsWith('hangs:')) {
+          const hostProp = support.slice(support.indexOf(':') + 1);
+          const host = partMasks.find(row => row.prop === hostProp);
+          if (!host) { out.push(`${part.prop}: its host ${hostProp} is not drawn`); continue; }
+          if (support.startsWith('hangs:')) {
+            if (box.minY < host.box.minY - tol || box.minY > host.box.maxY) out.push(`${part.prop}: top ${box.minY} does not hang from ${hostProp} (${host.box.minY}..${host.box.maxY})`);
+            continue;
+          }
+          // The host's top under the part's own columns.
+          let hostTop = H;
+          for (let x = box.minX; x <= box.maxX; x++) for (let y = 0; y < H; y++) if (host.mask[y * W + x]) { if (y < hostTop) hostTop = y; break; }
+          feet.push(`${part.prop}: foot ${box.foot} (on ${hostProp}, top ${hostTop})`);
+          if (Math.abs(box.foot - hostTop) > tol + 1) out.push(`${part.prop}: foot ${box.foot} not on ${hostProp} (its top ${hostTop})`);
+        }
+      }
+      // The beside rule and G-corner, per friend.
       for (const friend of friends) {
         const mask = await raster(friend.svg);
         const dilated = new Uint8Array(W * H);
@@ -301,12 +356,13 @@ test('alpha check: beside rule and G-corner on the real sprites, s3 and s5', asy
         }
         if (best < Infinity) gaps.push(`${friend.friend}: ${best.toFixed(1)} px to ${bestProp}`);
       }
-      return { problems: out, gaps };
+      return { problems: out, gaps, feet };
     });
     await page.context().close();
   }
   writeFileSync(`${OUT}/alpha-report.json`, `${JSON.stringify(report, null, 2)}\n`);
-  console.log(`stage 2 alpha check: ${JSON.stringify(report)}`);
-  // b2 9 Nov: all green, no relaxed rule (beside ≤ 6 px, nothing over its own things but the mats).
+  console.log(`stage 2 alpha check: ${JSON.stringify(Object.fromEntries(Object.entries(report).map(([stage, row]) => [stage, (row as { problems: string[] }).problems])))}`);
+  // b2 9 Nov: all green, no relaxed rule (beside ≤ 6 px, nothing over its own things but the mats, every part supported,
+  // nothing over the neem).
   expect(Object.values(report).flatMap(stage => (stage as { problems: string[] }).problems)).toEqual([]);
 });

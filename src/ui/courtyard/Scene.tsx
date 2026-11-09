@@ -82,7 +82,7 @@ export function Tree({ stage, glowLayer, k: kOverride }: { stage: number; glowLa
     <ellipse cx="180" cy="146" rx="30" ry="7" fill={C.stoneDark} />
     <path d="M150 140h60v6a30 7 0 0 1 -60 0Z" fill={C.stone} />
     <ellipse cx="180" cy="140" rx="30" ry="6" fill="#e6dccb" />
-    <g transform={`translate(180 140) scale(${k}) translate(-180 -140)`}>
+    <g className="courtyard-neem" transform={`translate(180 140) scale(${k}) translate(-180 -140)`}>
       {stage === 0 ? <><path d="M180 140v-26" stroke={C.wood} strokeWidth="3" strokeLinecap="round" />
         <path d="M180 122c-12-4-18 2-20 6 10 2 16 0 20-6ZM180 116c10-6 18-2 20 2-9 3-16 2-20-2Z" fill={C.leafLight} /></> : <>
         <path d="M172 140c2-24 3-44 4-70h8c1 26 2 46 4 70Z" fill={C.wood} />
@@ -301,19 +301,54 @@ function Books({ stage, glowLayer }: { stage: number; glowLayer?: boolean }) {
  * blanket are the floor versions; on the painted cot they sit where the pass puts them.
  */
 export interface Part { box: readonly [number, number, number, number]; draw: () => ReactElement; glow?: () => ReactElement }
+
+// The 9 Nov support hotfix (b2 + a9): layout B's own versions of five parts, so each reads as standing on something.
+/** A contact shadow under a floor part (opacity under the gate's alpha cut, so it never counts as the part). */
+const FloorShadow = ({ cx, cy, rx }: { cx: number; cy: number; rx: number }) => <ellipse cx={cx} cy={cy} rx={rx} ry={rx * .18} fill="#000" opacity=".13" />;
+/** A puzzle cube as a cube: a 3 × 3 front face, a lighter top and a darker side (19 × 19 box). */
+const CUBE_FRONT = ['#ef6f5a', '#fff', '#4f94d4', '#f3c13a', '#ef6f5a', '#7cbf73', '#fff', '#f39a1e', '#4f94d4'];
+const CubeSolid = () => <g>
+  <path d="M0 5L5 0H19L14 5Z" fill="#2a1f18" /><path d="M14 5L19 0V14L14 19Z" fill="#241a14" /><rect x="0" y="5" width="14" height="14" rx=".8" fill="#2a1f18" />
+  {CUBE_FRONT.map((fill, i) => <rect key={i} x={.7 + (i % 3) * 4.4} y={5.7 + Math.floor(i / 3) * 4.4} width="3.9" height="3.9" rx=".5" fill={fill} />)}
+  {['#f8c447', '#fff4dc', '#9fd07b', '#f6a49a', '#f8c447', '#a9cdee', '#fff4dc', '#9fd07b', '#f8c447'].map((fill, i) => {
+    const col = i % 3, row = Math.floor(i / 3), x = 1 + col * 4.4 + (2 - row) * 1.55, y = .6 + row * 1.5;
+    return <path key={i} d={`M${x} ${y + 1.25}l${1.2} -1.2h3.5l-1.2 1.2Z`} fill={fill} />;
+  })}
+  {['#3a78b8', '#c9a020', '#5f9e4f', '#d9534a', '#3a78b8', '#c9a020', '#5f9e4f', '#d9534a', '#3a78b8'].map((fill, i) => {
+    const col = i % 3, row = Math.floor(i / 3), x = 14.5 + col * 1.5, y = 5.4 - col * 1.5 + row * 4.4;
+    return <path key={i} d={`M${x} ${y + 1.3}l1.2 -1.2v3.6l-1.2 1.2Z`} fill={fill} />;
+  })}
+</g>;
+/** Moti's frame hung on the wall face: a nail and a cord above the frame (24 × 26 box). */
+const HungFrame = () => <g><path d="M330 100.5L336 94.6L342 100.5" stroke="#6b4a2c" strokeWidth=".7" fill="none" /><circle cx="336" cy="94.5" r="1.1" fill="#6b4a2c" /><PhotoFrame /></g>;
+/** Kachhua's sleeping mat laid on the floor: one rolled end, a thick front edge, fringe and a shadow (84 × 12 box). */
+const LaidMat = () => <g>
+  <FloorShadow cx={57} cy={195} rx={42} />
+  <rect x="21" y="185" width="75" height="8" rx="1.5" fill="#5f88b8" /><rect x="21" y="191.6" width="75" height="2.6" rx="1" fill="#3f6693" />
+  <path d="M28 187.2h66M28 190h66" stroke="#86a8d0" strokeWidth="1" />
+  <path d="M96 186.2l2.4 .4M96 188.6l2.4 .4M96 191l2.4 .4" stroke="#e9dcc0" strokeWidth=".8" strokeLinecap="round" />
+  <ellipse cx="20.5" cy="189" rx="4.8" ry="5.6" fill="#4d75a3" /><ellipse cx="20.5" cy="189" rx="2.8" ry="3.5" fill="none" stroke="#86a8d0" strokeWidth=".9" /><circle cx="20.5" cy="189" r="1" fill="#3f6693" />
+</g>;
+/** Chiku's small reading mat (27 × 4 box), a book or the stack lies on it at his first two stages. */
+const ReadingMat = () => <g>
+  <FloorShadow cx={13.5} cy={4} rx={14} />
+  <rect x=".5" y="0" width="26" height="3" rx=".8" fill="#c96f4a" /><rect x=".5" y="2.6" width="26" height="1.2" rx=".5" fill="#9b4f30" />
+  <path d="M3 1.4h21" stroke="#f3d9a8" strokeWidth=".6" />
+</g>;
+const PotOnFloor = ({ x }: { x: number }) => <g><FloorShadow cx={x} cy={128} rx={10} /><Pot x={x} /></g>;
 const LIGHT_GLOW = { photoString: () => <Keepsakes stage={5} glowLayer />, standingLantern: () => <Rest stage={4} glowLayer />, readingLamp: () => <Books stage={4} glowLayer /> };
 export const PARTS = {
-  pot1: { box: [8, 95, 20, 33], draw: () => <Pot x={18} /> },
-  pot2: { box: [66, 95, 20, 33], draw: () => <Pot x={76} /> },
+  pot1: { box: [8, 95, 20, 33], draw: () => <PotOnFloor x={18} /> },
+  pot2: { box: [66, 95, 20, 33], draw: () => <PotOnFloor x={76} /> },
   flowerBed: { box: [2, 114.4, 92, 18.6], draw: () => <FlowerBed /> },
   trellis: { box: [8, 77, 82, 49], draw: () => <Trellis /> },
   waterBowl: { box: [77, 139, 22, 11], draw: () => <WaterBowl /> },
   keepsakeBox: { box: [275, 131, 18, 13], draw: () => <KeepsakeBox /> },
-  photoFrame: { box: [324, 100, 24, 20], draw: () => <PhotoFrame /> },
+  photoFrame: { box: [324, 94, 24, 26], draw: () => <HungFrame /> },
   jarShelf: { box: [278, 98, 36, 19], draw: () => <JarShelf /> },
   trunk: { box: [338, 126, 22, 20], draw: () => <Trunk /> },
   photoString: { box: [266, 84, 90, 17], draw: () => <PhotoString />, glow: LIGHT_GLOW.photoString },
-  puzzleCube: { box: [226, 66, 9, 9], draw: () => <PuzzleCube /> },
+  puzzleCube: { box: [0, 0, 19, 19], draw: () => <CubeSolid /> },
   chessBoard: { box: [240, 133.7, 22, 7.3], draw: () => <ChessBoard /> },
   kite: { box: [279, 22, 18, 40], draw: () => <Kite /> },
   telescope: { box: [264, 60, 20, 20], draw: () => <Telescope /> },
@@ -323,12 +358,13 @@ export const PARTS = {
   dumbbells: { box: [132.3, 179.1, 20.4, 13.6], draw: () => <Dumbbells /> },
   gymFrame: { box: [130, 110, 100, 42.8], draw: () => <g className="courtyard-gym-frame"><FrameParts /></g> },
   medals: { box: [157.8, 115, 52.4, 20], draw: () => <Medals /> },
-  sleepMat: { box: [14, 184, 84, 11], draw: () => <SleepMat onCot={false} /> },
+  sleepMat: { box: [15, 183, 84, 12], draw: () => <LaidMat /> },
   pillow: { box: [78, 180, 18, 9], draw: () => <Pillow onCot={false} /> },
   cot: { box: [10, 164, 92, 28], draw: () => <Cot /> },
   standingLantern: { box: [101, 152, 14, 25], draw: () => <StandingLantern />, glow: LIGHT_GLOW.standingLantern },
   blanket: { box: [15, 180, 20, 8], draw: () => <Blanket onCot={false} /> },
   openBook: { box: [286, 192, 24, 6], draw: () => <OpenBook /> },
+  readingMat: { box: [0, 0, 27, 4], draw: () => <ReadingMat /> },
   bookStack: { box: [257, 181, 23, 15], draw: () => <BookStack /> },
   bookshelf: { box: [320, 148, 38, 48], draw: () => <Bookshelf /> },
   readingLamp: { box: [240, 161, 16, 36], draw: () => <ReadingLamp />, glow: LIGHT_GLOW.readingLamp },
