@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { LedgerRow } from '../../data/types';
-import { areaOf, courtyardLine, deriveCourtyard, phaseAt, poseFor, stageFor } from './courtyard';
+import { areaOf, cardRowFor, COURTYARD_NIGHT_LINE, courtyardLine, deriveCourtyard, phaseAt, poseFor, stageFor } from './courtyard';
 import { buildStorybook, recentWeeks, storyWeekStart } from './storybook';
 
 let serial = 0;
@@ -116,5 +116,13 @@ describe('soft days in the courtyard', () => {
     const state = deriveCourtyard(facts, '2026-11-04');
     expect(state.lanterns).toBe(3);
     expect(state.activeDays).toBe(3);
+  });
+});
+
+describe('the courtyard card by phase (b2 9 Nov)', () => {
+  it('offers no next move at night, and the same move as before in the morning, day and evening', () => {
+    expect(cardRowFor('night')).toBe('rest');
+    for (const phase of ['morning', 'day', 'evening'] as const) expect(cardRowFor(phase)).toBe('move');
+    expect(COURTYARD_NIGHT_LINE).toBe('Resting till morning.');
   });
 });

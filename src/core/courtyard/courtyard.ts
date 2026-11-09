@@ -100,6 +100,13 @@ export function phaseAt(now: number, shutdown: string, bedtime: string): Phase {
   return at < 7 * 60 ? 'morning' : 'day';
 }
 
+/**
+ * b2 9 Nov: at night the courtyard card offers no next move (no arrow, no XP), only this line, in the voice of the
+ * rings' "Rings rest for the night."; the sheet (this week, the crew) still opens. Evening is unchanged.
+ */
+export const COURTYARD_NIGHT_LINE = 'Resting till morning.';
+export function cardRowFor(phase: Phase): 'move' | 'rest' { return phase === 'night' ? 'rest' : 'move'; }
+
 export type Pose = 'idle' | 'cheer' | 'think' | 'rest';
 /** Done today: cheer. Not yet: calm by day, dozing in the evening. Everyone sleeps at night. Never sad. */
 export function poseFor(done: boolean, phase: Phase): Pose {

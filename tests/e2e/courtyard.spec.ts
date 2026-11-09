@@ -81,6 +81,12 @@ test('every friend sleeps after bedtime', async ({ page }) => {
   // Layout B (stage 2): the home's courtyard sleeps.
   await expect(page.locator('div.courtyard-b.courtyard-night')).toBeVisible();
   for (const name of ['Nandi', 'Moti', 'Chiku', 'Kapi', 'Mor', 'Kachhua']) await expect(page.locator(`.courtyard-b [data-cast="${name}"]`)).toHaveAttribute('data-pose', 'rest');
+  // b2 9 Nov: the card offers no next move at night, only the resting line; the sheet still opens to the week and crew.
+  await expect(page.locator('.courtyard-rest-row')).toHaveText('Resting till morning.');
+  await expect(page.locator('.courtyard-card .next-move')).toHaveCount(0);
+  await expect(page.locator('.courtyard-rest-row').locator('a, button')).toHaveCount(0);
+  await page.locator('.courtyard-card-handle').click();
+  await expect(page.locator('.courtyard-card .crew-bar, .courtyard-card [data-section="crew"]').first()).toBeVisible();
   // And a corner's view says so in words.
   await page.evaluate(() => { location.hash = '#courtyard/view/sleep'; });
   await expect(page.locator('.courtyard-screen .courtyard-caption')).toHaveText('The courtyard is asleep. See you in the morning.');

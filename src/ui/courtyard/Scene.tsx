@@ -184,9 +184,9 @@ function Medal({ x, y, drop = 9, r = 4, metal = 'gold' }: { x: number; y: number
   </g>;
 }
 const GYM = { top: 112, foot: 150, left: 136, right: 224 };
-// b2 9 Nov (a9's shot review): the silver hung over Nandi's head like a halo; it moves along the bar toward the left
-// post, beside Nandi, never on him (alpha-report: 0 px of Nandi over his medals).
-const Medals = () => <><Medal x={157} y={GYM.top + 3} metal="silver" /><Medal x={165.5} y={GYM.top + 3} metal="gold" /><Medal x={206} y={GYM.top + 3} metal="gold" /></>;
+// b2 9 Nov (a9's shot reviews): the three hang evenly along the bar, post to post; the middle (silver) hangs on a short
+// V ribbon (5, the golds 9) so it clears Nandi's horns below it (alpha-report: 0 px of Nandi over his medals).
+const Medals = () => <><Medal x={158} y={GYM.top + 3} metal="gold" /><Medal x={184.5} y={GYM.top + 3} metal="silver" drop={5} /><Medal x={211} y={GYM.top + 3} metal="gold" /></>;
 const FrameParts = () => {
   const { top, foot, left, right } = GYM;
   return <>

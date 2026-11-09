@@ -116,3 +116,14 @@ test('a first open on Night keeps the notice for the first screen with the top b
   await page.waitForTimeout(1_500);
   await expect(notice(page)).toHaveCount(0);
 });
+
+test('at 200% text the notice wraps whole: both lines inside its own box, nothing cut (b2 9 Nov)', async ({ page }) => {
+  await open(page, '/#yatra', true);
+  const fit = await notice(page).evaluate(element => {
+    const box = element.getBoundingClientRect(), range = document.createRange();
+    range.selectNodeContents(element);
+    const rects = [...range.getClientRects()].filter(rect => rect.width > 0);
+    return { inside: rects.every(rect => rect.top >= box.top - 0.5 && rect.bottom <= box.bottom + 0.5 && rect.right <= box.right + 0.5), cut: element.scrollHeight > element.clientHeight + 1 };
+  });
+  expect(fit).toEqual({ inside: true, cut: false });
+});

@@ -21,8 +21,9 @@
    their own row, the brand row is the whole width and so is the notice. */
 .topbar .brand-slot { position: relative; }
 /* At large text the brand side is narrow beside the rings, so the notice wraps to a second line (it never ends at
-   "Ready to work"); the bar is tall enough for two at 200%. */
-.topbar .offline-ready-toast { position: absolute; inset: 8px 8px 8px 0; display: flex; align-items: center; width: auto; max-width: none; margin: 0;
+   "Ready to work"); the pill has no fixed height, so it grows to its lines and padding, centred on the bar (the bar
+   is tall enough for two lines at 200%). */
+.topbar .offline-ready-toast { position: absolute; left: 0; right: 8px; top: 50%; transform: translateY(-50%); min-height: calc(100% - 16px); padding-block: 8px; box-sizing: border-box; display: flex; align-items: center; width: auto; max-width: none; margin: 0;
   overflow: hidden; white-space: normal; line-height: 1.15; pointer-events: none; z-index: 1;
   background: var(--surface-2); color: var(--ink); box-shadow: var(--shadow-1); }
 /* While the notice shows (a few seconds, once), the brand and the header rings under it step aside: nothing peeps out at

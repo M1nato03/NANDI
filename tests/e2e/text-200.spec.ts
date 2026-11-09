@@ -36,6 +36,8 @@ async function expectTextFollows200(page: Page) {
     if (node.closest('.book-cover-title, .book-cover-author')) return [];
     // The trek's camp names are part of the 300 px picture (a9/b2 9 Nov): capped at 18 px so they never run together;
     // each is also its friend button's label. They must still grow (checked: at least 1.4x).
+    // Tab labels (b2 9 Nov) grow until Courtyard fills its column, then hold; the 200% tab-bar test checks one line.
+    if (node.closest('.tabbar')) return [];
     if (node.closest('.camp-label')) return before > 0 && after / before < 1.4 ? [`camp label "${node.textContent!.trim()}" ${before}px → ${after}px`] : [];
     return before > 0 && after / before < 1.8 ? [`${node.tagName.toLowerCase()}.${[...node.classList].join('.')} "${node.textContent!.trim().slice(0, 30)}" ${before}px → ${after}px`] : [];
   }));
@@ -131,15 +133,25 @@ test('at 200% text the page never widens, the tab bar stays whole on screen, and
     await page.waitForTimeout(400);
     const at = await page.evaluate(() => {
       const bar = document.querySelector('.tabbar')!.getBoundingClientRect();
-      const cells = [...document.querySelectorAll('.tabbar a')].map(link => { const cell = link.getBoundingClientRect(), label = link.querySelector('span')!.getBoundingClientRect(); return { cell: [cell.left, cell.right], label: [label.left, label.right] }; });
-      return { docW: document.documentElement.scrollWidth, bottom: bar.bottom, top: bar.top, cells };
+      const cells = [...document.querySelectorAll('.tabbar a')].map(link => {
+        const span = link.querySelector('span')!, cell = link.getBoundingClientRect(), label = span.getBoundingClientRect();
+        const range = document.createRange(); range.selectNodeContents(span);
+        const tops = new Set([...range.getClientRects()].filter(rect => rect.width > 0).map(rect => Math.round(rect.top)));
+        return { cell: [cell.left, cell.right], label: [label.left, label.right], lines: tops.size, cut: span.scrollWidth > span.clientWidth + 0.5 };
+      });
+      const card = document.querySelector('.courtyard-card')?.getBoundingClientRect().bottom ?? 0;
+      return { docW: document.documentElement.scrollWidth, bottom: bar.bottom, top: bar.top, cells, card };
     });
     expect(at.docW, `${route}: the page width`).toBeLessThanOrEqual(360);
     expect(at.bottom, `${route}: the tab bar's bottom`).toBeLessThanOrEqual(800.5);
     expect(at.top, `${route}: the tab bar's top`).toBeLessThan(800 - 44);
-    for (const { cell, label } of at.cells) {
+    for (const { cell, label, lines, cut } of at.cells) {
       expect(label[0]).toBeGreaterThanOrEqual(Math.max(cell[0]!, 16) - 0.5);
       expect(label[1]).toBeLessThanOrEqual(Math.min(cell[1]!, 344) + 0.5);
+      expect(lines, `${route}: a tab label on one line`).toBe(1);
+      expect(cut, `${route}: a tab label never cut`).toBe(false);
     }
+    // The Courtyard card clears the tab bar (b2 9 Nov: its last line slid under the bar at 200%).
+    if (route === 'courtyard') expect(at.card, 'the card above the tab bar').toBeLessThanOrEqual(at.top + 0.5);
   }
 });

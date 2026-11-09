@@ -17,9 +17,11 @@ async function homeAt(page: Page, time: string) {
 // Late in the evening the night deck can open over Home (after shutdown it may, on any reload); Home is one tap behind it.
 async function toHome(page: Page) {
   const deck = page.getByRole('button', { name: 'Leave night deck' });
-  await expect(page.locator('.next-move-go').or(deck).first()).toBeVisible();
+  // After bedtime the card's row is the resting line, not a move (b2 9 Nov).
+  const row = page.locator('.next-move-go').or(page.locator('.courtyard-rest-row'));
+  await expect(row.or(deck).first()).toBeVisible();
   if (await deck.isVisible()) { await deck.click(); await page.getByRole('link', { name: 'Courtyard' }).click(); }
-  await expect(page.locator('.next-move-go')).toBeVisible();
+  await expect(row.first()).toBeVisible();
 }
 
 /** Spec 571 stage 2: the Courtyard's card holds the week's rows; its handle opens it (a button as well as a swipe). */

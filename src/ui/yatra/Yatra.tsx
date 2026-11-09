@@ -5,7 +5,7 @@ import { dayKey } from '../../core/time/dayKey';
 import { RULES } from '../../core/rules.config';
 import { effectiveShutdown } from '../../core/tasks/planner';
 import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
-import { phaseAt } from '../../core/courtyard/courtyard';
+import { cardRowFor, COURTYARD_NIGHT_LINE, phaseAt, type Phase } from '../../core/courtyard/courtyard';
 import { deriveTrek, focusEarned, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Climb, type Constellation, type Trek } from '../../core/yatra/trek';
 import { moveWords } from '../../core/nextMove';
 import { readNextMove } from './nextMoveRows';
@@ -200,14 +200,16 @@ export function HomeRows() {
  * ten-day offer and the week's receipt, then This week (the useful days and the week's real things) and the crew bar,
  * which always close the sheet (spec 660's board goes above them later).
  */
-export function CourtyardCard() {
+export function CourtyardCard({ phase }: { phase?: Phase }) {
   const yatra = useYatra();
   const rows = useHomeRows();
   const [expanded, setExpanded] = useState(false);
+  const resting = phase !== undefined && cardRowFor(phase) === 'rest';
   return <HomeCard expanded={expanded} onExpanded={setExpanded}
-    row={rows ? <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} climb={yatra?.trek.climb} /> : <div className="next-move-slot" />}
+    row={resting ? <p className="courtyard-rest-row">{COURTYARD_NIGHT_LINE}</p>
+      : rows ? <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} climb={yatra?.trek.climb} /> : <div className="next-move-slot" />}
     sections={[
-      ...(rows ? [{ id: 'offer', node: <MoreOfferCard picks={rows.picks} /> }] : []),
+      ...(rows && !resting ? [{ id: 'offer', node: <MoreOfferCard picks={rows.picks} /> }] : []),
       { id: 'share', node: <WeekEndShare /> },
       { id: 'week', node: <header className="home-notes"><UsefulLine /><RealThingsLine /></header> },
       { id: 'crew', node: <CrewBar /> },

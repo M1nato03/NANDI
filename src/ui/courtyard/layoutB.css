@@ -16,7 +16,7 @@
 .courtyard-held { position: absolute; transform: translate(-50%, -100%); pointer-events: none; }
 
 /* The bottom card: collapsed = handle + one row; open = the sheet's sections. It grows with the text (200%). */
-.courtyard-card { position: fixed; z-index: 4; left: 10px; right: 10px; bottom: calc(64px + env(safe-area-inset-bottom) + 8px); max-height: calc(100dvh - 64px - 64px - 24px); overflow-y: auto;
+.courtyard-card { position: fixed; z-index: 4; left: 10px; right: 10px; bottom: calc(var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) + 8px); max-height: calc(100dvh - var(--tabbar-h, 64px) - var(--topbar-h, 64px) - 24px); overflow-y: auto;
   padding: 0 12px 10px; border-radius: 18px; background: var(--surface-1); box-shadow: 0 -2px 18px rgba(58, 42, 32, .18); }
 .courtyard-card-handle { display: grid; place-items: center; width: 100%; min-height: 44px; padding: 6px 0; border: 0; background: transparent; box-shadow: none; touch-action: none; cursor: grab; }
 .courtyard-card-grip { display: block; width: 40px; height: 4px; border-radius: 2px; background: var(--line); }
@@ -37,3 +37,6 @@
 @keyframes keepsake-sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
 @media (prefers-reduced-motion: reduce) { .courtyard-keepsake-swing { animation: none; } }
 :root[data-motion='reduce'] .courtyard-keepsake-swing { animation: none; }
+/* b2 9 Nov: at night the card's row is a plain line that reads as a state, not a move: no box, nothing to tap, no arrow,
+   no XP. */
+.courtyard-rest-row { margin: 0; padding: 14px 4px 6px; border: 0; background: none; color: var(--ink-2); font-size: 1.0625rem; line-height: 1.3; }

@@ -68,6 +68,6 @@ export function CourtyardHome() {
     {/* §0.14: the camp's name only as a caption outside the art, with the way to its postcard. */}
     {tapped && <p className="courtyard-keepsake-caption" role="status"><span>From {tapped.campName}</span>
       <button type="button" className="text-button" onClick={() => go(`yatra/journal/${tapped.landmarkId}`)}>See its postcard</button></p>}
-    <CourtyardCard />
+    <CourtyardCard phase={data?.phase} />
   </section>;
 }
