@@ -288,7 +288,10 @@ export function AppShell() {
   else if (key === 'you/tonight') screen = <section className="screen"><p className="eyebrow">Sleep earlier</p><h1>Tonight</h1><NightPlanSetting firstRun /></section>;
   else if (key === 'you/settings') screen = <section className="screen"><p className="eyebrow">You</p><h1>Settings</h1>{nativeUpdater.available && <section className="card"><h2>App updates</h2>
     <p>Current version: {nativeUpdater.installed ? `${nativeUpdater.installed.versionName} (${nativeUpdater.installed.versionCode})` : 'Checking…'}</p>
-    <button type="button" className="secondary" onClick={() => void nativeUpdater.check(true)}>Check for updates</button>
+    {/* Jenil 10 Nov: a found update can always be installed from here, Later or not. */}
+    {nativeUpdater.update && nativeUpdater.installed ? <button type="button" disabled={nativeUpdater.busy} onClick={() => void nativeUpdater.install()}>{nativeUpdater.error ? 'Try again' : `Update to ${nativeUpdater.update.versionName} (${nativeUpdater.update.versionCode})`}</button>
+      : <button type="button" className="secondary" onClick={() => void nativeUpdater.check(true)}>Check for updates</button>}
+    {nativeUpdater.progress !== null && <progress value={nativeUpdater.progress} max={100} aria-label="Update download" />}
     {nativeUpdater.message && <p role="status">{nativeUpdater.message}</p>}
   </section>}<Ground {...appearance} /></section>;
   else if (key === 'mind/generator' || key === 'you/mind/generator') screen = <GeneratorCheck />;

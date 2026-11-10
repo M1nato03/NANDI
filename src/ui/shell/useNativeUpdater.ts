@@ -58,11 +58,16 @@ export function useNativeUpdater(): NativeUpdaterState {
       const current = await getInstalledVersion();
       const latest = await checkForUpdate();
       setInstalled(current);
-      setUpdate(current && latest && isNewerVersion(latest.versionCode, current.versionCode) ? latest : null);
-      if (force) setMessage(current && latest && isNewerVersion(latest.versionCode, current.versionCode) ? 'New version ready.' : "You're up to date.");
+      const newer = !!current && !!latest && isNewerVersion(latest.versionCode, current.versionCode);
+      setUpdate(newer ? latest : null);
+      if (force) setMessage(newer ? 'New version ready.' : "You're up to date.");
       else setMessage('');
       setError(false);
-      setSnooze({ code: await readNumber(SNOOZE_CODE), at: await readNumber(SNOOZE_AT) });
+      // Jenil 10 Nov: after "Later" the update never came back. Asking by hand ends the Later, so the bar shows again.
+      if (force && newer) {
+        await db.settings.bulkDelete([SNOOZE_CODE, SNOOZE_AT]);
+        setSnooze({ code: null, at: null });
+      } else setSnooze({ code: await readNumber(SNOOZE_CODE), at: await readNumber(SNOOZE_AT) });
     } catch (error) {
       if (force) setMessage(error instanceof Error ? error.message : 'Could not check for updates. Please try again.');
       if (force) setError(true);
