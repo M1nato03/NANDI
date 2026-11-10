@@ -128,7 +128,9 @@ for (const theme of ['light', 'dark'] as const) {
         latest: { versionCode: 124, versionName: '0.1.0', sha256: 'a'.repeat(64), url: 'https://nandi-updates.nandi11.workers.dev/nandi-124.apk', builtAt: '2026-11-10T09:14:39Z', commit: '5c818a5', notes: '' },
       };
     });
+    // A new document, so the stand-in is there from the first script (a hash change alone would not reload).
     await page.goto('/?e2e#you/settings');
+    await page.reload();
     await expect(page.getByRole('button', { name: 'Update to 0.1.0 (124)' })).toBeVisible();
     await settle(page);
     await snap(page, `s2-${theme === 'light' ? 'l' : 'd'}-settings-update`);

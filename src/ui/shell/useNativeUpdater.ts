@@ -45,9 +45,14 @@ export function useNativeUpdater(): NativeUpdaterState {
   const [now, setNow] = useState(() => Date.now());
   const checking = useRef(false);
   const installing = useRef(false);
+  // A tap on Check for updates while the automatic check is still running runs once that check ends (it used to be
+  // dropped, so the tap showed nothing).
+  const forceAgain = useRef(false);
+  const checkRef = useRef<(force?: boolean) => Promise<void>>(async () => undefined);
 
   const check = useCallback(async (force = false) => {
-    if (!available || checking.current || installing.current) return;
+    if (!available || installing.current) return;
+    if (checking.current) { if (force) forceAgain.current = true; return; }
     checking.current = true;
     if (force) setError(false);
     try {
@@ -72,8 +77,12 @@ export function useNativeUpdater(): NativeUpdaterState {
     } catch (error) {
       if (force) setMessage(error instanceof Error ? error.message : 'Could not check for updates. Please try again.');
       if (force) setError(true);
-    } finally { checking.current = false; }
+    } finally {
+      checking.current = false;
+      if (forceAgain.current) { forceAgain.current = false; void checkRef.current(true); }
+    }
   }, [available]);
+  useEffect(() => { checkRef.current = check; }, [check]);
 
   useEffect(() => {
     if (!available) return;
