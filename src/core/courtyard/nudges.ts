@@ -13,34 +13,25 @@ export interface AnchorNudges {
   places?: Record<string, Rect>;
 }
 /**
- * The 9 Nov hotfix (b2 + a9, support.ts): the pass's wall-top ledge and side wall are not in the flat scene, so the
- * things that stood on them are placed again in canvas CSS. Kapi's puzzles stand on the coping top on his right, the
- * cube in front, the slate and the telescope behind it and the board (his right is the only free coping, ≥ 16 CSS
- * inside the edge). Mor's garden stands at the wall foot (the door's base line) left of the door: the bed against the
- * wall with pot 2 at its end and the trellis on the wall over it. There is no room for Mor beside them at the wall
- * (69 CSS between the edge rule and the door, ~92 needed), so Mor steps forward and right, and pot 1 (his stage-1
- * thing) stands on the floor at his side, the bird bath in front of the bed. Moti's chest and Kachhua's mat move
- * 2-3 CSS toward them (s1 beside rule, measured offline). Moti's frame hangs on a nail on the wall face, clear of the swing; his bulbs hang
- * from the coping's foot.
+ * The 9 Nov hotfix with b2's 10 Nov ruling (support.ts): every prop keeps its 9q spot. What changes for the flat scene:
+ * Kapi's puzzles keep their 9q x but stand on the flat coping's top (9q's feet are at its foot, ~8 CSS lower), the
+ * cube at ≥ 18 CSS; Mor's planter shelf is drawn on the wall face under the 9q pots and bed (top ≈ 339.5), with the
+ * trellis standing in it; Chiku's reading mat is new (9q has nothing for his s1 book). Moti's chest and Kachhua's mat
+ * move 1.5-3 CSS toward their friends (the s1 beside rule, measured), and the kite 3 CSS off Kapi.
  */
 export const LAYOUT_B_PLACES_CSS: Record<string, Rect> = {
-  'kapi-wall-puzzle': [300, 287, 19, 19],
-  'kapi-slate': [313.5, 293, 13, 13],
-  'kapi-flat-board-game': [321, 300, 22, 6],
-  'kapi-telescope': [325, 282, 17, 24],
-  'mor-pot-2': [17, 351, 21, 35],
-  'mor-pot-1': [38, 392, 21, 35],
-  'mor-marigold-bed': [16, 375.5, 46, 9.5],
-  'mor-trellis-creeper': [16, 336, 46, 28],
-  'mor-birdbath-water': [17, 427, 20, 10],
+  'kapi-wall-puzzle': [193, 287, 19, 19],
+  'kapi-flat-board-game': [203.7, 298.1, 27.7, 7.9],
+  'kapi-telescope': [221, 283.5, 17.8, 22.5],
+  'kapi-slate': [236, 291.8, 13, 14.2],
+  'mor-planter-shelf': [16, 339.5, 68, 9],
+  'mor-trellis-creeper': [22, 307.2, 54, 32.3],
   'moti-chest': [267.4, 402, 25, 16.5],
-  'moti-picture-frame': [246, 352, 24, 26],
-  'moti-bulbs-small-photos': [288, 314.5, 56, 10.6],
   'kachhua-sleeping-mat': [31.6, 489.8, 61.2, 8.66],
   'chiku-reading-mat': [262, 498.5, 27, 4],
 };
 export const LAYOUT_B_NUDGES: AnchorNudges = {
-  friends: { kachhua: [-30, 0], chiku: [-10, 0], mor: [120, 137] },
+  friends: { kachhua: [-30, 0], chiku: [-10, 0] },
   props: { 'kapi-kite': [9, 0] },
   places: Object.fromEntries(Object.entries(LAYOUT_B_PLACES_CSS).map(([name, rect]) => [name, rect.map(value => value * 3) as unknown as Rect])),
 };

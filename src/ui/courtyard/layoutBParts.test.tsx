@@ -24,8 +24,9 @@ describe('the prop → part table', () => {
 
   it('every part keeps its aspect (contain fit); the ones more than 25% off their rect are listed for b2', () => {
     const off = PROP_PARTS.filter(row => containFit(PARTS[row.part].box, css(anchors.props[row.prop]!)).aspectOff > 1.25).map(row => row.prop);
-    // 9 Nov hotfix: the re-placed props (nudges.ts places) keep their part's aspect.
-    expect(off).toEqual(['kapi-kite', 'kapi-telescope', 'nandi-dumbbells', 'nandi-medals', 'kachhua-pillow', 'kachhua-charpai', 'chiku-open-book', 'chiku-reading-lamp']);
+    // b2 10 Nov: every prop keeps its 9q spot, so the stage-2 list stands (the re-placed coping things keep their aspect).
+    expect(off).toEqual(['mor-marigold-bed', 'mor-birdbath-water', 'moti-picture-frame', 'moti-bulbs-small-photos', 'kapi-kite', 'kapi-telescope',
+      'nandi-dumbbells', 'nandi-medals', 'kachhua-pillow', 'kachhua-charpai', 'chiku-open-book', 'chiku-reading-lamp']);
   });
 });
 
@@ -34,8 +35,8 @@ describe('the layout B scene', () => {
   const scene = (stage: number) => renderToStaticMarkup(<LayoutBScene anchors={anchors} fit={fit} width={360} height={800} state={at(stage)} phase="day" onFriend={() => undefined} />);
   it('draws each corner’s parts from the stage it reaches, nothing before', () => {
     expect(scene(0).match(/class="courtyard-part"/g)).toBeNull();
-    // s1: one per corner plus Chiku's reading mat (9 Nov hotfix), which goes when the shelf comes (s3).
-    expect(scene(1).match(/class="courtyard-part"/g)).toHaveLength(7);
+    // s1: one per corner, Mor's planter shelf and Chiku's reading mat (9 Nov hotfix; the mat goes when his bookshelf comes, s3).
+    expect(scene(1).match(/class="courtyard-part"/g)).toHaveLength(8);
     expect(scene(5).match(/class="courtyard-part"/g)).toHaveLength(PROP_PARTS.length - 1);
     expect(scene(2)).toContain('data-prop="chiku-reading-mat"');
     expect(scene(3)).not.toContain('data-prop="chiku-reading-mat"');

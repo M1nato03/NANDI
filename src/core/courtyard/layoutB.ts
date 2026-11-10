@@ -134,10 +134,10 @@ export const doorRect = (layout: LayoutB): Rect => { const [x, y] = place(layout
 
 /**
  * b2 (8 Nov, the beside rule by rule): which side of its things each friend stands on. Inner = toward the middle:
- * Mor and Kachhua to the right of their corners, Moti and Chiku to the left, Kapi to the left of his wall-top
+ * Mor and Kachhua to the right of their corners, Moti and Chiku to the left, Kapi to the right of his wall-top
  * puzzles; Nandi sits on his own mat (a floor mat, the one allowed contact with Kachhua's).
  */
-export const BESIDE_SIDE: Record<AreaId, 'right' | 'left' | 'centre'> = { plan: 'right', sleep: 'right', remember: 'left', learn: 'left', mind: 'left', train: 'centre' };
+export const BESIDE_SIDE: Record<AreaId, 'right' | 'left' | 'centre'> = { plan: 'right', sleep: 'right', remember: 'left', learn: 'left', mind: 'right', train: 'centre' };
 /** Floor mats a friend may stand on (b2: only these; the cot, pillow and blanket are not). */
 export const FLOOR_MATS: readonly string[] = ['nandi-mat', 'kachhua-mat'];
 /** The gap between a friend's box and its things, in scene units (≤ 6 CSS on every gate size). */

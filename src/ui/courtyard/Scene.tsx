@@ -1,5 +1,6 @@
 import { useId, type ReactElement } from 'react';
 import type { AreaId, Phase } from '../../core/courtyard/courtyard';
+import { NEEM_LEAVES } from '../../core/courtyard/support';
 
 // The courtyard (spec 12) drawn on a 360 × 200 grid. Each corner gains one object per stage; nothing is removed.
 // Layers: sky → wall and floor → objects → a phase tint → lights that glow through the tint.
@@ -68,16 +69,20 @@ function Walls() {
 }
 
 /** The neem tree grows with active days; a stone platform (chabutra) is there from the start. */
-export function Tree({ stage, glowLayer, k: kOverride }: { stage: number; glowLayer?: boolean; k?: number }) {
+const LEAF_FILLS = [C.leaf, C.leafDark, C.leafDark, C.leafLight, C.leaf, C.leaf, C.leaf, C.leafLight, C.leafLight];
+/**
+ * `narrow` and `lift` (layout B, b2 10 Nov; support.ts crownFit): the crown squeezed about the trunk and raised on a
+ * longer trunk (tree units), so it keeps clear of Kapi's things on the coping. The classic scene passes neither.
+ */
+export function Tree({ stage, glowLayer, k: kOverride, narrow = 1, lift = 0 }: { stage: number; glowLayer?: boolean; k?: number; narrow?: number; lift?: number }) {
   const k = kOverride ?? [0.22, 0.45, 0.64, 0.84, 1, 1][stage]!;
-  const leaves: [number, number, number, string][] = [
-    [180, 46, 30, C.leaf], [148, 60, 24, C.leafDark], [212, 60, 24, C.leafDark], [162, 30, 21, C.leafLight], [200, 28, 21, C.leaf],
-    [134, 80, 16, C.leaf], [226, 80, 16, C.leaf], [180, 70, 22, C.leafLight], [180, 18, 15, C.leafLight],
-  ];
+  const leaves = NEEM_LEAVES.map(([x, y, r], i) => [x, y, r, LEAF_FILLS[i]!] as const);
   const lights = [[150, 52], [168, 70], [186, 40], [204, 62], [222, 78], [140, 76], [176, 22], [196, 82]];
-  if (glowLayer) return stage >= 5 ? <g transform={`translate(0 -8) translate(180 140) scale(${k}) translate(-180 -140)`} className="courtyard-twinkle">
+  const up = lift / k;
+  const crown = `translate(180 ${-up}) scale(${narrow} 1) translate(-180 0)`;
+  if (glowLayer) return stage >= 5 ? <g transform={`translate(0 -8) translate(180 140) scale(${k}) translate(-180 -140)`} className="courtyard-twinkle"><g transform={crown}>
     {lights.map(([x, y], i) => <g key={i}><circle cx={x} cy={y} r="5" fill={C.glow} opacity=".35" /><circle cx={x} cy={y} r="1.8" fill="#fff5c8" /></g>)}
-  </g> : null;
+  </g></g> : null;
   return <g transform="translate(0 -8)">
     <ellipse cx="180" cy="146" rx="30" ry="7" fill={C.stoneDark} />
     <path d="M150 140h60v6a30 7 0 0 1 -60 0Z" fill={C.stone} />
@@ -86,11 +91,14 @@ export function Tree({ stage, glowLayer, k: kOverride }: { stage: number; glowLa
       {stage === 0 ? <><path d="M180 140v-26" stroke={C.wood} strokeWidth="3" strokeLinecap="round" />
         <path d="M180 122c-12-4-18 2-20 6 10 2 16 0 20-6ZM180 116c10-6 18-2 20 2-9 3-16 2-20-2Z" fill={C.leafLight} /></> : <>
         <path d="M172 140c2-24 3-44 4-70h8c1 26 2 46 4 70Z" fill={C.wood} />
+        {up > 0 && <rect x="176" y={70 - up} width="8" height={up + 4} fill={C.wood} />}
+        <g transform={crown}>
         <path d="M177 92c-10-8-20-10-30-12M183 88c10-8 22-12 32-12M180 72c-4-14-12-22-18-30M181 72c4-14 10-24 18-32" stroke={C.wood} strokeWidth="5" strokeLinecap="round" fill="none" />
         {leaves.map(([x, y, r, fill], i) => <circle key={i} cx={x} cy={y} r={r} fill={fill} />)}
         {[[170, 40], [196, 52], [150, 64], [214, 70], [186, 24]].map(([x, y], i) => <path key={i} d={`M${x} ${y}q4 -4 8 0`} stroke="#9fd07b" strokeWidth="1.6" fill="none" strokeLinecap="round" />)}
         {stage >= 4 && <g className="courtyard-swing"><path d="M200 80V120M220 80V120" stroke="#a37b52" strokeWidth="1.4" /><rect x="195" y="119" width="30" height="5" rx="1.5" fill={C.woodDark} /></g>}
         {stage >= 5 && <path d="M136 74Q160 92 182 66T228 74M146 50Q176 68 210 46" stroke="#6b4a2c" strokeWidth=".8" fill="none" />}
+        </g>
       </>}
     </g>
   </g>;
@@ -319,8 +327,13 @@ const CubeSolid = () => <g>
     return <path key={i} d={`M${x} ${y + 1.3}l1.2 -1.2v3.6l-1.2 1.2Z`} fill={fill} />;
   })}
 </g>;
-/** Moti's frame hung on the wall face: a nail and a cord above the frame (24 × 26 box). */
-const HungFrame = () => <g><path d="M330 100.5L336 94.6L342 100.5" stroke="#6b4a2c" strokeWidth=".7" fill="none" /><circle cx="336" cy="94.5" r="1.1" fill="#6b4a2c" /><PhotoFrame /></g>;
+/** Moti's frame standing at the wall foot, leaning on the wall, with a contact shadow (9q's spot). */
+const StandingFrame = () => <g><FloorShadow cx={336} cy={120} rx={13} /><PhotoFrame /></g>;
+/** Mor's planter shelf: a stone ledge fixed to the wall face on two brackets; the pots and the bed stand on it (72 × 9 box). */
+const PlanterShelf = () => <g>
+  <path d="M3 3L3 9L8 3ZM69 3L69 9L64 3Z" fill="#b9ab93" />
+  <rect x="0" y="0" width="72" height="3.2" rx=".8" fill="#efe6d6" /><rect x="0" y="2.4" width="72" height="1" fill="#c9b99c" />
+</g>;
 /** Kachhua's sleeping mat laid on the floor: one rolled end, a thick front edge, fringe and a shadow (84 × 12 box). */
 const LaidMat = () => <g>
   <FloorShadow cx={57} cy={195} rx={42} />
@@ -344,7 +357,8 @@ export const PARTS = {
   trellis: { box: [8, 77, 82, 49], draw: () => <Trellis /> },
   waterBowl: { box: [77, 139, 22, 11], draw: () => <WaterBowl /> },
   keepsakeBox: { box: [275, 131, 18, 13], draw: () => <KeepsakeBox /> },
-  photoFrame: { box: [324, 94, 24, 26], draw: () => <HungFrame /> },
+  photoFrame: { box: [324, 100, 24, 20], draw: () => <StandingFrame /> },
+  planterShelf: { box: [0, 0, 72, 9], draw: () => <PlanterShelf /> },
   jarShelf: { box: [278, 98, 36, 19], draw: () => <JarShelf /> },
   trunk: { box: [338, 126, 22, 20], draw: () => <Trunk /> },
   photoString: { box: [266, 84, 90, 17], draw: () => <PhotoString />, glow: LIGHT_GLOW.photoString },

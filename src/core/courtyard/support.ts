@@ -1,25 +1,29 @@
 import type { AreaId } from './courtyard';
 import type { Rect } from './anchors';
+import { K_GROWTH } from './layoutB';
 
 /**
  * Spec 571 hotfix (b2 + a9, 9 Nov; Jenil: "the rubiks cube is glitched, the vase is hanging mid air, the book is just
  * lying there"). Layout B puts today's flat parts into the painted pass's prop rects, but the pass has a wall-top ledge
- * and a side wall that the flat scene does not: so every part says what it stands on, and the rects that rested on
- * the missing ledge or wall are placed again (nudges.ts LAYOUT_B_NUDGES.places).
+ * and a side wall that the flat scene does not: so every part says what it stands on, and the flat scene draws what
+ * holds it. b2's ruling (10 Nov): every prop keeps its 9q painted spot, so the code and a later painted swap agree;
+ * the flat scene adds Mor's planter shelf on the wall face and lifts the coping things onto the flat coping's top
+ * (nudges.ts LAYOUT_B_NUDGES.places), and the young neem's crown keeps clear of Kapi's things (crownFit).
  *
  * Canvas CSS (360 wide; the anchor file's px / 3). The flat scene's lines: the coping's top (things on the wall top
- * stand here), the coping's foot (the wall face starts), and the wall's foot, which is the door's base line (floor
- * things stand at or below it).
+ * stand here), the coping's foot (the wall face starts), and the wall's foot (9q's floor line; floor things stand at
+ * or below it).
  */
-export const LINES = { coping: 305, wallTop: 314.3, wallFoot: 385 } as const;
+export const LINES = { coping: 305, wallTop: 314.3, wallFoot: 370 } as const;
 
 /** What a part stands on: the floor, the coping top, the wall face (hung), another part, or nothing (the kite flies). */
 export type Support = 'floor' | 'coping' | 'wall' | 'air' | { on: string } | { hangs: string };
 
 /** Every part's support, by prop (the gate checks each against its line at every stage). */
 export const SUPPORT: Readonly<Record<string, Support>> = {
-  'mor-pot-1': 'floor', 'mor-pot-2': 'floor', 'mor-marigold-bed': 'floor', 'mor-trellis-creeper': 'wall', 'mor-birdbath-water': 'floor',
-  'moti-chest': 'floor', 'moti-picture-frame': 'wall', 'moti-shelf-three-jars': 'wall', 'moti-brass-trunk': 'floor', 'moti-bulbs-small-photos': 'wall',
+  'mor-planter-shelf': 'wall', 'mor-pot-1': { on: 'mor-planter-shelf' }, 'mor-pot-2': { on: 'mor-planter-shelf' },
+  'mor-marigold-bed': { on: 'mor-planter-shelf' }, 'mor-trellis-creeper': { on: 'mor-planter-shelf' }, 'mor-birdbath-water': 'floor',
+  'moti-chest': 'floor', 'moti-picture-frame': 'floor', 'moti-shelf-three-jars': 'wall', 'moti-brass-trunk': 'floor', 'moti-bulbs-small-photos': 'wall',
   'kapi-wall-puzzle': 'coping', 'kapi-flat-board-game': 'coping', 'kapi-kite': 'air', 'kapi-telescope': 'coping', 'kapi-slate': 'coping',
   'nandi-mat': 'floor', 'nandi-clubs': 'floor', 'nandi-dumbbells': 'floor', 'nandi-wooden-gym-frame': 'floor', 'nandi-medals': { hangs: 'nandi-wooden-gym-frame' },
   'kachhua-sleeping-mat': 'floor', 'kachhua-pillow': 'floor', 'kachhua-charpai': 'floor', 'kachhua-standing-lantern': 'floor', 'kachhua-blanket': 'floor',
@@ -28,10 +32,20 @@ export const SUPPORT: Readonly<Record<string, Support>> = {
 };
 
 /**
- * Draw order among parts with the same foot (Kapi's wall-top cluster: the telescope and the slate stand behind the
- * cube and the board). Lower draws first; parts not listed are 1.
+ * Draw order: parts draw back to front by foot, plus this bias (CSS). The planter shelf and the trellis in it go behind
+ * the pots and the bed; on the coping the telescope and the slate stand behind the board, the board behind the cube.
  */
-export const DEPTH: Readonly<Record<string, number>> = { 'kapi-telescope': 0, 'kapi-slate': 0, 'kapi-wall-puzzle': 2, 'kapi-flat-board-game': 2 };
+export const DEPTH: Readonly<Record<string, number>> = { 'mor-planter-shelf': -40, 'mor-trellis-creeper': -20, 'kapi-telescope': -1, 'kapi-slate': -1, 'kapi-flat-board-game': -0.5 };
+export const drawFoot = (prop: string, rect: Rect) => rect[1] + rect[3] + (DEPTH[prop] ?? 0);
+
+/**
+ * b2 pick 1 (10 Nov): at Kapi's first two stages his cube and board sit in the 9q spots nearest him (the slate's and
+ * the telescope's), so he is beside them; from s3 each takes its own 9q spot. Canvas CSS, feet on the coping top.
+ */
+export const KAPI_EARLY = {
+  cube: [238.5, 287, 19, 19] as Rect,
+  board: [216, 298.1, 27.7, 7.9] as Rect,
+} as const;
 
 /**
  * a9's s1 note: the open book lies alone on the floor, so at Chiku's first two stages his things sit at his feet: the
@@ -65,6 +79,8 @@ export function placeAt(prop: string, props: Readonly<Record<string, Rect>>, sta
     return { rect: [stack[0] + (stack[2] - w) / 2, stack[1] - h, w, h], support: { on: 'chiku-book-stack' } };
   }
   if (prop === 'chiku-book-stack' && learn === 2) return { rect: CHIKU_EARLY.stack, support: { on: 'chiku-reading-mat' } };
+  if (prop === 'kapi-wall-puzzle' && stage('mind') <= 2) return { rect: KAPI_EARLY.cube, support };
+  if (prop === 'kapi-flat-board-game' && stage('mind') <= 2) return { rect: KAPI_EARLY.board, support };
   return { rect, support };
 }
 
@@ -97,4 +113,60 @@ export function supportProblems(placed: readonly { prop: string; rect: Rect; sup
     }
   }
   return out;
+}
+
+/**
+ * The neem as layout B draws it (Scene.tsx Tree at TREE_SCALE about TREE_AT): the crown's leaves in the tree's own
+ * units, and the growth per tree stage. Layout B's canvas point of a tree point (x, y) at growth k, before any fit:
+ * x' = TREE_AT.x + TREE_SCALE·k·(x − 180), y' = TREE_AT.y − 132·TREE_SCALE + TREE_SCALE·(140 + (y − 140)·k − 8).
+ */
+export const TREE_AT: readonly [number, number] = [180, 377];
+export const TREE_SCALE = 1.3;
+export const NEEM_LEAVES: readonly (readonly [number, number, number])[] = [
+  [180, 46, 30], [148, 60, 24], [212, 60, 24], [162, 30, 21], [200, 28, 21], [134, 80, 16], [226, 80, 16], [180, 70, 22], [180, 18, 15],
+];
+export const NEEM_GROWTH = K_GROWTH;
+/** How far the crown stays above Kapi's things (a9: ≥ 6 CSS), and how narrow a young crown may get. */
+export const CROWN_CLEAR = 6, CROWN_MIN_NARROW = 0.55;
+
+/** The lowest crown point over [x0, x1] (canvas CSS), for growth k, a horizontal squeeze about the trunk and a lift. */
+export function crownBottom(k: number, x0: number, x1: number, narrow = 1, lift = 0): number {
+  let bottom = -Infinity;
+  for (const [x, y, r] of NEEM_LEAVES) {
+    const cx = TREE_AT[0] + TREE_SCALE * k * narrow * (x - 180);
+    const cy = TREE_AT[1] - 132 * TREE_SCALE + TREE_SCALE * (140 + (y - 140) * k - 8) - lift;
+    const ry = TREE_SCALE * k * r, rx = ry * narrow;
+    for (let i = 0; i <= 40; i++) {
+      const px = x0 + (i * (x1 - x0)) / 40, dx = Math.abs(px - cx);
+      if (dx < rx) bottom = Math.max(bottom, cy + ry * Math.sqrt(1 - (dx / rx) ** 2));
+    }
+  }
+  return bottom;
+}
+
+/** Kapi's coping things that can stand under a tree of this stage: his things at every stage up to it (his days never outnumber the tree's). */
+function kapiThingsUpTo(treeStage: number, props: Readonly<Record<string, Rect>>): Rect[] {
+  const out: Rect[] = [];
+  const coping = ['kapi-wall-puzzle', 'kapi-flat-board-game', 'kapi-telescope', 'kapi-slate'];
+  const from: Record<string, number> = { 'kapi-wall-puzzle': 1, 'kapi-flat-board-game': 2, 'kapi-telescope': 4, 'kapi-slate': 5 };
+  for (let mind = 1; mind <= treeStage; mind++) for (const prop of coping) {
+    if (mind < from[prop]!) continue;
+    const at = placeAt(prop, props, area => area === 'mind' ? mind : treeStage);
+    if (at) out.push(at.rect);
+  }
+  return out;
+}
+
+/**
+ * b2 (10 Nov): the flat crown keeps CROWN_CLEAR above Kapi's things, only over the span they take. A young tree
+ * (stages 1-2) gets a narrower crown, never a bare pole; an older one is lifted on its trunk by what is left over.
+ * Canvas CSS lift; narrow is the crown's horizontal squeeze about the trunk.
+ */
+export function crownFit(treeStage: number, props: Readonly<Record<string, Rect>>): { narrow: number; lift: number } {
+  const k = NEEM_GROWTH[treeStage] ?? 1;
+  const things = kapiThingsUpTo(treeStage, props);
+  const need = (narrow: number) => Math.max(0, ...things.map(([x, y, w]) => crownBottom(k, x, x + w, narrow) - (y - CROWN_CLEAR)));
+  let narrow = 1;
+  if (treeStage <= 2) while (narrow > CROWN_MIN_NARROW + 1e-9 && need(narrow) > 0) narrow = Math.round((narrow - 0.05) * 100) / 100;
+  return { narrow, lift: Math.ceil(need(narrow) * 10) / 10 };
 }

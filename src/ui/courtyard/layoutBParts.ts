@@ -10,6 +10,8 @@ import type { PartId } from './Scene';
  */
 export interface PropPart { prop: string; part: PartId; area: AreaId; from: number; until?: number }
 export const PROP_PARTS: readonly PropPart[] = [
+  // 9 Nov hotfix (support.ts): the planter shelf on the wall face that holds the pots and the bed (9q's ledge).
+  { prop: 'mor-planter-shelf', part: 'planterShelf', area: 'plan', from: 1 },
   { prop: 'mor-pot-1', part: 'pot1', area: 'plan', from: 1 },
   { prop: 'mor-pot-2', part: 'pot2', area: 'plan', from: 2 },
   { prop: 'mor-marigold-bed', part: 'flowerBed', area: 'plan', from: 3 },

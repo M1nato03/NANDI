@@ -3,7 +3,7 @@ import raw from '../../ui/courtyard/anchors.json';
 import { EDGE_CSS, parseAnchors, type Rect } from './anchors';
 import { AREAS } from './courtyard';
 import { LAYOUT_B_PLACES_CSS, nudgeAnchors } from './nudges';
-import { LINES, placeAt, SUPPORT, supportProblems } from './support';
+import { crownBottom, crownFit, CROWN_CLEAR, KAPI_EARLY, LINES, NEEM_GROWTH, placeAt, SUPPORT, supportProblems } from './support';
 import { PROP_PARTS } from '../../ui/courtyard/layoutBParts';
 
 // The 9 Nov support hotfix (b2 + a9): every part stands on something at every stage, on rects (the shots' alpha check
@@ -36,22 +36,42 @@ describe('the support rule (b2 + a9, 9 Nov)', () => {
     expect(problems[3]).toContain('not drawn');
   });
 
-  it("Kapi's puzzles stand on the coping on his right, clear of the side edge", () => {
+  it("Kapi's puzzles keep their 9q x on his left, feet on the coping top; at s1-s2 the cube and board take the 9q spots nearest him (b2 pick 1)", () => {
     const kapi = anchors.friends.kapi.foot[0] / 3;
+    const pass = parseAnchors(raw).props;
     for (const prop of ['kapi-wall-puzzle', 'kapi-flat-board-game', 'kapi-telescope', 'kapi-slate']) {
       const [x, y, w, h] = propsCss[prop]!;
-      expect(x, prop).toBeGreaterThan(kapi);
-      expect(x + w, prop).toBeLessThanOrEqual(360 - EDGE_CSS);
+      expect(x + w, prop).toBeLessThan(kapi);
       expect(Math.abs(y + h - LINES.coping), prop).toBeLessThanOrEqual(2);
+      // 9q's x: the same centre within 2 CSS (the cube is widened to 19 CSS and kept off the trunk).
+      const [px, , pw] = pass[prop]!.map(value => value / 3);
+      expect(Math.abs(x + w / 2 - (px! + pw! / 2)), prop).toBeLessThanOrEqual(prop === 'kapi-wall-puzzle' ? 5 : 2);
     }
     expect(propsCss['kapi-wall-puzzle']![2]).toBeGreaterThanOrEqual(18);
+    const early = placedAt(2).filter(row => row.prop.startsWith('kapi-') && row.prop !== 'kapi-kite');
+    expect(early.map(row => row.rect)).toEqual([KAPI_EARLY.cube, KAPI_EARLY.board]);
+    expect(placedAt(3).find(row => row.prop === 'kapi-wall-puzzle')!.rect).toEqual(propsCss['kapi-wall-puzzle']);
   });
 
-  it("Mor's garden: pot 2 and the bed at the wall foot (the door's base line), pot 1 on the floor at Mor's side; every placed prop 16 CSS inside the sides", () => {
-    for (const prop of ['mor-pot-2', 'mor-marigold-bed']) expect(Math.abs(propsCss[prop]![1] + propsCss[prop]![3] - LINES.wallFoot), prop).toBeLessThanOrEqual(2);
-    const [potX, , potW] = propsCss['mor-pot-1']!, mor = anchors.friends.mor.tap.map(value => value / 3);
-    expect(propsCss['mor-pot-1']![1] + propsCss['mor-pot-1']![3]).toBeGreaterThan(LINES.wallFoot);
-    expect(potX + potW).toBeLessThanOrEqual(mor[0]! + 2);
+  it('the neem crown keeps clear of every Kapi thing that can stand under it: young trees narrower, older ones lifted, no bare pole', () => {
+    for (const tree of [1, 2, 3, 4, 5]) {
+      const { narrow, lift } = crownFit(tree, propsCss);
+      for (let mind = 1; mind <= tree; mind++) for (const row of placedAt(mind).filter(r => ['kapi-wall-puzzle', 'kapi-flat-board-game', 'kapi-telescope', 'kapi-slate'].includes(r.prop))) {
+        const [x, y, w] = row.rect;
+        expect(crownBottom(NEEM_GROWTH[tree]!, x, x + w, narrow, lift), `tree ${tree} mind ${mind} ${row.prop}`).toBeLessThanOrEqual(y - CROWN_CLEAR + 0.2);
+      }
+      if (tree <= 2) expect(lift, `tree ${tree}`).toBe(0);
+      else expect(narrow, `tree ${tree}`).toBe(1);
+    }
+  });
+
+  it("Mor's pots and bed stand on the planter shelf drawn on the wall face at their 9q spots; every placed prop 16 CSS inside the sides", () => {
+    const shelf = propsCss['mor-planter-shelf']!;
+    expect(shelf[1]).toBeGreaterThanOrEqual(LINES.wallTop);
+    for (const prop of ['mor-pot-1', 'mor-pot-2', 'mor-marigold-bed', 'mor-trellis-creeper']) {
+      expect(SUPPORT[prop], prop).toEqual({ on: 'mor-planter-shelf' });
+      expect(Math.abs(propsCss[prop]![1] + propsCss[prop]![3] - shelf[1]), prop).toBeLessThanOrEqual(2);
+    }
     for (const [prop, [x, , w]] of Object.entries(LAYOUT_B_PLACES_CSS)) {
       expect(x, prop).toBeGreaterThanOrEqual(EDGE_CSS);
       expect(x + w, prop).toBeLessThanOrEqual(360 - EDGE_CSS);

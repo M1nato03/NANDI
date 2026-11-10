@@ -5,7 +5,7 @@ import { poseFor } from '../../core/courtyard/courtyard';
 import { K_GROWTH } from '../../core/courtyard/layoutB';
 import { Cast } from '../cast/Cast';
 import { C, Door, Lanterns, PARTS, Sky, TINT, Toran, Tree, type Part, type PartId } from './Scene';
-import { DEPTH, LINES, placeAt, type Support } from '../../core/courtyard/support';
+import { crownFit, drawFoot, LINES, placeAt, TREE_AT, TREE_SCALE, type Support } from '../../core/courtyard/support';
 import { PROP_PARTS } from './layoutBParts';
 import { StageFriends } from './StageFriends';
 import { keepsakeSpots, TAG_H, TAG_W, type Keepsake } from '../../core/courtyard/keepsakes';
@@ -24,8 +24,6 @@ import { KeepsakeTag, PegBoard } from './Keepsakes';
 const COPING = LINES.coping;
 export const WALL_FOOT = LINES.wallFoot;
 export const DOOR_RECT: Rect = [85.5, 323, 50.5, 62];
-export const TREE_AT: [number, number] = [180, 377];
-const TREE_SCALE = 1.3;
 const DOOR_BOX: Rect = [94, 81, 42, 49];
 const TORAN_BOX: Rect = [94, 83, 42, 10];
 const LANTERNS_BOX: Rect = [10, 137, 111, 13];
@@ -62,7 +60,10 @@ export function LayoutBScene({ anchors, fit, width, height, state, phase, onFrie
   const propsCss = Object.fromEntries(Object.entries(anchors.props).map(([name, rect]) => [name, css(rect)]));
   const parts = PROP_PARTS.filter(row => stageOf(row.area) >= row.from && (row.until === undefined || stageOf(row.area) <= row.until))
     .flatMap(row => { const at = placeAt(row.prop, propsCss, stageOf); return at ? [{ ...row, ...at }] : []; })
-    .sort((a, b) => a.rect[1] + a.rect[3] - (b.rect[1] + b.rect[3]) || (DEPTH[a.prop] ?? 1) - (DEPTH[b.prop] ?? 1));
+    .sort((a, b) => drawFoot(a.prop, a.rect) - drawFoot(b.prop, b.rect));
+  // b2 10 Nov: the crown keeps clear of Kapi's coping things (narrower when young, lifted when older).
+  const crownAt = crownFit(state.treeStage, propsCss);
+  const crown = { narrow: crownAt.narrow, lift: crownAt.lift / TREE_SCALE };
   // Canvas CSS → screen: the fit's scale is per canvas px, so a canvas CSS unit is 3 of them.
   const unit = fit.scale * 3;
   const headerCss = anchors.headerBottom / 3;
@@ -87,8 +88,10 @@ export function LayoutBScene({ anchors, fit, width, height, state, phase, onFrie
         <path d={`${Array.from({ length: 30 }, (_, i) => `M-2000 ${WALL_FOOT + 26 + i * 26}h4360`).join('')}${FLOOR_LINES.map(x => `M${x} ${WALL_FOOT}l${(x - 180) * 0.6} 800`).join('')}`} stroke={C.floorLine} strokeWidth=".8" opacity=".35" />
         <Wall />
         <g transform={placed(DOOR_BOX, DOOR_RECT)}><Door /></g>
+        {/* 9q's stone step under the door: the door's foot stands below the wall's (b2 10 Nov, 9q match). */}
+        <rect className="courtyard-b-step" x={DOOR_RECT[0] - 4} y={DOOR_RECT[1] + DOOR_RECT[3] - 2.5} width={DOOR_RECT[2] + 8} height={5} rx={1.2} fill={C.stone} />
         {toranRect && <g transform={placed(TORAN_BOX, css(toranRect))}><Toran count={state.toran} /></g>}
-        <g transform={treeTransform}><Tree stage={state.treeStage} k={K_GROWTH[state.treeStage]} /></g>
+        <g transform={treeTransform}><Tree stage={state.treeStage} k={K_GROWTH[state.treeStage]} {...crown} /></g>
         {spots.some(spot => spot.on === 'board') && <PegBoard />}
         {keepsakes.map((tag, i) => <KeepsakeTag key={tag.campId} tag={tag} spot={spots[i]!} />)}
         {lanternRect && state.lanterns > 0 && <g transform={placed(LANTERNS_BOX, css(lanternRect))}><Lanterns count={state.lanterns} /></g>}
@@ -96,7 +99,7 @@ export function LayoutBScene({ anchors, fit, width, height, state, phase, onFrie
         {tint && <rect x={-2000} y={-2000} width={4360} height={6000} fill={tint} />}
         {/* Evening and night: the lights glow through the tint, each where its part stands (b2, 8 Nov). */}
         {lit && <g className="courtyard-b-glow">
-          <g transform={treeTransform}><Tree stage={state.treeStage} k={K_GROWTH[state.treeStage]} glowLayer /></g>
+          <g transform={treeTransform}><Tree stage={state.treeStage} k={K_GROWTH[state.treeStage]} {...crown} glowLayer /></g>
           {lanternRect && state.lanterns > 0 && <g transform={placed(LANTERNS_BOX, css(lanternRect))}><Lanterns count={state.lanterns} glowLayer /></g>}
           {parts.filter(row => (PARTS[row.part as PartId] as Part).glow).map(row => { const part = PARTS[row.part as PartId] as Part; return <g key={row.prop} transform={placed(part.box, row.rect)}>{part.glow!()}</g>; })}
         </g>}
