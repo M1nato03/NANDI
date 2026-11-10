@@ -1,6 +1,6 @@
 import { useId, type ReactElement } from 'react';
 import type { AreaId, Phase } from '../../core/courtyard/courtyard';
-import { NEEM_LEAVES } from '../../core/courtyard/support';
+import { NEEM_LEAVES, type Leaf } from '../../core/courtyard/support';
 
 // The courtyard (spec 12) drawn on a 360 × 200 grid. Each corner gains one object per stage; nothing is removed.
 // Layers: sky → wall and floor → objects → a phase tint → lights that glow through the tint.
@@ -69,17 +69,36 @@ function Walls() {
 }
 
 /** The neem tree grows with active days; a stone platform (chabutra) is there from the start. */
-const LEAF_FILLS = [C.leaf, C.leafDark, C.leafDark, C.leafLight, C.leaf, C.leaf, C.leaf, C.leafLight, C.leafLight];
+const TONE = [C.leaf, C.leafDark, C.leafLight];
+/** The stage-5 string of lights across the crown (two quadratic runs), and its unlit bulbs every `step` tree units. */
+const CORD = 'M136 74Q160 92 182 66T228 74M146 50Q176 68 210 46';
+const CORD_RUNS: readonly (readonly [number, number, number, number, number, number])[] = [[136, 74, 160, 92, 182, 66], [182, 66, 204, 40, 228, 74], [146, 50, 176, 68, 210, 46]];
+function cordBulbs(step: number): [number, number][] {
+  const out: [number, number][] = [];
+  for (const [x0, y0, cx, cy, x1, y1] of CORD_RUNS) {
+    const at = (t: number): [number, number] => [(1 - t) ** 2 * x0 + 2 * (1 - t) * t * cx + t * t * x1, (1 - t) ** 2 * y0 + 2 * (1 - t) * t * cy + t * t * y1];
+    let carry = step / 2, [px, py] = at(0);
+    for (let i = 1; i <= 200; i++) {
+      const [x, y] = at(i / 200), d = Math.hypot(x - px, y - py);
+      carry -= d; px = x; py = y;
+      if (carry <= 0) { out.push([x, y]); carry += step; }
+    }
+  }
+  return out;
+}
 /**
- * `narrow` and `lift` (layout B, b2 10 Nov; support.ts crownFit): the crown squeezed about the trunk and raised on a
- * longer trunk (tree units), so it keeps clear of Kapi's things on the coping. The classic scene passes neither.
+ * Layout B (b2 + a9, 10 Nov; support.ts): `leaves` a stage's own crown clumps, `lift` the crown raised on a longer trunk
+ * (tree units) to keep clear of Kapi's things, and `dayCord` the stage-5 lights by day as a thin warm-grey cord with
+ * small unlit bulbs (evening and night keep the dark cord with the bulbs glowing). The classic scene passes none.
  */
-export function Tree({ stage, glowLayer, k: kOverride, narrow = 1, lift = 0 }: { stage: number; glowLayer?: boolean; k?: number; narrow?: number; lift?: number }) {
+export function Tree({ stage, glowLayer, k: kOverride, leaves: crownLeaves = NEEM_LEAVES, lift = 0, dayCord = false }: { stage: number; glowLayer?: boolean; k?: number; leaves?: readonly Leaf[]; lift?: number; dayCord?: boolean }) {
   const k = kOverride ?? [0.22, 0.45, 0.64, 0.84, 1, 1][stage]!;
-  const leaves = NEEM_LEAVES.map(([x, y, r], i) => [x, y, r, LEAF_FILLS[i]!] as const);
+  const leaves = crownLeaves.map(([x, y, r, tone]) => [x, y, r, TONE[tone]!] as const);
   const lights = [[150, 52], [168, 70], [186, 40], [204, 62], [222, 78], [140, 76], [176, 22], [196, 82]];
   const up = lift / k;
-  const crown = `translate(180 ${-up}) scale(${narrow} 1) translate(-180 0)`;
+  const crown = `translate(0 ${-up})`;
+  // a9: the day cord ≤ 1 CSS wide and bulbs about 2.5 CSS every 12-16 CSS, at layout B's 1.3 × k.
+  const css = 1 / (1.3 * k);
   if (glowLayer) return stage >= 5 ? <g transform={`translate(0 -8) translate(180 140) scale(${k}) translate(-180 -140)`} className="courtyard-twinkle"><g transform={crown}>
     {lights.map(([x, y], i) => <g key={i}><circle cx={x} cy={y} r="5" fill={C.glow} opacity=".35" /><circle cx={x} cy={y} r="1.8" fill="#fff5c8" /></g>)}
   </g></g> : null;
@@ -94,10 +113,12 @@ export function Tree({ stage, glowLayer, k: kOverride, narrow = 1, lift = 0 }: {
         {up > 0 && <rect x="176" y={70 - up} width="8" height={up + 4} fill={C.wood} />}
         <g transform={crown}>
         <path d="M177 92c-10-8-20-10-30-12M183 88c10-8 22-12 32-12M180 72c-4-14-12-22-18-30M181 72c4-14 10-24 18-32" stroke={C.wood} strokeWidth="5" strokeLinecap="round" fill="none" />
-        {leaves.map(([x, y, r, fill], i) => <circle key={i} cx={x} cy={y} r={r} fill={fill} />)}
+        <g className="courtyard-crown-leaves">{leaves.map(([x, y, r, fill], i) => <circle key={i} cx={x} cy={y} r={r} fill={fill} />)}</g>
         {[[170, 40], [196, 52], [150, 64], [214, 70], [186, 24]].map(([x, y], i) => <path key={i} d={`M${x} ${y}q4 -4 8 0`} stroke="#9fd07b" strokeWidth="1.6" fill="none" strokeLinecap="round" />)}
         {stage >= 4 && <g className="courtyard-swing"><path d="M200 80V120M220 80V120" stroke="#a37b52" strokeWidth="1.4" /><rect x="195" y="119" width="30" height="5" rx="1.5" fill={C.woodDark} /></g>}
-        {stage >= 5 && <path d="M136 74Q160 92 182 66T228 74M146 50Q176 68 210 46" stroke="#6b4a2c" strokeWidth=".8" fill="none" />}
+        {stage >= 5 && !dayCord && <path d={CORD} stroke="#6b4a2c" strokeWidth=".8" fill="none" />}
+        {stage >= 5 && dayCord && <g className="courtyard-day-cord"><path d={CORD} stroke="#8a7a66" strokeWidth={0.9 * css} opacity=".7" fill="none" />
+          {cordBulbs(14 * css).map(([x, y], i) => <circle key={i} cx={x} cy={y} r={1.25 * css} fill="#f3ead2" stroke="#b9a888" strokeWidth={0.3 * css} />)}</g>}
         </g>
       </>}
     </g>

@@ -3,7 +3,7 @@ import raw from '../../ui/courtyard/anchors.json';
 import { EDGE_CSS, parseAnchors, type Rect } from './anchors';
 import { AREAS } from './courtyard';
 import { LAYOUT_B_PLACES_CSS, nudgeAnchors } from './nudges';
-import { crownBottom, crownFit, CROWN_CLEAR, KAPI_EARLY, LINES, NEEM_GROWTH, placeAt, SUPPORT, supportProblems } from './support';
+import { crownBottom, crownBox, crownFit, CROWN_CLEAR, KAPI_EARLY, LINES, placeAt, SUPPORT, supportProblems } from './support';
 import { PROP_PARTS } from '../../ui/courtyard/layoutBParts';
 
 // The 9 Nov support hotfix (b2 + a9): every part stands on something at every stage, on rects (the shots' alpha check
@@ -53,16 +53,20 @@ describe('the support rule (b2 + a9, 9 Nov)', () => {
     expect(placedAt(3).find(row => row.prop === 'kapi-wall-puzzle')!.rect).toEqual(propsCss['kapi-wall-puzzle']);
   });
 
-  it('the neem crown keeps clear of every Kapi thing that can stand under it: young trees narrower, older ones lifted, no bare pole', () => {
+  it('the neem crown keeps clear of every Kapi thing that can stand under it: young trees round with no lift, older ones lifted', () => {
     for (const tree of [1, 2, 3, 4, 5]) {
-      const { narrow, lift } = crownFit(tree, propsCss);
+      const { lift } = crownFit(tree, propsCss);
       for (let mind = 1; mind <= tree; mind++) for (const row of placedAt(mind).filter(r => ['kapi-wall-puzzle', 'kapi-flat-board-game', 'kapi-telescope', 'kapi-slate'].includes(r.prop))) {
         const [x, y, w] = row.rect;
-        expect(crownBottom(NEEM_GROWTH[tree]!, x, x + w, narrow, lift), `tree ${tree} mind ${mind} ${row.prop}`).toBeLessThanOrEqual(y - CROWN_CLEAR + 0.2);
+        expect(crownBottom(tree, x, x + w, lift), `tree ${tree} mind ${mind} ${row.prop}`).toBeLessThanOrEqual(y - CROWN_CLEAR + 0.2);
       }
       if (tree <= 2) expect(lift, `tree ${tree}`).toBe(0);
-      else expect(narrow, `tree ${tree}`).toBe(1);
+      // a9: the crown stays round (box w/h ≥ 0.9) at every stage.
+      const [left, top, right, bottom] = crownBox(tree);
+      expect((right - left) / (bottom - top), `tree ${tree}`).toBeGreaterThanOrEqual(0.9);
     }
+    // a9: the young (s2) crown's right edge stays ≥ 4 CSS left of Kapi's s2 board.
+    expect(crownBox(2)[2]).toBeLessThanOrEqual(KAPI_EARLY.board[0] - 4);
   });
 
   it("Mor's pots and bed stand on the planter shelf drawn on the wall face at their 9q spots; every placed prop 16 CSS inside the sides", () => {

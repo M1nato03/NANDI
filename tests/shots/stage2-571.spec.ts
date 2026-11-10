@@ -77,7 +77,10 @@ for (const theme of ['light', 'dark'] as const) {
       const chrome = await page.evaluate(() => ({ header: document.querySelector('.topbar')!.getBoundingClientRect().height, tabBar: document.querySelector('.tabbar')!.getBoundingClientRect().height, card: document.querySelector('.courtyard-card')!.getBoundingClientRect().height }));
       console.log(`stage 2 shots [${theme} s${stage}]: chrome ${JSON.stringify(chrome)}`);
       await snap(page, `s2-${t}-home-s${stage}`);
+      // a9 10 Nov: the s5 day cord and its unlit bulbs, the crown at 2× (deviceScaleFactor 2 at its own size).
       if (stage === 5) {
+        const crown = (await page.locator('.courtyard-b-scene .courtyard-crown-leaves').first().boundingBox())!;
+        await snap(page, `s2-${t}-home-s5-crown-2x`, { x: crown.x - 4, y: crown.y - 4, width: crown.width + 8, height: crown.height + 8 });
         await page.locator('.courtyard-card-handle').click();
         await settle(page);
         await snap(page, `s2-${t}-home-s5-card-open`);
@@ -111,6 +114,30 @@ for (const theme of ['light', 'dark'] as const) {
     await settle(big);
     await snap(big, `s2-${t}-home-s5-200`);
     await big.context().close();
+  });
+}
+
+// b2 10 Nov: the Settings card with an update found (Jenil's "Later" bug), 360 light and dark. The e2e build's
+// stand-in updater: installed 122, version.json offers 124.
+for (const theme of ['light', 'dark'] as const) {
+  test(`Settings: App updates with an update found, ${theme}`, async ({ browser }) => {
+    const page = await phone(browser, theme);
+    await page.addInitScript(() => {
+      (window as unknown as Record<string, unknown>).__nandiFakeUpdater = {
+        installed: { versionCode: 122, versionName: '0.1.0' },
+        latest: { versionCode: 124, versionName: '0.1.0', sha256: 'a'.repeat(64), url: 'https://nandi-updates.nandi11.workers.dev/nandi-124.apk', builtAt: '2026-11-10T09:14:39Z', commit: '5c818a5', notes: '' },
+      };
+    });
+    await page.goto('/?e2e#you/settings');
+    await expect(page.getByRole('button', { name: 'Update to 0.1.0 (124)' })).toBeVisible();
+    await settle(page);
+    await snap(page, `s2-${theme === 'light' ? 'l' : 'd'}-settings-update`);
+    // After Later: the banner goes, the card keeps its Update button.
+    await page.getByRole('region', { name: 'Android update' }).getByRole('button', { name: 'Later' }).click();
+    await expect(page.getByRole('region', { name: 'Android update' })).toHaveCount(0);
+    await settle(page);
+    await snap(page, `s2-${theme === 'light' ? 'l' : 'd'}-settings-update-after-later`);
+    await page.context().close();
   });
 }
 
@@ -298,6 +325,9 @@ test('alpha check: beside, G-corner, support and the neem on the real pixels, s1
       const mats = ['nandi-mat', 'kachhua-sleeping-mat'];
       const partMasks = await Promise.all(parts.map(async part => { const mask = await raster(part.svg); return { ...part, mask, box: bounds(mask) }; }));
       const out: string[] = [], gaps: string[] = [], feet: string[] = [];
+      // a9 10 Nov: the crown stays round at every stage (box w/h ≥ 0.9).
+      const crownBox = scene.querySelector('.courtyard-crown-leaves')?.getBoundingClientRect();
+      if (crownBox && crownBox.width / crownBox.height < 0.9) out.push(`neem crown w/h ${(crownBox.width / crownBox.height).toFixed(2)} < 0.9`);
       // Support and the neem, per part.
       for (const part of partMasks) {
         const { box, support } = part;

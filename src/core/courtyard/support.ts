@@ -122,26 +122,47 @@ export function supportProblems(placed: readonly { prop: string; rect: Rect; sup
  */
 export const TREE_AT: readonly [number, number] = [180, 377];
 export const TREE_SCALE = 1.3;
-export const NEEM_LEAVES: readonly (readonly [number, number, number])[] = [
-  [180, 46, 30], [148, 60, 24], [212, 60, 24], [162, 30, 21], [200, 28, 21], [134, 80, 16], [226, 80, 16], [180, 70, 22], [180, 18, 15],
+/** A crown clump: centre, radius (tree units) and tone (0 leaf, 1 dark, 2 light). */
+export type Leaf = readonly [number, number, number, 0 | 1 | 2];
+export const NEEM_LEAVES: readonly Leaf[] = [
+  [180, 46, 30, 0], [148, 60, 24, 1], [212, 60, 24, 1], [162, 30, 21, 2], [200, 28, 21, 0], [134, 80, 16, 0], [226, 80, 16, 0], [180, 70, 22, 2], [180, 18, 15, 2],
+];
+/**
+ * a9 (10 Nov): the stage-2 neem is s1's clumped crown at ×1.15, made asymmetric (the right-most low clump dropped, the
+ * right ones shrunk, one added low on the left), so it stays round and clear of Kapi's s2 board with no lift.
+ */
+export const NEEM_LEAVES_YOUNG: readonly Leaf[] = [
+  [180, 46, 30, 0], [148, 60, 24, 1], [200, 62, 18, 1], [162, 30, 21, 2], [198, 28, 18, 0], [134, 80, 16, 0], [124, 70, 17, 1], [180, 70, 22, 2], [180, 18, 15, 2],
 ];
 export const NEEM_GROWTH = K_GROWTH;
-/** How far the crown stays above Kapi's things (a9: ≥ 6 CSS), and how narrow a young crown may get. */
-export const CROWN_CLEAR = 6, CROWN_MIN_NARROW = 0.55;
+/** The crown each tree stage draws: its clumps and its growth. */
+export function crownShape(treeStage: number): { leaves: readonly Leaf[]; k: number } {
+  return treeStage === 2 ? { leaves: NEEM_LEAVES_YOUNG, k: K_GROWTH[1] * 1.15 } : { leaves: NEEM_LEAVES, k: K_GROWTH[treeStage] ?? 1 };
+}
+/** How far the crown stays above Kapi's things (a9: ≥ 6 CSS). */
+export const CROWN_CLEAR = 6;
 
-/** The lowest crown point over [x0, x1] (canvas CSS), for growth k, a horizontal squeeze about the trunk and a lift. */
-export function crownBottom(k: number, x0: number, x1: number, narrow = 1, lift = 0): number {
+const leafOnCanvas = (k: number, [x, y, r]: Leaf, lift = 0) => ({
+  cx: TREE_AT[0] + TREE_SCALE * k * (x - 180), cy: TREE_AT[1] - 132 * TREE_SCALE + TREE_SCALE * (140 + (y - 140) * k - 8) - lift, r: TREE_SCALE * k * r,
+});
+/** The lowest crown point over [x0, x1] (canvas CSS) for a tree stage and a lift. */
+export function crownBottom(treeStage: number, x0: number, x1: number, lift = 0): number {
+  const { leaves, k } = crownShape(treeStage);
   let bottom = -Infinity;
-  for (const [x, y, r] of NEEM_LEAVES) {
-    const cx = TREE_AT[0] + TREE_SCALE * k * narrow * (x - 180);
-    const cy = TREE_AT[1] - 132 * TREE_SCALE + TREE_SCALE * (140 + (y - 140) * k - 8) - lift;
-    const ry = TREE_SCALE * k * r, rx = ry * narrow;
+  for (const leaf of leaves) {
+    const { cx, cy, r } = leafOnCanvas(k, leaf, lift);
     for (let i = 0; i <= 40; i++) {
-      const px = x0 + (i * (x1 - x0)) / 40, dx = Math.abs(px - cx);
-      if (dx < rx) bottom = Math.max(bottom, cy + ry * Math.sqrt(1 - (dx / rx) ** 2));
+      const dx = Math.abs(x0 + (i * (x1 - x0)) / 40 - cx);
+      if (dx < r) bottom = Math.max(bottom, cy + Math.sqrt(r * r - dx * dx));
     }
   }
   return bottom;
+}
+/** The crown's box (canvas CSS, before any lift): [left, top, right, bottom]. */
+export function crownBox(treeStage: number): [number, number, number, number] {
+  const { leaves, k } = crownShape(treeStage);
+  const circles = leaves.map(leaf => leafOnCanvas(k, leaf));
+  return [Math.min(...circles.map(c => c.cx - c.r)), Math.min(...circles.map(c => c.cy - c.r)), Math.max(...circles.map(c => c.cx + c.r)), Math.max(...circles.map(c => c.cy + c.r))];
 }
 
 /** Kapi's coping things that can stand under a tree of this stage: his things at every stage up to it (his days never outnumber the tree's). */
@@ -158,15 +179,12 @@ function kapiThingsUpTo(treeStage: number, props: Readonly<Record<string, Rect>>
 }
 
 /**
- * b2 (10 Nov): the flat crown keeps CROWN_CLEAR above Kapi's things, only over the span they take. A young tree
- * (stages 1-2) gets a narrower crown, never a bare pole; an older one is lifted on its trunk by what is left over.
- * Canvas CSS lift; narrow is the crown's horizontal squeeze about the trunk.
+ * b2 (10 Nov): the flat crown keeps CROWN_CLEAR above Kapi's things, only over the span they take. Young trees
+ * (stages 1-2) have a crown that stays clear without a lift (a9: no bare pole); an older one is lifted on its trunk by
+ * what is needed. Canvas CSS.
  */
-export function crownFit(treeStage: number, props: Readonly<Record<string, Rect>>): { narrow: number; lift: number } {
-  const k = NEEM_GROWTH[treeStage] ?? 1;
+export function crownFit(treeStage: number, props: Readonly<Record<string, Rect>>): { lift: number } {
   const things = kapiThingsUpTo(treeStage, props);
-  const need = (narrow: number) => Math.max(0, ...things.map(([x, y, w]) => crownBottom(k, x, x + w, narrow) - (y - CROWN_CLEAR)));
-  let narrow = 1;
-  if (treeStage <= 2) while (narrow > CROWN_MIN_NARROW + 1e-9 && need(narrow) > 0) narrow = Math.round((narrow - 0.05) * 100) / 100;
-  return { narrow, lift: Math.ceil(need(narrow) * 10) / 10 };
+  const need = Math.max(0, ...things.map(([x, y, w]) => crownBottom(treeStage, x, x + w) - (y - CROWN_CLEAR)));
+  return { lift: Math.ceil(need * 10) / 10 };
 }

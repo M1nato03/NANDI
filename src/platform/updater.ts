@@ -12,11 +12,20 @@ type NativeUpdater = {
 };
 const native = registerPlugin<NativeUpdater>('Updater');
 
-export const updaterAvailable = () => Capacitor.getPlatform() === 'android';
+/** E2E builds only: a stand-in Android updater (window.__nandiFakeUpdater), so the update flow can be tested and shot. */
+type FakeUpdater = { installed: InstalledVersion; latest: UpdateVersion; installs?: number };
+declare global { interface Window { __nandiFakeUpdater?: FakeUpdater } }
+const fake = (): FakeUpdater | undefined => import.meta.env.VITE_E2E === '1' ? window.__nandiFakeUpdater : undefined;
+
+export const updaterAvailable = () => !!fake() || Capacitor.getPlatform() === 'android';
 export async function getInstalledVersion(): Promise<InstalledVersion | null> {
+  const stand = fake();
+  if (stand) return stand.installed;
   return updaterAvailable() ? native.getInstalledVersion() : null;
 }
 export async function checkForUpdate(): Promise<UpdateVersion | null> {
+  const stand = fake();
+  if (stand) return stand.latest;
   if (!updaterAvailable()) return null;
   const result = await native.checkForUpdate({ url: `${UPDATE_MANIFEST_URL}?t=${Date.now()}` });
   if (!Number.isSafeInteger(result.versionCode) || result.versionCode < 1
@@ -26,6 +35,8 @@ export async function checkForUpdate(): Promise<UpdateVersion | null> {
   return result;
 }
 export async function downloadAndInstall(update: UpdateVersion, onProgress: (percent: number) => void): Promise<void> {
+  const stand = fake();
+  if (stand) { stand.installs = (stand.installs ?? 0) + 1; onProgress(100); return; }
   if (!updaterAvailable()) return;
   const handle = await native.addListener('updateProgress', ({ percent }) => onProgress(percent));
   try { await native.downloadAndInstall({ url: update.url, sha256: update.sha256 }); }
