@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createDb, type NandiDb } from '../db';
-import { exportBackup, importBackup, previewBackup, validateBackup, backupFileName, migrateEnvelope } from './index';
+import { exportBackup, importBackup, previewBackup, validateBackup, backupFileName, migrateEnvelope, cutoffKeys } from './index';
+import { deriveEconomy } from '../../core/economy/deriveEconomy';
 
 let serial = 0;
 const opened: NandiDb[] = [];
@@ -280,5 +281,34 @@ describe('a11y audit C2: a damaged backup never costs the phone its data', () =>
     spy.mockRestore();
     const after = await snapshot(db);
     for (const name of Object.keys(before)) expect(after[name], name).toEqual(before[name]);
+  });
+});
+
+describe("b2 11 Nov (live bug): a restore keeps this phone's economy cutoffs, v10From included", () => {
+  it('every economy.vNFrom the code reads is a kept cutoff', { timeout: 60_000 }, async () => {
+    const { readdirSync, readFileSync, statSync } = await import('node:fs');
+    const { join } = await import('node:path');
+    const seen = new Set<string>();
+    const walk = (dir: string) => { for (const name of readdirSync(dir)) { const path = join(dir, name); if (statSync(path).isDirectory()) walk(path); else if (/\.tsx?$/.test(name) && !/\.test\.tsx?$/.test(name)) for (const key of readFileSync(path, 'utf8').match(/economy\.v\d+From/g) ?? []) seen.add(key); } };
+    walk(join(process.cwd(), 'src'));
+    expect([...seen].sort()).toEqual([...cutoffKeys].sort());
+  });
+
+  it('restoring a backup made before v10 keeps this phone\'s v10From, so no past day is rescored', async () => {
+    const db = freshDb();
+    const day = (d: string, kind: string, inputs: Record<string, unknown>) => ({ id: `${kind}:${d}`, kind, refId: d, mode: 'tasks', dayKey: d, inputs, ...stamp });
+    const facts = ['2026-11-05', '2026-11-06', '2026-11-08', '2026-11-09'].map(d => day(d, 'task-done', { plannedSize: 'M', wasPlanned: true }));
+    await db.ledger.bulkPut(facts);
+    await db.settings.bulkPut([{ key: 'deviceId', value: 'device-a', ...stamp }]);
+    // The backup is from before the rings: no v10From in it.
+    const old = await exportBackup(db, new Date(2026, 10, 6, 12));
+    await db.settings.put({ key: 'economy.v10From', value: '2026-11-07', ...stamp });
+    const settingsBefore = await db.settings.toArray();
+    const before = deriveEconomy(await db.ledger.toArray(), undefined, settingsBefore, '2026-11-10');
+    await importBackup(db, old);
+    expect((await db.settings.get('economy.v10From'))?.value).toBe('2026-11-07');
+    const after = deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), '2026-11-10');
+    expect(after.days.map(row => JSON.stringify(row))).toEqual(before.days.map(row => JSON.stringify(row)));
+    expect(after.totalXp).toBe(before.totalXp);
   });
 });

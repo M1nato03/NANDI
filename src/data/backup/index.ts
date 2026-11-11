@@ -290,7 +290,10 @@ const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offline
   // Play's Usage access disclosure is shown once per phone (item 71), so a restore onto a new phone shows it again.
   'night.usageDisclosureAt']);
 /** When each set of economy fixes began on this phone. This phone's value wins; else the backup's is kept. */
-const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From', 'economy.v5From', 'economy.v6From', 'economy.v7From', 'economy.v8From', 'economy.v9From'];
+// b2 11 Nov (live bug): v10From (spec 571 §0.20, the rings) was missing, so restoring an older backup dropped this phone's
+// v10From and the next reconcile set it to today, rescoring the days between. Every economy.vNFrom belongs here; the
+// test in backup.test.ts lists them from the code so a new one cannot be left out.
+export const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From', 'economy.v5From', 'economy.v6From', 'economy.v7From', 'economy.v8From', 'economy.v9From', 'economy.v10From'];
 
 /** Full restore only. The current device's local settings survive the clear. */
 export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promise<void> {
