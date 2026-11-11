@@ -111,3 +111,38 @@ test('spec 40 shots at 200% text: Jan, Feb, Mar (light)', async ({ browser }) =>
   await snap(page, '40-l-06-mar-200');
   await page.context().close();
 });
+
+// a9's frame-by-frame review (spec 40 §7.8): Jan → Mar and the year end, light and dark. Playwright records the
+// screen; the gate script re-encodes it at 30 fps (D:/nandi-gate-logs/shots-spec40/rec-*.mp4).
+for (const theme of ['light', 'dark'] as const) {
+  test(`spec 40 recording, ${theme}`, async ({ browser }) => {
+    test.setTimeout(180_000);
+    const context = await browser.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, colorScheme: theme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL, recordVideo: { dir: `${OUT}/raw-${theme}`, size: { width: 360, height: 800 } } });
+    const page = await context.newPage();
+    await page.clock.setFixedTime(NOON);
+    await page.goto('/?e2e#courtyard');
+    await chapters(page, 5);
+    await go(page, `grow/read/game/${BOOK}`, '.book-game-teach');
+    const pause = () => page.waitForTimeout(900);
+    await page.getByRole('button', { name: 'A new laptop' }).click(); await pause();
+    await page.getByRole('button', { name: 'Start January' }).click(); await pause();
+    await page.getByRole('button', { name: /^₹7,500/ }).click(); await pause();
+    await page.getByRole('button', { name: 'Continue' }).click(); await pause();
+    await page.getByRole('button', { name: 'Start Feb' }).click(); await pause();
+    await page.getByRole('button', { name: 'Cancel OTT app #1' }).click(); await pause();
+    await page.getByRole('button', { name: 'Continue' }).click(); await pause();
+    await page.getByRole('button', { name: 'Start Mar' }).click(); await pause();
+    await page.getByRole('button', { name: '+212% this week' }).click(); await pause();
+    await page.getByRole('button', { name: 'Check first' }).click(); await pause();
+    await page.getByRole('dialog', { name: 'Check first' }).getByRole('button', { name: 'Registered investment adviser' }).click(); await pause();
+    await page.getByRole('dialog', { name: 'Check first' }).getByRole('button', { name: 'Say no' }).click(); await pause();
+    for (const [start, move] of [['Apr', 'Say no'], ['May', 'Move ₹3,000'], ['Jun', 'Say yes'], ['Jul', 'Say no'], ['Aug', 'Handle the repair'], ['Sep', 'Take the course'], ['Oct', 'Continue'], ['Nov', 'Continue'], ['Dec', 'See my year']] as const) {
+      await page.getByRole('button', { name: `Start ${start}` }).click();
+      await page.locator('.book-game-actions').getByRole('button', { name: move, exact: true }).click();
+    }
+    await pause();
+    await page.getByRole('button', { name: 'View the full year' }).click(); await pause(); await pause();
+    await page.mouse.wheel(0, 900); await pause(); await pause();
+    await context.close();
+  });
+}

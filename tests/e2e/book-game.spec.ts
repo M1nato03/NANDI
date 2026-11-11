@@ -113,3 +113,25 @@ test('the links: Play has one line to the game; the game has no Courtyard or Yat
   await open(page, 'courtyard', '.courtyard-b');
   await expect(page.locator('[data-testid^="book-game"]')).toHaveCount(0);
 });
+
+test('all 12 months (5 chapters): the moves are in view before any tap; each scene message is measured for the ≤35-word rule', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto('/?e2e#courtyard');
+  await chapters(page, 'babylon-1', 'babylon-2', 'babylon-3', 'babylon-4', 'babylon-5');
+  await open(page);
+  await page.getByRole('button', { name: 'Start January' }).click();
+  const words: Record<string, number> = {};
+  const moves: Record<number, string> = { 0: 'Continue', 1: 'Continue', 2: 'Say no', 3: 'Say no', 4: 'Move ₹3,000', 5: 'Say yes', 6: 'Say no', 7: 'Handle the repair', 8: 'Take the course', 9: 'Continue', 10: 'Continue', 11: 'See my year' };
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  for (let m = 0; m < 12; m++) {
+    await expect(page.locator(`.book-game-play[data-month="${MONTHS[m]!.toLowerCase()}"]`)).toBeVisible();
+    await movesInView(page);
+    const text = await page.locator('.book-game-scene > div:last-child').first().innerText();
+    words[MONTHS[m]!] = text.trim().split(/\s+/).length;
+    await page.locator('.book-game-actions').getByRole('button', { name: moves[m]!, exact: true }).click();
+    if (m < 11) await page.getByRole('button', { name: `Start ${MONTHS[m + 1]}` }).click();
+  }
+  console.log(`spec 40 scene words: ${JSON.stringify(words)}`);
+  await page.getByRole('button', { name: 'View the full year' }).click();
+  await expect(page.locator('.book-game-end')).toContainText('net worth');
+});

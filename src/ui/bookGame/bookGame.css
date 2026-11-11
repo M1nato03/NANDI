@@ -45,14 +45,27 @@
 .book-game-chart { width: 100%; height: auto; }
 .book-game-chart .grid { stroke: var(--line); stroke-width: 1; }
 .book-game-chart text { fill: var(--ink-3); font-size: 10px; }
-.book-game-chart polyline { fill: none; stroke-width: 3; stroke-linejoin: round; }
-.book-game-chart .is-mine, .book-game-legend .is-mine { stroke: var(--accent); color: var(--accent-ink); }
-.book-game-chart .is-cushion, .book-game-legend .is-cushion { stroke: var(--teal, #2f7f6a); color: var(--teal, #2f7f6a); }
-.book-game-chart .is-growing, .book-game-legend .is-growing { stroke: var(--area-think, #6657a6); color: var(--area-think, #6657a6); }
+.book-game-chart polyline { fill: none !important; stroke-width: 3; stroke-linejoin: round; }
+/* b2 12 Nov: one colour and one dash per pot, the same in the pots strip, the chart and its legend. */
+.book-game { --pot-mine: #b8572e; --pot-cushion: #2f6fa8; --pot-growing: #6a4fb3; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .book-game { --pot-mine: #f08a5d; --pot-cushion: #6fb1ea; --pot-growing: #b49cf2; } }
+:root[data-theme='dark'] .book-game { --pot-mine: #f08a5d; --pot-cushion: #6fb1ea; --pot-growing: #b49cf2; }
+.book-game-chart .is-mine { stroke: var(--pot-mine); fill: var(--pot-mine); }
+.book-game-chart .is-cushion { stroke: var(--pot-cushion); stroke-dasharray: 7 4; fill: var(--pot-cushion); }
+.book-game-chart .is-growing { stroke: var(--pot-growing); stroke-dasharray: 2 3; fill: var(--pot-growing); }
+.book-game-chart text.end { stroke: none; font-size: 9px; font-weight: 700; }
+.book-game-legend .is-mine { color: var(--pot-mine); } .book-game-legend .is-cushion { color: var(--pot-cushion); } .book-game-legend .is-growing { color: var(--pot-growing); }
+.book-game-pot { border-left: 4px solid transparent; }
+.book-game-pot.is-mine { border-left-color: var(--pot-mine); } .book-game-pot.is-cushion { border-left-color: var(--pot-cushion); border-left-style: dashed; } .book-game-pot.is-growing { border-left-color: var(--pot-growing); border-left-style: dotted; }
 .book-game-note { color: var(--ink-3); }
 .book-game-lock { margin: 8px 0; font-weight: 600; }
 .book-game-answer { margin: 8px 0; }
 .book-game-actions { position: sticky; bottom: calc(var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) + 8px); z-index: 3; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px -16px 0; padding: 10px 16px; background: var(--bg); box-shadow: 0 -8px 16px -12px rgba(0,0,0,.25); }
 .book-game-actions > button { flex: 1 1 8rem; }
-.book-game-card { display: grid; gap: 2px; width: 100%; margin: 12px 0; text-align: left; }
+.book-game-card { display: grid; gap: 2px; width: 100%; margin: 12px 0; background: var(--surface-1); color: var(--ink); text-align: left; }
+.book-game-card strong { color: var(--ink); font-size: 1.125rem; }
+.book-game-card .eyebrow { color: var(--accent-ink); }
+.book-game-card .small { color: var(--ink-2); }
+/* Jan and Nov: the four split amounts as a 2×2 grid. */
+.book-game-chips[aria-label='Salary split'] { display: grid; grid-template-columns: 1fr 1fr; }
 @media (prefers-reduced-motion: reduce) { .book-game * { animation: none !important; transition: none !important; } }

@@ -113,7 +113,9 @@ function Play({ state, busy, onChange, onAct }: { state: ArkadState; busy: boole
   const m = state.month;
   const [sheet, setSheet] = useState(false);
   const head = <><p className="eyebrow">{MONTHS[m]} · Month {m + 1} of 12</p><h1>{PLAY_TITLES[m]}</h1><PotsStrip state={state} /><Cure month={m} /></>;
-  const button = (label: string, action: Action, secondary = false) => <button type="button" className={secondary ? 'secondary' : ''} disabled={busy} onClick={() => onAct(action)}>{label}</button>;
+  // b2 (12 Nov): a single Continue-type move is the filled button; the choices in a decision month are all neutral, so
+  // no answer (least of all the scam one) looks recommended.
+  const button = (label: string, action: Action, choice = false) => <button type="button" className={choice ? 'secondary book-game-choice' : ''} disabled={busy} onClick={() => onAct(action)}>{label}</button>;
   let body: ReactNode, moves: ReactNode;
   if (m === 0 || m === 10) {
     const sp = SPLIT[state.pendingSplit]!;
@@ -142,17 +144,18 @@ function Play({ state, busy, onChange, onAct }: { state: ArkadState; busy: boole
           {part.text}{found && <span className="book-game-tag"> · {TAG_TEXT[part.tag]}: {part.label}</span>}</button>;
       })}</p></Scene>
       <p className="small book-game-signs">Warnings {counts.red} · Good signs {counts.green} · Other {counts.grey}</p></>;
-    moves = <>{button('Say yes', 'yes')}<button type="button" className="secondary" onClick={() => setSheet(true)}>Check first</button>{button('Say no', 'no', true)}</>;
+    moves = <>{button('Say yes', 'yes', true)}<button type="button" className="secondary book-game-choice" onClick={() => setSheet(true)}>Check first</button>{button('Say no', 'no', true)}</>;
   } else if (m === 4) {
-    body = <Scene kind="Recurring deposit-style choice" icon="↗">Your Mine pot has room for ₹3,000. You can leave it in Mine, or move it to a fictional recurring deposit-style Growing pot in one tap. In this story it adds ₹40 a month from June to December. Example growth, not a promise.</Scene>;
-    moves = <>{button('Move ₹3,000', 'invest')}{button('Keep in Mine', 'keep', true)}</>;
+    // a9's ≤35-word rule (spec 40 §6): the approved line, trimmed from 43 words with its meaning kept.
+    body = <Scene kind="Recurring deposit-style choice" icon="↗">Mine has room for ₹3,000. Keep it in Mine, or move it to a fictional recurring deposit-style Growing pot. In this story it adds ₹40 a month from June to December. Not a promise.</Scene>;
+    moves = <>{button('Move ₹3,000', 'invest', true)}{button('Keep in Mine', 'keep', true)}</>;
   } else if (m === 7) {
     const covered = state.pots.cushion >= 10000;
     body = <Scene kind="Laptop repair desk" icon="▣">Your laptop will not start. The repair is ₹10,000. {covered ? `Your Cushion has ${fmt(state.pots.cushion)} and can cover it. No new debt or cut to Mine.` : 'Your Cushion is short. A rushed repair adds ₹2,000, so ₹12,000 must come from what you have, or become unpaid.'}</Scene>;
     moves = button('Handle the repair', 'repair');
   } else if (m === 8) {
     body = <Scene kind="Weekend course · practical work" icon="✎">A weekend course costs ₹3,000 from your pots. Finish it and a useful skill can unlock a ₹3,000 monthly raise in November. Your choice carries forward.</Scene>;
-    moves = <>{button('Take the course', 'course')}{button('Skip it', 'skip', true)}</>;
+    moves = <>{button('Take the course', 'course', true)}{button('Skip it', 'skip', true)}</>;
   } else if (m === 9) {
     body = <><Scene kind="Festival group chat" icon="✦">{state.lent ? 'Rohan just offered you a ₹1,000 paid gig because you helped in June. ' : ''}Gifts, sales, and “everyone is going.” Pick one number before browsing. The amount comes from your pots.</Scene>
       <div className="card"><b>Festival budget: {fmt(state.festival)}</b><div className="book-game-chips" role="group" aria-label="Festival budget">{FESTIVAL_CHOICES.map(n => <button type="button" key={n} className={state.festival === n ? '' : 'secondary'} aria-pressed={state.festival === n} onClick={() => onChange({ ...state, festival: n })}>{fmt(n)}</button>)}</div></div></>;
@@ -188,7 +191,7 @@ function CheckFirst({ month, busy, onClose, onAct }: { month: number; busy: bool
     <h2>Who would you ask?</h2>
     <div className="book-game-experts">{d.experts.map(([name], i) => <button type="button" key={name} className={answer === i ? '' : 'secondary'} aria-pressed={answer === i} onClick={() => setAnswer(i)}>{name}</button>)}</div>
     {answer !== null && <><p className="book-game-answer" role="status"><b>{d.experts[answer]![0]}:</b> {d.experts[answer]![1]}</p>
-      <div className="sheet-actions"><button type="button" disabled={busy} onClick={() => onAct('yes')}>Say yes</button><button type="button" className="secondary" disabled={busy} onClick={() => onAct('no')}>Say no</button></div></>}
+      <div className="sheet-actions"><button type="button" className="secondary book-game-choice" disabled={busy} onClick={() => onAct('yes')}>Say yes</button><button type="button" className="secondary book-game-choice" disabled={busy} onClick={() => onAct('no')}>Say no</button></div></>}
     <button type="button" className="secondary" onClick={onClose}>Back to message</button>
   </section></div>;
 }
@@ -232,11 +235,13 @@ function YearEnd({ state, footer }: { state: ArkadState; footer: ReactNode }) {
 function YearChart({ state }: { state: ArkadState }) {
   const h = state.history, max = Math.max(10000, ...h.map(x => Math.max(x?.mine ?? 0, x?.cushion ?? 0, x?.growing ?? 0)));
   const points = (key: Pot) => h.map((x, i) => `${23 + i * 25},${112 - (x?.[key] ?? 0) / max * 91}`).join(' ');
-  return <><svg className="book-game-chart" viewBox="0 0 330 145" role="img" aria-label="Line chart of Mine, Cushion and Growing from January to December">
+  return <><svg className="book-game-chart" viewBox="0 0 360 145" role="img" aria-label="Line chart of Mine, Cushion and Growing from January to December">
     <path d="M22 112H304M22 65H304M22 20H304" className="grid" />
     <text x="2" y="24">{Math.round(max / 1000)}k</text><text x="20" y="133">Jan</text><text x="275" y="133">Dec</text>
     <polyline className="is-mine" points={points('mine')} /><polyline className="is-cushion" points={points('cushion')} /><polyline className="is-growing" points={points('growing')} />
-  </svg><p className="small book-game-legend"><span className="is-mine">Mine</span> · <span className="is-cushion">Cushion</span> · <span className="is-growing">Growing (fictional example)</span></p></>;
+    {/* b2: each line also carries its name at its end, so the pots read apart in greyscale too. */}
+    {(['mine', 'cushion', 'growing'] as const).map(key => { const last = h[11] ?? h.filter(Boolean).at(-1); return last ? <text key={key} className={`end is-${key}`} x="306" y={Math.max(10, Math.min(116, 112 - (last[key] ?? 0) / max * 91 + 3))}>{key === 'mine' ? 'Mine' : key === 'cushion' ? 'Cushion' : 'Growing'}</text> : null; })}
+  </svg><p className="small book-game-legend"><span className="is-mine">━ Mine</span> · <span className="is-cushion">╍ Cushion</span> · <span className="is-growing">┈ Growing (fictional example)</span></p></>;
 }
 
 function ArkadPortrait() {
