@@ -10,7 +10,7 @@ import { shutdownAt } from '../../core/tasks/planner';
 import { isAfterBedtime } from '../../core/time';
 import { tapHaptic } from '../../platform/haptics';
 import type { LedgerRow, SettingRow, TaskRow, LearnDropRow, SessionRow, PuzzleRunRow, DailyLogRow, FocusRow } from '../../data/types';
-import { focusRateFrom, jarActs, jarLineFor, JAR_LINE_MS } from '../../core/yatra/jar';
+import { focusRateFrom, jarActs, jarLineFor, JAR_LINE_MS, questsFrom } from '../../core/yatra/jar';
 import { dailyDropId } from '../learn/dropIds';
 import { reconcileGamify, recordShown } from '../../data/repos/gamify';
 import { todayDotStatus } from './TodayDots';
@@ -117,7 +117,7 @@ export function EconomyFeedback() {
     const motionReduced = reduced();
     // After bedtime nothing celebrates: no buzz, no count-up (economy review 32, F1).
     if (afterBedtime) return;
-    const acts = jarActs(source.facts.filter(row => row.dayKey === today), source.focus, focusRateFrom(source.settings));
+    const acts = jarActs(source.facts.filter(row => row.dayKey === today), source.focus, focusRateFrom(source.settings), questsFrom(source.settings));
     const jarAct = acts.find(row => added.some(fact => fact.id === row.id))
       ?? acts.filter(row => row.kind !== 'focus' && Math.abs(now - row.at) <= JAR_LINE_MS).at(-1);
     const jarId = jarAct ? `${jarAct.id}:${jarAct.at}` : undefined;

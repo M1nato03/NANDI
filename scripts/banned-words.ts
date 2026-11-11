@@ -35,7 +35,7 @@ const claimPhrases = [
   'proven', 'clinically', 'scientifically',
 ];
 const claimPattern = new RegExp(`(?<![\\w-])(?:${claimPhrases.join('|')})(?![\\w-])`, 'gi');
-export const claimScopes = ['src/ui/yatra', 'src/ui/mind', 'src/ui/screens/Mind.tsx', 'content/yatra'];
+export const claimScopes = ['src/ui/yatra', 'src/ui/mind', 'src/ui/screens/Mind.tsx', 'content/yatra', 'content/quests660', 'src/ui/quests660'];
 
 export function findClaims(text: string): { line: number; word: string }[] {
   const hits: { line: number; word: string }[] = [];

@@ -19,7 +19,7 @@ import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { taskFocusMs } from '../../core/tasks/focus';
 import { currentTrail } from '../../data/yatra/trails';
 import { CONSTELLATION_PREFIX, ensureFocusRateFrom, ensureJarFrom, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
-import { focusRateFrom, JAR_FROM_KEY } from '../../core/yatra/jar';
+import { focusRateFrom, JAR_FROM_KEY, questsFrom } from '../../core/yatra/jar';
 import { weatherFor, type Weather } from '../../core/yatra/weather';
 import { JarPlanArea, RealThingsLine } from './JarPlan';
 import { CrewBar } from './Crew';
@@ -62,7 +62,7 @@ export function useYatra(): { trek: Trek; night: boolean; dusk: boolean; weather
     // Spec 54: from jarFrom the trail walks in jar minutes; until it is written (the first run), the old walk.
     const jarFrom = source.settings.find(row => row.key === JAR_FROM_KEY)?.value;
     // Spec 571 stage 2: `now` lets a running focus's earned 3-min steps move the group (never a part step).
-    const trek = deriveTrek(source.facts, trail, read(YATRA_START, today), today, names, typeof jarFrom === 'string' ? { from: jarFrom, focus: source.focus, focusRateFrom: focusRateFrom(source.settings), now } : undefined);
+    const trek = deriveTrek(source.facts, trail, read(YATRA_START, today), today, names, typeof jarFrom === 'string' ? { from: jarFrom, focus: source.focus, focusRateFrom: focusRateFrom(source.settings), questsFrom: questsFrom(source.settings), now } : undefined);
     const phase = phaseAt(now, shutdown, night.bedtime);
     // The planning day turns at 04:00, so the small hours are still tonight.
     const hour = new Date(now).getHours();

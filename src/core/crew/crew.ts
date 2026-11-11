@@ -82,7 +82,7 @@ export function asOfLine(crew: Crew, today: string): string | null {
   return `as of ${crew.members.map(member => `${member.first} ${dayWord(member.date, today)}`).join(', ')}`;
 }
 
-const SOURCE: Record<JarKind, CrewSource> = { train: 'workout', mind: 'puzzle', calm: 'Calm', focus: 'focus', read: 'chapter', lesson: 'lesson', lightsout: 'lights out' };
+const SOURCE: Record<JarKind, CrewSource> = { train: 'workout', mind: 'puzzle', calm: 'Calm', focus: 'focus', read: 'chapter', lesson: 'lesson', lightsout: 'lights out', quest: 'quest' };
 
 /** The minutes not yet sent and whether they reach back before today ("Send your 45 m" vs "Send today's 45 m"). */
 export function unsent(crew: Crew, entries: readonly JarEntry[], today: string): { minutes: number; onlyToday: boolean; top: CrewSource } {

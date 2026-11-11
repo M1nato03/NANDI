@@ -6,7 +6,8 @@
  */
 export const CREW_LINK_VERSION = 1;
 export const CREW_SIZES = [5, 10, 15, 25] as const;
-export const CREW_SOURCES = ['workout', 'focus', 'chapter', 'idea', 'lesson', 'Calm', 'puzzle', 'lights out'] as const;
+// Spec 660: 'quest' is new; an older phone that does not know it only fails to read a link whose top source is a quest.
+export const CREW_SOURCES = ['workout', 'focus', 'chapter', 'idea', 'lesson', 'Calm', 'puzzle', 'lights out', 'quest'] as const;
 export const CREW_MAX = 5;
 export const NAME_MAX = 20;
 export const PLAN_MAX = 60;

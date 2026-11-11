@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { isRightsFile, isTrailFile, loadPackFiles } from './pack-files';
+import { isQuestBoardFile, isRightsFile, isTrailFile, loadPackFiles } from './pack-files';
+import { boardErrors, type BoardPack } from '../src/core/quests660/quests';
 import { validatePack } from '../src/data/packs/validate';
 import { validateSkillTrack, type RightsEntry } from '../src/data/packs/skillTrack';
 import { trailErrors, type Trail } from '../src/core/yatra/trail';
@@ -21,6 +22,11 @@ export async function validateAll(contentDir?: string, options: { allowUnchecked
       continue;
     }
     // Spec 34: a Yatra trail is not a pack; it has its own rules (6-10 places, every postcard sourced).
+    // Spec 660: the Quests board has its own rules (66 quests, tracks without gaps, predictions on track steps only).
+    if (isQuestBoardFile(path)) {
+      for (const error of boardErrors(value as BoardPack)) errors.push(`${path}: ${error}`);
+      continue;
+    }
     if (isTrailFile(path)) {
       for (const error of trailErrors(value as Trail)) errors.push(`${path}: ${error}`);
       continue;

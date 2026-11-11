@@ -66,7 +66,7 @@ export const focusEarned = (climb: Climb) => Math.round((climb.at - climb.settle
 
 const runningFocus = (focus: readonly FocusRow[], now: number) => focus.find(row => !row.deleted && row.endedAt == null && row.startedAt <= now);
 
-export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: string, today: string, names: Readonly<Record<string, string>> = {}, jar?: { from: string; focus: readonly FocusRow[]; focusRateFrom?: string; now?: number }): Trek {
+export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: string, today: string, names: Readonly<Record<string, string>> = {}, jar?: { from: string; focus: readonly FocusRow[]; focusRateFrom?: string; questsFrom?: string; now?: number }): Trek {
   // Before jarFrom (or without a jar): one stretch per session, one place a day.
   const sessions = facts
     .map(fact => ({ fact, kind: sessionKind(fact) }))
@@ -91,7 +91,7 @@ export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: 
     stars.push({ id: fact.id, kind, dayKey: day, leg: starLeg, stretch: walks });
   }
   // From jarFrom: jar minutes, 10 a stretch, at most 60 a day; the minutes left over carry to the next act.
-  const entries = jar ? deriveJar(jarActs(facts, jar.focus, jar.focusRateFrom), jar.from > startDay ? jar.from : startDay, today) : [];
+  const entries = jar ? deriveJar(jarActs(facts, jar.focus, jar.focusRateFrom, jar.questsFrom), jar.from > startDay ? jar.from : startDay, today) : [];
   let carry = 0;
   for (const entry of entries) {
     const legBefore = Math.min(leg, legs.length - 1);
@@ -138,7 +138,7 @@ export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: 
     const now = jar.now;
     // The running focus as if it ended now: the same split, rate, floor and cap as an ended one, so only earned steps count.
     const focus = jar.focus.map(row => row === running ? { ...row, endedAt: now } : row);
-    const live = deriveTrek(facts, trail, startDay, today, names, { from: jar.from, focus, focusRateFrom: jar.focusRateFrom });
+    const live = deriveTrek(facts, trail, startDay, today, names, { from: jar.from, focus, focusRateFrom: jar.focusRateFrom, questsFrom: jar.questsFrom });
     const paused = running.pauses?.some(pause => pause.at <= now && pause.resumeAt == null) ?? false;
     const walking = !paused && !live.complete && today >= jar.from && live.jar.todayMinutes < JAR.dayCap;
     const stepMs = (jar.focusRateFrom !== undefined && today >= jar.focusRateFrom ? JAR.focusRateMinutes : JAR.focusBlockMinutes) * 60_000;

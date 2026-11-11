@@ -2,6 +2,7 @@ import type { FocusRow, LedgerRow, SettingRow } from '../../data/types';
 import { sessionCounts } from '../train/counts';
 import { focusElapsedMs } from '../tasks/focus';
 import { dayKey } from '../time/dayKey';
+import { paysJar, questJarMinutes, QUEST_KIND, QUESTS_FROM_KEY, wrappedDoorIds } from '../quests660/quests';
 
 /**
  * Spec 54: the jar is the Yatra trail filling from real things, in minutes. A Train session, a Mind board or case and a
@@ -12,7 +13,7 @@ import { dayKey } from '../time/dayKey';
  * stars. All derived: nothing is stored but the day the jar started (jarFrom) and the open plan.
  */
 export type SessionKind = 'train' | 'mind' | 'calm';
-export type JarKind = SessionKind | 'focus' | 'read' | 'lesson' | 'lightsout';
+export type JarKind = SessionKind | 'focus' | 'read' | 'lesson' | 'lightsout' | 'quest';
 
 export const JAR = { stretchMinutes: 10, dayCap: 60, session: 10, focusBlockMinutes: 30, focusBlock: 5, focusRateMinutes: 3, read: 5, lesson: 5, lightsOut: 10 } as const;
 /** The first planning day walked in jar minutes; earlier days keep the rule they were walked by (forward only). */
@@ -35,6 +36,12 @@ export function focusRateFrom(settings: readonly SettingRow[]): string | undefin
   return typeof value === 'string' ? value : undefined;
 }
 
+/** Spec 660: the first day a finished quest fills the jar (economy.v12From), or undefined until it is written. */
+export function questsFrom(settings: readonly SettingRow[]): string | undefined {
+  const value = settings.find(row => row.key === QUESTS_FROM_KEY && !row.deleted)?.value;
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : undefined;
+}
+
 export function sessionKind(fact: LedgerRow): SessionKind | null {
   if (fact.deleted) return null;
   if (fact.mode === 'train' && fact.kind === 'session') return sessionCounts(fact.inputs ?? {}) ? 'train' : null;
@@ -44,12 +51,12 @@ export function sessionKind(fact: LedgerRow): SessionKind | null {
 }
 
 /** Ledger kinds the jar reads (an indexed query): the sessions, the reads and lessons, and lights out. */
-export const JAR_KINDS = ['session', 'board', 'mystery', 'chapter', 'idea', 'lesson', 'lightsout'];
+export const JAR_KINDS = ['session', 'board', 'mystery', 'chapter', 'idea', 'lesson', 'lightsout', QUEST_KIND.done];
 
 export interface JarAct { id: string; kind: JarKind; dayKey: string; minutes: number; at: number; label: string }
 
 /** The finish line's words for each act ("+5 min into the jar · chapter done"). */
-const LABEL: Record<string, string> = { train: 'workout done', mind: 'puzzle solved', calm: 'Calm sat', focus: 'focus', chapter: 'chapter done', idea: 'idea read', lesson: 'lesson done', lightsout: 'lights out on time' };
+const LABEL: Record<string, string> = { train: 'workout done', mind: 'puzzle solved', calm: 'Calm sat', focus: 'focus', chapter: 'chapter done', idea: 'idea read', lesson: 'lesson done', lightsout: 'lights out on time', quest: 'quest done' };
 
 function factAct(fact: LedgerRow): JarAct | null {
   if (fact.deleted) return null;
@@ -90,9 +97,16 @@ function focusActs(focus: readonly FocusRow[], rateFrom?: string): JarAct[] {
     minutes: focusJarMinutes(ms, day, rateFrom) })).filter(act => act.minutes > 0);
 }
 
-/** Every act that can fill the jar, in the order they happened (day, then time, then id). `focusRateFrom`: spec 571 E1. */
-export function jarActs(facts: readonly LedgerRow[], focus: readonly FocusRow[], focusRateFrom?: string): JarAct[] {
-  return [...facts.map(factAct).filter((act): act is JarAct => act !== null), ...focusActs(focus, focusRateFrom)]
+/**
+ * Every act that can fill the jar, in the order they happened (day, then time, then id). `focusRateFrom`: spec 571 E1.
+ * `questsFrom` (spec 660, economy.v12From): a finished quest adds +5/+10 from that day; a door act a quest wraps is
+ * dropped so the pair pays the quest's minutes once. Before the cutoff (or without it) the acts are exactly as before.
+ */
+export function jarActs(facts: readonly LedgerRow[], focus: readonly FocusRow[], focusRateFrom?: string, questsFrom?: string): JarAct[] {
+  const wrapped = wrappedDoorIds(facts, questsFrom);
+  const quests = facts.filter(fact => paysJar(fact, questsFrom)).map((fact): JarAct => ({ id: fact.id, kind: 'quest', dayKey: fact.dayKey, at: fact.updatedAt,
+    minutes: questJarMinutes(typeof fact.inputs.minutes === 'number' ? fact.inputs.minutes : 5), label: LABEL.quest! }));
+  return [...facts.map(factAct).filter((act): act is JarAct => act !== null && !wrapped.has(act.id)), ...quests, ...focusActs(focus, focusRateFrom)]
     .sort((a, b) => a.dayKey.localeCompare(b.dayKey) || a.at - b.at || a.id.localeCompare(b.id));
 }
 
@@ -130,7 +144,7 @@ export const JAR_LINE_MS = 10_000;
 export function jarLineFor(rows: { facts: readonly LedgerRow[]; settings: readonly SettingRow[]; focus: readonly FocusRow[] }, today: string, now: number, added: readonly LedgerRow[]): string | undefined {
   const from = rows.settings.find(row => row.key === JAR_FROM_KEY && !row.deleted)?.value;
   if (typeof from !== 'string') return undefined;
-  const entries = deriveJar(jarActs(rows.facts.filter(row => row.dayKey === today), rows.focus, focusRateFrom(rows.settings)), from, today);
+  const entries = deriveJar(jarActs(rows.facts.filter(row => row.dayKey === today), rows.focus, focusRateFrom(rows.settings), questsFrom(rows.settings)), from, today);
   const entry = entries.find(row => added.some(fact => fact.id === row.id)) ?? entries.filter(row => row.kind !== 'focus' && row.at >= now - JAR_LINE_MS && row.at <= now + JAR_LINE_MS).at(-1);
   return jarFinishLine(entry, jarDay(entries, today).capped) ?? undefined;
 }
