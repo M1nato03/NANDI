@@ -52,6 +52,19 @@ async function cutOff(page: Page): Promise<string[]> {
         for (const r of range.getClientRects()) if (r.right > friend.left + 1 && r.left < friend.right - 1 && r.bottom > friend.top + 1 && r.top < friend.bottom - 1) { out.push(`${name(text)}: runs under the friend`); break; }
       }
     }
+    // b2 11 Nov: the Library shelf's captions at large text: none wider than its box, no two overlapping.
+    const captions = [...document.querySelectorAll<HTMLElement>('.read-book-tile .read-book-title')].filter(node => node.checkVisibility());
+    for (const caption of captions) if (caption.scrollWidth > caption.clientWidth + 1) out.push(`${name(caption)}: wider than its tile (${caption.scrollWidth} > ${caption.clientWidth})`);
+    const boxes = captions.map(caption => caption.getBoundingClientRect());
+    for (let a = 0; a < boxes.length; a++) for (let b = a + 1; b < boxes.length; b++) {
+      const p = boxes[a]!, q = boxes[b]!;
+      if (p.left < q.right - 1 && q.left < p.right - 1 && p.top < q.bottom - 1 && q.top < p.bottom - 1) out.push(`${name(captions[a]!)} overlaps ${name(captions[b]!)}`);
+    }
+    // a9 11 Nov: Calm's sound chips wrap at large text: none runs past its fieldset's right edge.
+    for (const set of document.querySelectorAll<HTMLElement>('.calm-set')) {
+      const edge = set.getBoundingClientRect().right;
+      for (const chip of set.querySelectorAll<HTMLElement>('.calm-sounds button')) if (chip.checkVisibility() && chip.getBoundingClientRect().right > edge + 1) out.push(`${name(chip)}: past its row's edge (${chip.getBoundingClientRect().right.toFixed(0)} > ${edge.toFixed(0)})`);
+    }
     // A form control's value cut short (stage 3 shots: "2:" for 22:00, "Sur" for Sunday): the control narrower than
     // what its shown value needs (the shown option, or the full time with its clock).
     for (const control of document.querySelectorAll<HTMLInputElement | HTMLSelectElement>('select, input[type="time"]')) {

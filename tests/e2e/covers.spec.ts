@@ -99,7 +99,9 @@ test('Library: at 200% every tile shows its title as live text under the cover; 
     expect(tile.visible, `${tile.text} visible`).toBe(true);
     expect(tile.label?.startsWith(`${tile.text} · `), `${tile.text} matches the tile's full title`).toBe(true);
     expect(tile.px, `${tile.text} at least 2x the cover title`).toBeGreaterThanOrEqual(2 * coverPx - 0.5);
-    expect(tile.lines, `${tile.text} at most 2 lines`).toBeLessThanOrEqual(2);
+    // b2/a9 11 Nov (stage 3): no clamp any more; the caption shows the whole title (tab-tops-200 checks no caption is
+    // wider than its tile and none overlap), so it only has to have at least one line.
+    expect(tile.lines, `${tile.text} shows`).toBeGreaterThanOrEqual(1);
     expect(tile.underCover && tile.aboveCount && tile.clearOfNext, `${tile.text} under the cover, above the count, clear of the next tile`).toBe(true);
   }
   // b2 (gate-rem3 report): a tile cut at the right edge is the shelf row's own sideways scroll, never the page's.

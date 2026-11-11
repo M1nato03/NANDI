@@ -46,8 +46,9 @@
 .calm-row.calm-lengths { flex-wrap: wrap; margin: 0; padding: 0 0 4px; overflow: visible; }
 /* Stage 3 (a9): at large text the sounds wrap like the lengths ("Rain" was cut at the edge at 200%); at 100% they stay
    one sliding row, so the setup still fits one screen. The container query reads rem from the reader's text size. */
-.calm-set { container-type: inline-size; }
-@container (max-width: 16rem) { .calm-row.calm-sounds { flex-wrap: wrap; margin: 0; padding: 0 0 4px; overflow: visible; } }
+/* (a fieldset does not take container-type, so the query is on the screen; a9 caught it.) */
+.calm-screen { container: calm-screen / inline-size; }
+@container calm-screen (max-width: 18rem) { .calm-row.calm-sounds { flex-wrap: wrap; margin: 0; padding: 0 0 4px; overflow: visible; } }
 .calm-start-bar { position: sticky; bottom: calc(var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) + 8px); /* stage 3: clears the bar as it grows */ z-index: 4; margin: 12px -16px 0; padding: 8px 16px 6px; background: color-mix(in srgb, var(--bg) 88%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 .calm-start-bar .calm-start { width: 100%; }
 .calm-under { margin: 4px 0 0; text-align: center; color: var(--ink-2); }

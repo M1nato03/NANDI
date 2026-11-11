@@ -31,6 +31,14 @@
 .read-continue-text p { margin: 0; }
 .read-continue > button, .read-continue .read-night-note { grid-column: 2; justify-self: start; min-height: 44px; }
 .read-continue .read-empty { grid-column: 1 / -1; margin: 0; }
+/* Stage 3 (a9): at large text (the screen under 20rem) the card is one column, cover above the text, so "UP NEXT"
+   starts at the card's edge; at 100% the cover sits beside the text as before. */
+.read-screen { container: read-screen / inline-size; }
+@container read-screen (max-width: 20rem) {
+  .read-continue { grid-template-columns: minmax(0, 1fr); }
+  .read-continue .book-cover { grid-row: auto; }
+  .read-continue > button, .read-continue .read-night-note { grid-column: 1; }
+}
 
 .read-library { margin: 24px 0 8px; }
 .read-library > h2 { margin: 0 0 4px; }
@@ -45,7 +53,10 @@
 /* Stage 3 (b2/a9 11 Nov): no clamp: the caption is the only title that grows (the cover is a picture), so it shows in
    full and the row grows to the tallest one. */
 .read-library.large-text .read-book-tile .read-book-title { display: block;
-  overflow-wrap: break-word; font: 600 .9375rem/1.2 'DM Sans', sans-serif; color: var(--ink); }
+  overflow-wrap: normal; font: 600 .9375rem/1.2 'DM Sans', sans-serif; color: var(--ink); }
+/* b2 11 Nov: no word breaks; at large text a tile is as wide as its cover or its longest caption word, whichever is
+   wider ("Influence" ran into the next caption); the shelf scrolls sideways. */
+.read-library.large-text .read-book-tile { width: min-content; min-width: 112px; }
 
 .read-book-head { display: flex; gap: 16px; align-items: flex-end; margin: 8px 0 12px; }
 .read-book-head h1 { margin: 0 0 6px; font-size: 1.75rem; line-height: 1.875rem; overflow-wrap: anywhere; }
