@@ -1,4 +1,5 @@
 import { RULES, RULES_HISTORY, rulesFor, type RulesHistoryEntry } from '../rules.config';
+import { BOOK_GAME_SIGN_XP } from '../bookGame/award';
 import { calculateTasksDayXp, replayFactShards, replayFactXp } from './awards';
 import { boardPay, calmDayXp, chapterPay, chhuttiXp, focusDayXp, pauseDayXp, readingPay } from './effort';
 
@@ -507,6 +508,10 @@ function replayEconomy(
   // Spec 571 §0.20 (rings): Mind "any two" and the night window on every slot, from the day this build first runs.
   const v10Stored = value(settings, 'economy.v10From');
   const v10From = typeof v10Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v10Stored) ? v10Stored : '9999-12-31';
+  // Spec 40 (flag bookGame.signXp, off by default): a book game's sign month pays from economy.v11From only, set the
+  // first time a fact is written, so nothing is ever paid backwards. With the flag off no such fact exists.
+  const v11Stored = value(settings, 'economy.v11From');
+  const v11From = typeof v11Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v11Stored) ? v11Stored : '9999-12-31';
   const unpaidQuests = customQuestPay(ordered, v4From, history).unpaid;
   // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
   const restWeekdayFor = (key: string): number | undefined => {
@@ -564,7 +569,8 @@ function replayEconomy(
       count('chiku', Number.MAX_SAFE_INTEGER, rules.mind.chikuXp ?? 0) +
       Math.min(cards.length, rules.mind.cardsMaxPerDay) * rules.mind.cardXp +
       mindRows.filter(row => row.kind === 'board' && row.inputs.daily === false).slice(0, rules.mind.sideBoardsMaxPerDay).reduce((sum, row) => sum + board(row, rules.mind.sideBoardXp), 0) +
-      (learnDrop && !dropWasChapter ? rules.mind.learnDropXp : 0) + (perfectBeforeBed ? rows.filter(row => row.mode === 'gamify' && row.kind === 'perfect-drop').reduce((sum, row) => sum + replayFactXp(row, history), 0) : 0));
+      (learnDrop && !dropWasChapter ? rules.mind.learnDropXp : 0) + (perfectBeforeBed ? rows.filter(row => row.mode === 'gamify' && row.kind === 'perfect-drop').reduce((sum, row) => sum + replayFactXp(row, history), 0) : 0) +
+      (key >= v11From ? rows.filter(row => row.mode === 'read' && row.kind === 'book-game' && beforeBed(row)).length * BOOK_GAME_SIGN_XP : 0));
     const { body, mindSlot, hatTrick } = slots;
     const lightsOut = rows.some(row => row.kind === 'lightsout' && row.inputs.metTarget === true && row.inputs.backfill !== true) ? rules.bonuses.lightsOutXp : 0;
     const quests = rows.filter(row => row.mode === 'quests' && row.kind === 'quest' && !unpaidQuests.has(row.id)).reduce((sum, row) => sum + replayFactXp(row, history), 0);

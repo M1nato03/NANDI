@@ -138,7 +138,7 @@ export function migrateEnvelope(
   // Spec 40: a backup from before the book game restores with an empty game state.
   if (dexie?.data && dexie.data.databaseVersion < 7) {
     if (!dexie.data.tables.some(table => table.name === 'bookGameStates')) {
-      dexie.data.tables.push({ name: 'bookGameStates', schema: 'bookId', rowCount: 0 });
+      dexie.data.tables.push({ name: 'bookGameStates', schema: 'id', rowCount: 0 });
       dexie.data.data.push({ tableName: 'bookGameStates', inbound: true, rows: [] });
     }
     dexie.data.databaseVersion = 7;

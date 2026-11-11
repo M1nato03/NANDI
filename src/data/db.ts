@@ -168,7 +168,7 @@ export class NandiDb extends Dexie {
       phoneUsageMinutes: 'id, dayKey, packageName',
       skillAttempts: 'id, trackId, lessonId, dayKey, status, retryDue',
       notebookPages: 'id, trackId, createdAt', notebookVersions: 'id, pageId, createdAt',
-      bookGameStates: 'bookId',
+      bookGameStates: 'id',
     });
   }
 }

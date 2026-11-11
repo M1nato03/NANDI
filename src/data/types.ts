@@ -381,10 +381,11 @@ export interface NotebookPageRow extends EntityRow {
 }
 
 /**
- * Spec 40: one book game's saved year (key = bookId; only Babylon has one). `state` is the engine's ArkadState, kept as
+ * Spec 40: one book game's saved year (id = bookId; only Babylon has one). `state` is the engine's ArkadState, kept as
  * plain data; `contentVersion` is the game's, so a later content change can be detected and handled.
  */
-export interface BookGameStateRow extends RowMeta {
+export interface BookGameStateRow extends EntityRow {
+  /** = id (one row per book); kept by name for readability. */
   bookId: string;
   gameId: string;
   contentVersion: number;

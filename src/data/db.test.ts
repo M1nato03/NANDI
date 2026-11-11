@@ -60,7 +60,7 @@ describe('Dexie v3', () => {
     await db.open();
     expect(db.tables.map((table) => table.name).sort()).toEqual(Object.keys(indexes).sort());
     for (const table of db.tables) {
-      const primaryKey = table.name === 'dailyLog' ? 'dayKey' : table.name === 'settings' ? 'key' : table.name === 'bookGameStates' ? 'bookId' : 'id';
+      const primaryKey = table.name === 'dailyLog' ? 'dayKey' : table.name === 'settings' ? 'key' : 'id';
       expect(table.schema.primKey.name).toBe(primaryKey);
       expect(table.schema.indexes.map((index) => index.name)).toEqual(indexes[table.name]);
     }
