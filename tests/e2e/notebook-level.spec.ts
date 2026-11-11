@@ -22,7 +22,7 @@ async function finishATask(page: Page, title: string) {
 }
 const xpInAll = async (page: Page) => {
   await page.goto('/#you');
-  return Number((await page.getByText(/^[\d,]+ XP in all$/).innerText()).replace(/[^\d]/g, ''));
+  return Number((await page.getByText(/^[\d,]+\sXP in all$/).innerText()).replace(/[^\d]/g, ''));
 };
 
 test('a level rise is one level page: the friends, the lantern, Continue; it pays nothing and Plan stays', async ({ page }) => {
