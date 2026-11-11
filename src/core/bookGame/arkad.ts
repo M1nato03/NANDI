@@ -54,6 +54,8 @@ export type Pot = 'mine' | 'cushion' | 'growing';
 export interface LedgerEntry { month: number; pot: Pot | 'debt'; delta: number; label: string }
 export interface HistoryPoint { mine: number; cushion: number; growing: number; debt: number; net: number }
 export type Phase = 'teach' | 'play' | 'result' | 'end';
+/** A month's result, saved once when it ends, so the month reopens read-only exactly as it was. */
+export interface MonthResult { text: string; stamp: string; lesson: string; habit: string; before: number; after: number; moves: LedgerEntry[] }
 export interface ArkadState {
   month: number; phase: Phase; goal: number | null;
   pots: Record<Pot, number>; debt: number; split: number; pendingSplit: number;
@@ -61,13 +63,14 @@ export interface ArkadState {
   invested: boolean; skippedGrowthPotential: boolean; lent: boolean; phone: boolean; course: boolean; festival: number;
   history: (HistoryPoint | null)[]; ledger: LedgerEntry[]; last: LedgerEntry[];
   lastText: string; lastStamp: string; lastHabit: string; lastLesson: string; lastBefore: number; lastAfter: number;
+  results: Record<number, MonthResult>;
 }
 
 export const fresh = (): ArkadState => ({
   month: 0, phase: 'teach', goal: null, pots: { mine: 0, cushion: 0, growing: 0 }, debt: 0, split: 2, pendingSplit: 2,
   credited: Array(12).fill(false), found: {}, subs: [false, false, false, false], invested: false, skippedGrowthPotential: false,
   lent: false, phone: false, course: false, festival: 2500, history: [], ledger: [], last: [],
-  lastText: '', lastStamp: '', lastHabit: '', lastLesson: '', lastBefore: 0, lastAfter: 0,
+  lastText: '', lastStamp: '', lastHabit: '', lastLesson: '', lastBefore: 0, lastAfter: 0, results: {},
 });
 
 export const net = (s: ArkadState) => s.pots.mine + s.pots.cushion + s.pots.growing - s.debt;
@@ -102,6 +105,7 @@ function charge(s: ArkadState, amount: number, label: string, priority: readonly
 function finish(s: ArkadState, text: string, stamp: string, lesson: string, habit: string): ArkadState {
   s.lastAfter = net(s); s.lastText = text; s.lastStamp = stamp; s.lastLesson = lesson; s.lastHabit = habit;
   s.history[s.month] = { mine: s.pots.mine, cushion: s.pots.cushion, growing: s.pots.growing, debt: s.debt, net: net(s) };
+  s.results = { ...(s.results ?? {}), [s.month]: { text, stamp, lesson, habit, before: s.lastBefore, after: s.lastAfter, moves: [...s.last] } };
   s.phase = 'result';
   return s;
 }

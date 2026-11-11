@@ -179,3 +179,14 @@ describe('spec 571 stage 2: the alias table (tabs Courtyard · Yatra · Grow · 
     expect(route()).toBe('courtyard');
   });
 });
+
+describe('spec 40: the book game route', () => {
+  it('read/game/… is its own route, never caught by the read/games → Play redirect; Back goes to the book', () => {
+    expect(canonicalRoute('#read/game/richest-man-in-babylon')).toBe('grow/read/game/richest-man-in-babylon');
+    expect(canonicalRoute('#grow/read/game/richest-man-in-babylon/mar')).toBe('grow/read/game/richest-man-in-babylon/mar');
+    expect(canonicalRoute('#read/games')).not.toContain('read/game/');
+    expect(screenKey('grow/read/game/richest-man-in-babylon')).toBe('read/game/richest-man-in-babylon');
+    expect(parentRoute('grow/read/game/richest-man-in-babylon')).toBe('grow/read/book/richest-man-in-babylon');
+    expect(tabOf('grow/read/game/richest-man-in-babylon')).toBe(tabOf('grow/read'));
+  });
+});

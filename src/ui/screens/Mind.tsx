@@ -509,6 +509,8 @@ export function Mind({ entry }: { entry?: string }) {
       <p className="small">A short mystery: read the clues, find who did it.</p>
       <button type="button" className={caseDone ? 'secondary' : undefined} disabled={!caseReady} onClick={() => go('mind/case')}>{caseDone ? 'Done · see it again' : caseRun ? 'Continue the case' : 'Open the case'}</button></section>
     {/* Spec 29: Kapi's shelf, the boards Mind already has, each with a plain line and a how-to the first time. */}
+    {/* Spec 40 (E11): the book game's one line on Play; its home is the Babylon book page. */}
+    <button type="button" className="text-button book-game-play-link" data-testid="book-game-play-link" onClick={() => go('grow/read/game/richest-man-in-babylon')}>Your first year · a money game in The Richest Man in Babylon</button>
     <section className="mind-shelf" aria-label="Kapi's shelf"><h2>Today's boards</h2><p className="small">One board of each a day, and two more if you want them.</p>
       <ul>{SHELF.map(item => {
         const solved = shelfSolvedToday(item.type, puzzleRuns, today);

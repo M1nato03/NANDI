@@ -54,6 +54,7 @@ import { takeLaunchLink } from '../../platform/links';
 import { useWelcomeNeeded, Welcome } from '../welcome/Welcome';
 
 const Grow = lazy(() => import('../grow/Grow').then(module => ({ default: module.Grow })));
+const BookGameScreen = lazy(() => import('../bookGame/BookGame').then(module => ({ default: module.BookGameScreen })));
 const SleepDoor = lazy(() => import('../grow/SleepDoor').then(module => ({ default: module.SleepDoor })));
 const CrewScreen = lazy(() => import('../yatra/Crew').then(module => ({ default: module.CrewScreen })));
 const CrewLinkScreen = lazy(() => import('../yatra/Crew').then(module => ({ default: module.CrewLinkScreen })));
@@ -306,6 +307,8 @@ export function AppShell() {
   // Spec 33: Read (books, chapters, the old drop) and its Games (Kapi's shelf, the old Mind).
   else if (key === 'read' || key === 'read/drop') screen = <Learn entry={key.split('/')[1]} />;
   else if (/^read\/book\/[a-z0-9-]+$/.test(key)) screen = <Learn key={key} entry="book" book={key.split('/')[2]} />;
+  // Spec 40: the book game, and a deep link to one of its months (read-only once played, a plain line while locked).
+  else if (/^read\/game\/[a-z0-9-]+(\/[a-z]{3})?$/.test(key)) screen = <BookGameScreen key={key} bookId={key.split('/')[2]!} month={key.split('/')[3]} />;
   else if (/^read\/chapter\/[a-z0-9-]+\/[a-z0-9-]+$/.test(key)) screen = <Chapter key={key} topicId={key.split('/')[2]!} moduleId={key.split('/')[3]!} />;
   else if (/^read\/check\/[a-z0-9-]+\/[a-z0-9-]+$/.test(key)) screen = <BookCheck key={key} topicId={key.split('/')[2]!} moduleId={key.split('/')[3]!} />;
   else if (key === 'read/lesson' || key === 'read/unit' || key === 'read/courses') screen = <Mind key={key} entry={key.split('/')[1]} />;

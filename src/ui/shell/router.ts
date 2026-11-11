@@ -87,6 +87,8 @@ function oldParent(path: string): string {
   if (path.startsWith('read/chapter/')) return `read/book/${path.split('/')[2]}`;
   // Spec 571 stage 2 (row 85): a Book check lives on its book, so Back lands on the book.
   if (path.startsWith('read/check/')) return `read/book/${path.split('/')[2]}`;
+  // Spec 40: the book game's Back goes to its book.
+  if (path.startsWith('read/game/')) return `read/book/${path.split('/')[2]}`;
   if (path.startsWith('you/story/')) return 'you/stories';
   if (path === 'you/backup' || path === 'you/night' || path === 'you/cast' || path === 'you/owner') return 'you/settings';
   const root = path.split('/')[0];

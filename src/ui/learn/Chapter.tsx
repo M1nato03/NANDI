@@ -17,6 +17,8 @@ import { Haveli } from './Haveli';
 import { ChikuStage } from './ChikuStage';
 import { Cast } from '../cast/Cast';
 import { go } from '../shell/router';
+import { BOOK_GAMES, chaptersDone, newMonthsAt } from '../../core/bookGame/unlocks';
+import { MONTHS } from '../../core/bookGame/arkad';
 import './read.css';
 
 const currentTime = () => Date.now();
@@ -119,6 +121,11 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
       {finishedBook ? <><p className="eyebrow">Book finished</p><h1>You finished {title}.</h1></> : <><p className="eyebrow">Chapter {index + 1} done</p><h1>{module.title}</h1></>}
       {(() => { const line = chapterLine(data.ledger, chapterRef(topicId, moduleId)); return line ? <p className="read-earned">{line}</p> : null; })()}
       <p className="read-takeaway">{finishedBook ? `${pack.body.modules.length} chapters and ${pack.body.modules.reduce((sum, row) => sum + row.concepts.length, 0)} ideas, read.` : chapterTakeaway(module)}</p>
+      {/* Spec 40 (E11): a link to the book's game when this chapter opened new months (the fact is committed by now). */}
+      {BOOK_GAMES[topicId] && (() => {
+        const months = newMonthsAt(chaptersDone(BOOK_GAMES[topicId]!, new Set(data.ledger.filter(row => row.kind === 'chapter' && !row.deleted).map(row => row.refId))));
+        return months.length ? <button type="button" className="text-button book-game-months-link" data-testid="book-game-months-link" onClick={() => go(`grow/read/game/${topicId}`)}>New months in Your first year: {months.map(month => MONTHS[month]).join(', ')}</button> : null;
+      })()}
       {!finishedBook && following && <button type="button" onClick={() => go(`read/chapter/${topicId}/${following.id}`)}>Next chapter</button>}
       {finishedBook && nextBook && <button type="button" onClick={() => go(`read/book/${nextBook.body.topic.id}`)}>Next book: {bookTitle(nextBook)}</button>}
       <button type="button" className="secondary" onClick={() => go('read')}>Back to library</button>

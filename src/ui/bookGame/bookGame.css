@@ -1,0 +1,58 @@
+/* Spec 40 "Your first year": the app's tokens and fonts only (no prototype palette); moves pinned in the thumb zone. */
+.book-game { padding-bottom: 8px; }
+.book-game h1 { margin-bottom: 8px; }
+.book-game .card { margin: 10px 0; }
+.book-game-pots { display: grid; grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr)); gap: 6px; margin: 8px 0; }
+.book-game-pot { display: grid; gap: 1px; padding: 8px 10px; border-radius: var(--radius-row, 12px); background: var(--surface-2); }
+.book-game-pot span, .book-game-pot small { color: var(--ink-3); font-size: .75rem; }
+.book-game-pot strong { font-size: 1rem; }
+.book-game-pot.is-debt strong { color: var(--danger, #b3412f); }
+.book-game-cure { margin: 6px 0; padding: 10px 12px; border-left: 4px solid var(--accent); border-radius: 8px; background: var(--surface-2); font-size: .875rem; line-height: 1.35; }
+.book-game-scene-head { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; color: var(--ink-3); font-size: .8125rem; font-weight: 700; }
+.book-game-message { margin: 0; line-height: 1.6; }
+.book-game-phrase { display: inline; min-height: 0; min-width: 0; margin: 0; padding: 0 1px; border: 0; border-bottom: 2px dotted var(--ink-3); border-radius: 0; background: none; box-shadow: none; color: inherit; font: inherit; text-align: left; }
+.book-game-phrase.is-red { border-bottom: 2px solid var(--danger, #b3412f); }
+.book-game-phrase.is-green { border-bottom: 2px solid var(--teal, #2f7f6a); }
+.book-game-phrase.is-grey { border-bottom: 2px solid var(--ink-3); }
+.book-game-tag { color: var(--ink-2); font-size: .8125rem; font-weight: 700; }
+.book-game-hint { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+.book-game-hint svg { flex: none; }
+.book-game-chips, .book-game-goals, .book-game-experts { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.book-game-chips button { display: grid; justify-items: center; min-width: 4.5rem; }
+.book-game-chips small { font-size: .75rem; opacity: .8; }
+.book-game-goals button { display: grid; justify-items: start; flex: 1 1 9rem; text-align: left; }
+.book-game-goals span { font-size: .8125rem; opacity: .85; }
+.book-game-subs { display: grid; gap: 8px; margin: 8px 0; padding: 0; list-style: none; }
+.book-game-subs button { display: flex; justify-content: space-between; width: 100%; touch-action: pan-y; }
+.book-game-subs button.is-off { opacity: .6; text-decoration: line-through; }
+.book-game-arkad { display: flex; gap: 12px; align-items: flex-start; }
+.book-game-portrait { flex: none; width: 64px; height: 76px; }
+.book-game-rule { margin: 8px 0 0; font-weight: 700; }
+.book-game-goal { margin: 10px 0; font-size: .875rem; }
+.book-game-goal > div:first-child { display: flex; justify-content: space-between; gap: 8px; }
+.book-game-bar { height: 8px; margin-top: 4px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
+.book-game-bar i { display: block; height: 100%; background: var(--accent); }
+.book-game-stamp { display: inline-block; padding: 2px 8px; border-radius: 6px; background: var(--surface-3); font-size: .75rem; font-weight: 800; letter-spacing: .04em; }
+.book-game-stamp.is-warn { background: color-mix(in srgb, var(--danger, #b3412f) 18%, var(--surface-2)); }
+.book-game-delta { margin: 6px 0 2px; font: 800 1.5rem/1.2 'Bricolage Grotesque', sans-serif; }
+.book-game-net { margin: 4px 0; font-weight: 700; }
+.book-game-ledger { display: grid; gap: 4px; margin: 8px 0; padding: 0; list-style: none; font-size: .875rem; }
+.book-game-ledger li { display: flex; justify-content: space-between; gap: 8px; }
+.book-game-lesson { margin: 0 0 4px; font-weight: 700; }
+.book-game-compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr)); gap: 8px; margin: 10px 0; }
+.book-game-compare > div { display: grid; gap: 2px; padding: 10px; border-radius: 12px; background: var(--surface-2); font-size: .8125rem; }
+.book-game-compare strong { font-size: 1.0625rem; }
+.book-game-chart { width: 100%; height: auto; }
+.book-game-chart .grid { stroke: var(--line); stroke-width: 1; }
+.book-game-chart text { fill: var(--ink-3); font-size: 10px; }
+.book-game-chart polyline { fill: none; stroke-width: 3; stroke-linejoin: round; }
+.book-game-chart .is-mine, .book-game-legend .is-mine { stroke: var(--accent); color: var(--accent-ink); }
+.book-game-chart .is-cushion, .book-game-legend .is-cushion { stroke: var(--teal, #2f7f6a); color: var(--teal, #2f7f6a); }
+.book-game-chart .is-growing, .book-game-legend .is-growing { stroke: var(--area-think, #6657a6); color: var(--area-think, #6657a6); }
+.book-game-note { color: var(--ink-3); }
+.book-game-lock { margin: 8px 0; font-weight: 600; }
+.book-game-answer { margin: 8px 0; }
+.book-game-actions { position: sticky; bottom: calc(var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) + 8px); z-index: 3; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px -16px 0; padding: 10px 16px; background: var(--bg); box-shadow: 0 -8px 16px -12px rgba(0,0,0,.25); }
+.book-game-actions > button { flex: 1 1 8rem; }
+.book-game-card { display: grid; gap: 2px; width: 100%; margin: 12px 0; text-align: left; }
+@media (prefers-reduced-motion: reduce) { .book-game * { animation: none !important; transition: none !important; } }

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { BookGameCard } from '../bookGame/BookGame';
 import { LARGE_TEXT_ROOT_PX, useRootPx } from '../shell/useRootPx';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { minutesLabel } from '../../core/units';
@@ -210,6 +211,8 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
     return <section className="screen learn-screen read-book-page">
       <div className="read-book-head"><Cover pack={pack} size="large" /><div><h1>{bookTitle(pack)}</h1><p>{book?.author ?? 'NANDI'}{book?.year ? ` · ${book.year}` : ''}</p></div></div>
       {book && <p className="read-blurb">{book.blurb}</p>}
+      {/* Spec 40: the book game's one home, above the chapter list. */}
+      <BookGameCard bookId={topicId} />
       <p className="small">{pack.body.modules.length} chapters · {minutesLabel(bookMinutes(pack))}</p>
       {book?.rights === 'public-domain' && <p className="small read-rights">Based on the {book.year ?? ''} edition, free to use in India</p>}
       {book?.rights === 'private' && <p className="small read-rights">Private copy on this phone</p>}
