@@ -111,15 +111,29 @@ function Teach({ state, onGoal, footer }: { state: ArkadState; onGoal: (goal: nu
  * a9/b2 12 Nov: a picks list that scrolls inside the capped footer must read as scrollable, so the row it cuts shows at
  * least half of itself (under the fade). The footer's flex sizing picks the list's height; when that height would cut a
  * row with less than 45% showing, the list is shortened to end halfway through the row above it instead.
+ * While the list has more below (it overflows and is not scrolled to its end) it carries data-more, which paints a
+ * static fade on its last visible row (b2: set from JS, not a scroll-driven animation, which older WebViews and
+ * reduced motion both drop).
  */
 function usePeekingPicks(section: React.RefObject<HTMLElement | null>, key: unknown) {
   useLayoutEffect(() => {
     const root = section.current;
     if (!root) return;
+    let watched: HTMLElement | null = null;
+    const more = () => {
+      if (!watched) return;
+      const hasMore = watched.scrollHeight > watched.clientHeight + 1 && watched.scrollTop + watched.clientHeight < watched.scrollHeight - 2;
+      if (hasMore) watched.dataset.more = ''; else delete watched.dataset.more;
+    };
     const fit = () => {
       const list = root.querySelector<HTMLElement>('.book-game-picks > .book-game-chips, .book-game-picks > .book-game-subs');
+      if (list !== watched) { watched?.removeEventListener('scroll', more); watched = list; list?.addEventListener('scroll', more, { passive: true }); }
       if (!list) return;
       list.style.maxHeight = '';
+      fitHeight(list);
+      more();
+    };
+    const fitHeight = (list: HTMLElement) => {
       const height = list.clientHeight;
       if (list.scrollHeight <= height + 1) return;
       const top = list.getBoundingClientRect().top - list.scrollTop;
@@ -139,7 +153,7 @@ function usePeekingPicks(section: React.RefObject<HTMLElement | null>, key: unkn
     fit();
     const observer = new ResizeObserver(fit);
     observer.observe(root);
-    return () => observer.disconnect();
+    return () => { observer.disconnect(); watched?.removeEventListener('scroll', more); };
   }, [section, key]);
 }
 

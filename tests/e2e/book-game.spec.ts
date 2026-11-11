@@ -64,6 +64,20 @@ async function movesInView(page: Page) {
     return cut ? (l.bottom - cut.top) / cut.height : 0;
   }));
   for (const peek of peeks) expect(peek, 'the cut row shows at least 40%').toBeGreaterThanOrEqual(0.4);
+  // b2 12 Nov: the fade is really painted while there is more below, and gone at the end of the scroll and on a list
+  // that fits.
+  const lists = page.locator('.book-game-picks > .book-game-chips, .book-game-picks > .book-game-subs');
+  for (let i = 0; i < await lists.count(); i++) {
+    const list = lists.nth(i);
+    const mask = () => list.evaluate(node => getComputedStyle(node).getPropertyValue('mask-image') || getComputedStyle(node).getPropertyValue('-webkit-mask-image'));
+    const scrolls = await list.evaluate(node => node.scrollHeight > node.clientHeight + 1);
+    if (!scrolls) { expect(await mask(), 'a list that fits has no fade').toBe('none'); continue; }
+    expect(await mask(), 'a scrolling list fades its last row').toContain('gradient');
+    await list.evaluate(node => { node.scrollTop = node.scrollHeight; });
+    await expect.poll(mask, { message: 'the fade lifts at the end of the scroll' }).toBe('none');
+    await list.evaluate(node => { node.scrollTop = 0; });
+    await expect.poll(mask).toContain('gradient');
+  }
   const rootPx = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
   if (rootPx >= 32) {
     const [footerHeight, viewport] = await page.locator('.book-game-actions').evaluate(node => [node.getBoundingClientRect().height, innerHeight]);
@@ -158,6 +172,8 @@ test('E12 at 200% text: the moves stay in view on Jan and Mar (only the middle s
   await page.getByRole('button', { name: 'Start Feb' }).click();
   await expect(page.locator('.book-game-play[data-month="feb"]')).toBeVisible();
   await movesInView(page);
+  // Feb's four charges scroll inside the capped footer at 200% on both phone sizes, so the fade checks above ran.
+  await expect(page.locator('.book-game-picks > .book-game-subs')).toHaveAttribute('data-more', '');
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Start Mar' }).click();
   await expect(page.locator('.book-game-play[data-month="mar"]')).toBeVisible();
