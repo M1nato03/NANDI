@@ -39,6 +39,7 @@ const indexes: Record<string, string[]> = {
   skillAttempts: ['trackId', 'lessonId', 'dayKey', 'status', 'retryDue'],
   notebookPages: ['trackId', 'createdAt'],
   notebookVersions: ['pageId', 'createdAt'],
+  bookGameStates: [],
 };
 
 let sequence = 0;
@@ -59,7 +60,7 @@ describe('Dexie v3', () => {
     await db.open();
     expect(db.tables.map((table) => table.name).sort()).toEqual(Object.keys(indexes).sort());
     for (const table of db.tables) {
-      const primaryKey = table.name === 'dailyLog' ? 'dayKey' : table.name === 'settings' ? 'key' : 'id';
+      const primaryKey = table.name === 'dailyLog' ? 'dayKey' : table.name === 'settings' ? 'key' : table.name === 'bookGameStates' ? 'bookId' : 'id';
       expect(table.schema.primKey.name).toBe(primaryKey);
       expect(table.schema.indexes.map((index) => index.name)).toEqual(indexes[table.name]);
     }

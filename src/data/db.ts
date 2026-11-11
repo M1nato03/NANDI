@@ -1,7 +1,7 @@
 import Dexie, { type Table } from 'dexie';
 import type {
   CardRow, DailyLogRow, DeckProgRow, ExerciseRow, ExStateRow, FlagRow, LearnConceptRow, LearnDropRow, LearnItemRow,
-  FocusRow, InventoryRow, LadderRow, LedgerRow, LessonProgRow, NotebookPageRow, NotebookVersionRow, PackRow, PhoneUsageRow,
+  BookGameStateRow, FocusRow, InventoryRow, LadderRow, LedgerRow, LessonProgRow, NotebookPageRow, NotebookVersionRow, PackRow, PhoneUsageRow,
   PlanRow, PrRow, PrivatePackRow, ProgramRow, PuzzleRunRow, QuestRow, RatingRow, ReminderRow,
   SessionRow, SetRow, SettingRow, SkillAttemptRow, TaskEventRow, TaskRow, UnlockRow,
 } from './types';
@@ -40,6 +40,7 @@ export class NandiDb extends Dexie {
   skillAttempts!: Table<SkillAttemptRow, string>;
   notebookPages!: Table<NotebookPageRow, string>;
   notebookVersions!: Table<NotebookVersionRow, string>;
+  bookGameStates!: Table<BookGameStateRow, string>;
 
   constructor(name = 'nandi') {
     super(name);
@@ -148,6 +149,26 @@ export class NandiDb extends Dexie {
       phoneUsageMinutes: 'id, dayKey, packageName',
       skillAttempts: 'id, trackId, lessonId, dayKey, status, retryDue',
       notebookPages: 'id, trackId, createdAt', notebookVersions: 'id, pageId, createdAt',
+    });
+    // Spec 40: a book game's saved year, one row per book (only Babylon has a game).
+    this.version(7).stores({
+      tasks: 'id, status, dayKey, scheduledStart, category, parentId, updatedAt',
+      taskEvents: 'id, taskId, kind, at', focus: 'id, taskId, startedAt',
+      reminders: 'id, refType, refId, at', plans: 'id, lessonId, madeDayKey',
+      exercises: 'id, pattern, source', ladders: 'id, pattern', programs: 'id, track',
+      exState: 'id', sessions: 'id, dayKey, status', sets: 'id, sessionId, exerciseId',
+      prs: 'id, exerciseId, kind', puzzleRuns: 'id, type, dayKey, seed',
+      cards: 'id, deckId, due', deckProg: 'id, due', lessonProg: 'id, packId',
+      ratings: 'id', flags: 'id, refId', unlocks: 'id, kind',
+      packs: 'id, kind, version', ledger: 'id, dayKey, mode, kind',
+      inventory: 'id, kind', dailyLog: 'dayKey', settings: 'key',
+      quests: 'id, week, status, sourceId, updatedAt',
+      learnConcepts: 'id', learnItems: 'id, lastSeen', learnDrops: 'id',
+      privatePacks: 'id',
+      phoneUsageMinutes: 'id, dayKey, packageName',
+      skillAttempts: 'id, trackId, lessonId, dayKey, status, retryDue',
+      notebookPages: 'id, trackId, createdAt', notebookVersions: 'id, pageId, createdAt',
+      bookGameStates: 'bookId',
     });
   }
 }

@@ -226,7 +226,7 @@ describe('spec 46a: the daily minutes record and backups', () => {
     old.dexie.data.data = old.dexie.data.data.filter(table => table.tableName !== 'phoneUsageMinutes');
     const migrated = validateBackup(old);
     expect(migrated.success).toBe(true);
-    expect(migrated.envelope!.dexie.data.databaseVersion).toBe(6);
+    expect(migrated.envelope!.dexie.data.databaseVersion).toBe(7); // spec 40 adds v7
     expect(migrated.envelope!.dexie.data.tables.find(table => table.name === 'phoneUsageMinutes')).toMatchObject({ rowCount: 0 });
     await importBackup(db, migrated.envelope!);
     expect((await db.tasks.get('kept'))?.title).toBe('Kept');

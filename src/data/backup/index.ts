@@ -135,6 +135,14 @@ export function migrateEnvelope(
     }
     dexie.data.databaseVersion = 6;
   }
+  // Spec 40: a backup from before the book game restores with an empty game state.
+  if (dexie?.data && dexie.data.databaseVersion < 7) {
+    if (!dexie.data.tables.some(table => table.name === 'bookGameStates')) {
+      dexie.data.tables.push({ name: 'bookGameStates', schema: 'bookId', rowCount: 0 });
+      dexie.data.data.push({ tableName: 'bookGameStates', inbound: true, rows: [] });
+    }
+    dexie.data.databaseVersion = 7;
+  }
   return migrated;
 }
 
@@ -293,7 +301,7 @@ const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offline
 // b2 11 Nov (live bug): v10From (spec 571 §0.20, the rings) was missing, so restoring an older backup dropped this phone's
 // v10From and the next reconcile set it to today, rescoring the days between. Every economy.vNFrom belongs here; the
 // test in backup.test.ts lists them from the code so a new one cannot be left out.
-export const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From', 'economy.v5From', 'economy.v6From', 'economy.v7From', 'economy.v8From', 'economy.v9From', 'economy.v10From'];
+export const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From', 'economy.v5From', 'economy.v6From', 'economy.v7From', 'economy.v8From', 'economy.v9From', 'economy.v10From', 'economy.v11From'];
 
 /** Full restore only. The current device's local settings survive the clear. */
 export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promise<void> {

@@ -380,6 +380,17 @@ export interface NotebookPageRow extends EntityRow {
   createdAt: number;
 }
 
+/**
+ * Spec 40: one book game's saved year (key = bookId; only Babylon has one). `state` is the engine's ArkadState, kept as
+ * plain data; `contentVersion` is the game's, so a later content change can be detected and handled.
+ */
+export interface BookGameStateRow extends RowMeta {
+  bookId: string;
+  gameId: string;
+  contentVersion: number;
+  state: import('../core/bookGame/arkad').ArkadState;
+}
+
 /** Spec 43: one version of a page. The prompt is a snapshot, so a later pack change never rewrites old work. */
 export interface NotebookVersionRow extends EntityRow {
   pageId: string;
