@@ -286,11 +286,8 @@ describe('a11y audit C2: a damaged backup never costs the phone its data', () =>
 
 describe("b2 11 Nov (live bug): a restore keeps this phone's economy cutoffs, v10From included", () => {
   it('every economy.vNFrom the code reads is a kept cutoff', { timeout: 60_000 }, async () => {
-    const { readdirSync, readFileSync, statSync } = await import('node:fs');
-    const { join } = await import('node:path');
-    const seen = new Set<string>();
-    const walk = (dir: string) => { for (const name of readdirSync(dir)) { const path = join(dir, name); if (statSync(path).isDirectory()) walk(path); else if (/\.tsx?$/.test(name) && !/\.test\.tsx?$/.test(name)) for (const key of readFileSync(path, 'utf8').match(/economy\.v\d+From/g) ?? []) seen.add(key); } };
-    walk(join(process.cwd(), 'src'));
+    const sources = import.meta.glob(['/src/**/*.{ts,tsx}', '!/src/**/*.test.{ts,tsx}'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+    const seen = new Set(Object.values(sources).flatMap(text => text.match(/economy\.v\d+From/g) ?? []));
     expect([...seen].sort()).toEqual([...cutoffKeys].sort());
   });
 
