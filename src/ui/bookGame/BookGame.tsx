@@ -128,9 +128,13 @@ function Play({ state, busy, onChange, onAct }: { state: ArkadState; busy: boole
     const sp = SPLIT[state.pendingSplit]!;
     const room = Math.max(0, CUSHION_TARGET - state.pots.cushion);
     const raise = m === 10 && state.course && state.pendingSplit > 0 ? 3000 : 0;
-    body = <Scene kind={`Salary credited · ${fmt(m === 10 && state.course ? 28000 : 25000)}`} icon="₹"><p className="small">Rent / PG ₹8,000 · Food ₹6,000 · Travel + phone ₹2,500</p></Scene>;
-    picks = <>{prompt(<b>Choose what stays with you.</b>)}<div className="book-game-chips" role="group" aria-label="Salary split">{SPLIT.map((x, j) => <button type="button" key={x.total} className={state.pendingSplit === j ? '' : 'secondary'} aria-pressed={state.pendingSplit === j} onClick={() => onChange({ ...state, pendingSplit: j })}>{fmt(x.total)}<small>{['0%', '10%', '20%', '30%'][j]}</small></button>)}</div>
-      <p className="small">Mine {fmt(sp.mine + Math.max(0, sp.cushion - room) + raise)} · Cushion {fmt(Math.min(sp.cushion, room))}</p></>;
+    // b2 12 Nov: the salary line is the prompt and the fixed costs join the summary, so no scene card is cut by the
+    // footer. At large text the costs line sits in the scrolling story instead (CSS shows one of the two).
+    const costs = (where: string) => <p className={`small book-game-costs is-${where}`}>Rent / PG ₹8,000 · Food ₹6,000 · Travel + phone ₹2,500</p>;
+    body = costs('story');
+    picks = <>{prompt(<><b>Salary credited: {fmt(m === 10 && state.course ? 28000 : 25000)}.</b> Choose what stays with you.</>)}<div className="book-game-chips" role="group" aria-label="Salary split">{SPLIT.map((x, j) => <button type="button" key={x.total} className={state.pendingSplit === j ? '' : 'secondary'} aria-pressed={state.pendingSplit === j} onClick={() => onChange({ ...state, pendingSplit: j })}>{fmt(x.total)}<small>{['0%', '10%', '20%', '30%'][j]}</small></button>)}</div>
+      <p className="small">Mine {fmt(sp.mine + Math.max(0, sp.cushion - room) + raise)} · Cushion {fmt(Math.min(sp.cushion, room))}</p>
+      {costs('footer')}</>;
     moves = button('Continue', 'split-commit');
   } else if (m === 1) {
     picks = <>{prompt('These renewed after payday. Swipe left to cancel one; a tap works too.')}<SubsList state={state} onChange={onChange} />

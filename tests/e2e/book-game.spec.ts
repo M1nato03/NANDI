@@ -36,11 +36,15 @@ async function open(page: Page, route = `grow/read/game/${BOOK}`, ready = '.book
 }
 /** The moves sit above the tab bar, in view, before any tap and with no scroll. */
 async function movesInView(page: Page) {
+  await expect(page.locator('.book-game-actions')).toBeVisible();
   const tabTop = await page.locator('.tabbar').evaluate(node => node.getBoundingClientRect().top);
   const boxes = await page.locator('.book-game-actions button').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect()).map(r => ({ top: r.top, bottom: r.bottom })));
   expect(boxes.length).toBeGreaterThan(0);
   for (const box of boxes) { expect(box.top).toBeGreaterThanOrEqual(0); expect(box.bottom).toBeLessThanOrEqual(tabTop + 1); }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  // b2 12 Nov: the footer meets the tab bar on every month, short ones too (no band floating mid-screen).
+  const footerBottom = await page.locator('.book-game-actions').evaluate(node => node.getBoundingClientRect().bottom);
+  expect(footerBottom, 'footer meets the tab bar').toBeGreaterThanOrEqual(tabTop - 2);
   // a9 12 Nov: the footer is sticky, so it is pinned in view even when the page is far too long; measuring only its
   // buttons passed with the real choices (split chips, auto-charges, festival chips) pushed below the fold. Every
   // choice must be fully in view with no scroll: above the tab bar, and not under the footer band unless it is in it.
@@ -140,13 +144,16 @@ test('E12 at 200% text: the moves stay in view on Jan and Mar (only the middle s
   await chapters(page, 'babylon-1');
   await open(page);
   await page.getByRole('button', { name: 'Start January' }).click();
+  await expect(page.locator('.book-game-play[data-month="jan"]')).toBeVisible();
   await textAt200(page);
   await movesInView(page);
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Start Feb' }).click();
+  await expect(page.locator('.book-game-play[data-month="feb"]')).toBeVisible();
   await movesInView(page);
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Start Mar' }).click();
+  await expect(page.locator('.book-game-play[data-month="mar"]')).toBeVisible();
   await movesInView(page);
 });
 
@@ -161,10 +168,12 @@ test('E12 at 200% text: Oct and Nov keep the prompt, picks and move in view (b2 
     await page.locator('.book-game-actions').getByRole('button', { name: move, exact: true }).click();
   }
   await page.getByRole('button', { name: 'Start Oct' }).click();
+  await expect(page.locator('.book-game-play[data-month="oct"]')).toBeVisible();
   await textAt200(page);
   await movesInView(page);
   await page.locator('.book-game-actions').getByRole('button', { name: 'Continue', exact: true }).click();
   await page.getByRole('button', { name: 'Start Nov' }).click();
+  await expect(page.locator('.book-game-play[data-month="nov"]')).toBeVisible();
   await movesInView(page);
 });
 

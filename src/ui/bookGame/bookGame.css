@@ -78,6 +78,18 @@
 .book-game-picks p { margin: 0; }
 .book-game-picks .book-game-prompt { font-size: .9375rem; line-height: 1.35; }
 .book-game-picks .book-game-subs { gap: 6px; }
+/* b2 12 Nov: no card edge peeks above the footer at 100% on 360 (Feb's Arkad card): 44 px charge rows, a smaller
+   summary line; and on a short month the footer still meets the tab bar (the screen fills the space between bars). */
+.book-game-picks .book-game-subs button { min-height: 44px; padding-block: 6px; }
+.book-game-picks .book-game-chips[aria-label='Salary split'] button { display: flex; gap: 6px; justify-content: center; align-items: baseline; min-height: 48px; padding-block: 8px; }
+/* The play screen fills from its top (~150 px: top bar, padding, Back) to just past the tab bar line, so the sticky
+   footer clamps exactly onto the tab bar on a short month (a few px of slack, never a floating band); the extra bottom
+   padding the content area keeps for the tab bar is given back, so a short month scrolls at most that slack. */
+.book-game-play { display: flex; flex-direction: column; min-height: calc(100dvh - var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) - 140px); margin-bottom: calc(var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) - 112px - env(safe-area-inset-bottom)); }
+.book-game-play > .book-game-actions { margin-top: auto; }
+.book-game-costs.is-story { display: none; }
+/* A flex column does not collapse margins: keep the block-flow gaps (one 10 px gap between cards). */
+.book-game-play > * { margin-top: 0; }
 /* a9: at large text the pots are one compact line, so the moves stay in view. Kept LAST: same specificity as the
    base rules above, so it must come after them to win (a9 12 Nov). */
 @container book-game (max-width: 20rem) {
@@ -93,6 +105,12 @@
   .book-game-picks { gap: 4px; }
   .book-game-picks p { font-size: .75rem; }
   .book-game-picks .book-game-prompt { font-size: .8125rem; line-height: 1.25; }
+  /* the split amounts stack again (amount over %), or they overflow their buttons at large text */
+  .book-game-picks .book-game-chips[aria-label='Salary split'] button { display: grid; justify-items: center; gap: 0; }
+  .book-game-costs.is-story { display: block; margin: 0 0 10px; }
+  .book-game-costs.is-footer { display: none; }
+  /* rows keep their content height when the list scrolls inside the capped footer */
+  .book-game-picks > .book-game-chips[aria-label='Salary split'] { grid-auto-rows: max-content; }
   /* b2 12 Nov: the footer stays within 2/3 of the screen. Prompt, summary and the move stay fixed; when the picks
      would push it past that, only the picks list scrolls inside the footer. */
   .book-game-actions { flex-direction: column; flex-wrap: nowrap; max-height: 66vh; }
