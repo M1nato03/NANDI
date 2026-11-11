@@ -80,8 +80,10 @@ for (const theme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Start Sep' }).click();
     await page.getByRole('button', { name: 'Take the course' }).click();
     await page.getByRole('button', { name: 'Start Oct' }).click();
+    await snap(page, `40-${t}-16-oct-play`);
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.getByRole('button', { name: 'Start Nov' }).click();
+    await snap(page, `40-${t}-17-nov-play`);
     await page.getByRole('button', { name: 'Continue' }).click();
     await snap(page, `40-${t}-11-nov-raise`);
     await page.getByRole('button', { name: 'Start Dec' }).click();
@@ -96,22 +98,37 @@ for (const theme of ['light', 'dark'] as const) {
   });
 }
 
-test('spec 40 shots at 200% text: Jan, Feb, Mar (light)', async ({ browser }) => {
-  const page = await phone(browser, 'light');
-  await chapters(page, 1);
-  await go(page, `grow/read/game/${BOOK}`, '.book-game-teach');
-  await page.getByRole('button', { name: 'Start January' }).click();
-  await textAt200(page);
-  await snap(page, '40-l-03-jan-play-200');
-  await page.getByRole('button', { name: 'Continue' }).click();
-  await page.getByRole('button', { name: 'Start Feb' }).click();
-  await snap(page, '40-l-05-feb-200');
-  await page.getByRole('button', { name: 'Continue' }).click();
-  await page.getByRole('button', { name: 'Start Mar' }).click();
-  await page.getByRole('button', { name: '+212% this week' }).click();
-  await snap(page, '40-l-06-mar-200');
-  await page.context().close();
-});
+// b2 12 Nov: the months with picks (Jan, Feb, Oct, Nov) plus Mar, at 200% text, light and dark.
+for (const theme of ['light', 'dark'] as const) {
+  const t = theme === 'light' ? 'l' : 'd';
+  test(`spec 40 shots at 200% text: Jan, Feb, Mar, Oct, Nov (${theme})`, async ({ browser }) => {
+    test.setTimeout(180_000);
+    const page = await phone(browser, theme);
+    await chapters(page, 5);
+    await go(page, `grow/read/game/${BOOK}`, '.book-game-teach');
+    await page.getByRole('button', { name: 'Start January' }).click();
+    await textAt200(page);
+    await snap(page, `40-${t}-03-jan-play-200`);
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByRole('button', { name: 'Start Feb' }).click();
+    await snap(page, `40-${t}-05-feb-200`);
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByRole('button', { name: 'Start Mar' }).click();
+    await page.getByRole('button', { name: '+212% this week' }).click();
+    await snap(page, `40-${t}-06-mar-200`);
+    await page.locator('.book-game-actions').getByRole('button', { name: 'Say no', exact: true }).click();
+    for (const [start, move] of [['Apr', 'Say no'], ['May', 'Move ₹3,000'], ['Jun', 'Say yes'], ['Jul', 'Say no'], ['Aug', 'Handle the repair'], ['Sep', 'Take the course']] as const) {
+      await page.getByRole('button', { name: `Start ${start}` }).click();
+      await page.locator('.book-game-actions').getByRole('button', { name: move, exact: true }).click();
+    }
+    await page.getByRole('button', { name: 'Start Oct' }).click();
+    await snap(page, `40-${t}-16-oct-play-200`);
+    await page.locator('.book-game-actions').getByRole('button', { name: 'Continue', exact: true }).click();
+    await page.getByRole('button', { name: 'Start Nov' }).click();
+    await snap(page, `40-${t}-17-nov-play-200`);
+    await page.context().close();
+  });
+}
 
 // a9's frame-by-frame review (spec 40 §7.8): Jan → Mar and the year end, light and dark. Playwright records the
 // screen; the gate script re-encodes it at 30 fps (D:/nandi-gate-logs/shots-spec40/rec-*.mp4).

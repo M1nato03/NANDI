@@ -45,8 +45,31 @@ async function movesInView(page: Page) {
   // buttons passed with the real choices (split chips, auto-charges, festival chips) pushed below the fold. Every
   // choice must be fully in view with no scroll: above the tab bar, and not under the footer band unless it is in it.
   const footerTop = await page.locator('.book-game-actions').evaluate(node => node.getBoundingClientRect().top);
-  const choices = await page.locator('.book-game .book-game-chips button, .book-game .book-game-subs button').evaluateAll(nodes => nodes.map(node => { const r = node.getBoundingClientRect(); return { label: node.textContent ?? '', top: r.top, bottom: r.bottom, pinned: !!node.closest('.book-game-actions') }; }));
+  // b2 12 Nov: at large text the picks list may scroll INSIDE the footer; then the list itself must be in view with
+  // its first pick fully shown, and the rest are reached by that inner scroll (not the page's).
+  const choices = await page.locator('.book-game .book-game-chips button, .book-game .book-game-subs button').evaluateAll(nodes => nodes.map((node, i, all) => {
+    const r = node.getBoundingClientRect(), list = node.closest('.book-game-chips, .book-game-subs')!, l = list.getBoundingClientRect();
+    const scrolls = list.scrollHeight > list.clientHeight + 1, first = all.find(other => other.closest('.book-game-chips, .book-game-subs') === list) === node;
+    return scrolls && !first ? { label: node.textContent ?? '', top: l.top, bottom: l.bottom, pinned: true } : { label: node.textContent ?? '', top: r.top, bottom: r.bottom, pinned: !!node.closest('.book-game-actions') };
+  }));
   for (const choice of choices) { expect(choice.top, choice.label).toBeGreaterThanOrEqual(0); expect(choice.bottom, choice.label).toBeLessThanOrEqual((choice.pinned ? tabTop : footerTop) + 1); }
+  const rootPx = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
+  if (rootPx >= 32) {
+    const [footerHeight, viewport] = await page.locator('.book-game-actions').evaluate(node => [node.getBoundingClientRect().height, innerHeight]);
+    expect(footerHeight, `footer height at 200% (viewport ${viewport})`).toBeLessThanOrEqual(viewport * 2 / 3 + 1);
+  }
+  // b2 12 Nov: a month with picks (Jan, Feb, Oct, Nov) has its one prompt line in the footer, fully in view; and no
+  // empty scene card sits under the footer.
+  if (await page.locator('.book-game-picks').count()) {
+    const prompt = page.locator('.book-game-actions .book-game-prompt');
+    await expect(prompt).toHaveCount(1);
+    const box = await prompt.evaluate(node => { const r = node.getBoundingClientRect(); return { top: r.top, bottom: r.bottom }; });
+    expect(box.top, 'prompt top').toBeGreaterThanOrEqual(0);
+    expect(box.bottom, 'prompt bottom').toBeLessThanOrEqual(tabTop + 1);
+    // The ≤2-line copy rule is for the phone's normal text size; at 200% the prompt may wrap, but stays fully in view.
+    if (rootPx < 20) expect(await lineCount(page, '.book-game-actions .book-game-prompt'), 'prompt lines').toBeLessThanOrEqual(2);
+  }
+  expect(await page.locator('.book-game-scene').evaluateAll(cards => cards.filter(card => !(card.lastElementChild?.textContent ?? '').trim()).length), 'empty scene cards').toBe(0);
 }
 
 test.beforeEach(async ({ page }) => { await page.clock.setFixedTime(NOON); });
@@ -127,6 +150,24 @@ test('E12 at 200% text: the moves stay in view on Jan and Mar (only the middle s
   await movesInView(page);
 });
 
+test('E12 at 200% text: Oct and Nov keep the prompt, picks and move in view (b2 12 Nov)', async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.goto('/?e2e#courtyard');
+  await chapters(page, 'babylon-1', 'babylon-2', 'babylon-3', 'babylon-4', 'babylon-5');
+  await open(page);
+  await page.getByRole('button', { name: 'Start January' }).click();
+  for (const [month, move] of [['Jan', 'Continue'], ['Feb', 'Continue'], ['Mar', 'Say no'], ['Apr', 'Say no'], ['May', 'Move ₹3,000'], ['Jun', 'Say yes'], ['Jul', 'Say no'], ['Aug', 'Handle the repair'], ['Sep', 'Take the course']] as const) {
+    if (month !== 'Jan') await page.getByRole('button', { name: `Start ${month}` }).click();
+    await page.locator('.book-game-actions').getByRole('button', { name: move, exact: true }).click();
+  }
+  await page.getByRole('button', { name: 'Start Oct' }).click();
+  await textAt200(page);
+  await movesInView(page);
+  await page.locator('.book-game-actions').getByRole('button', { name: 'Continue', exact: true }).click();
+  await page.getByRole('button', { name: 'Start Nov' }).click();
+  await movesInView(page);
+});
+
 test('the links: Play has one line to the game; the game has no Courtyard or Yatra card', async ({ page }) => {
   await open(page, 'grow/play', '[data-testid="book-game-play-link"]');
   await page.getByTestId('book-game-play-link').click();
@@ -147,13 +188,15 @@ test('all 12 months (5 chapters): the moves are in view before any tap; each sce
   for (let m = 0; m < 12; m++) {
     await expect(page.locator(`.book-game-play[data-month="${MONTHS[m]!.toLowerCase()}"]`)).toBeVisible();
     await movesInView(page);
-    const text = await page.locator('.book-game-scene > div:last-child').first().innerText();
+    // The month's message: its footer prompt where it has picks, else the scene card's text.
+    const message = (await page.locator('.book-game-actions .book-game-prompt').count()) ? '.book-game-actions .book-game-prompt' : '.book-game-scene > div:last-child';
+    const text = await page.locator(message).first().innerText();
     words[MONTHS[m]!] = text.trim().split(/\s+/).length;
     // a9/b2 copy limits: a month's message ≤35 words and ≤2 lines at 360 (the sign months' messages are phrases to tap,
     // measured by words only; Jan and Nov hold the split controls, not a message).
     expect(words[MONTHS[m]!], `${MONTHS[m]} words`).toBeLessThanOrEqual(35);
     if (![0, 2, 3, 5, 6, 10].includes(m)) {
-      lines[MONTHS[m]!] = await lineCount(page, '.book-game-scene > div:last-child');
+      lines[MONTHS[m]!] = await lineCount(page, message);
       expect(lines[MONTHS[m]!], `${MONTHS[m]} message lines`).toBeLessThanOrEqual(2);
     }
     await page.locator('.book-game-actions').getByRole('button', { name: moves[m]!, exact: true }).click();

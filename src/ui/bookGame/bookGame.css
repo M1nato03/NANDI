@@ -76,6 +76,7 @@
 .book-game-picks { flex: 1 1 100%; display: grid; gap: 6px; }
 .book-game-picks .book-game-chips, .book-game-picks .book-game-subs { margin: 0; }
 .book-game-picks p { margin: 0; }
+.book-game-picks .book-game-prompt { font-size: .9375rem; line-height: 1.35; }
 .book-game-picks .book-game-subs { gap: 6px; }
 /* a9: at large text the pots are one compact line, so the moves stay in view. Kept LAST: same specificity as the
    base rules above, so it must come after them to win (a9 12 Nov). */
@@ -91,4 +92,12 @@
   .book-game-subs b { flex: none; white-space: nowrap; }
   .book-game-picks { gap: 4px; }
   .book-game-picks p { font-size: .75rem; }
+  .book-game-picks .book-game-prompt { font-size: .8125rem; line-height: 1.25; }
+  /* b2 12 Nov: the footer stays within 2/3 of the screen. Prompt, summary and the move stay fixed; when the picks
+     would push it past that, only the picks list scrolls inside the footer. */
+  .book-game-actions { flex-direction: column; flex-wrap: nowrap; max-height: 66vh; }
+  .book-game-actions > button { flex: none; }
+  .book-game-picks { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; }
+  .book-game-picks > * { flex: none; }
+  .book-game-picks > .book-game-chips, .book-game-picks > .book-game-subs { flex: 0 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-bottom: 4px; }
 }
