@@ -143,6 +143,35 @@ for (const theme of ['light', 'dark'] as const) {
   });
 }
 
+// Spec 571 stage 3 (E6, G5): every tab top and Grow door at 200% text, top and scrolled to the end, light and dark,
+// with a stage-3 courtyard's worth of days. To SHOTS3_DIR (default D:/nandi-gate-logs/shots-571-s3).
+const OUT3 = process.env.SHOTS3_DIR ?? 'D:/nandi-gate-logs/shots-571-s3';
+const TOPS = ['courtyard', 'yatra', 'grow', 'grow/read', 'grow/remember', 'grow/play', 'grow/train', 'grow/calm', 'grow/sleep', 'you', 'you/settings'];
+for (const theme of ['light', 'dark'] as const) {
+  test(`stage 3: every tab top at 200% text, ${theme}`, async ({ browser }) => {
+    test.setTimeout(240_000);
+    const page = await phone(browser, theme);
+    await put(page, 'ledger', corners(3));
+    for (const route of TOPS) {
+      await page.goto(`/?e2e#${route}`);
+      await page.reload();
+      await expect(page.locator('main, .app-shell').first()).toBeVisible();
+      await page.waitForTimeout(500);
+      await textAt200(page);
+      await settle(page);
+      const name = route.replace('/', '-');
+      await page.screenshot({ path: `${OUT3}/s3-${theme === 'light' ? 'l' : 'd'}-${name}-200.png` });
+      const tall = await page.evaluate(() => document.documentElement.scrollHeight > innerHeight + 4);
+      if (tall) {
+        await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+        await settle(page);
+        await page.screenshot({ path: `${OUT3}/s3-${theme === 'light' ? 'l' : 'd'}-${name}-200-end.png` });
+      }
+    }
+    await page.context().close();
+  });
+}
+
 test('s5 on a 16:9 phone (360x640, light): the card-aware crop keeps Kapi and the kite below the header', async ({ browser }) => {
   const page = await phone(browser, 'light', NOON, { width: 360, height: 640 });
   await put(page, 'ledger', corners(5));

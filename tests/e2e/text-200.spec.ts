@@ -8,7 +8,8 @@ test.use({ viewport: { width: 360, height: 800 }, reducedMotion: 'reduce', color
 test.beforeEach(async ({ page }) => { await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); });
 
 // grow/calm is the Calm sit setup; night is the Night deck; yatra/crew is Crew.
-const ROUTES = ['yatra', 'plan', 'grow', 'grow/read', 'grow/play', 'grow/train', 'grow/calm', 'night', 'yatra/crew', 'you', 'you/settings', 'you/days', 'you/season', 'you/shop', 'you/badges'];
+// Stage 3 (E6): the Courtyard and every Grow door too.
+const ROUTES = ['courtyard', 'yatra', 'plan', 'grow', 'grow/read', 'grow/remember', 'grow/play', 'grow/train', 'grow/calm', 'grow/sleep', 'night', 'yatra/crew', 'you', 'you/settings', 'you/days', 'you/season', 'you/shop', 'you/badges'];
 
 async function expectTextFollows200(page: Page) {
   await page.waitForTimeout(400);

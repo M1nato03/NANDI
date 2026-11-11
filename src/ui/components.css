@@ -21,6 +21,14 @@ button.text-button, .ui-button-ghost { background: transparent; color: var(--acc
 button.ui-chip, a.ui-chip { min-height: 44px; }
 .ui-chip[aria-selected='true'], .ui-chip.is-selected { background: color-mix(in srgb, var(--area-color, var(--accent)) 20%, var(--surface-1)); color: var(--area-color, var(--accent-ink)); }
 .pill { background: var(--surface-2); border-radius: var(--radius-pill); }
+/* Spec 571 stage 3 (E6): a label with its picker or time beside it wraps the control to its own line rather than
+   squeezing it, so its value is never cut short ("Sur", "2:" at 200% text). */
+label:has(> select, > input[type='time']) { flex-wrap: wrap; }
+label > select, label > input[type='time'] { flex-shrink: 0; }
+/* A closed select cannot wrap, so its text grows with the reader's size up to what a phone-wide card holds
+   (min(1rem, 6.8vw): unchanged at 100%; about 150% on a 360 phone at 200%, where "Hostel Bodyweight" was cut). The
+   list Android opens shows each option at full size. */
+select:not([multiple]) { font-size: min(1rem, 6.8vw); }
 input:not([type='checkbox']):not([type='radio']), select, .ui-input {
   min-height: 48px; min-width: 0; max-width: 100%; padding: 10px 12px;
   background: var(--surface-2); color: var(--ink); border: 1px solid var(--input-line); border-radius: var(--radius-chip);

@@ -64,10 +64,14 @@
    standing on a quiet ground line shared by the whole head. No coloured band: the page itself is the surface. */
 .friend-stage.notebook-head { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 0 0 18px; padding: 0 0 10px; border-radius: 0; background: none; color: var(--ink); }
 .notebook-head::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: color-mix(in srgb, var(--area, var(--ink-3)) 40%, var(--surface-3)); }
-.notebook-head .friend-stage-text { flex: 1; min-width: 0; }
+.notebook-head .friend-stage-text { flex: 1 1 11rem; min-width: 0; }
+/* Spec 571 stage 3 (E6): at large text the friend steps below the heading (the text wants 11rem beside it), so a long
+   word like "Remember" never runs under the friend; the heading holds at 17.5vw (a 360 phone: 63 px, 1.85x). */
+.friend-stage.notebook-head { flex-wrap: wrap; }
+.friend-stage.notebook-head > svg { margin-left: auto; }
 .notebook-head .eyebrow, .notebook-title .eyebrow { margin: 0; color: var(--accent-ink); font: italic 400 1rem/1.3 Georgia, 'Times New Roman', serif; letter-spacing: 0; text-transform: none; }
-.notebook-head h1, .notebook-title h1 { margin: 2px 0 0; color: var(--ink); font-size: 2.125rem; line-height: 1.1; }
-.notebook-head[data-compact] h1 { font-size: 1.875rem; }
+.notebook-head h1, .notebook-title h1 { margin: 2px 0 0; color: var(--ink); font-size: min(2.125rem, 17.5vw); line-height: 1.15; } /* stage 3 (E6): a heading that wraps at 200% keeps its lines 1.15 apart */
+.notebook-head[data-compact] h1 { font-size: min(1.875rem, 17.5vw); }
 .notebook-title { margin: 0 0 12px; }
 /* The ground is one height for every friend, so each head's words sit at the same place; a taller friend (Kapi's
    kite) rises above it instead of pushing the words down. */

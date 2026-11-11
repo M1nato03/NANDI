@@ -383,7 +383,8 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
    line is exactly 24px as before (the clamp() term is 2px there, so 1.15em - 2px stays under 1.5rem for every card);
    from about 106% up the term is 0 and 1.15em takes over. */
 .you-link strong { font: 800 clamp(1.125rem, 5vw, 1.375rem)/max(1.5rem, calc(1.15em - clamp(0px, 32px - 1.875rem, 2px))) 'Bricolage Grotesque', sans-serif; }
-.you-link > span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-3); font: 500 .75rem/1rem 'DM Sans', sans-serif; }
+.you-link > span:last-child { max-width: 100%; color: var(--ink-3); font: 500 .75rem/1rem 'DM Sans', sans-serif; }
+/* Spec 571 stage 3 (E6): the line under a link wraps at large text instead of being cut to "…". */
 .you-link .deck-glyph { flex: 0 0 36px; }
 .you-link .you-tile-eyebrow { margin: 0; color: var(--ink-3); font: 600 .75rem/1rem 'DM Sans', sans-serif; }
 .recap-sheet-backdrop { align-items: end; place-items: end center; padding: 0; background: rgb(0 0 0 / 65%); }
