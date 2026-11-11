@@ -1,6 +1,7 @@
 import { addEconomyDays } from '../economy/deriveEconomy';
 import { retentionSummary, type AnswerFact } from '../learn/engine/analytics';
 import type { LedgerRow, SettingRow } from '../../data/types';
+import { QUEST_KIND, QUEST_MODE } from '../quests660/quests';
 
 export const OWNER_OPENS_KEY = 'owner.opens';
 export const OWNER_PIN_KEY = 'owner.pinHash';
@@ -31,7 +32,7 @@ export interface OwnerMetrics {
   days: DayPoint[];
   opensToday: number; opensAvg7: number;
   activeDays7: number; activeDays30: number;
-  tasksDone7: number; workouts7: number; boards7: number; cases7: number;
+  tasksDone7: number; workouts7: number; boards7: number; cases7: number; quests7: number;
   answers7: number; accuracy7: number | null;
   retention: { checked7: number; recalled7: number; checked30: number; recalled30: number };
   pauseOpenings: number; pauseWentAnyway: number;
@@ -70,6 +71,8 @@ export function ownerMetrics(input: { ledger: readonly LedgerRow[]; settings: re
     workouts7: inWeek.filter(row => row.mode === 'train' && row.kind === 'session').length,
     boards7: inWeek.filter(row => row.mode === 'mind' && row.kind === 'board').length,
     cases7: inWeek.filter(row => row.mode === 'mind' && row.kind === 'mystery').length,
+    // Spec 660: board quests finished in the last 7 days.
+    quests7: inWeek.filter(row => row.mode === QUEST_MODE && row.kind === QUEST_KIND.done && row.inputs.outcome !== 'not-done').length,
     answers7: answers.length,
     accuracy7: answers.length ? Math.round(answers.filter(row => row.inputs.correct === true).length / answers.length * 100) : null,
     retention: retentionSummary({ facts: answerFacts }, input.now),

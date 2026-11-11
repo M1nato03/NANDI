@@ -3,6 +3,7 @@ import type { EconomyDay } from './deriveEconomy';
 import { addEconomyDays, CLOSE_PREFIX, seasonFor, weekStart } from './deriveEconomy';
 import { RULES } from '../rules.config';
 import { sessionCounts } from '../train/counts';
+import { QUEST_KIND, QUEST_MODE } from '../quests660/quests';
 
 /**
  * Spec 47b (moved here from core/yatra for spec 45b decision 7): the one selector for useful days. Home's top line,
@@ -168,6 +169,9 @@ export function usefulRecord(dates: readonly string[], facts: readonly LedgerRow
     const calm = rows.filter(row => row.mode === 'calm' && row.kind === 'session').reduce((sum, row) => sum + (Number(row.inputs.minutes) > 0 ? Math.floor(Number(row.inputs.minutes)) : 0), 0);
     if (calm) items.push(`Calm, ${calm}\u00a0min`);
     if (count(row => row.mode === 'soft' && row.kind === 'soft')) items.push('A gentle thing on a soft day');
+    // Spec 660: listed with the day's things; a quest does not make a day useful on its own (that rule is unchanged).
+    const quests = count(row => row.mode === QUEST_MODE && row.kind === QUEST_KIND.done && row.inputs.outcome !== 'not-done');
+    if (quests) items.push(quests === 1 ? 'A quest' : `${quests} quests`);
     return { dayKey: key, items: items.length ? items : ['Useful day recorded'] };
   });
 }

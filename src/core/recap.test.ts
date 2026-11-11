@@ -84,7 +84,7 @@ describe('spec 53: chapters read', () => {
   });
 });
 
-const base: WeeklyRecapData = { from: '2026-11-02', to: '2026-11-09', tasks: 0, focusMinutes: 0, longestFocusMinutes: 0, workouts: 0, sideQuests: 0, concepts: 0, nights: 0, chapters: 0, realMs: 0 };
+const base: WeeklyRecapData = { from: '2026-11-02', to: '2026-11-09', tasks: 0, focusMinutes: 0, longestFocusMinutes: 0, workouts: 0, sideQuests: 0, quests: 0, concepts: 0, nights: 0, chapters: 0, realMs: 0 };
 
 describe('spec 53: the receipt', () => {
   it('keeps nonzero lines in order, at most six', () => {
@@ -136,5 +136,18 @@ describe("You's week in words", () => {
 describe('the one duration format (receipt, Home, the jar\'s plan bar, the crew)', () => {
   it('drops zero parts: exact hours read "2 h", never "2 h 0 m"', () => {
     expect([240, 250, 45, 0, 120, 300, 65].map(receiptDuration)).toEqual(['4 h', '4 h 10 m', '45 m', '0 m', '2 h', '5 h', '1 h 5 m']);
+  });
+});
+
+describe('spec 660: finished quests on the Sunday receipt', () => {
+  const quest = (id: string, day: string, outcome = 'fine') => ({ id, kind: 'quest-done', refId: id, mode: 'quests660', dayKey: day, inputs: { outcome, minutes: 15 }, updatedAt: 1, deleted: 0 as const, deviceId: 'd' });
+  it('counts quests done this week (not "didn\'t do it"), as a count only, never in the measured total', () => {
+    // Monday 9 Nov: the latest complete week is 2-8 Nov.
+    const now = new Date('2026-11-09T19:00:00').getTime();
+    const ledger = [quest('a', '2026-11-03'), quest('b', '2026-11-05'), quest('c', '2026-11-06', 'not-done'), quest('d', '2026-10-30')];
+    const recap = buildRecap(now, { tasks: [], focus: [], sessions: [], quests: [], concepts: [], logs: [], ledger });
+    expect(recap.quests).toBe(2);
+    expect(recap.realMs).toBe(0);
+    expect(receiptContent(recap).lines).toContainEqual({ label: 'Quests', value: '2' });
   });
 });

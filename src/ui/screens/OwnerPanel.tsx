@@ -69,7 +69,7 @@ function OwnerNumbers({ onAudit }: { onAudit: () => void }) {
     ['Active days (7 d)', `${m.activeDays7} of 7`], ['Active days (30 d)', `${m.activeDays30} of 30`],
     ['Internal chain (diagnostic)', `${economy.streak.days}\u00a0days`], ['Level', String(economy.level)],
     ['Tasks done (7 d)', String(m.tasksDone7)], ['Workouts (7 d)', String(m.workouts7)],
-    ['Boards solved (7 d)', String(m.boards7)], ['Cases solved (7 d)', String(m.cases7)],
+    ['Boards solved (7 d)', String(m.boards7)], ['Cases solved (7 d)', String(m.cases7)], ['Quests done (7 d)', String(m.quests7)],
     ['Learn answers (7 d)', String(m.answers7)], ['Learn accuracy (7 d)', m.accuracy7 === null ? '—' : `${m.accuracy7}%`],
     ['Recall at 7\u00a0days', `${pct(m.retention.recalled7, m.retention.checked7)} (${m.retention.checked7})`],
     ['Recall at 30\u00a0days', `${pct(m.retention.recalled30, m.retention.checked30)} (${m.retention.checked30})`],

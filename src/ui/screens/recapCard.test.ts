@@ -4,7 +4,7 @@ import { RECAP_HEIGHT, RECAP_WIDTH, RECEIPT_INK, receiptLayout, type Measure, ty
 
 // A wide estimate of the bundled fonts (the e2e checks the same layout with the real ones).
 const measure: Measure = (text, size, font, weight) => text.length * size * (font === 'display' ? 0.6 : 0.55) * (weight >= 700 ? 1.06 : 1);
-const base: WeeklyRecapData = { from: '2026-11-02', to: '2026-11-09', tasks: 0, focusMinutes: 0, longestFocusMinutes: 0, workouts: 0, sideQuests: 0, concepts: 0, nights: 0, chapters: 0, realMs: 0 };
+const base: WeeklyRecapData = { from: '2026-11-02', to: '2026-11-09', tasks: 0, focusMinutes: 0, longestFocusMinutes: 0, workouts: 0, sideQuests: 0, quests: 0, concepts: 0, nights: 0, chapters: 0, realMs: 0 };
 const weeks: Record<string, WeeklyRecapData> = {
   full: { ...base, chapters: 2, concepts: 9, workouts: 3, focusMinutes: 250, tasks: 11, nights: 4, sideQuests: 1, longestFocusMinutes: 52, realMs: 400 * 60_000 },
   two: { ...base, tasks: 2, workouts: 1, realMs: 20 * 60_000 },

@@ -3,9 +3,10 @@ import { sessionCounts } from './train/counts';
 import { nightsBackOnPlan } from './nightPlan';
 import { focusElapsedMs } from './tasks/focus';
 import type { DailyLogRow, FocusRow, LearnConceptRow, LedgerRow, QuestRow, SessionRow, TaskRow } from '../data/types';
+import { QUEST_KIND, QUEST_MODE } from './quests660/quests';
 
 export type RecapSources = { tasks: TaskRow[]; focus: FocusRow[]; sessions: SessionRow[]; quests: QuestRow[]; concepts: LearnConceptRow[]; logs: DailyLogRow[]; ledger: LedgerRow[] };
-export type WeeklyRecapData = { from: string; to: string; tasks: number; focusMinutes: number; longestFocusMinutes: number; workouts: number; sideQuests: number; concepts: number; nights: number; chapters: number; realMs: number };
+export type WeeklyRecapData = { from: string; to: string; tasks: number; focusMinutes: number; longestFocusMinutes: number; workouts: number; sideQuests: number; quests: number; concepts: number; nights: number; chapters: number; realMs: number };
 export type RecapWindow = { from: string; to: string; start: number; end: number };
 
 function localKey(date: Date): string {
@@ -64,6 +65,8 @@ export function buildRecap(now: number, source: RecapSources): WeeklyRecapData {
     longestFocusMinutes: Math.floor(Math.max(0, ...spans) / 60_000),
     workouts: countedSessions(week, source.sessions).length,
     sideQuests: source.quests.filter(row => live(row) && row.status === 'done' && inside(row.updatedAt)).length,
+    // Spec 660: board quests finished this week (a self-report, so a count only, never part of the measured total).
+    quests: source.ledger.filter(row => live(row) && row.mode === QUEST_MODE && row.kind === QUEST_KIND.done && row.inputs.outcome !== 'not-done' && row.dayKey >= from && row.dayKey < to).length,
     concepts: source.concepts.filter(row => live(row) && inside(row.firstLearnedAt)).length,
     nights: nightsBackOnPlan(source.logs.filter(row => row.dayKey >= from && row.dayKey < to)),
     // One ledger row per finished chapter (saveChapterDone); a re-read writes nothing.
@@ -103,6 +106,7 @@ export function receiptContent(recap: WeeklyRecapData, now = Number.POSITIVE_INF
     [recap.focusMinutes, { label: 'Focus', value: receiptDuration(recap.focusMinutes) }],
     [recap.tasks, { label: 'Tasks done', value: String(recap.tasks) }],
     [recap.nights, { label: 'Nights back on plan', value: String(recap.nights) }],
+    [recap.quests, { label: 'Quests', value: String(recap.quests) }],
     [recap.sideQuests, { label: 'Side quests', value: String(recap.sideQuests) }],
   ];
   const end = new Date(`${recap.to}T12:00:00`);
@@ -137,6 +141,7 @@ export function youWeekNumbers(recap: WeeklyRecapData): { value: string; label: 
     [recap.concepts, String(recap.concepts), recap.concepts === 1 ? 'idea learned' : 'ideas learned'],
     [recap.focusMinutes, receiptDuration(recap.focusMinutes), 'focus'],
     [recap.nights, String(recap.nights), recap.nights === 1 ? 'night back on plan' : 'nights back on plan'],
+    [recap.quests, String(recap.quests), recap.quests === 1 ? 'quest' : 'quests'],
     [recap.sideQuests, String(recap.sideQuests), recap.sideQuests === 1 ? 'side quest' : 'side quests'],
   ] as const).filter(([count]) => count > 0).slice(0, 4).map(([, value, label]) => ({ value, label }));
 }

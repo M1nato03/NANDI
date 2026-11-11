@@ -9,7 +9,7 @@ let shareDay = true;
 const sent = vi.hoisted(() => ({ share: vi.fn(), save: vi.fn() }));
 vi.mock('../shareActions', async original => ({ ...await original<typeof import('../shareActions')>(), useShareDay: () => shareDay, shareFileNow: sent.share, saveFileNow: sent.save }));
 
-const recap: WeeklyRecapData = { from: '2026-11-02', to: '2026-11-09', tasks: 6, focusMinutes: 0, longestFocusMinutes: 0, workouts: 3, sideQuests: 0, concepts: 0, nights: 0, chapters: 0, realMs: 0 };
+const recap: WeeklyRecapData = { from: '2026-11-02', to: '2026-11-09', tasks: 6, focusMinutes: 0, longestFocusMinutes: 0, workouts: 3, sideQuests: 0, quests: 0, concepts: 0, nights: 0, chapters: 0, realMs: 0 };
 
 let drawn: string[] = [];
 beforeEach(() => {
