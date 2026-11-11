@@ -402,3 +402,9 @@ export interface NotebookVersionRow extends EntityRow {
   status: 'practised' | 'prepared' | 'used-unverified';
   createdAt: number;
 }
+
+/**
+ * Spec 660 §2.4 (Dexie v8): a quest photo, kept on this phone only. It is never in a backup file or a share; a restore
+ * on the same phone keeps it, a new phone has none (the quest's fact still names it and the view shows no photo).
+ */
+export interface QuestPhotoRow { id: string; questFactId: string; blob: Blob; w: number; h: number; bytes: number; takenAt: number }

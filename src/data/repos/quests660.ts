@@ -3,7 +3,7 @@ import { dayKey } from '../../core/time';
 import { QUEST_KIND, QUEST_MODE, questDoneId, SAFETY_ASKED_KEY, SAFETY_KEY, type BoardQuest, type Learned, type Outcome, type Prediction, type QuestMinutes, type QuestSafety, type QuestWhere } from '../../core/quests660/quests';
 import { getOrCreateDeviceId } from '../device';
 import type { NandiDb } from '../db';
-import type { LedgerRow } from '../types';
+import type { LedgerRow, QuestPhotoRow } from '../types';
 import { nightStamp } from './night';
 
 /**
@@ -103,4 +103,64 @@ export async function saveSafety(db: NandiDb, safety: QuestSafety, now = Date.no
     await db.settings.put({ key: SAFETY_KEY, value, updatedAt: now, deleted: 0, deviceId });
     await db.settings.put({ key: SAFETY_ASKED_KEY, value: true, updatedAt: now, deleted: 0, deviceId });
   }));
+}
+
+/** Spec 660 §2.4 photo limits: shrunk on the phone to a 1280 px long edge, at most 1.5 MB each and 200 MB in all. */
+export const QUEST_PHOTO = { maxEdge: 1280, maxBytes: 1.5 * 1024 * 1024, totalBytes: 200 * 1024 * 1024 } as const;
+
+/** The size a photo is drawn at: its long edge at most `max`, the shape kept, never enlarged. */
+export function fitWithin(w: number, h: number, max: number = QUEST_PHOTO.maxEdge): { w: number; h: number } {
+  const scale = Math.min(1, max / Math.max(w, h));
+  return { w: Math.max(1, Math.round(w * scale)), h: Math.max(1, Math.round(h * scale)) };
+}
+
+export type PhotoResult = { ok: true; id: string } | { ok: false; reason: string };
+
+/**
+ * Attaches one (already shrunk) photo to a finished quest: one per quest, a new one replaces the old, and the quest's
+ * fact names it, all in one transaction. Refused over 1.5 MB or past the 200 MB total.
+ */
+export async function addQuestPhoto(db: NandiDb, questFactId: string, photo: { blob: Blob; w: number; h: number }, now = Date.now()): Promise<PhotoResult> {
+  if (photo.w > QUEST_PHOTO.maxEdge || photo.h > QUEST_PHOTO.maxEdge) return { ok: false, reason: 'This photo was not shrunk first.' };
+  if (photo.blob.size > QUEST_PHOTO.maxBytes) return { ok: false, reason: 'This photo is over 1.5 MB, even shrunk. Try another.' };
+  let result: PhotoResult = { ok: false, reason: 'This quest is not finished yet.' };
+  await trackWrite(() => db.transaction('rw', [db.ledger, db.questPhotos], async () => {
+    const fact = await db.ledger.get(questFactId);
+    if (!fact || fact.deleted || fact.mode !== QUEST_MODE || fact.kind !== QUEST_KIND.done) return;
+    const others = (await db.questPhotos.toArray()).filter(row => row.questFactId !== questFactId);
+    if (others.reduce((total, row) => total + row.bytes, 0) + photo.blob.size > QUEST_PHOTO.totalBytes) { result = { ok: false, reason: 'Quest photos are using 200 MB. Clear some in Settings › Quests.' }; return; }
+    await db.questPhotos.where('questFactId').equals(questFactId).delete();
+    const row: QuestPhotoRow = { id: `qphoto:${questFactId}:${now.toString(36)}`, questFactId, blob: photo.blob, w: photo.w, h: photo.h, bytes: photo.blob.size, takenAt: now };
+    await db.questPhotos.put(row);
+    await db.ledger.put({ ...fact, inputs: { ...fact.inputs, photoId: row.id }, updatedAt: fact.updatedAt });
+    result = { ok: true, id: row.id };
+  }));
+  return result;
+}
+
+/** Deleting a finished quest's entry deletes its photo in the same transaction. */
+export async function deleteQuestEntry(db: NandiDb, questFactId: string, now = Date.now()): Promise<void> {
+  await trackWrite(() => db.transaction('rw', [db.ledger, db.questPhotos], async () => {
+    const fact = await db.ledger.get(questFactId);
+    if (fact && !fact.deleted) await db.ledger.put({ ...fact, deleted: 1, updatedAt: now });
+    await db.questPhotos.where('questFactId').equals(questFactId).delete();
+  }));
+}
+
+/** Settings › Quests: "Delete all quest photos". The quests stay; their facts stop naming a photo. */
+export async function deleteAllQuestPhotos(db: NandiDb): Promise<void> {
+  await trackWrite(() => db.transaction('rw', [db.ledger, db.questPhotos], async () => {
+    const ids = new Set((await db.questPhotos.toArray()).map(row => row.questFactId));
+    await db.questPhotos.clear();
+    for (const id of ids) {
+      const fact = await db.ledger.get(id);
+      if (fact && typeof fact.inputs.photoId === 'string') { const { photoId: _photo, ...inputs } = fact.inputs; void _photo; await db.ledger.put({ ...fact, inputs }); }
+    }
+  }));
+}
+
+/** How many photos and bytes, oldest first (Settings › Quests lists them to clear space). */
+export async function questPhotoUsage(db: NandiDb): Promise<{ count: number; bytes: number; oldest: QuestPhotoRow[] }> {
+  const rows = await db.questPhotos.orderBy('takenAt').toArray();
+  return { count: rows.length, bytes: rows.reduce((total, row) => total + row.bytes, 0), oldest: rows };
 }

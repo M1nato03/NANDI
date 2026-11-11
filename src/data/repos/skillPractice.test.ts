@@ -105,7 +105,7 @@ describe('spec 43: practice and notebook in a backup', () => {
     const counts = Object.fromEntries(old.dexie.data.data.map(table => [table.tableName, table.rows.length]));
     const migrated = validateBackup(old);
     expect(migrated.success).toBe(true);
-    expect(migrated.envelope!.dexie.data.databaseVersion).toBe(7); // spec 40 adds v7
+    expect(migrated.envelope!.dexie.data.databaseVersion).toBe(8); // spec 660 adds v8
     for (const name of ['skillAttempts', 'notebookPages', 'notebookVersions']) expect(migrated.envelope!.dexie.data.tables.find(table => table.name === name)).toMatchObject({ rowCount: 0 });
     const target = fresh();
     await importBackup(target, migrated.envelope!);

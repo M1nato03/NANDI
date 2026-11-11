@@ -2,10 +2,10 @@
 import 'fake-indexeddb/auto';
 import { afterEach, describe, expect, it } from 'vitest';
 import { createDb, type NandiDb } from '../db';
-import { exportBackup, importBackup } from '../backup';
+import { exportBackup, importBackup, QUEST_PHOTO_TABLE } from '../backup';
 import { jarActs } from '../../core/yatra/jar';
 import { QUEST_KIND, QUEST_MODE, questDoneId, questStones, readSafety, realityCheck, SAFETY_ASKED_KEY } from '../../core/quests660/quests';
-import { acceptQuest, finishQuest, ownQuests, saveSafety, skipQuest, swapQuest, writeOwnQuest } from './quests660';
+import { acceptQuest, addQuestPhoto, deleteAllQuestPhotos, deleteQuestEntry, finishQuest, fitWithin, ownQuests, QUEST_PHOTO, questPhotoUsage, saveSafety, skipQuest, swapQuest, writeOwnQuest } from './quests660';
 
 let serial = 0;
 const opened: NandiDb[] = [];
@@ -91,5 +91,64 @@ describe('spec 660 repo: facts in mode quests660 only, every write idempotent', 
     const after = await other.ledger.toArray();
     expect(questStones(after)).toEqual(questStones(before));
     expect(realityCheck(after)).toEqual(realityCheck(before));
+  });
+});
+
+describe('spec 660 §2.4: quest photos stay on this phone', () => {
+  const blob = (bytes: number) => new Blob([new Uint8Array(bytes)], { type: 'image/jpeg' });
+  const finished = async (db: NandiDb, id = 'kapi-five-red') => (await finishQuest(db, { id, minutes: 5 }, { outcome: 'fine' }, NOON)).id;
+
+  it('shrinks to a 1280 px long edge, never enlarges', () => {
+    expect(fitWithin(4000, 3000)).toEqual({ w: 1280, h: 960 });
+    expect(fitWithin(900, 1600)).toEqual({ w: 720, h: 1280 });
+    expect(fitWithin(800, 600)).toEqual({ w: 800, h: 600 });
+  });
+
+  it('one photo per finished quest, named by its fact; refused over 1.5 MB, unshrunk, past 200 MB, or before the quest is done', async () => {
+    const db = freshDb();
+    const id = await finished(db);
+    expect(await addQuestPhoto(db, 'quest660:nope:2026-11-13', { blob: blob(10), w: 10, h: 10 }, NOON)).toMatchObject({ ok: false });
+    expect(await addQuestPhoto(db, id, { blob: blob(QUEST_PHOTO.maxBytes + 1), w: 10, h: 10 }, NOON)).toMatchObject({ ok: false });
+    expect(await addQuestPhoto(db, id, { blob: blob(10), w: 2000, h: 10 }, NOON)).toMatchObject({ ok: false });
+    const first = await addQuestPhoto(db, id, { blob: blob(1000), w: 10, h: 10 }, NOON);
+    const second = await addQuestPhoto(db, id, { blob: blob(2000), w: 10, h: 10 }, NOON + 1);
+    expect(first.ok && second.ok).toBe(true);
+    expect(await db.questPhotos.count()).toBe(1);
+    expect((await db.ledger.get(id))?.inputs.photoId).toBe(second.ok ? second.id : '');
+    await db.questPhotos.put({ id: 'big', questFactId: 'other', blob: blob(1), w: 1, h: 1, bytes: QUEST_PHOTO.totalBytes - 1500, takenAt: 0 });
+    expect(await addQuestPhoto(db, id, { blob: blob(2000), w: 10, h: 10 }, NOON + 2)).toMatchObject({ ok: false });
+    expect((await questPhotoUsage(db)).count).toBe(2);
+  });
+
+  it('deleting the quest deletes its photo in the same transaction; "delete all" keeps the quests', async () => {
+    const db = freshDb();
+    const a = await finished(db, 'kapi-five-red');
+    const b = await finished(db, 'mor-bag-reset');
+    await addQuestPhoto(db, a, { blob: blob(10), w: 10, h: 10 }, NOON);
+    await addQuestPhoto(db, b, { blob: blob(10), w: 10, h: 10 }, NOON);
+    await deleteQuestEntry(db, a, NOON + 5);
+    expect((await db.ledger.get(a))?.deleted).toBe(1);
+    expect(await db.questPhotos.where('questFactId').equals(a).count()).toBe(0);
+    await deleteAllQuestPhotos(db);
+    expect(await db.questPhotos.count()).toBe(0);
+    expect((await db.ledger.get(b))?.deleted).toBe(0);
+    expect((await db.ledger.get(b))?.inputs.photoId).toBeUndefined();
+  });
+
+  it('never in a backup file; a restore on the same phone keeps them; a new phone gets none (the fact still names it)', async () => {
+    const db = freshDb();
+    await db.settings.bulkPut([{ key: 'deviceId', value: 'device-a', ...stamp }]);
+    const id = await finished(db);
+    const added = await addQuestPhoto(db, id, { blob: blob(500), w: 10, h: 10 }, NOON);
+    const file = await exportBackup(db, new Date(2026, 10, 13, 13));
+    const table = file.dexie.data.data.find(entry => entry.tableName === QUEST_PHOTO_TABLE);
+    expect(table?.rows).toEqual([]);
+    expect(file.dexie.data.tables.find(entry => entry.name === QUEST_PHOTO_TABLE)?.rowCount).toBe(0);
+    await importBackup(db, file);
+    expect(await db.questPhotos.count()).toBe(1);
+    const other = freshDb();
+    await importBackup(other, file);
+    expect(await other.questPhotos.count()).toBe(0);
+    expect((await other.ledger.get(id))?.inputs.photoId).toBe(added.ok ? added.id : '');
   });
 });

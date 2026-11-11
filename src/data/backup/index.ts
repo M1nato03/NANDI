@@ -25,6 +25,10 @@ export function detectRestoreKind(json: unknown): 'backup' | 'legacy' | 'unknown
 export const PP_FORMAT_VERSION = 2;
 /** Spec 46a: the daily minutes record's table, always empty in a backup file. */
 const PHONE_USAGE_TABLE = 'phoneUsageMinutes';
+/** Spec 660 §2.4: quest photos stay on this phone; the table is always empty in a backup file. */
+export const QUEST_PHOTO_TABLE = 'questPhotos';
+/** The line on the Backup screen and the Reality Check share. */
+export const QUEST_PHOTOS_LINE = 'Quest photos stay on this phone. They are not in backups or shares.';
 /** Spec 43: practice runs and the private notebook. Unlike the minutes record, they travel in a backup. */
 const SKILL_TABLES = [['skillAttempts', 'id, trackId, lessonId, dayKey, status, retryDue'], ['notebookPages', 'id, trackId, createdAt'], ['notebookVersions', 'id, pageId, createdAt']] as const;
 export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.1.0';
@@ -143,6 +147,14 @@ export function migrateEnvelope(
     }
     dexie.data.databaseVersion = 7;
   }
+  // Spec 660: Dexie v8 adds the quest photos table, which a backup always carries empty.
+  if (dexie?.data && dexie.data.databaseVersion < 8) {
+    if (!dexie.data.tables.some(table => table.name === QUEST_PHOTO_TABLE)) {
+      dexie.data.tables.push({ name: QUEST_PHOTO_TABLE, schema: 'id, questFactId, takenAt', rowCount: 0 });
+      dexie.data.data.push({ tableName: QUEST_PHOTO_TABLE, inbound: true, rows: [] });
+    }
+    dexie.data.databaseVersion = 8;
+  }
   return migrated;
 }
 
@@ -225,7 +237,8 @@ export async function exportBackup(db: NandiDb, now: Date | number): Promise<Bac
   const exportedAt = now instanceof Date ? now.getTime() : now;
   if (!Number.isSafeInteger(exportedAt) || exportedAt < 0) throw new RangeError('Invalid export time');
   const deviceId = await getOrCreateDeviceId(db, exportedAt);
-  const dexie = withoutDeviceLocal(JSON.parse(await (await exportDB(db)).text()) as unknown);
+  // Quest photos are never read into the file (they are large and stay on this phone).
+  const dexie = withoutDeviceLocal(JSON.parse(await (await exportDB(db, { filter: table => table !== QUEST_PHOTO_TABLE })).text()) as unknown);
   const result = validateBackup({ app: 'nandi', ppFormatVersion: PP_FORMAT_VERSION,
     appVersion: APP_VERSION, exportedAt, deviceId, dexie });
   if (!result.success || !result.envelope) throw new Error(result.errors.join('; '));
@@ -282,10 +295,12 @@ function withoutDeviceLocal(dexie: unknown): unknown {
   settings.rows = settings.rows.filter(row => !isDeviceLocal((row as SettingRow | null)?.key ?? ''));
   const meta = data.tables?.find(table => table.name === 'settings');
   if (meta) meta.rowCount = settings.rows.length;
-  const minutes = data.data?.find(table => table.tableName === PHONE_USAGE_TABLE);
-  if (minutes) minutes.rows = [];
-  const minutesMeta = data.tables?.find(table => table.name === PHONE_USAGE_TABLE);
-  if (minutesMeta) minutesMeta.rowCount = 0;
+  for (const name of [PHONE_USAGE_TABLE, QUEST_PHOTO_TABLE]) {
+    const rows = data.data?.find(table => table.tableName === name);
+    if (rows) rows.rows = [];
+    const meta = data.tables?.find(table => table.name === name);
+    if (meta) meta.rowCount = 0;
+  }
   return dexie;
 }
 
@@ -329,6 +344,8 @@ async function restoreInto(db: NandiDb, restored: BackupEnvelope): Promise<void>
     const localSettings = (await db.settings.toArray()).filter(row => isDeviceLocal(row.key));
     // Spec 46a: this phone's daily minutes record survives the clear; a file's rows (there should be none) never land.
     const localMinutes: PhoneUsageRow[] = await db.phoneUsageMinutes.toArray();
+    // Spec 660: this phone's quest photos survive the clear; a file never brings any.
+    const localPhotos = await db.questPhotos.toArray();
     const localCutoffs = (await db.settings.bulkGet(cutoffKeys)).filter((row): row is SettingRow => row !== undefined && !row.deleted);
     const localPeak = await db.settings.get(PEAK_KEY);
     // What this phone shows now, before the clear: XP a reconcile has not recorded yet still raises the peak (cj3 C4).
@@ -360,9 +377,10 @@ async function restoreInto(db: NandiDb, restored: BackupEnvelope): Promise<void>
       // The app keeps running during a restore: a write that lands between the clear and the re-add
       // (say economy.v2From from reconcileGamify) must not abort it, so rows are put, not added.
       overwriteValues: true,
-      filter: (table, value) => table === PHONE_USAGE_TABLE ? false : table !== 'settings' || !isDeviceLocal((value as SettingRow).key),
+      filter: (table, value) => table === PHONE_USAGE_TABLE || table === QUEST_PHOTO_TABLE ? false : table !== 'settings' || !isDeviceLocal((value as SettingRow).key),
     });
     if (localMinutes.length) await db.phoneUsageMinutes.bulkPut(localMinutes);
+    if (localPhotos.length) await db.questPhotos.bulkPut(localPhotos);
     // The batch 5 courtyard cutoff takes the LATER of the two: a later day puts fewer days under the new rule,
     // so no courtyard corner shrinks after a restore (Codex review of batch 5, item 53).
     const theirV5 = await db.settings.get('economy.v5From');

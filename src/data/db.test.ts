@@ -40,6 +40,7 @@ const indexes: Record<string, string[]> = {
   notebookPages: ['trackId', 'createdAt'],
   notebookVersions: ['pageId', 'createdAt'],
   bookGameStates: [],
+  questPhotos: ['questFactId', 'takenAt'],
 };
 
 let sequence = 0;
@@ -110,5 +111,26 @@ describe('Dexie v3', () => {
     expect(second).toBe(first);
     expect(first).toMatch(/^[0-9A-HJKMNP-TV-Z]{26}$/);
     expect(await db.settings.get('deviceId')).toMatchObject({ value: first, deviceId: first });
+  });
+});
+
+describe('Dexie v8 (spec 660): quest photos', () => {
+  it("v7 → v8 adds only the empty questPhotos table; spec 40's bookGameStates rows survive unchanged", async () => {
+    const name = `nandi-test-v7-${++sequence}`;
+    const { default: Dexie } = await import('dexie');
+    const old = new Dexie(name);
+    old.version(7).stores({ ledger: 'id, dayKey, mode, kind', bookGameStates: 'id', settings: 'key' });
+    await old.open();
+    const game = { id: 'richest-man-in-babylon', bookId: 'richest-man-in-babylon', gameId: 'arkad-year', contentVersion: 1, state: { month: 3, history: [1, 2, 3] }, updatedAt: 5, deleted: 0, deviceId: 'a' };
+    await old.table('bookGameStates').put(game);
+    await old.table('ledger').put({ id: 'x', kind: 'chapter', refId: 'b:c', mode: 'read', dayKey: '2026-11-12', inputs: {}, updatedAt: 1, deleted: 0, deviceId: 'a' });
+    old.close();
+    const db = createDb(name);
+    openDbs.push(db);
+    await db.open();
+    expect(db.verno).toBe(8);
+    expect(await db.bookGameStates.get('richest-man-in-babylon')).toEqual(game);
+    expect(await db.ledger.count()).toBe(1);
+    expect(await db.questPhotos.count()).toBe(0);
   });
 });
