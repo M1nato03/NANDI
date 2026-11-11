@@ -49,6 +49,7 @@ for (const theme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Continue' }).click();
     await snap(page, `40-${t}-04-jan-result`);
     await page.getByRole('button', { name: 'Start Feb' }).click();
+    await snap(page, `40-${t}-05a-feb-before`);
     for (const name of ['Cancel OTT app #1', 'Cancel Gym you have not used']) await page.getByRole('button', { name }).click();
     await snap(page, `40-${t}-05-feb`);
     await page.getByRole('button', { name: 'Continue' }).click();

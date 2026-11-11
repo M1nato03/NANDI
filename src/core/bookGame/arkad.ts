@@ -172,7 +172,7 @@ export function applyAction(state: ArkadState, action: Action): ArkadState {
   if (m === 4) {
     if (action === 'invest') { const n = Math.min(3000, s.pots.mine); move(s, 'mine', -n, 'Moved to Growing'); move(s, 'growing', n, 'First growth choice'); s.invested = n > 0; }
     if (action !== 'invest' && s.pots.mine >= 3000) s.skippedGrowthPotential = true;
-    return finish(s, s.invested ? '₹3,000 moved to Growing. In this story it adds ₹40 each later month. Fictional example growth, not a promise.' : 'You kept the money in Mine. Growing stays empty.',
+    return finish(s, s.invested ? '₹3,000 moved to Growing. Here it adds ₹40 a month: fictional example growth, not a promise.' : 'You kept the money in Mine. Growing stays empty.',
       'CHOICE MADE', 'Make your money work, with care.', 'Check what a product does before using it.');
   }
   if (m === 7) {
@@ -192,7 +192,8 @@ export function applyAction(state: ArkadState, action: Action): ArkadState {
     return finish(s, `You spent ${fmt(s.festival)} on the festival plan. ${s.lent ? 'Rohan’s ₹1,000 gig helped before the sale began.' : 'You kept the number you picked.'}`, 'BUDGET SET', 'Plan the spend before it arrives.', 'Set one gift number before browsing.');
   }
   // December.
-  return finish(s, `Your three pots tell the year. ${s.course ? 'The course raised your November and December pay. ' : ''}${s.invested ? 'Growing added ₹280 of fictional example growth.' : s.skippedGrowthPotential ? 'Keeping May’s ₹3,000 in Mine meant ₹280 less fictional example growth.' : ''}`,
+  // a9: a result paragraph is ≤3 lines at 360, so the approved lines are trimmed with their meaning kept.
+  return finish(s, `${s.course ? 'The course lifted November and December pay. ' : 'Your pots tell the year. '}${s.invested ? 'Growing added ₹280, a fictional example.' : s.skippedGrowthPotential ? 'Keeping May’s ₹3,000 in Mine meant ₹280 less (fictional example).' : ''}`,
     'YEAR COMPLETE', 'Keep a part, guard it, and help it grow.', 'Carry one habit into next month.');
 }
 

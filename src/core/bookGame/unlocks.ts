@@ -1,4 +1,3 @@
-import { MONTHS } from './arkad';
 
 /**
  * Spec 40 §3 rule A with b2's 11 Nov ruling: count-based pacing blocks. N chapters of the book done (whichever ones)
@@ -25,16 +24,18 @@ export function chaptersDone(game: BookGame, done: ReadonlySet<string>): number 
   return game.chapters.filter(moduleId => done.has(`${game.bookId}:${moduleId}`)).length;
 }
 
+export const FULL_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as const;
 export type MonthLock = { open: true } | { open: false; reason: string };
 /** Why a month is or is not playable now, in one plain line. `played` = months whose result is saved. */
 export function monthLock(month: number, chapters: number, played: ReadonlySet<number>): MonthLock {
   const block = blockOf(month);
   if (block < 0) return { open: false, reason: 'This month is not part of the year.' };
+  // b2 (12 Nov): the line counts the chapters still to read, and names the month in full.
   if (block >= chapters) {
-    const need = block + 1;
-    return { open: false, reason: `Finish ${need === 1 ? 'a chapter' : `${need} chapters`} of the book to open ${MONTHS[month]}.` };
+    const more = block + 1 - chapters;
+    return { open: false, reason: `Finish ${more} more chapter${more === 1 ? '' : 's'} to open ${FULL_MONTHS[month]}.` };
   }
-  for (let m = 0; m < month; m++) if (!played.has(m)) return { open: false, reason: `Play ${MONTHS[m]} first. Each month carries into the next.` };
+  for (let m = 0; m < month; m++) if (!played.has(m)) return { open: false, reason: `Play ${FULL_MONTHS[m]} first. Each month carries into the next.` };
   return { open: true };
 }
 

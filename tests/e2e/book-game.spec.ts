@@ -17,10 +17,22 @@ async function chapters(page: Page, ...modules: string[]) {
     database.close();
   }, { book: BOOK, modules });
 }
+/** The rendered lines of the first element matching `selector` (its text's line boxes). */
+async function lineCount(page: Page, selector: string): Promise<number> {
+  return page.locator(selector).first().evaluate(node => {
+    const tops = new Set<number>();
+    const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+    for (let text = walker.nextNode(); text; text = walker.nextNode()) {
+      const range = document.createRange(); range.selectNodeContents(text);
+      for (const rect of range.getClientRects()) if (rect.width > 0) tops.add(Math.round(rect.top / 4));
+    }
+    return tops.size;
+  });
+}
 async function open(page: Page, route = `grow/read/game/${BOOK}`, ready = '.book-game') {
   await page.goto(`/?e2e#${route}`);
   await page.reload();
-  await expect(page.locator(ready).first()).toBeVisible();
+  await expect(page.locator(ready).first()).toBeVisible({ timeout: 15_000 });
 }
 /** The moves sit above the tab bar, in view, before any tap and with no scroll. */
 async function movesInView(page: Page) {
@@ -37,9 +49,9 @@ test('no chapter done: the book card says 0/12, the game and a month deep link s
   await open(page, `grow/read/book/${BOOK}`, '.read-book-page');
   await expect(page.getByTestId('book-game-card')).toContainText('0/12 · Finish a chapter to open January');
   await open(page);
-  await expect(page.getByTestId('book-game-lock')).toHaveText('Finish a chapter of the book to open Jan.');
+  await expect(page.getByTestId('book-game-lock')).toHaveText('Finish 1 more chapter to open January.');
   await open(page, `grow/read/game/${BOOK}/mar`);
-  await expect(page.getByTestId('book-game-lock')).toHaveText('Finish a chapter of the book to open Mar.');
+  await expect(page.getByTestId('book-game-lock')).toHaveText('Finish 1 more chapter to open March.');
   await page.getByRole('button', { name: 'Back to the book' }).click();
   await expect(page).toHaveURL(new RegExp(`#grow/read/book/${BOOK}$`));
 });
@@ -49,6 +61,9 @@ test('one chapter (any one) opens Jan-Mar in order; Mar has labelled phrases and
   await chapters(page, 'babylon-3');
   await open(page);
   await page.getByRole('button', { name: 'Goa with friends' }).click();
+  // a9's E12: all three goals are in view before any scroll.
+  for (const name of ['A new laptop', 'Goa with friends', 'Bike down-payment']) await expect(page.getByRole('button', { name: new RegExp(`^${name}`) })).toBeInViewport();
+  expect(await lineCount(page, '.book-game-rule')).toBeLessThanOrEqual(2);
   await page.getByRole('button', { name: 'Start January' }).click();
   await expect(page.locator('.book-game-play[data-month="jan"]')).toBeVisible();
   await movesInView(page);
@@ -74,7 +89,7 @@ test('one chapter (any one) opens Jan-Mar in order; Mar has labelled phrases and
   await expect(sheet).toHaveCount(0);
   await page.getByRole('button', { name: 'Say no' }).click();
   await expect(page.locator('.book-game-result[data-month="mar"]')).toContainText('SIGNS SPOTTED');
-  await expect(page.getByTestId('book-game-lock')).toHaveText('Finish 2 chapters of the book to open Apr.');
+  await expect(page.getByTestId('book-game-lock')).toHaveText('Finish 1 more chapter to open April.');
   // Reload keeps the year; the played months reopen read-only.
   await open(page, `grow/read/game/${BOOK}/feb`);
   await expect(page.locator('.book-game-result[data-month="feb"]')).toContainText('· played');
@@ -120,7 +135,7 @@ test('all 12 months (5 chapters): the moves are in view before any tap; each sce
   await chapters(page, 'babylon-1', 'babylon-2', 'babylon-3', 'babylon-4', 'babylon-5');
   await open(page);
   await page.getByRole('button', { name: 'Start January' }).click();
-  const words: Record<string, number> = {};
+  const words: Record<string, number> = {}, lines: Record<string, number> = {};
   const moves: Record<number, string> = { 0: 'Continue', 1: 'Continue', 2: 'Say no', 3: 'Say no', 4: 'Move ₹3,000', 5: 'Say yes', 6: 'Say no', 7: 'Handle the repair', 8: 'Take the course', 9: 'Continue', 10: 'Continue', 11: 'See my year' };
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   for (let m = 0; m < 12; m++) {
@@ -128,10 +143,19 @@ test('all 12 months (5 chapters): the moves are in view before any tap; each sce
     await movesInView(page);
     const text = await page.locator('.book-game-scene > div:last-child').first().innerText();
     words[MONTHS[m]!] = text.trim().split(/\s+/).length;
+    // a9/b2 copy limits: a month's message ≤35 words and ≤2 lines at 360 (the sign months' messages are phrases to tap,
+    // measured by words only; Jan and Nov hold the split controls, not a message).
+    expect(words[MONTHS[m]!], `${MONTHS[m]} words`).toBeLessThanOrEqual(35);
+    if (![0, 2, 3, 5, 6, 10].includes(m)) {
+      lines[MONTHS[m]!] = await lineCount(page, '.book-game-scene > div:last-child');
+      expect(lines[MONTHS[m]!], `${MONTHS[m]} message lines`).toBeLessThanOrEqual(2);
+    }
     await page.locator('.book-game-actions').getByRole('button', { name: moves[m]!, exact: true }).click();
+    // A result paragraph is ≤3 lines at 360.
+    expect(await lineCount(page, '.book-game-result .card p:not(.book-game-delta):not(.book-game-net):not(.small)'), `${MONTHS[m]} result lines`).toBeLessThanOrEqual(3);
     if (m < 11) await page.getByRole('button', { name: `Start ${MONTHS[m + 1]}` }).click();
   }
-  console.log(`spec 40 scene words: ${JSON.stringify(words)}`);
+  console.log(`spec 40 scene words: ${JSON.stringify(words)} · message lines at this width: ${JSON.stringify(lines)}`);
   await page.getByRole('button', { name: 'View the full year' }).click();
   await expect(page.locator('.book-game-end')).toContainText('net worth');
 });

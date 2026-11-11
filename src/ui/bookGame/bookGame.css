@@ -1,5 +1,16 @@
 /* Spec 40 "Your first year": the app's tokens and fonts only (no prototype palette); moves pinned in the thumb zone. */
-.book-game { padding-bottom: 8px; }
+.book-game { padding-bottom: 8px; container: book-game / inline-size; }
+.book-game strong, .book-game-delta, .book-game-net { font-variant-numeric: tabular-nums; }
+.book-game-ledger strong, .book-game-pot strong { white-space: nowrap; }
+/* a9: at large text the pots are one compact line, so the moves stay in view. */
+@container book-game (max-width: 20rem) {
+  .book-game-pots { display: flex; flex-wrap: wrap; gap: 2px 12px; }
+  .book-game-pot { display: inline-flex; align-items: baseline; gap: 4px; padding: 0 0 0 6px; border-radius: 0; background: none; }
+  .book-game-pot span, .book-game-pot small { font-size: .75rem; }
+  .book-game-pot strong { font-size: .875rem; }
+  .book-game-arkad { display: block; }
+  .book-game-portrait { display: none; }
+}
 .book-game h1 { margin-bottom: 8px; }
 .book-game .card { margin: 10px 0; }
 .book-game-pots { display: grid; grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr)); gap: 6px; margin: 8px 0; }
@@ -60,7 +71,8 @@
 .book-game-note { color: var(--ink-3); }
 .book-game-lock { margin: 8px 0; font-weight: 600; }
 .book-game-answer { margin: 8px 0; }
-.book-game-actions { position: sticky; bottom: calc(var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) + 8px); z-index: 3; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px -16px 0; padding: 10px 16px; background: var(--bg); box-shadow: 0 -8px 16px -12px rgba(0,0,0,.25); }
+/* a9: the footer band reaches the tab bar, so nothing peeks between them. */
+.book-game-actions { position: sticky; bottom: var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))); z-index: 3; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px -16px 0; padding: 10px 16px; background: var(--bg); box-shadow: 0 -8px 16px -12px rgba(0,0,0,.25); }
 .book-game-actions > button { flex: 1 1 8rem; }
 .book-game-card { display: grid; gap: 2px; width: 100%; margin: 12px 0; background: var(--surface-1); color: var(--ink); text-align: left; }
 .book-game-card strong { color: var(--ink); font-size: 1.125rem; }

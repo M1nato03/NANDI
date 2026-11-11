@@ -9,7 +9,7 @@ describe('spec 40 unlocks: count-based pacing blocks (b2 11 Nov)', () => {
     for (let m = 0; m < 12; m++) {
       const lock = monthLock(m, 0, played());
       expect(lock.open, `month ${m}`).toBe(false);
-      if (!lock.open) expect(lock.reason).toMatch(/^Finish (a chapter|\d chapters) of the book to open [A-Z][a-z]{2}\.$/);
+      if (!lock.open) expect(lock.reason).toMatch(/^Finish \d more chapters? to open [A-Z][a-z]+\.$/);
     }
     expect(yearProgress(0, played())).toEqual({ opened: [], next: null, playedCount: 0 });
   });
@@ -30,7 +30,8 @@ describe('spec 40 unlocks: count-based pacing blocks (b2 11 Nov)', () => {
   });
 
   it('calendar order inside the open months: Feb needs Jan played', () => {
-    expect(monthLock(1, 1, played())).toEqual({ open: false, reason: 'Play Jan first. Each month carries into the next.' });
+    expect(monthLock(1, 1, played())).toEqual({ open: false, reason: 'Play January first. Each month carries into the next.' });
+    expect(monthLock(5, 2, played(0, 1, 2, 3, 4))).toEqual({ open: false, reason: 'Finish 1 more chapter to open June.' });
     expect(monthLock(1, 1, played(0)).open).toBe(true);
     expect(yearProgress(1, played(0)).next).toBe(1);
     expect(yearProgress(1, played(0, 1, 2)).next).toBeNull();

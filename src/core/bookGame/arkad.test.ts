@@ -39,7 +39,7 @@ describe('spec 40: the approved year, unchanged in math', () => {
   it("May's growth: ₹40 a month from June to December, ₹280 by the year end (careful), none when skipped", () => {
     expect(playYear('careful').pots.growing).toBe(3000 + 280);
     expect(playYear('skip-growth').pots.growing).toBe(0);
-    expect(playYear('skip-growth').lastText).toContain('₹280 less fictional example growth');
+    expect(playYear('skip-growth').lastText).toContain('₹280 less (fictional example)');
   });
 
   it('August: a built cushion covers the repair (no debt); "kept nothing" leaves a ₹12,000 bill', () => {

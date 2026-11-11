@@ -21,6 +21,8 @@ import './bookGame.css';
 const MONTH_IDS = MONTHS.map(m => m.toLowerCase());
 const FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const TAG_TEXT = { red: 'Warning', green: 'Good sign', grey: 'Other' } as const;
+/** An amount with its sign that never splits across lines (a9: "+ / ₹5,000"): a word joiner after the sign. */
+const signed = (n: number) => `${n > 0 ? '+\u2060' : ''}${fmt(n)}`;
 
 function useGame(bookId: string) {
   return useLiveQuery(async () => {
@@ -96,10 +98,10 @@ function GoalBar({ state }: { state: ArkadState }) {
 function Teach({ state, onGoal, footer }: { state: ArkadState; onGoal: (goal: number) => void; footer: ReactNode }) {
   return <section className="screen book-game book-game-teach">
     <p className="eyebrow">Your first working year</p><h1>Keep a part. See where it goes.</h1>
-    <div className="card book-game-arkad"><ArkadPortrait /><div><b>Arkad · richest man in old Babylon</b><p className="small">People asked how he got rich. His first rule:</p>
-      <p className="book-game-rule">Keep ₹1 of every ₹10 you earn, before paying anything else.</p></div></div>
     <div className="card"><h2>Pick a goal for your year</h2><div className="book-game-goals">{GOALS.map((goal, i) =>
       <button type="button" key={goal.name} className={state.goal === i ? '' : 'secondary'} aria-pressed={state.goal === i} onClick={() => onGoal(i)}>{goal.name}<span>{fmt(goal.amount)}</span></button>)}</div></div>
+    <div className="card book-game-arkad"><ArkadPortrait /><div><b>Arkad · richest man in old Babylon</b><p className="small">People asked how he got rich. His first rule:</p>
+      <p className="book-game-rule">Keep ₹1 of every ₹10 you earn, first.</p></div></div>
     <p className="small book-game-hint"><Cast name="Chiku" pose="idle" size={32} /> One month per sitting. Your choices carry into the next one. Each chapter you finish opens the next months.</p>
     <BottomActions>{footer}</BottomActions>
   </section>;
@@ -127,7 +129,7 @@ function Play({ state, busy, onChange, onAct }: { state: ArkadState; busy: boole
       <p className="small">Rent / PG ₹8,000 · Food ₹6,000 · Travel + phone ₹2,500</p></Scene>;
     moves = button('Continue', 'split-commit');
   } else if (m === 1) {
-    body = <><Scene kind="Your monthly auto-charges" icon="↻">These renewed after payday. Swipe left on each one you no longer want. A tap works too.</Scene>
+    body = <><Scene kind="Your monthly auto-charges" icon="↻">These renewed after payday. Swipe left to cancel one; a tap works too.</Scene>
       <SubsList state={state} onChange={onChange} />
       <p className="small">Stopped this month: <b>{fmt(state.subs.reduce((n, v, i) => n + (v ? SUBS[i]![1] : 0), 0))}</b> · stays in Cushion each month.</p></>;
     moves = button('Continue', 'feb-commit');
@@ -147,21 +149,21 @@ function Play({ state, busy, onChange, onAct }: { state: ArkadState; busy: boole
     moves = <>{button('Say yes', 'yes', true)}<button type="button" className="secondary book-game-choice" onClick={() => setSheet(true)}>Check first</button>{button('Say no', 'no', true)}</>;
   } else if (m === 4) {
     // a9's ≤35-word rule (spec 40 §6): the approved line, trimmed from 43 words with its meaning kept.
-    body = <Scene kind="Recurring deposit-style choice" icon="↗">Mine has room for ₹3,000. Keep it in Mine, or move it to a fictional recurring deposit-style Growing pot. In this story it adds ₹40 a month from June to December. Not a promise.</Scene>;
+    body = <Scene kind="Recurring deposit-style choice" icon="↗">Move ₹3,000 to Growing? It adds ₹40 a month (fictional).</Scene>;
     moves = <>{button('Move ₹3,000', 'invest', true)}{button('Keep in Mine', 'keep', true)}</>;
   } else if (m === 7) {
     const covered = state.pots.cushion >= 10000;
-    body = <Scene kind="Laptop repair desk" icon="▣">Your laptop will not start. The repair is ₹10,000. {covered ? `Your Cushion has ${fmt(state.pots.cushion)} and can cover it. No new debt or cut to Mine.` : 'Your Cushion is short. A rushed repair adds ₹2,000, so ₹12,000 must come from what you have, or become unpaid.'}</Scene>;
+    body = <Scene kind="Laptop repair desk" icon="▣">Your laptop will not start. {covered ? `The ₹10,000 repair fits in your Cushion (${fmt(state.pots.cushion)}).` : 'Rushed, it costs ₹12,000; your Cushion is short.'}</Scene>;
     moves = button('Handle the repair', 'repair');
   } else if (m === 8) {
-    body = <Scene kind="Weekend course · practical work" icon="✎">A weekend course costs ₹3,000 from your pots. Finish it and a useful skill can unlock a ₹3,000 monthly raise in November. Your choice carries forward.</Scene>;
+    body = <Scene kind="Weekend course · practical work" icon="✎">A ₹3,000 course could add ₹3,000 a month to November’s pay.</Scene>;
     moves = <>{button('Take the course', 'course', true)}{button('Skip it', 'skip', true)}</>;
   } else if (m === 9) {
-    body = <><Scene kind="Festival group chat" icon="✦">{state.lent ? 'Rohan just offered you a ₹1,000 paid gig because you helped in June. ' : ''}Gifts, sales, and “everyone is going.” Pick one number before browsing. The amount comes from your pots.</Scene>
+    body = <><Scene kind="Festival group chat" icon="✦">{state.lent ? 'Rohan offers a ₹1,000 gig. Pick one festival number first.' : 'Gifts and sales: pick one number before browsing.'}</Scene>
       <div className="card"><b>Festival budget: {fmt(state.festival)}</b><div className="book-game-chips" role="group" aria-label="Festival budget">{FESTIVAL_CHOICES.map(n => <button type="button" key={n} className={state.festival === n ? '' : 'secondary'} aria-pressed={state.festival === n} onClick={() => onChange({ ...state, festival: n })}>{fmt(n)}</button>)}</div></div></>;
     moves = button('Continue', 'festival-commit');
   } else {
-    body = <Scene kind="December · your year" icon="◷">Twelve months went by. {state.course ? 'The course raised your salary in November. ' : 'Your salary stayed steady. '}{state.invested ? 'Growing has added fictional example growth.' : state.skippedGrowthPotential ? 'You kept ₹3,000 in Mine in May, so this example missed ₹280 of growth by December.' : 'You kept Growing empty; that was a valid choice.'}</Scene>;
+    body = <Scene kind="December · your year" icon="◷">{state.course ? 'The course raised your pay. ' : 'Your pay stayed steady. '}{state.invested ? 'Growing grew (a fictional example).' : state.skippedGrowthPotential ? 'Growing missed ₹280 (an example).' : 'Growing stayed empty, a valid choice.'}</Scene>;
     moves = button('See my year', 'dec-commit');
   }
   return <section className="screen book-game book-game-play" data-month={MONTH_IDS[m]}>
@@ -201,14 +203,14 @@ function ResultView({ state, month, footer, readOnly }: { state: ArkadState; mon
   if (!result) return null;
   const delta = result.after - result.before;
   const covered = month === 7 && result.moves.some(x => x.pot === 'cushion' && x.delta === -10000);
-  const headline = covered ? 'Repair paid: ₹10,000 from Cushion' : month === 9 ? `Festival: ${fmt(-result.moves.filter(x => x.label === 'Festival budget spent').reduce((n, x) => n + x.delta, 0))} spent` : `${delta > 0 ? '+' : ''}${fmt(delta)}`;
+  const headline = covered ? 'Repair paid: ₹10,000 from Cushion' : month === 9 ? `Festival: ${fmt(-result.moves.filter(x => x.label === 'Festival budget spent').reduce((n, x) => n + x.delta, 0))} spent` : signed(delta);
   const rows = ledgerRows(result.moves);
   return <section className="screen book-game book-game-result" data-month={MONTH_IDS[month]}>
     <p className="eyebrow">{MONTHS[month]} · What happened{readOnly ? ' · played' : ''}</p><h1>{month === 11 ? 'Your first year' : RESULT_TITLES[month]}</h1>
     <div className="card"><span className={`book-game-stamp${delta < 0 ? ' is-warn' : ''}`}>{result.stamp}</span>
       <p className="book-game-delta">{headline}</p>{covered && <p className="small">Mine untouched</p>}
       <p className="book-game-net">Net worth: {fmt(result.before)} → {fmt(result.after)}</p>
-      <ul className="book-game-ledger">{(rows.length ? rows : [{ label: 'No pot move this month', value: 0, month }]).slice(0, 4).map(row => <li key={row.label}><span>{row.label}</span><strong>{row.value > 0 ? '+' : ''}{fmt(row.value)}</strong></li>)}</ul>
+      <ul className="book-game-ledger">{(rows.length ? rows : [{ label: 'No pot move this month', value: 0, month }]).slice(0, 4).map(row => <li key={row.label}><span>{row.label}</span><strong>{signed(row.value)}</strong></li>)}</ul>
       <p>{result.text}</p></div>
     <div className="card"><p className="book-game-lesson">Arkad's lesson: {result.lesson}</p><p className="small">Try next: {result.habit}</p></div>
     {!readOnly && <PotsStrip state={state} />}
@@ -226,7 +228,7 @@ function YearEnd({ state, footer }: { state: ArkadState; footer: ReactNode }) {
     <div className="card small"><p><b>Goal:</b> {goalSaved(state) >= goal.amount ? `You reached ${goal.name}.` : `You reached ${Math.max(0, Math.round(goalSaved(state) / goal.amount * 100))}% of ${goal.name}.`} No grade, just a useful map.</p>
       <p><b>Best move:</b> {best[0]}. {best[1]}</p><p><b>Try differently:</b> {tryDifferent(state)}</p></div>
     <div className="card small"><h3>Three habits for next month</h3><p>1. Move a part on salary day.</p><p>2. Check the person and fee before paying.</p><p>3. Keep Cushion for surprises.</p></div>
-    <details className="card"><summary>See every pot move</summary><ul className="book-game-ledger">{ledgerRows(state.ledger, true).map(row => <li key={`${row.month}-${row.label}-${row.value > 0}`}><span>{MONTHS[row.month]} · {row.label}</span><strong>{row.value > 0 ? '+' : ''}{fmt(row.value)}</strong></li>)}</ul></details>
+    <details className="card"><summary>See every pot move</summary><ul className="book-game-ledger">{ledgerRows(state.ledger, true).map(row => <li key={`${row.month}-${row.label}-${row.value > 0}`}><span>{MONTHS[row.month]} · {row.label}</span><strong>{signed(row.value)}</strong></li>)}</ul></details>
     <p className="small book-game-note">This is a fictional learning game. Growth and outcomes are examples, not promises or personal financial advice. One tenth is Arkad's story rule, not an amount that fits every home.</p>
     <BottomActions>{footer}</BottomActions>
   </section>;
