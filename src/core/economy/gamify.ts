@@ -87,7 +87,7 @@ export const badges: Badge[] = [
   { id: 'clean-boards', title: 'Boards without hints', count: f => all(f, 'mind', 'board').filter(x => Number(x.inputs.hintsUsed ?? 0) === 0).length },
   { id: 'cases', title: 'Cases settled', count: badgeCount('mind', 'mystery') },
   { id: 'nights', title: 'Nights on plan', count: f => all(f, 'bonuses', 'lightsout').filter(x => x.inputs.metTarget === true).length },
-  { id: 'quests', title: 'Daily quests', count: badgeCount('gamify', 'daily-quest') },
+  { id: 'quests', title: 'Small steps today', count: badgeCount('gamify', 'daily-quest') },
   { id: 'chests', title: 'Unit chests', count: badgeCount('gamify', 'unit-chest') },
   { id: 'focus', title: 'Focus boosts', count: badgeCount('gamify', 'focus-boost') },
   { id: 'reviews', title: 'Ideas revisited', count: badgeCount('mind', 'learn-retention') },

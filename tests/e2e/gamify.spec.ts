@@ -63,8 +63,8 @@ test('seeded daily quests complete and a badge appears under You', async ({ page
   // A finished drop writes its learn-drop fact; that, not a count of five answers, completes the drop quest.
   rows.push(fact('learn-drop', day, 'gamify', {}, 5), fact('perfect-drop', day, 'gamify', {}, 6), fact('lightsout', day, 'bonuses', { metTarget: true }, 7));
   await seed(page, rows);
-  const quests = page.getByRole('region', { name: 'Daily quests' });
-  await expect(quests).toContainText('Daily quests');
+  const quests = page.getByRole('region', { name: 'Small steps today' });
+  await expect(quests).toContainText('Small steps today');
   await expect(quests).toContainText("Finish today's Learn drop");
   await expect(quests).toContainText('Focus boost');
   if (testInfo.project.name === 'mobile-360x800') {
