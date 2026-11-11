@@ -33,6 +33,8 @@ test('after Later, Settings still offers the update, and a check by hand brings 
 });
 
 test('up to date: Settings says so and offers no update', async ({ page }) => {
+  // A fixed noon: on the real clock after bedtime the night deck opens over Settings (gate-s40f ran at 04:20).
+  await page.clock.install({ time: new Date('2026-11-10T12:00:00') });
   await page.addInitScript(() => {
     (window as unknown as Record<string, unknown>).__nandiFakeUpdater = {
       installed: { versionCode: 124, versionName: '0.1.0' },
