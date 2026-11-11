@@ -73,7 +73,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [], label = 'Add a task'
     <label className="quick-add-field">{label}<input form="plan-add-form" required maxLength={160} value={title} onFocus={() => setOpen(true)} onChange={(event) => { setTitle(event.target.value); setOpen(true); }} onBlur={() => { if (parsed) { setTitle(taskTitle); setEstimate(String(taskMinutes)); } }} placeholder="Add a task, e.g. call bank 15m" /></label>
     {open && <form id="plan-add-form" className="card task-form" onSubmit={(event) => void submit(event)}>
       <h2>Task details</h2>
-      {parsed && <p className="small">{taskMinutes} minutes picked up from your task.</p>}
+      {parsed && <p className="small">{taskMinutes}&nbsp;minutes picked up from your task.</p>}
       <div className="task-form-grid"><label>Size <select value={size} onChange={(event) => { const value = event.target.value as typeof size; setSize(value); setEstimate(value === 'S' ? '15' : value === 'M' ? '30' : '60'); }}><option value="S">Small</option><option value="M">Medium</option><option value="L">Large</option></select></label>
       <label>Minutes <input type="number" min="1" max="600" inputMode="numeric" value={estimate} onChange={(event) => setEstimate(event.target.value)} /></label></div>
       <label>Category <select value={category} onChange={event => setCategory(event.target.value)}>{['general', 'study', 'project', 'admin', 'personal', 'trading', 'health'].map(item => <option key={item}>{item}</option>)}</select></label>

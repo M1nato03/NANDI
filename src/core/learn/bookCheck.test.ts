@@ -20,9 +20,9 @@ describe('spec 41 an idea says what it earned', () => {
   const idea = (concept: string, steps: number, at: number, drop = false) => row(`read-idea:b:b-ch1:${concept}`, 'idea', `b:b-ch1:${concept}`, '2026-11-04', { chapter: 'b:b-ch1', conceptId: concept, newSteps: steps, ...(drop ? { dropId: 'drop:daily:2026-11-04' } : {}) }, at);
   it('the base on the first idea, 5 a step, topped up to 15 as the day\'s drop, and complete past the cap', () => {
     const facts = [idea('a', 1, 1, true), idea('b', 3, 2), idea('c', 4, 3), idea('d', 3, 4)];
-    expect(ideaLine(facts, 'b:b-ch1', 'a')).toBe('+15 XP');
-    expect(ideaLine(facts, 'b:b-ch1', 'b')).toBe('+15 XP');
-    expect(ideaLine(facts, 'b:b-ch1', 'c')).toBe('+15 XP');
+    expect(ideaLine(facts, 'b:b-ch1', 'a')).toBe('+15\u00a0XP');
+    expect(ideaLine(facts, 'b:b-ch1', 'b')).toBe('+15\u00a0XP');
+    expect(ideaLine(facts, 'b:b-ch1', 'c')).toBe('+15\u00a0XP');
     expect(ideaLine(facts, 'b:b-ch1', 'd')).toBe('Chapter XP complete · your reading time still counts');
   });
 });

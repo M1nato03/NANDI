@@ -7,7 +7,7 @@ const NOON = new Date('2026-11-04T12:00:00');
 const card = (page: Page) => page.getByRole('dialog', { name: 'Pause card' });
 const totalXp = async (page: Page) => {
   await page.goto('/?e2e#you');
-  return Number((await page.getByText(/^[\d,]+ XP in all$/).innerText()).replace(/[^\d]/g, ''));
+  return Number((await page.getByText(/^[\d,]+\sXP in all$/).innerText()).replace(/[^\d]/g, ''));
 };
 async function setUp(page: Page) {
   await page.goto('/?e2e#plan');

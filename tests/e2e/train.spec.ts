@@ -32,11 +32,11 @@ for (const scheme of ['light', 'dark'] as const) {
     await capture(page, testInfo.outputPath(`train-workout-${scheme}.png`));
     await page.getByRole('button', { name: 'Log set' }).click();
     await expect(page.getByRole('status').filter({ hasText: 'Set saved' })).toBeVisible();
-    await expect(page.getByRole('timer')).toHaveAttribute('aria-label', 'Rest 90 seconds');
+    await expect(page.getByRole('timer')).toHaveAttribute('aria-label', 'Rest 90\u00a0seconds');
     await capture(page, testInfo.outputPath(`train-rest-${scheme}.png`));
     await page.clock.fastForward(30_000);
     await page.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); window.dispatchEvent(new Event('pageshow')); });
-    await expect(page.getByRole('timer')).toHaveAttribute('aria-label', /^Rest (5\d|60) seconds$/); // real time also passes on slow CI runners
+    await expect(page.getByRole('timer')).toHaveAttribute('aria-label', /^Rest (5\d|60)\sseconds$/); // real time also passes on slow CI runners
     await page.reload();
     await expect(page.getByText('Exercise 1 of 7')).toBeVisible();
     await expect(page.getByRole('heading', { name: /^Set 2 of/ })).toBeVisible();
@@ -68,7 +68,7 @@ test('a full exercise advances, then a later set resumes after reload', async ({
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: testInfo.outputPath('session-390x844.png'), fullPage: true });
   await page.getByRole('button', { name: 'Log set' }).click();
-  await expect(page.getByRole('timer')).toHaveAttribute('aria-label', 'Rest 90 seconds');
+  await expect(page.getByRole('timer')).toHaveAttribute('aria-label', 'Rest 90\u00a0seconds');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: testInfo.outputPath('rest-390x844.png'), fullPage: true });
   await expect(page.getByRole('heading', { name: /^Set 2 of/ })).toBeVisible();

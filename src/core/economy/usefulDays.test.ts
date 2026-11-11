@@ -110,7 +110,7 @@ describe('spec 45b decision 7: the record', () => {
     ];
     expect(usefulRecord(['2026-11-02', '2026-11-04'], facts, new Map([['t1', 'Call the bank']]))).toEqual([
       { dayKey: '2026-11-04', items: ['A workout', '2 ideas read', 'A case solved', 'A gentle thing on a soft day'] },
-      { dayKey: '2026-11-02', items: ['Call the bank', 'A planned task', 'Calm, 12 min'] },
+      { dayKey: '2026-11-02', items: ['Call the bank', 'A planned task', 'Calm, 12\u00a0min'] },
     ]);
   });
   it('a kept date whose rows are gone says so, without inventing an action', () => {

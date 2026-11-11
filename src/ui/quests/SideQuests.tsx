@@ -14,14 +14,14 @@ import './quests.css';
 const repo = createQuestRepo(db);
 const categories = new Map(pack.body.quests.map(quest => [quest.id, quest.category]));
 const hints: Record<string, { why: string; time: string }> = {
-  movement: { why: 'Get moving in a small, doable way.', time: '10 min' },
-  social: { why: 'Make room for a real connection.', time: '10 min' },
-  learning: { why: 'Notice how the world works.', time: '20 min' },
-  reading: { why: 'Give your attention to a page.', time: '10 min' },
-  creativity: { why: 'Make something with your hands.', time: '15 min' },
-  money: { why: 'Get clearer about your spending.', time: '10 min' },
-  mind: { why: 'Take a little space from your screen.', time: '10 min' },
-  literature: { why: 'Spend time with a story or place.', time: '15 min' },
+  movement: { why: 'Get moving in a small, doable way.', time: '10\u00a0min' },
+  social: { why: 'Make room for a real connection.', time: '10\u00a0min' },
+  learning: { why: 'Notice how the world works.', time: '20\u00a0min' },
+  reading: { why: 'Give your attention to a page.', time: '10\u00a0min' },
+  creativity: { why: 'Make something with your hands.', time: '15\u00a0min' },
+  money: { why: 'Get clearer about your spending.', time: '10\u00a0min' },
+  mind: { why: 'Take a little space from your screen.', time: '10\u00a0min' },
+  literature: { why: 'Spend time with a story or place.', time: '15\u00a0min' },
 };
 
 /** A quest whose category line does not fit it gets its own (the sound walk is listening, not making). */
@@ -92,7 +92,7 @@ export function SideQuests({ selectedId }: { selectedId?: string }) {
       const expanded = expandedId?.toLowerCase() === row.id.toLowerCase();
       return <article className={row.status === 'done' ? 'quest-row quest-done ui-list-row' : 'quest-row ui-list-row'} key={row.id}>
         <div className="quest-row-main"><button type="button" className="quest-disclosure" aria-expanded={expanded} aria-controls={`quest-detail-${row.id}`} onClick={() => setExpandedId(expanded ? null : row.id)}>
-          <strong>{row.title}</strong><span className="quest-why">{hint.why}</span><span className="quest-time">{hint.time}{row.custom ? ' · Custom' : ''} <span aria-hidden="true">{expanded ? '⌃' : '⌄'}</span></span>
+          <strong>{row.title}</strong><span className="quest-why">{hint.why}</span><span className="quest-time">{hint.time}{row.custom ? ' · Custom' : ''} <svg className="quest-caret" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d={expanded ? 'M2.5 7.5L6 4l3.5 3.5' : 'M2.5 4.5L6 8l3.5-3.5'} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
         </button>
           <div className="quest-actions">{row.status === 'done' ? <span className="quest-check" aria-label="Done"><span aria-hidden="true">✓</span></span> : row.kind === 'once' ? <button type="button" disabled={busy} onClick={() => void run(() => repo.done(row.id, Date.now()))}>Done</button> : <div className="quest-count-action"><button type="button" aria-label={`Add ${row.step} to ${row.title}`} disabled={busy} onClick={() => void run(() => repo.tap(row.id, ulid(), row.step, Date.now()))}><span aria-hidden="true">+</span>{row.step}</button><span>{row.progress} of {row.target}</span></div>}</div></div>
         {expanded && <div className="quest-detail" id={`quest-detail-${row.id}`}><span>{row.kind === 'total' ? `${row.progress} of ${row.target} ${row.unit} this week` : 'One time this week'}</span>{row.status === 'active' && row.kind === 'total' && <button type="button" className="secondary" aria-label={`Subtract ${row.step} from ${row.title}`} disabled={busy || row.progress === 0} onClick={() => void run(() => repo.tap(row.id, ulid(), -row.step, Date.now()))}>Undo last +{row.step}</button>}</div>}

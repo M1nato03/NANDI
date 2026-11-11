@@ -27,7 +27,7 @@ export const PAUSE_APP_CHOICES: readonly { label: string; packageName: string }[
 /** Quick picks for the act. They lean offline and social: exercise, people and nature carried the gains. */
 export const PAUSE_ACTS: readonly string[] = [
   'do 10 squats',
-  'step outside for 2 minutes',
+  'step outside for 2\u00a0minutes',
   'talk to someone near you',
   'read one page of a paper book',
   'drink a glass of water',
@@ -105,7 +105,7 @@ export function pauseAppLabel(packageName: string, extra: readonly { label: stri
 
 /** "If I open Instagram, I'll do 10 squats first." Until an act is written: "Take 2 minutes first." */
 export function pauseLine(label: string, act: string | null): string {
-  return act ? `If I open ${label}, I'll ${act} first.` : 'Take 2 minutes first.';
+  return act ? `If I open ${label}, I'll ${act} first.` : 'Take 2\u00a0minutes first.';
 }
 
 /** "From 09:00 to 21:00" or "All day until bedtime". */

@@ -8,7 +8,7 @@ const pack = JSON.parse(readFileSync('content/topics/topic.how-things-work.json'
 const WEDNESDAY = new Date('2026-11-04T10:00:00');
 const totalXp = async (page: Page) => {
   await page.goto('/?e2e#you');
-  const text = await page.getByText(/^[\d,]+ XP in all$/).innerText();
+  const text = await page.getByText(/^[\d,]+\sXP in all$/).innerText();
   return Number(text.replace(/[^\d]/g, ''));
 };
 

@@ -47,7 +47,7 @@ export function applyRetestVolume(routine: Routine, due: boolean): Routine {
 export function heatAdvice(input: { hotMode: boolean; celsius?: number; humid?: boolean; dizzy?: boolean }): string[] {
   if (input.dizzy) return ['Stop and seek help if dizzy or confused.'];
   if (!input.hotMode) return [];
-  const lines = ['Choose a late-evening or indoor session. Keep the first 10–14 days lighter.', 'Watch for dizziness, confusion, headache, nausea or unusual weakness. Stop if these appear.'];
+  const lines = ['Choose a late-evening or indoor session. Keep the first 10–14\u00a0days lighter.', 'Watch for dizziness, confusion, headache, nausea or unusual weakness. Stop if these appear.'];
   if (input.celsius != null && input.celsius > RULES.train.heatIndoorCelsius && input.humid) lines.push('Move indoors in this heat and humidity.');
   return lines;
 }

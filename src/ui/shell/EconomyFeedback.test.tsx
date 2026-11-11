@@ -48,7 +48,7 @@ describe('economy feedback', () => {
   it('celebrates a finished task in the day', async () => {
     const seen = await finishTask('2026-11-03T12:00:00');
     // The count-up runs on animation frames (frozen with a fixed clock here), so any count is fine; never below 0.
-    await waitFor(() => expect(seen.some(toast => /^\+\d+ XP(?: · |$)/.test(toast.text))).toBe(true));
+    await waitFor(() => expect(seen.some(toast => /^\+\d+\u00a0XP(?: · |$)/.test(toast.text))).toBe(true));
     expect(mock.tapHaptic).toHaveBeenCalled();
   });
 
@@ -129,7 +129,7 @@ describe('economy feedback', () => {
   it('F2: with Motion off the XP shows in full at once, with no bloom and no sound', async () => {
     document.documentElement.dataset.motion = 'reduce';
     const seen = await finishTask('2026-11-05T12:00:00');
-    await waitFor(() => expect(seen.some(toast => /^\+[1-9]\d* XP(?: · |$)/.test(toast.text))).toBe(true));
+    await waitFor(() => expect(seen.some(toast => /^\+[1-9]\d*\u00a0XP(?: · |$)/.test(toast.text))).toBe(true));
     // The full number from the first frame: never a count from 0, and no bloom.
     expect(seen.every(toast => !/^\+0 XP/.test(toast.text) && !toast.className.includes('finish-bloom'))).toBe(true);
     expect(mock.playCastSound).not.toHaveBeenCalled();
@@ -168,7 +168,7 @@ describe('economy feedback', () => {
     await settle();
     expect(document.querySelectorAll('[role=status]')).toHaveLength(1);
     expect(document.querySelector('[role=status]')!.textContent).toBe(first);
-    await waitFor(() => expect(document.querySelector('[role=status]')?.textContent).toBe('+5 min into the jar · idea read'), { timeout: 2500 });
+    await waitFor(() => expect(document.querySelector('[role=status]')?.textContent).toBe('+5\u00a0min into the jar · idea read'), { timeout: 2500 });
     await act(async () => { await db.ledger.add({ id: 'learn-drop:late', mode: 'gamify', kind: 'learn-drop', refId: 'late', inputs: {}, dayKey: day, updatedAt: now, deleted: 0, deviceId: 'test' }); });
     await settle();
     await waitFor(() => expect(document.querySelector('[role=status]')).toBeNull(), { timeout: 2500 });

@@ -47,7 +47,7 @@ export function steadyLine(tasks: TaskRow[], focus: FocusRow[], today: string): 
   const date = new Date(`${today}T12:00:00`);
   const monday = shift(today, -((date.getDay() + 6) % 7));
   const minutes = Math.round(focus.filter(row => !row.deleted && row.endedAt != null && dayKey(row.startedAt) >= monday && dayKey(row.startedAt) <= today).reduce((sum, row) => sum + focusElapsedMs(row, row.endedAt!), 0) / 60_000);
-  return `Planned ${planned} of the last 7 days · ${minutes} focus min this week`;
+  return `Planned ${planned} of the last 7\u00a0days · ${minutes} focus min this week`;
 }
 export type Checkpoint = { title: string; scheduledStart: number; estimateMin: number };
 export function proposeCheckpoints(task: TaskRow, now: number): Checkpoint[] {

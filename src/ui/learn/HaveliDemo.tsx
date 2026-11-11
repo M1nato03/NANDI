@@ -9,7 +9,7 @@ import { Haveli } from './Haveli';
 // E2E build only (route learn/haveli-demo): the haveli with fixture ideas until editors sign off the recall pieces.
 const recall = (pieces: string[], decoys: [string, string]) => ({ pieces, decoys: decoys.map((text, i) => ({ text, slot: i, misconceptionId: `m${i + 1}`, fix: `Fix line ${i + 1}.` })), claimIds: ['c1'] });
 const IDEAS: HaveliIdea[] = [
-  { id: 'habits', title: 'Habits', topicId: 'psychology', topicTitle: 'Psychology', steps: [], recall: recall(['Give it weeks, and', 'do not worry about', 'one missed day.'], ['Give it exactly 21 days, and', 'expect progress to vanish after']) },
+  { id: 'habits', title: 'Habits', topicId: 'psychology', topicTitle: 'Psychology', steps: [], recall: recall(['Give it weeks, and', 'do not worry about', 'one missed day.'], ['Give it exactly 21\u00a0days, and', 'expect progress to vanish after']) },
   { id: 'anchoring', title: 'Anchoring', topicId: 'psychology', topicTitle: 'Psychology', steps: [], recall: recall(['Even a made-up number can', 'tug your guess', 'toward it.'], ['Only a fair number can', 'A random number never can']) },
 ];
 export function HaveliDemo() {

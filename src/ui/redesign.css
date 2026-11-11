@@ -22,7 +22,7 @@ h3 { font-size: 1.1875rem; line-height: 1.5rem; }
 .card p { color: var(--secondary-ink); }
 .hero::after { display: none; }
 .rank { font: 800 clamp(4.375rem, 20vw, 8.125rem) 'Bricolage Grotesque', sans-serif; transform: none; line-height: 1; }
-.tabbar { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); padding: 4px max(16px, env(safe-area-inset-left)) calc(4px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right)); background: color-mix(in srgb, var(--surface-1) 92%, transparent); border: 0; box-shadow: 0 -8px 24px rgba(0,0,0,.12); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.tabbar { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); padding: 4px max(16px, env(safe-area-inset-left)) calc(4px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right)); background: var(--surface-1); border: 0; box-shadow: 0 -8px 24px rgba(0,0,0,.12); }
 .tabbar a { font-size: 1rem; border-radius: 14px; min-height: 56px; }
 .tabbar a[aria-current='page'] { color: var(--accent-ink); background: transparent; }
 .tab-symbol { display: none; }
@@ -266,7 +266,7 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .card p { color: var(--ink-2); }
 .topbar { position: relative; z-index: 6; min-height: 64px; background: color-mix(in srgb, var(--surface-1) 92%, transparent); border: 0; box-shadow: 0 8px 24px rgba(0,0,0,.08); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .top-date { color: var(--ink-3); }
-.tabbar { min-height: 64px; background: color-mix(in srgb, var(--surface-1) 92%, transparent); border: 0; box-shadow: 0 -8px 24px rgba(0,0,0,.12); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.tabbar { min-height: 64px; background: var(--surface-1); border: 0; box-shadow: 0 -8px 24px rgba(0,0,0,.12); }
 .tabbar a { min-height: 56px; color: var(--ink-3); }
 .tabbar a[aria-current='page'] { background: transparent; color: var(--accent-ink); }
 .tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 0; padding: 4px 0; font-size: .6875rem; color: var(--ink-3); }

@@ -29,7 +29,7 @@ export function MinutesRecord({ settings }: { settings: readonly SettingRow[] | 
     <p className="minutes-record-line">{line}</p>
     <details className="minutes-record-what"><summary>What's kept</summary>
       <p className="setting-help">A daily minutes record for the apps you picked and similar apps, on this phone only. Similar apps are other video and short-video apps and web browsers. A browser counts as a whole app, since Android does not say which site was open.</p>
-      <p className="setting-help">For each day, midnight to midnight, it keeps how many minutes each of these apps was on screen. It keeps about 60 days. Nothing from it is shown yet.</p>
+      <p className="setting-help">For each day, midnight to midnight, it keeps how many minutes each of these apps was on screen. It keeps about 60&nbsp;days. Nothing from it is shown yet.</p>
       <p className="setting-help">It never leaves this phone: not in a backup, a share or a notification.{!off && ' To end it, tap Stop and delete, or turn off Usage access in Android settings.'}</p>
     </details>
     {off ? <button type="button" className="secondary" onClick={resume}>Keep a record again</button>

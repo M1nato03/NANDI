@@ -37,7 +37,7 @@ describe('spec 54: what fills the jar', () => {
     const kinds = jarActs(facts, []).map(act => `${act.kind}:${act.minutes}`).sort();
     expect(kinds).toEqual(['calm:10', 'lesson:5', 'lightsout:10', 'mind:10', 'mind:10', 'read:5', 'read:5', 'train:10'].sort());
   });
-  it('gives focus 5 for each full 30 min in a planning day, split at 04:00', () => {
+  it('gives focus 5 for each full 30\u00a0min in a planning day, split at 04:00', () => {
     const acts = jarActs([], [focus('2026-11-05T10:00:00', '2026-11-05T11:05:00'), focus('2026-11-06T03:00:00', '2026-11-06T05:00:00')]);
     // 65 min on the 5th plus 03:00-04:00 of the 6th (still the 5th's planning day) = 125 min = 4 blocks; 04:00-05:00 = 2.
     expect(acts.map(act => [act.dayKey, act.minutes])).toEqual([['2026-11-05', 20], ['2026-11-06', 10]]);
@@ -54,8 +54,8 @@ describe('spec 54: what fills the jar', () => {
   });
   it('says what a finish put in, and "Trail done for today." at the cap', () => {
     const base = { id: 'a', kind: 'read' as const, dayKey: 'd', minutes: 5, at: 1, label: 'chapter done' };
-    expect(jarFinishLine({ ...base, counted: 5 }, false)).toBe('+5 min into the jar · chapter done');
-    expect(jarFinishLine({ ...base, counted: 2 }, true)).toBe('+2 min into the jar · chapter done. Trail done for today.');
+    expect(jarFinishLine({ ...base, counted: 5 }, false)).toBe('+5\u00a0min into the jar · chapter done');
+    expect(jarFinishLine({ ...base, counted: 2 }, true)).toBe('+2\u00a0min into the jar · chapter done. Trail done for today.');
     expect(jarFinishLine({ ...base, counted: 0 }, true)).toBe('Trail done for today.');
     expect(jarFinishLine(undefined, false)).toBeNull();
   });

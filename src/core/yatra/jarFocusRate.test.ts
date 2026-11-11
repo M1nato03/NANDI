@@ -18,7 +18,7 @@ const setting = (key: string, value: unknown, deleted: 0 | 1 = 0): SettingRow =>
 const FROM = '2026-11-08';
 const minutesOf = (acts: ReturnType<typeof jarActs>) => acts.filter(act => act.kind === 'focus').map(act => [act.dayKey, act.minutes]);
 
-describe('spec 571 E1: focus fills the jar 1 min per 3 from focusRateFrom', () => {
+describe('spec 571 E1: focus fills the jar 1\u00a0min per 3 from focusRateFrom', () => {
   it('the gate day: the day before keeps 5 per full 30, the effective day and after pay 1 per full 3', () => {
     const rows = [focus('2026-11-07T10:00:00', '2026-11-07T11:05:00'), focus('2026-11-08T10:00:00', '2026-11-08T11:05:00'), focus('2026-11-09T10:00:00', '2026-11-09T10:30:00')];
     // 65 min: before = 2 blocks of 30 = 10; from the gate = floor(65 / 3) = 21; 30 min = 10.
@@ -27,7 +27,7 @@ describe('spec 571 E1: focus fills the jar 1 min per 3 from focusRateFrom', () =
     expect(minutesOf(jarActs([], rows))).toEqual([['2026-11-07', 10], ['2026-11-08', 10], ['2026-11-09', 5]]);
   });
 
-  it('rounds the remainder down within the day: 8 min = 2, 2 min = nothing, 3 min = 1', () => {
+  it('rounds the remainder down within the day: 8\u00a0min = 2, 2\u00a0min = nothing, 3\u00a0min = 1', () => {
     expect(focusJarMinutes(8 * 60_000, FROM, FROM)).toBe(2);
     expect(focusJarMinutes(8 * 60_000 + 59_999, FROM, FROM)).toBe(2);
     expect(focusJarMinutes(9 * 60_000, FROM, FROM)).toBe(3);
@@ -91,8 +91,8 @@ describe('spec 571 E1: focus fills the jar 1 min per 3 from focusRateFrom', () =
     const row = focus('2026-11-08T10:00:00', '2026-11-08T10:30:00');
     const added = [{ ...fact('tasks', 'done', FROM), id: `focus:${FROM}` }];
     const source = { facts: [], focus: [row], settings: [setting('yatra.jarFrom', '2026-11-01'), setting(FOCUS_RATE_FROM_KEY, FROM)] };
-    expect(jarLineFor(source, FROM, new Date('2026-11-08T10:30:00').getTime(), added)).toBe('+10 min into the jar · focus');
-    expect(jarLineFor({ ...source, settings: source.settings.slice(0, 1) }, FROM, new Date('2026-11-08T10:30:00').getTime(), added)).toBe('+5 min into the jar · focus');
+    expect(jarLineFor(source, FROM, new Date('2026-11-08T10:30:00').getTime(), added)).toBe('+10\u00a0min into the jar · focus');
+    expect(jarLineFor({ ...source, settings: source.settings.slice(0, 1) }, FROM, new Date('2026-11-08T10:30:00').getTime(), added)).toBe('+5\u00a0min into the jar · focus');
   });
 
   it('leaves the receipt\'s measured time and the crew plausibility bound alone', () => {

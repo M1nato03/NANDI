@@ -19,8 +19,8 @@ export function MorningBackfill({ today, now, logs, hadYesterday }: { today: str
     try { await recordMorningBackfill(db, yesterday, prior?.lightsOutAt != null ? undefined : time, prior?.reelsBucket ?? bucket, now); setMessage('Last night noted.'); }
     catch { setMessage('Choose the missing details and try again.'); }
   };
-  return <section className="card morning-backfill" aria-label="Last night"><span className="eyebrow">A quick note</span><h2>How did last night go?</h2><p>This check-in is for your record. It earns 0 XP.</p>
+  return <section className="card morning-backfill" aria-label="Last night"><span className="eyebrow">A quick note</span><h2>How did last night go?</h2><p>This check-in is for your record. It earns 0&nbsp;XP.</p>
     {prior?.lightsOutAt == null ? <label>Phone-down time <select value={time} onChange={event => setTime(event.target.value)}><option value="">Choose a time</option>{slots.map(value => <option key={value} value={value}>{value}</option>)}</select></label> : <p>Phone-down time already noted.</p>}
-    {!prior?.reelsBucket && <label>Reels time <select value={bucket} onChange={event => setBucket(event.target.value)}><option value="">Choose a range</option><option value="none">None</option><option value="under-15">Under 15 min</option><option value="15-60">15 to 60 min</option><option value="over-60">Over 60 min</option></select></label>}
+    {!prior?.reelsBucket && <label>Reels time <select value={bucket} onChange={event => setBucket(event.target.value)}><option value="">Choose a range</option><option value="none">None</option><option value="under-15">Under 15&nbsp;min</option><option value="15-60">15 to 60&nbsp;min</option><option value="over-60">Over 60&nbsp;min</option></select></label>}
     <button type="button" disabled={prior?.lightsOutAt == null && !time || !prior?.reelsBucket && !bucket} onClick={() => void save()}>Save last night</button>{message && <p role="status">{message}</p>}</section>;
 }

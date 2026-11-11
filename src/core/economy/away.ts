@@ -16,7 +16,7 @@ export const isAway = (settings: readonly SettingRow[], key: string): boolean =>
 
 export function planAway(settings: readonly SettingRow[], start: string, end: string, today: string, bank: number): { ranges?: AwayRange[]; error?: string } {
   if (!validDay(start) || !validDay(end) || start < today || end < start) return { error: 'Choose today or later, with an end after the start.' };
-  if (end >= addEconomyDays(start, RULES.streak.awayMaxDays)) return { error: `Plan up to ${RULES.streak.awayMaxDays} days at a time.` };
+  if (end >= addEconomyDays(start, RULES.streak.awayMaxDays)) return { error: `Plan up to ${RULES.streak.awayMaxDays}\u00a0days at a time.` };
   const ranges = awayRanges(settings);
   if (ranges.some(row => start <= row.end && end >= row.start)) return { error: 'These dates overlap a trip already planned.' };
   const reserved = new Set(ranges.filter(row => row.end >= today).flatMap(row => {

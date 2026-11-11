@@ -119,7 +119,7 @@ export function jarDay(entries: readonly JarEntry[], day: string): { minutes: nu
 export function jarFinishLine(entry: JarEntry | undefined, dayCapped: boolean): string | null {
   if (!entry) return null;
   if (entry.counted === 0) return dayCapped ? 'Trail done for today.' : null;
-  return dayCapped ? `+${entry.counted} min into the jar · ${entry.label}. Trail done for today.` : `+${entry.counted} min into the jar · ${entry.label}`;
+  return dayCapped ? `+${entry.counted}\u00a0min into the jar · ${entry.label}. Trail done for today.` : `+${entry.counted}\u00a0min into the jar · ${entry.label}`;
 }
 
 /**

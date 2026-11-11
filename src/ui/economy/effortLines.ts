@@ -18,7 +18,7 @@ export function trainLine(fact: LedgerRow | undefined): { line: string; next?: s
   const planned = Number(fact.inputs.plannedSets) || 0;
   const xp = trainSessionPay(fact.inputs, RULES);
   const stopped = fact.inputs.safety !== true && sets < planned;
-  const line = `${sets} ${sets === 1 ? 'set' : 'sets'}${stopped ? ' logged' : ''}${xp ? ` · +${xp} XP` : ''}`;
+  const line = `${sets} ${sets === 1 ? 'set' : 'sets'}${stopped ? ' logged' : ''}${xp ? ` · +${xp}\u00a0XP` : ''}`;
   if (!stopped) return { line };
   const pay = RULES.train.setPay;
   return { line, next: `The full plan pays +${pay.baseXp + pay.perSetXp * Math.min(pay.maxSets, planned)} next time.` };
@@ -34,7 +34,7 @@ export function boardLine(facts: readonly LedgerRow[], runId: string): string | 
   if (fact.inputs.daily === false && side.indexOf(fact) >= RULES.mind.sideBoardsMaxPerDay) return null;
   const hints = Number(fact.inputs.hintsUsed) > 0 ? Math.floor(Number(fact.inputs.hintsUsed)) : 0;
   const name = DIFF_NAME[String(fact.inputs.diff)] ?? 'Easy';
-  return `${name} board, ${hints ? `${hints} ${hints === 1 ? 'hint' : 'hints'}` : 'solved'} · +${boardPay(fact.inputs, RULES)} XP`;
+  return `${name} board, ${hints ? `${hints} ${hints === 1 ? 'hint' : 'hints'}` : 'solved'} · +${boardPay(fact.inputs, RULES)}\u00a0XP`;
 }
 
 /** A finished chapter: "2 new ideas, 2 right · +25 XP". The XP shows for the day's first three chapters before bedtime. */
@@ -51,7 +51,7 @@ export function ideaLine(facts: readonly LedgerRow[], chapter: string, conceptId
     const amount = Math.min((index === 0 ? pay.baseXp : 0) + pay.stepXp * (Number(row.inputs.newSteps) || 0), Math.max(0, pay.maxXp - paid));
     if (row.inputs.conceptId === conceptId) {
       const total = amount + (row.inputs.dropId ? Math.max(0, RULES.mind.learnDropXp - amount) : 0);
-      return total ? `+${total} XP` : 'Chapter XP complete · your reading time still counts';
+      return total ? `+${total}\u00a0XP` : 'Chapter XP complete · your reading time still counts';
     }
     paid += amount;
   }
@@ -69,5 +69,5 @@ export function chapterLine(facts: readonly LedgerRow[], ref: string): string | 
   const day = facts.filter(row => row.kind === 'chapter' && !row.deleted && row.dayKey === fact.dayKey && row.inputs.afterBedtime !== true && typeof row.inputs.newSteps === 'number').sort((a, b) => a.updatedAt - b.updatedAt);
   const paid = fact.inputs.afterBedtime !== true && day.indexOf(fact) < RULES.mind.chapterPay.paidPerDay;
   const xp = paid ? chapterPay(fact.inputs, RULES) : null;
-  return [what, xp ? `+${xp} XP` : ''].filter(Boolean).join(' · ') || null;
+  return [what, xp ? `+${xp}\u00a0XP` : ''].filter(Boolean).join(' · ') || null;
 }

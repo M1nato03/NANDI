@@ -67,12 +67,12 @@ function OwnerNumbers({ onAudit }: { onAudit: () => void }) {
   const tiles: [string, string][] = [
     ['Opens today', String(m.opensToday)], ['Opens a day (7 d)', String(m.opensAvg7)],
     ['Active days (7 d)', `${m.activeDays7} of 7`], ['Active days (30 d)', `${m.activeDays30} of 30`],
-    ['Internal chain (diagnostic)', `${economy.streak.days} days`], ['Level', String(economy.level)],
+    ['Internal chain (diagnostic)', `${economy.streak.days}\u00a0days`], ['Level', String(economy.level)],
     ['Tasks done (7 d)', String(m.tasksDone7)], ['Workouts (7 d)', String(m.workouts7)],
     ['Boards solved (7 d)', String(m.boards7)], ['Cases solved (7 d)', String(m.cases7)],
     ['Learn answers (7 d)', String(m.answers7)], ['Learn accuracy (7 d)', m.accuracy7 === null ? '—' : `${m.accuracy7}%`],
-    ['Recall at 7 days', `${pct(m.retention.recalled7, m.retention.checked7)} (${m.retention.checked7})`],
-    ['Recall at 30 days', `${pct(m.retention.recalled30, m.retention.checked30)} (${m.retention.checked30})`],
+    ['Recall at 7\u00a0days', `${pct(m.retention.recalled7, m.retention.checked7)} (${m.retention.checked7})`],
+    ['Recall at 30\u00a0days', `${pct(m.retention.recalled30, m.retention.checked30)} (${m.retention.checked30})`],
     ['App pause: chose NANDI', String(m.pauseOpenings)], ['App pause: went anyway', String(m.pauseWentAnyway)],
     ['Rest days banked', String(economy.streak.restDays)], ['Errors saved', String(m.errors)],
     ['Lessons taught', String(lessons.lessons)], ['Guided first try (aim 85–95%)', lessons.guidedFirstTry === null ? '—' : `${lessons.guidedFirstTry}% (${lessons.guidedCount})`],
@@ -88,9 +88,9 @@ function OwnerNumbers({ onAudit }: { onAudit: () => void }) {
     <button type="button" className="secondary" onClick={onAudit}>Phone minutes audit</button>
     <div className="owner-tiles">{tiles.map(([label, value]) => <div className="card owner-tile" key={label}><span className="small">{label}</span><strong>{value}</strong></div>)}</div>
     <TextSizeProbe />
-    <section className="card owner-chart" aria-label="Activity, last 30 days"><h2>Activity, last 30 days</h2>
+    <section className="card owner-chart" aria-label="Activity, last 30&nbsp;days"><h2>Activity, last 30&nbsp;days</h2>
       <div className="owner-bars">{m.days.map(point => <span key={point.day} title={`${point.day}: ${point.facts} actions`} style={{ height: `${Math.max(4, point.facts / maxFacts * 100)}%` }} className={point.facts ? 'on' : ''} />)}</div></section>
-    <section className="card owner-chart" aria-label="Opens, last 30 days"><h2>Opens, last 30 days</h2>
+    <section className="card owner-chart" aria-label="Opens, last 30&nbsp;days"><h2>Opens, last 30&nbsp;days</h2>
       <div className="owner-bars">{m.days.map(point => <span key={point.day} title={`${point.day}: ${point.opens} opens`} style={{ height: `${Math.max(4, point.opens / maxOpens * 100)}%` }} className={point.opens ? 'on' : ''} />)}</div></section>
   </section>;
 }

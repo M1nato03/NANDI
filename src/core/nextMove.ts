@@ -119,7 +119,7 @@ export function moveLine(move: NextMove, measured: { boardMedianMs?: number } = 
     case 'focus': return `Back to: ${move.title}`;
     case 'task': return `Start: ${move.title}`;
     case 'read': return move.book && move.chapter ? `Read on: ${move.book}, ch. ${move.chapter}` : 'Read one idea';
-    case 'board': return measured.boardMedianMs ? `Today's puzzle board · about ${Math.max(1, Math.round(measured.boardMedianMs / 60_000))} min` : 'Today\'s puzzle board';
+    case 'board': return measured.boardMedianMs ? `Today's puzzle board · about ${Math.max(1, Math.round(measured.boardMedianMs / 60_000))}\u00a0min` : 'Today\'s puzzle board';
     default: return moveWords(move).title;
   }
 }

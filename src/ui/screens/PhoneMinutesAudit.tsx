@@ -104,12 +104,12 @@ export function PhoneMinutesAudit({ onBack }: { onBack: () => void }) {
       {state.state !== 'valid' && !passable && <p className="small">Marking it passed needs 30 recorded days in a row, all with today’s picked apps.</p>}
     </div>
     {confirm === 'export' && <div className="card phone-audit-confirm" role="group" aria-label="Before the file is made">
-      <p>This file holds your private app-use history: which apps, and for how long, on each of 30 days. It stays on this phone unless you send it on. Delete it when you are done.</p>
+      <p>This file holds your private app-use history: which apps, and for how long, on each of 30&nbsp;days. It stays on this phone unless you send it on. Delete it when you are done.</p>
       <button type="button" onClick={() => void exportCsv()}>Make the file</button>
       <button type="button" className="secondary" onClick={() => setConfirm(null)}>Don’t make it</button>
     </div>}
     {confirm === 'pass' && <div className="card phone-audit-confirm" role="group" aria-label="Before marking the audit passed">
-      <p>Mark it passed only after checking every day against Digital Wellbeing: within 10% or 10 minutes per app on at least 25 of the 30 days, and no day where a gap would make a week look better. {unknown} days here have unknowns.</p>
+      <p>Mark it passed only after checking every day against Digital Wellbeing: within 10% or 10&nbsp;minutes per app on at least 25 of the 30&nbsp;days, and no day where a gap would make a week look better. {unknown}&nbsp;days here have unknowns.</p>
       <button type="button" onClick={() => void givePass()}>Mark passed</button>
       <button type="button" className="secondary" onClick={() => setConfirm(null)}>Cancel</button>
     </div>}
@@ -139,6 +139,6 @@ function AppRows({ packages }: { packages: AuditDay['packages'] }) {
   </li>;
   return <>
     <ul className="small">{shown.map(line)}</ul>
-    {quiet.length > 0 && <details className="phone-audit-quiet small"><summary>{quiet.length} similar apps not installed (0 min)</summary><ul>{quiet.map(line)}</ul></details>}
+    {quiet.length > 0 && <details className="phone-audit-quiet small"><summary>{quiet.length} similar apps not installed (0&nbsp;min)</summary><ul>{quiet.map(line)}</ul></details>}
   </>;
 }

@@ -60,6 +60,6 @@ describe('planner completion helpers', () => {
     expect(spaced[0]!.scheduledStart).toBeLessThan(spaced[1]!.scheduledStart);
   });
   it('shows a seven-day planned count and this week’s timed minutes', () => {
-    expect(steadyLine([task('a', '2026-10-19T10:00:00'), task('b', '2026-10-18T10:00:00')], [focus('a', '2026-10-19T10:00:00', 25)], '2026-10-19')).toBe('Planned 2 of the last 7 days · 25 focus min this week');
+    expect(steadyLine([task('a', '2026-10-19T10:00:00'), task('b', '2026-10-18T10:00:00')], [focus('a', '2026-10-19T10:00:00', 25)], '2026-10-19')).toBe('Planned 2 of the last 7\u00a0days · 25 focus min this week');
   });
 });

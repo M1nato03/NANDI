@@ -49,7 +49,7 @@ test('a plan for a camp ahead fills from a finished idea: +5 on the finish line 
   await expect(plan.locator('.jar-plan-minutes')).toHaveText(/^0 m of /);
   await page.goto('/?e2e#grow/read/chapter/how-things-work/how-things-work-ch1');
   await walkIdea(page, 'how-things-work');
-  await expect.poll(() => jarLines(page)).toContain('+5 min into the jar · idea read');
+  await expect.poll(() => jarLines(page)).toContain('+5\u00a0min into the jar · idea read');
   await page.goto('/?e2e#yatra');
   await expect(plan.locator('.jar-plan-minutes')).toHaveText(/^5 m of /);
 });

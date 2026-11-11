@@ -153,7 +153,7 @@ export function EconomyFeedback() {
     const line = pickFinishLine(activity, lastLine.current);
     lastLine.current = line;
     store.set(sessionStorage, 'finish.lastLine', line);
-    showNotice({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Nandi' : undefined,
+    showNotice({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()}\u00a0XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Nandi' : undefined,
       // Spec 45c: a real level rise opens the level page in place of the reveal; a tier change keeps the reveal.
       level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp, jar });
   }, [source]);
@@ -220,7 +220,7 @@ function LevelPage({ dialog, level, totalXp, reduced, close }: { dialog: React.R
     <section className={`level-sheet paper${reduced ? ' is-still' : ''}`}>
       <div className="level-top"><p className="eyebrow">A new level</p><span className="level-mark" aria-hidden="true">Level<b>{level}</b></span></div>
       <h2>Level {level}</h2>
-      <p>{totalXp.toLocaleString()} XP in all.</p>
+      <p>{totalXp.toLocaleString()}&nbsp;XP in all.</p>
       <div className="level-scene" aria-hidden="true">
         <svg className="level-lantern" viewBox="0 0 40 120" width="40" height="120"><path d="M20 120V18M20 18h12" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" /><path d="M32 18v8" stroke="currentColor" strokeWidth="2" /><rect x="25" y="26" width="14" height="20" rx="3" fill="var(--level-glow)" stroke="currentColor" strokeWidth="2" /></svg>
         <div className="level-friends">{ARRIVING.map((name, index) => <span key={name} style={{ animationDelay: `${index * 90}ms` }}><Cast name={name} pose={name === 'Kachhua' ? 'idle' : 'cheer'} size={46} /></span>)}</div>

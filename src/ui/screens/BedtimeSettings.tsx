@@ -32,9 +32,9 @@ export function BedtimeSettings() {
     <label>Shutdown time <input type="time" value={shutdown} onChange={event => void save('planner.shutdown', event.target.value)} /></label>
     <label>Bedtime target <input type="time" value={bedtime} onChange={event => void save('planner.bedtime', event.target.value)} /></label>
     <p className="setting-help">Your current lights-out time. It sets tonight's reminders and check-in.</p>
-    <label><input type="checkbox" checked={settings?.find(row => row.key === BUSY_SHIFT_KEY && !row.deleted)?.value !== false} onChange={event => void save(BUSY_SHIFT_KEY, event.target.checked)} /> On busy days, start my night later (up to 1 hour)</label>
+    <label><input type="checkbox" checked={settings?.find(row => row.key === BUSY_SHIFT_KEY && !row.deleted)?.value !== false} onChange={event => void save(BUSY_SHIFT_KEY, event.target.checked)} /> On busy days, start my night later (up to 1&nbsp;hour)</label>
     <label>Long-term bedtime goal <input type="time" value={goal} onChange={event => void save('planner.goalBedtime', event.target.value)} /></label>
-    <p className="setting-help">The earliest target to work toward. After two on-time nights in three, your current target moves 15 minutes earlier.</p>
+    <p className="setting-help">The earliest target to work toward. After two on-time nights in three, your current target moves 15&nbsp;minutes earlier.</p>
     {message && <p role="status">{message}</p>}
   </section>;
 }

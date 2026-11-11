@@ -42,7 +42,9 @@
 /* Large text (b2, gate-rem2): the cover is a px picture, so from root 20px (125%) the tile adds its title as live text,
    under the cover and above the count, at most 2 lines. At 100% it is not drawn, so the shelf is unchanged. */
 .read-book-tile .read-book-title { display: none; }
-.read-library.large-text .read-book-tile .read-book-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+/* Stage 3 (b2/a9 11 Nov): no clamp: the caption is the only title that grows (the cover is a picture), so it shows in
+   full and the row grows to the tallest one. */
+.read-library.large-text .read-book-tile .read-book-title { display: block;
   overflow-wrap: break-word; font: 600 .9375rem/1.2 'DM Sans', sans-serif; color: var(--ink); }
 
 .read-book-head { display: flex; gap: 16px; align-items: flex-end; margin: 8px 0 12px; }

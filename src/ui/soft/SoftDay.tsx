@@ -141,7 +141,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
   if (done) return <section className="card soft-card soft-finish" aria-label="Soft day">
     <Cast name="Kachhua" pose="rest" size={96} title="Kachhua resting" moment="settle" at={1} breathe />
     <div className="soft-lantern" aria-hidden="true" />
-    {closed ? <><h2>Today is kept.</h2><p>Rest well. See you tomorrow.</p></> : <><h2>That counts. Kachhua lit a lantern for today.</h2>{welcome > 0 && <p>Welcome back. Here is a small gift for coming back: +{welcome} XP.</p>}<p>You can stop here.</p>
+    {closed ? <><h2>Today is kept.</h2><p>Rest well. See you tomorrow.</p></> : <><h2>That counts. Kachhua lit a lantern for today.</h2>{welcome > 0 && <p>Welcome back. Here is a small gift for coming back: +{welcome}&nbsp;XP.</p>}<p>You can stop here.</p>
       <button type="button" onClick={() => setClosed(true)}>Close for today</button></>}
     <button type="button" className="text-button" onClick={() => void saveSetting(softMoreKey(today), true)}>I feel better, show me more</button>
   </section>;

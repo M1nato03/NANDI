@@ -145,7 +145,7 @@ function MoreOfferCard({ picks }: { picks: Picks }) {
   </section>;
 }
 
-const JAR_ADDS: Partial<Record<string, string>> = { read: '+5 min', board: '+10 min', train: '+10 min', 'train-easy': '+10 min' };
+const JAR_ADDS: Partial<Record<string, string>> = { read: '+5\u00a0min', board: '+10\u00a0min', train: '+10\u00a0min', 'train-easy': '+10\u00a0min' };
 export const jarAdds = (kind: string, capped?: boolean) => capped ? undefined : JAR_ADDS[kind];
 /** The open focus's earned jar minutes (after the day's cap), as "+N min", or nothing before its first full 3 min. */
 export function focusAdds(climb?: Climb): string | undefined {

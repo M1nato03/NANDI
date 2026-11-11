@@ -264,9 +264,9 @@ export function rampedWindow(window: ChhuttiWindow, facts: readonly LedgerRow[],
 export function chhuttiLine(fact: LedgerRow, label: string): string {
   const minutes = (ms: unknown) => Math.round(Number(ms) / 60_000);
   if (fact.inputs.source === 'self') return fact.inputs.kept === true ? `${label}: the phone got its chhutti.` : `${label}: same window tomorrow, or a shorter one?`;
-  const apps = `${minutes(fact.inputs.chosenAppMs)} min in your chosen apps`;
+  const apps = `${minutes(fact.inputs.chosenAppMs)}\u00a0min in your chosen apps`;
   const darkMs = fact.inputs.darkMs;
-  const dark = typeof darkMs === 'number' ? `, phone dark ${minutes(darkMs)} min` : '';
+  const dark = typeof darkMs === 'number' ? `, phone dark ${minutes(darkMs)}\u00a0min` : '';
   return fact.inputs.kept === true ? `${label}: ${apps}${dark}. The phone got its chhutti.` : `${label}: ${apps}. Same window tomorrow, or a shorter one?`;
 }
 

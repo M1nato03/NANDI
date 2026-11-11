@@ -61,7 +61,7 @@ export function wantedNudges(input: {
       const first = tasks.filter(row => !row.deleted && row.status === 'planned' && row.dayKey === key)
         .sort((a, b) => (a.scheduledStart ?? 0) - (b.scheduledStart ?? 0))[0];
       result.push({ id: `nudge:morning:${key}`, at: morningAt, title: "Today's first step",
-        body: first ? `${first.title} · ${first.estimateMin ?? 25} min` : 'Pick one small step for today.', channel: 'planning' });
+        body: first ? `${first.title} · ${first.estimateMin ?? 25}\u00a0min` : 'Pick one small step for today.', channel: 'planning' });
     }
   }
   return result;

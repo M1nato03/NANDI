@@ -166,7 +166,7 @@ export function usefulRecord(dates: readonly string[], facts: readonly LedgerRow
     if (count(row => row.mode === 'mind' && row.kind === 'mystery' && row.inputs.result === 'solved')) items.push('A case solved');
     if (count(row => row.kind === 'learn-drop')) items.push('The day\'s drop');
     const calm = rows.filter(row => row.mode === 'calm' && row.kind === 'session').reduce((sum, row) => sum + (Number(row.inputs.minutes) > 0 ? Math.floor(Number(row.inputs.minutes)) : 0), 0);
-    if (calm) items.push(`Calm, ${calm} min`);
+    if (calm) items.push(`Calm, ${calm}\u00a0min`);
     if (count(row => row.mode === 'soft' && row.kind === 'soft')) items.push('A gentle thing on a soft day');
     return { dayKey: key, items: items.length ? items : ['Useful day recorded'] };
   });

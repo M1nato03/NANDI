@@ -15,7 +15,7 @@ export const INTERESTS = [
   { id: 'reading', label: 'Reading', bounded: 'Read one chapter', night: true },
   { id: 'cooking', label: 'Cooking', bounded: 'Cook one dish', night: false },
   { id: 'gaming', label: 'Gaming', bounded: 'Play one match', night: false },
-  { id: 'art', label: 'Drawing and art', bounded: 'Sketch for 20 minutes', night: true },
+  { id: 'art', label: 'Drawing and art', bounded: 'Sketch for 20\u00a0minutes', night: true },
   { id: 'friends', label: 'Friends and family', bounded: 'Call someone you like', night: false },
 ] as const;
 export type InterestId = typeof INTERESTS[number]['id'];

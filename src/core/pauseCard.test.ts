@@ -6,10 +6,10 @@ const today = '2026-11-03';
 const settings = (values: Record<string, unknown>): SettingRow[] => Object.entries(values).map(([key, value]) => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 't' }));
 
 describe('spec 39 the Pause card settings', () => {
-  it('is off for someone new, with nothing set; spec 39b: it would show after 10 min a day', () => {
+  it('is off for someone new, with nothing set; spec 39b: it would show after 10\u00a0min a day', () => {
     expect(readPauseCard([], today)).toMatchObject({ on: false, legacy: false, act: null, window: null, grace: 10, mode: 'limit', limitMin: 10, switchedTo10: false });
   });
-  it('spec 39b: "every open" stays a choice, and a kept old day pause keeps its 30 minutes', () => {
+  it('spec 39b: "every open" stays a choice, and a kept old day pause keeps its 30\u00a0minutes', () => {
     expect(readPauseCard(settings({ 'pause.card.on': true, 'night.pause.dayMode': 'open' }), today)).toMatchObject({ mode: 'open' });
     expect(readPauseCard(settings({ 'night.pause.enabled': true }), today)).toMatchObject({ legacy: true, mode: 'limit', limitMin: 30 });
     expect(readPauseCard(settings({ 'pause.card.on': true, 'night.pause.dayMode': 'limit', 'night.pause.dayLimitMin': 10, 'pause.modeNote': 'shown' }), today)).toMatchObject({ limitMin: 10, switchedTo10: true });
@@ -28,7 +28,7 @@ describe('spec 39 the Pause card settings', () => {
     expect(card).toMatchObject({ on: true, act: 'do 10 squats', window: { from: '09:00', to: '21:00' }, grace: 20, offToday: true });
     expect(readPauseCard(settings({ 'pause.offDay': '2026-11-02' }), today).offToday).toBe(false);
   });
-  it('drops a broken window or grace back to all day and 10 minutes', () => {
+  it('drops a broken window or grace back to all day and 10\u00a0minutes', () => {
     expect(readPauseWindow({ from: '9:00', to: '21:00' })).toBeNull();
     expect(readPauseWindow({ from: '09:00', to: '09:00' })).toBeNull();
     expect(readPauseWindow(false)).toBeNull();
@@ -39,12 +39,12 @@ describe('spec 39 the Pause card settings', () => {
 describe('spec 39 the card says the person\'s own plan', () => {
   it('in their words', () => {
     expect(pauseLine('Instagram', 'do 10 squats')).toBe("If I open Instagram, I'll do 10 squats first.");
-    expect(pauseLine('Instagram', null)).toBe('Take 2 minutes first.');
+    expect(pauseLine('Instagram', null)).toBe('Take 2\u00a0minutes first.');
     expect(cleanAct('  ill step outside!! ')).toBe('step outside');
   });
 });
 
-describe('spec 39 acts pay 2 XP, 10 a day', () => {
+describe('spec 39 acts pay 2\u00a0XP, 10 a day', () => {
   const act = (n: number, outcome = 'act_done'): LedgerRow => ({ id: `a${n}`, dayKey: today, mode: 'pause', kind: 'attempt', refId: String(n), inputs: { outcome }, updatedAt: n, deleted: 0, deviceId: 't' });
   it('says whether the next act still pays', () => {
     expect(actsToday([], today)).toEqual({ done: 0, nextPays: true });

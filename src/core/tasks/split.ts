@@ -22,7 +22,7 @@ export function splitTask(
         est > rules.tasks.subtaskMax,
     )
   ) {
-    throw new RangeError('Split requires 2 or more subtasks of 25–60 minutes');
+    throw new RangeError('Split requires 2 or more subtasks of 25–60\u00a0minutes');
   }
   const totalEstimate = estimates.reduce((sum, est) => sum + est, 0);
   if (totalEstimate !== parent.estimateMin)

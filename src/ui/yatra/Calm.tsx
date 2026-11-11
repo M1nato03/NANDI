@@ -236,7 +236,7 @@ export function Calm() {
         {run.sound && <p className="calm-sound-name small">{run.sound}</p>}
         {total !== null && <div className="calm-progress" role="progressbar" aria-label="Time" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(elapsed / total * 100)}><span style={{ width: `${elapsed / total * 100}%` }} /></div>}
       </> : unsaved ? <div className="calm-unsaved" role="alert"><p className="calm-phase">Your sit could not be saved.</p><button type="button" onClick={() => { finishing.current = true; record(unsaved.ran, unsaved.sat); }}>Try saving again</button></div>
-        : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : prefs.way === 'paced' && prefs.pattern === 'square' ? (holds ? 'In, hold, out, hold: 5 seconds each' : '5 in, 6 out, round the square') : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
+        : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : prefs.way === 'paced' && prefs.pattern === 'square' ? (holds ? 'In, hold, out, hold: 5\u00a0seconds each' : '5 in, 6 out, round the square') : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
     </div>
     {run ? <>
       {ownSit && sit!.status === 'paused' && <p className="small calm-paused" role="status">{sit!.pausedFor === 'call' ? 'Paused for a call.' : 'Paused.'} The clock waits.</p>}
@@ -264,7 +264,7 @@ export function Calm() {
       {(soundNote || userSounds.length > 0) && <p className="small calm-note" role={soundNote ? 'alert' : undefined}>{soundNote || 'Your sounds stay on this phone.'}</p>}
       {saveNote && <p className="small calm-note" role="alert">{saveNote}</p>}
       <details className="card calm-settings"><summary>Breath, bells and sound</summary>
-        {prefs.way === 'paced' && isLongSit(prefs.minutes) && <label className="toggle-row"><input type="checkbox" checked={prefs.fade} onChange={event => setPrefs({ fade: event.target.checked })} /> Let the guide fade after 3 minutes</label>}
+        {prefs.way === 'paced' && isLongSit(prefs.minutes) && <label className="toggle-row"><input type="checkbox" checked={prefs.fade} onChange={event => setPrefs({ fade: event.target.checked })} /> Let the guide fade after 3&nbsp;minutes</label>}
         <div className="calm-breath">
           <label>Breathe in (seconds)<select value={breath.in} onChange={event => setBreath({ in: Number(event.target.value) })}>{Array.from({ length: BREATH_IN[1] - BREATH_IN[0] + 1 }, (_, i) => BREATH_IN[0] + i).map(value => <option key={value} value={value}>{value}</option>)}</select></label>
           <label>Breathe out (seconds)<select value={breath.out} onChange={event => setBreath({ out: Number(event.target.value) })}>{Array.from({ length: BREATH_OUT[1] - BREATH_OUT[0] + 1 }, (_, i) => BREATH_OUT[0] + i).map(value => <option key={value} value={value}>{value}</option>)}</select></label>

@@ -9,33 +9,33 @@ type Lines = Record<Band, readonly [string, string]>;
 const LINES: Record<AreaId, Lines> = {
   train: {
     one: ['Nandi stretched out on the mat once this week. One session still moves the body.', 'One workout this week. Nandi kept the clubs warm for next time.'],
-    some: ['Nandi trained with you on {n} days. The mat is starting to look used.', '{n} days of moving this week. Nandi stands a little prouder.'],
-    many: ['{n} training days! Nandi barely sat down all week.', 'Nandi counted {n} days of training. Strong week, steady pace.'],
+    some: ['Nandi trained with you on {n}\u00a0days. The mat is starting to look used.', '{n}\u00a0days of moving this week. Nandi stands a little prouder.'],
+    many: ['{n} training days! Nandi barely sat down all week.', 'Nandi counted {n}\u00a0days of training. Strong week, steady pace.'],
   },
   plan: {
     one: ['Mor saw one day of finished tasks. One flower opened.', 'A task got done this week, and Mor fanned out to celebrate.'],
-    some: ['Tasks got done on {n} days. Mor\'s garden has new colour.', 'Mor counted {n} days of plans turned into done.'],
-    many: ['{n} days of getting things done. Mor\'s garden is in full bloom.', 'Mor watched you finish tasks on {n} days. The courtyard is tidy and bright.'],
+    some: ['Tasks got done on {n}\u00a0days. Mor\'s garden has new colour.', 'Mor counted {n}\u00a0days of plans turned into done.'],
+    many: ['{n}\u00a0days of getting things done. Mor\'s garden is in full bloom.', 'Mor watched you finish tasks on {n}\u00a0days. The courtyard is tidy and bright.'],
   },
   learn: {
     one: ['Chiku found one new idea with you this week.', 'One day of learning. Chiku tucked a new page into the pile.'],
-    some: ['Chiku learned with you on {n} days. The book stack grew.', '{n} days of new ideas. Chiku keeps asking for more.'],
-    many: ['{n} days of learning! Chiku read by lamplight all week.', 'Chiku counted {n} learning days. That is a lot of new ideas.'],
+    some: ['Chiku learned with you on {n}\u00a0days. The book stack grew.', '{n}\u00a0days of new ideas. Chiku keeps asking for more.'],
+    many: ['{n}\u00a0days of learning! Chiku read by lamplight all week.', 'Chiku counted {n} learning days. That is a lot of new ideas.'],
   },
   remember: {
     one: ['Moti checked one old idea with you. It stays sharp now.', 'One day of idea checks. Moti put it safely in the box.'],
-    some: ['Moti kept old ideas fresh on {n} days.', '{n} days of looking back. Moti\'s shelf of jars is filling up.'],
-    many: ['{n} days of idea checks. Moti forgets nothing this week.', 'Moti counted {n} days of remembering. Your ideas are well kept.'],
+    some: ['Moti kept old ideas fresh on {n}\u00a0days.', '{n}\u00a0days of looking back. Moti\'s shelf of jars is filling up.'],
+    many: ['{n}\u00a0days of idea checks. Moti forgets nothing this week.', 'Moti counted {n}\u00a0days of remembering. Your ideas are well kept.'],
   },
   mind: {
     one: ['Kapi solved one puzzle with you and grinned about it all week.', 'One puzzle day. Kapi turned the cube one more time.'],
-    some: ['Kapi puzzled with you on {n} days. Sharp week.', '{n} days of puzzles. Kapi is already planning the next one.'],
-    many: ['{n} puzzle days! Kapi ran out of chalk on the slate.', 'Kapi counted {n} days of thinking games. Clever week.'],
+    some: ['Kapi puzzled with you on {n}\u00a0days. Sharp week.', '{n}\u00a0days of puzzles. Kapi is already planning the next one.'],
+    many: ['{n} puzzle days! Kapi ran out of chalk on the slate.', 'Kapi counted {n}\u00a0days of thinking games. Clever week.'],
   },
   sleep: {
     one: ['One night on time. Kachhua slept well beside you.', 'Kachhua remembers one early night this week. A good start.'],
-    some: ['You slept on time {n} nights. Kachhua is well rested.', '{n} nights on time. Kachhua\'s cot never felt so comfy.'],
-    many: ['{n} nights on time! Kachhua has never slept this well.', 'Kachhua counted {n} good nights. Rest is part of the work.'],
+    some: ['You slept on time {n}\u00a0nights. Kachhua is well rested.', '{n}\u00a0nights on time. Kachhua\'s cot never felt so comfy.'],
+    many: ['{n}\u00a0nights on time! Kachhua has never slept this well.', 'Kachhua counted {n} good nights. Rest is part of the work.'],
   },
 };
 const QUIET = ['A quiet week in the courtyard. The friends rested and kept your place warm.', 'The courtyard had a slow week. Everyone is still here, ready when you are.'] as const;

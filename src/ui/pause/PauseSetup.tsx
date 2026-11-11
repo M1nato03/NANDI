@@ -119,7 +119,7 @@ export function PauseSetup() {
       <label htmlFor="pause-act">If I open {appNames.length ? appNames.join(' or ') : 'one of them'}, I'll … first.</label>
       <input id="pause-act" value={work.act} maxLength={80} onChange={event => change({ act: event.target.value })} placeholder="do 10 squats" />
       <div className="pause-acts" role="group" aria-label="Quick picks">{PAUSE_ACTS.map(pick => <button type="button" key={pick} className={act === pick ? undefined : 'secondary'} aria-pressed={act === pick} onClick={() => change({ act: pick })}>{pick}</button>)}</div>
-      <p className="small">A small thing you can do in 2 minutes, away from the screen if you can.</p>
+      <p className="small">A small thing you can do in 2&nbsp;minutes, away from the screen if you can.</p>
       <div className="pause-setup-nav">
         <button type="button" className="secondary" onClick={() => setView(card.legacy && !card.act && !draft ? 'manage' : 'apps')}>Back</button>
         {card.legacy && !card.act && !view
@@ -192,7 +192,7 @@ function OpensCard({ settings, packages, today }: { settings: readonly SettingRo
       return <>
         <dl className="pause-opens-list">
           <div><dt>Today so far</dt><dd>{opensText(summary.today)}</dd></div>
-          <div><dt>{summary.fullWeek ? 'Last 7 days' : 'Since the card'} · a day</dt><dd>{summary.lately ? opensText(summary.lately) : 'After your first full day'}</dd></div>
+          <div><dt>{summary.fullWeek ? 'Last 7\u00a0days' : 'Since the card'} · a day</dt><dd>{summary.lately ? opensText(summary.lately) : 'After your first full day'}</dd></div>
           <div><dt>The week before the card · a day</dt><dd>{summary.before ? opensText(summary.before) : 'Not enough days yet'}</dd></div>
           <div><dt>After "Open anyway"</dt><dd>{summary.afterAnyway.count ? `${minutesInWords(Math.round(summary.afterAnyway.ms / summary.afterAnyway.count / 60_000))} on average · ${summary.afterAnyway.count} ${summary.afterAnyway.count === 1 ? 'time' : 'times'}` : 'None yet'}</dd></div>
         </dl>

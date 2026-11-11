@@ -68,7 +68,7 @@ export function PhoneChhutti() {
     <div className="chip-row">{CHHUTTI_LABELS.map(option => <button type="button" className={option === choice ? '' : 'secondary'} aria-pressed={option === choice} key={option.label} onClick={() => { setChoice(option); setFrom(option.from); }}>{option.label}</button>)}</div>
     <label>Starts at <input type="time" value={from} onChange={event => setFrom(event.target.value)} /></label>
     <button type="button" onClick={() => void save()}>Save the chhutti</button>
-    <p className="small">It starts at 30 minutes. It grows a little when it goes well, and you can say "Not today" any day.</p>
+    <p className="small">It starts at 30&nbsp;minutes. It grows a little when it goes well, and you can say "Not today" any day.</p>
     {editing && <button type="button" className="text-button" onClick={() => setEditing(false)}>Keep it as it is</button>}
     {message && <p role="status">{message}</p>}
   </section>;

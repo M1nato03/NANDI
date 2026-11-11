@@ -51,7 +51,7 @@ function AwayPlanner({ settings, today, bank }: { settings: SettingRow[]; today:
     if (result.ranges) void save(result.ranges);
   };
   return <div className="away-planner"><button type="button" className="secondary" onClick={() => { setMessage(''); setOpen(!open); }}>Plan days away</button>
-    {open && <div className="away-form"><label>Start date <input type="date" value={start} min={today} onChange={event => setStart(event.target.value)} /></label><label>End date <input type="date" value={end} min={start} onChange={event => setEnd(event.target.value)} /></label><p className="small">Up to {RULES.streak.awayMaxDays} days, within your rest bank.</p><button type="button" disabled={busy} onClick={plan}>Save trip</button></div>}
+    {open && <div className="away-form"><label>Start date <input type="date" value={start} min={today} onChange={event => setStart(event.target.value)} /></label><label>End date <input type="date" value={end} min={start} onChange={event => setEnd(event.target.value)} /></label><p className="small">Up to {RULES.streak.awayMaxDays}&nbsp;days, within your rest bank.</p><button type="button" disabled={busy} onClick={plan}>Save trip</button></div>}
     {ranges.filter(row => row.end >= today).length > 0 && <div><p className="small">Upcoming trips</p>{ranges.filter(row => row.end >= today).map(row => <div key={`${row.start}:${row.end}`}><span>{row.start} to {row.end}</span> <button type="button" className="text-button" disabled={busy} onClick={() => void save(ranges.filter(item => item !== row))}>Cancel</button></div>)}</div>}
     {message && <p role="status">{message}</p>}
   </div>;
@@ -148,7 +148,7 @@ export function YourSeason() {
   // Spec 47 L2: "Keep rank tucked away" hides the rank, places and rival lines here; the ladder itself stays whole.
   const climb = rankShown(settings);
   return <section className="your-season" aria-label="Your season">
-    <div className="card economy-level"><span className="economy-jersey" aria-label={`Level ${view.level}`}>{view.level}</span><div><span className="eyebrow">Your progress</span><h2>Level {view.level}</h2><p>{view.totalXp.toLocaleString()} XP in all</p><progress max={view.nextLevelXp - base} value={view.totalXp - base} aria-label="XP to next level" /><span className="small">{Math.max(0, view.nextLevelXp - view.totalXp)} XP to level {view.level + 1}</span></div></div>
+    <div className="card economy-level"><span className="economy-jersey" aria-label={`Level ${view.level}`}>{view.level}</span><div><span className="eyebrow">Your progress</span><h2>Level {view.level}</h2><p>{view.totalXp.toLocaleString()}&nbsp;XP in all</p><progress max={view.nextLevelXp - base} value={view.totalXp - base} aria-label="XP to next level" /><span className="small">{Math.max(0, view.nextLevelXp - view.totalXp)}&nbsp;XP to level {view.level + 1}</span></div></div>
     {show.season && <div className={`card economy-season-card ${banner.replace(':', '-')} ${cardBack.replace(':', '-')}`}>
       <span className="eyebrow">Season {view.season.index + 1} · {seasonDates}</span>
       {view.season.active ? <><h2>Season {view.season.index + 1}</h2>

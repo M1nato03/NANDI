@@ -22,13 +22,13 @@ describe('nudge reconciliation', () => {
   it('reschedules changed tasks and times, and cancels both when switched off', async () => {
     await db.tasks.put({ id: 'read', title: 'Read', status: 'planned', dayKey: '2026-10-16', estimateMin: 25, ...meta });
     await reconcileNudges(now);
-    expect(mock.schedule).toHaveBeenCalledWith(expect.objectContaining({ id: 'nudge:morning:2026-10-16', body: 'Read · 25 min' }));
+    expect(mock.schedule).toHaveBeenCalledWith(expect.objectContaining({ id: 'nudge:morning:2026-10-16', body: 'Read · 25\u00a0min' }));
     mock.listPending.mockImplementation(async () => (await db.reminders.toArray()).filter(row => row.status === 'scheduled').map(row => row.id));
     await db.tasks.update('read', { title: 'Write' });
     await db.settings.put({ key: 'planner.shutdown', value: '22:45', ...meta });
     await reconcileNudges(now);
     expect(mock.cancel).toHaveBeenCalledWith('nudge:morning:2026-10-16');
-    expect(mock.schedule).toHaveBeenCalledWith(expect.objectContaining({ id: 'nudge:morning:2026-10-16', body: 'Write · 25 min' }));
+    expect(mock.schedule).toHaveBeenCalledWith(expect.objectContaining({ id: 'nudge:morning:2026-10-16', body: 'Write · 25\u00a0min' }));
     expect(mock.schedule).toHaveBeenCalledWith(expect.objectContaining({ id: 'nudge:night:2026-10-16', at: new Date(2026, 9, 16, 22, 45).getTime() }));
     await db.settings.bulkPut([{ key: NUDGE_MORNING_ON, value: false, ...meta }, { key: NUDGE_NIGHT_ON, value: false, ...meta }]);
     await reconcileNudges(now);

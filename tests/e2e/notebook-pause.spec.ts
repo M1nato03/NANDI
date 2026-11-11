@@ -15,7 +15,7 @@ const attempts = (page: Page) => page.evaluate(async () => {
 });
 const totalXp = async (page: Page) => {
   await page.goto('/?e2e#you');
-  return Number((await page.getByText(/^[\d,]+ XP in all$/).innerText()).replace(/[^\d]/g, ''));
+  return Number((await page.getByText(/^[\d,]+\sXP in all$/).innerText()).replace(/[^\d]/g, ''));
 };
 
 /** The card on, Instagram picked, the line "do 10 squats", every open: written as the setup would. */

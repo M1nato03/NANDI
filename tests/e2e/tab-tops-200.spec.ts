@@ -45,7 +45,7 @@ async function cutOff(page: Page): Promise<string[]> {
     }
     // A friend's heading never runs under the friend (stage 3 shots: "Remember" under Moti).
     for (const stage of document.querySelectorAll<HTMLElement>('.friend-stage')) {
-      const friend = stage.querySelector(':scope > svg')?.getBoundingClientRect();
+      const friend = stage.querySelector(':scope > svg, :scope > .notebook-ground')?.getBoundingClientRect();
       if (!friend) continue;
       for (const text of stage.querySelectorAll<HTMLElement>('.friend-stage-text h1, .friend-stage-text h2, .friend-stage-text p')) {
         const range = document.createRange(); range.selectNodeContents(text);
@@ -82,9 +82,11 @@ for (const route of TAB_TOPS) {
     expect(await cutOff(page), 'at the top').toEqual([]);
     // The first visible action button in the page (not the shell) can be brought above the tab bar.
     const tabTop = await page.locator('.tabbar').evaluate(node => node.getBoundingClientRect().top);
-    const first = page.locator('main button:visible, main a.button:visible, .courtyard-card button:visible').first();
+    // (Back is navigation, not the screen's action: a9 found Train passing on its Back button.)
+    const first = page.locator('main button:visible:not(.screen-back), main a.button:visible, .courtyard-card button:visible').first();
     if (await first.count()) {
-      await first.scrollIntoViewIfNeeded();
+      // Centred, not "if needed": a button behind the fixed tab bar counts as in view for scrollIntoViewIfNeeded.
+      await first.evaluate(node => node.scrollIntoView({ block: 'center' }));
       const box = (await first.boundingBox())!;
       expect(box.y + box.height, `${route}: first action above the tab bar`).toBeLessThanOrEqual(tabTop + 1);
     }

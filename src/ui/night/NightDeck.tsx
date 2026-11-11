@@ -73,7 +73,7 @@ function ParkTomorrow({ tomorrow, board }: { tomorrow: string; board: ReturnType
     {parked.length > 0 && <ol className="night-parked" aria-label="Parked for tomorrow">{parked.map(row => <li key={row.id}>{row.title}</li>)}</ol>}
     {finished || full ? <p className="night-parked-done">It’s written down: Plan · Tomorrow, 9:00. It can wait till morning.</p> : <>
       <form className="deck-add" onSubmit={event => void park(event)}><label htmlFor="night-park">{parked.length ? 'Another line' : 'Write it so tomorrow-you knows the first move'}</label><input id="night-park" value={title} onChange={event => setTitle(event.target.value)} maxLength={160} placeholder={parked.length ? undefined : 'Email Riya the slides'} required /><button type="submit" disabled={board.busy}>Park</button></form>
-      <p className="small">Up to {PARK_LINES} lines, about 3 minutes.</p>
+      <p className="small">Up to {PARK_LINES} lines, about 3&nbsp;minutes.</p>
       {parked.length > 0 && <button type="button" className="text-button" onClick={() => setFinished(true)}>That’s all</button>}
     </>}
   </div>;
@@ -109,7 +109,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   const questDone = quests.filter(row => row.status === 'done' && !row.deleted);
   const summary = [
     ...doneTasks.slice(0, 3).map(row => `Finished ${row.title}`),
-    focusMinutes > 0 ? `Focused for ${focusMinutes} minutes` : '',
+    focusMinutes > 0 ? `Focused for ${focusMinutes}\u00a0minutes` : '',
     workoutDone ? 'Moved through a workout' : '',
     dailySolved ? 'Solved today’s board' : '',
     ...questDone.slice(0, 2).map(row => `Completed ${row.title}`),

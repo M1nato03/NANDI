@@ -21,7 +21,7 @@ export function HexagonCard({ now }: { now: number }) {
   }, [today]);
   if (!result || result.days < HEX_SHOW_AFTER_DAYS) return null;
   return <section className="card you-hexagon" aria-label="Your six stats">
-    <span className="eyebrow">Last {Math.min(result.days, HEX_WINDOW_DAYS)} days</span><h2>Your six stats</h2>
+    <span className="eyebrow">Last {Math.min(result.days, HEX_WINDOW_DAYS)}&nbsp;days</span><h2>Your six stats</h2>
     <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="hex-chart" aria-hidden="true">
       {[1, 2 / 3, 1 / 3].map(scale => <polygon key={scale} points={ring(scale)} className="hex-ring" />)}
       {result.stats.map((_, index) => <line key={index} x1={CENTRE} y1={CENTRE} x2={corner(index, 1)[0]} y2={corner(index, 1)[1]} className="hex-spoke" />)}

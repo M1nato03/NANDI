@@ -239,7 +239,7 @@ function FocusPayLine({ board, focusId, taskId }: { board: ReturnType<typeof use
   const disclosed = useLiveQuery(async () => !!(await db.settings.get('night.usageDisclosureAt')), []);
   const open = board.focus.find(row => row.id === focusId);
   const earned = focusSoFar(board.focus, taskId, board.now, RULES);
-  if (earned != null) return <p className="mor-earned">+{earned} XP so far</p>;
+  if (earned != null) return <p className="mor-earned">+{earned}&nbsp;XP so far</p>;
   if (!open?.guard) return null;
   if (!Capacitor.isNativePlatform() && !sessionStorageGuard()) return <p className="mor-guard-off small">Focus minutes earn XP in the phone app, where the focus check runs.</p>;
   return <p className="mor-guard-off small">Focus check is off, so minutes don't earn XP. <button type="button" className="text-button" onClick={() => disclosed ? void openUsageSettings() : go('you/night')}>Turn it on</button></p>;

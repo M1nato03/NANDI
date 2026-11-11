@@ -66,7 +66,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
     const paid = actsToday(facts, dayKey(Date.now())).nextPays;
     if (!demo) {
       try { await recordPauseAttempt(db, packageName, 'act_done', Date.now()); await clearNightPause(); }
-      catch { setMessage('Could not save that. Your 2 minutes still happened.'); }
+      catch { setMessage('Could not save that. Your 2\u00a0minutes still happened.'); }
     }
     setStage({ kind: 'done', act: stage.kind === 'act' ? stage.act : act, paid });
   }
@@ -104,7 +104,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
         <p className="eyebrow">{label}</p>
         <p className="pause-plan-label">Your plan:</p>
         <h1 className="pause-line">{pauseLine(label, act)}</h1>
-        {act ? <button type="button" className="ink-link pause-start" aria-label={`Start the 2 minutes: ${act}`} onClick={() => start(act)}>Start the 2 minutes</button>
+        {act ? <button type="button" className="ink-link pause-start" aria-label={`Start the 2\u00a0minutes: ${act}`} onClick={() => start(act)}>Start the 2&nbsp;minutes</button>
           : <div className="pause-picks" role="group" aria-label="Pick a 2-minute thing">{PAUSE_ACTS.slice(0, 4).map(pick => <button type="button" key={pick} className="secondary" onClick={() => start(pick)}>{pick[0]!.toUpperCase() + pick.slice(1)}</button>)}</div>}
         <div className="pause-ways">
           <button type="button" className="paper-choice" onClick={() => void finish()}>I did it</button>
@@ -114,10 +114,10 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
         <button type="button" className="ink-link pause-not-now" onClick={() => void notNow()}>Not now</button>
       </>}
       {stage.kind === 'act' && <>
-        <p className="eyebrow">Your 2 minutes</p>
+        <p className="eyebrow">Your 2&nbsp;minutes</p>
         <h1 className="pause-line">{stage.act[0]!.toUpperCase() + stage.act.slice(1)}</h1>
         <p className="pause-clock" role="timer" aria-live="off">{clock}</p>
-        <p className="small">About 2 minutes. Tap when it's done, however long it took.</p>
+        <p className="small">About 2&nbsp;minutes. Tap when it's done, however long it took.</p>
         <button type="button" className="pause-do" onClick={() => void finish()}>I did it</button>
         <div className="pause-exits">
           <button type="button" className="text-button" onClick={() => void notNow()}>Not now</button>
@@ -137,7 +137,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
       {stage.kind === 'done' && <>
         {/* What was done, in the person's words; the XP on its own line. No claim of time given back. */}
         <h1 className="pause-line">{stage.act ? `Done: ${stage.act[0]!.toUpperCase() + stage.act.slice(1)}.` : 'Done.'}</h1>
-        {stage.paid && <p className="pause-earned">+{RULES.pause.actXp} XP</p>}
+        {stage.paid && <p className="pause-earned">+{RULES.pause.actXp}&nbsp;XP</p>}
         <button type="button" className="pause-do" onClick={() => { if (demo) close(); else void goPhoneHome().then(close, close); }}>Back to my day</button>
         <button type="button" className="text-button" onClick={() => { if (demo) close(); else void openPausedApp(packageName, card.grace * 60_000).then(close, close); }}>Open {label} now</button>
       </>}

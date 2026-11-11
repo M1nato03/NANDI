@@ -10,9 +10,9 @@ describe('spec 54: the jar line on a tie', () => {
     // Same time; by id the idea sorts after the chapter, so "newest" alone would pick the idea.
     const idea = row('idea:z', 'read', 'idea'), chapter = row('chapter:a', 'read', 'chapter');
     const source = { facts: [idea, chapter], settings: [{ key: 'yatra.jarFrom', value: day, updatedAt: 1, deleted: 0 as const, deviceId: 't' }], focus: [] };
-    expect(jarLineFor(source as never, day, now, [chapter])).toBe('+5 min into the jar · chapter done');
-    expect(jarLineFor(source as never, day, now, [idea])).toBe('+5 min into the jar · idea read');
+    expect(jarLineFor(source as never, day, now, [chapter])).toBe('+5\u00a0min into the jar · chapter done');
+    expect(jarLineFor(source as never, day, now, [idea])).toBe('+5\u00a0min into the jar · idea read');
     // With nothing of its own in the update (a finish whose row lands later), the newest counted act is named.
-    expect(jarLineFor(source as never, day, now, [])).toBe('+5 min into the jar · idea read');
+    expect(jarLineFor(source as never, day, now, [])).toBe('+5\u00a0min into the jar · idea read');
   });
 });

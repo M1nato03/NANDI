@@ -453,11 +453,11 @@ const RULES_2026_10_05 = { ...RULES_2026_10_25, version: 1, effectiveFrom: '2026
 
 export const RULES_HISTORY: readonly RulesHistoryEntry[] = [
   { effectiveFrom: RULES_2026_10_05.effectiveFrom, rules: RULES_2026_10_05 },
-  { effectiveFrom: RULES_2026_10_25.effectiveFrom, rules: RULES_2026_10_25, note: 'chhutti pays 10 XP when measured (item 64)' },
-  { effectiveFrom: RULES_2026_10_26.effectiveFrom, rules: RULES_2026_10_26, note: 'teaching Chiku pays 5 XP once per idea (spec 30)' },
+  { effectiveFrom: RULES_2026_10_25.effectiveFrom, rules: RULES_2026_10_25, note: 'chhutti pays 10\u00a0XP when measured (item 64)' },
+  { effectiveFrom: RULES_2026_10_26.effectiveFrom, rules: RULES_2026_10_26, note: 'teaching Chiku pays 5\u00a0XP once per idea (spec 30)' },
   { effectiveFrom: RULES_2026_10_28.effectiveFrom, rules: RULES_2026_10_28, note: 'effort pays: focus minutes and blocks, longer chhutti, calm minutes; tasks cap 300 (spec 36)' },
   { effectiveFrom: RULES_2026_10_29.effectiveFrom, rules: RULES_2026_10_29, note: 'effort pays in Train, Mind and Read: per real set, by board difficulty, by chapter depth; caps 130 and 120 (spec 36 v2)' },
-  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'the Pause card: 2 XP per finished 2-minute act, 10 a day (spec 39)' },
+  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'the Pause card: 2\u00a0XP per finished 2-minute act, 10 a day (spec 39)' },
 ];
 
 /** Finds the latest version in force on a dayKey; no entry applies before the first date. */

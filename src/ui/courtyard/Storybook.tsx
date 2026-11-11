@@ -25,7 +25,7 @@ function Page({ page, facts, weekEnd, nightFrom }: { page: StoryPage; facts: Par
   return <div className="story-page">
     <Cast name={page.friend!} pose={page.kind === 'quiet' || page.kind === 'soft' ? 'rest' : 'cheer'} size={120} title={`${page.friend} ${page.kind === 'quiet' || page.kind === 'soft' ? 'resting' : 'cheering'}`} key={page.text} moment={page.kind === 'quiet' || page.kind === 'soft' ? 'settle' : 'hop'} at={1} />
     <p className="story-text">{page.text}</p>
-    {page.days != null && <div className="story-dots" aria-label={`${page.days} of 7 days`}>{Array.from({ length: 7 }, (_, index) => <span key={index} className={index < page.days! ? 'got' : ''} />)}</div>}
+    {page.days != null && <div className="story-dots" aria-label={`${page.days} of 7\u00a0days`}>{Array.from({ length: 7 }, (_, index) => <span key={index} className={index < page.days! ? 'got' : ''} />)}</div>}
   </div>;
 }
 

@@ -72,7 +72,7 @@ export function NightSettings() {
     if (!enabled || !allowed) { setMessage('Turn on App pause and Usage access first.'); return; }
     try {
       await testNightPause(RULES.night.pauseTestMin * 60_000);
-      setMessage(`For the next ${RULES.night.pauseTestMin} minutes, open one of your chosen apps to see the pause.`);
+      setMessage(`For the next ${RULES.night.pauseTestMin}\u00a0minutes, open one of your chosen apps to see the pause.`);
     } catch { setMessage('Could not start the test. Check that Usage access is on.'); }
   }
   async function saveApps(next: string[]) {
@@ -104,11 +104,11 @@ export function NightSettings() {
     <p>Pop-up over apps: {overlay ? 'Allowed' : 'Off'}</p>
     {!overlay && <><p>Without it, the pause comes only as a notification. Tap below, find NANDI, and turn on 'Allow display over other apps'.</p><div className="actions"><button type="button" className="secondary" onClick={() => void openOverlaySettings()}>Allow pop-up over apps</button></div></>}
     <label><input type="checkbox" checked={enabled} onChange={event => void save('night.pause.enabled', event.target.checked)} /> App pause on</label>
-    <p>At night: every time you open a chosen app, from {pauseWindow.start} until {pauseWindow.end} ({RULES.night.pauseLeadMin} minutes before your {bedtime} bedtime). Change the bedtime target in Settings.</p>
+    <p>At night: every time you open a chosen app, from {pauseWindow.start} until {pauseWindow.end} ({RULES.night.pauseLeadMin}&nbsp;minutes before your {bedtime} bedtime). Change the bedtime target in Settings.</p>
     {/* Spec 39: by day the pause is now the Pause card, set up at Plan → Pause card. */}
     <p>By day: {pauseCard.offToday ? 'the Pause card is off for today' : pauseCard.on ? 'the Pause card shows your plan when you open a picked app' : 'nothing, unless you turn on the Pause card'}. <button type="button" className="text-button" onClick={() => go('plan/pause')}>Plan → Pause card</button></p>
-    <p>After 'Go anyway' at night it asks again in {RULES.night.pauseSnoozeMin} minutes. Turn it off here any time.</p>
-    <button type="button" className="secondary" onClick={() => void tryNow()}>Try it now for {RULES.night.pauseTestMin} minutes</button>
+    <p>After 'Go anyway' at night it asks again in {RULES.night.pauseSnoozeMin}&nbsp;minutes. Turn it off here any time.</p>
+    <button type="button" className="secondary" onClick={() => void tryNow()}>Try it now for {RULES.night.pauseTestMin}&nbsp;minutes</button>
     {DEFAULT_PAUSE_APPS.filter(app => !installed || installed.includes(app.packageName) || packages.includes(app.packageName)).map(app => <label key={app.packageName}><input type="checkbox" checked={packages.includes(app.packageName)} onChange={() => toggle(app.packageName)} /> {app.label}{installed && !installed.includes(app.packageName) ? ' (not on this phone)' : ''}</label>)}
     {extras.map(item => <label key={item}><input type="checkbox" checked onChange={() => toggle(item)} /> {item}</label>)}
     <label>Add an app package name <input value={newPackage} onChange={event => setNewPackage(event.target.value)} placeholder="com.example.app" /></label>

@@ -131,7 +131,7 @@ export const joinerColour = (makerColour: number) => (makerColour + 1) % CREW_CO
 export function latestAdds(crew: Crew, today: string): string[] {
   return crew.members.filter(member => (member.last ?? 0) > 0).map(member => `${member.first} +${jarDuration(member.last ?? 0)} · ${member.src ?? 'jar'} · sent ${dayWord(member.date, today)}`);
 }
-const dayWord = (date: string, today: string) => { const gap = days(date, today); return gap <= 0 ? 'today' : gap === 1 ? 'yesterday' : `${gap} days ago`; };
+const dayWord = (date: string, today: string) => { const gap = days(date, today); return gap <= 0 ? 'today' : gap === 1 ? 'yesterday' : `${gap}\u00a0days ago`; };
 
 /** The words that travel in chats: they must read well for someone without the app (Jenil sees them at the preview). */
 export function inviteText(crew: Crew, url: string): string {
