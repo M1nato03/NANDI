@@ -26,6 +26,9 @@ import { CrewBar } from './Crew';
 import { go } from '../shell/router';
 import { useModalFocus } from '../shell/useModalFocus';
 import { HomeCard } from '../courtyard/HomeCard';
+import { QuestBoard, QuestRow, useQuestBoard } from '../quests660/Quests';
+import { cardRow } from '../../core/quests660/row';
+import type { QuestMinutes } from '../../core/quests660/quests';
 import { campLine, TrekScene } from './TrekScene';
 import { WeekEndShare } from '../screens/WeekEndShare';
 import './yatra.css';
@@ -200,15 +203,20 @@ export function HomeRows() {
  * ten-day offer and the week's receipt, then This week (the useful days and the week's real things) and the crew bar,
  * which always close the sheet (spec 660's board goes above them later).
  */
-export function CourtyardCard({ phase }: { phase?: Phase }) {
+export function CourtyardCard({ phase, boardMinutes, open }: { phase?: Phase; boardMinutes?: QuestMinutes; open?: boolean }) {
   const yatra = useYatra();
   const rows = useHomeRows();
-  const [expanded, setExpanded] = useState(false);
+  const quests = useQuestBoard();
+  const [expanded, setExpanded] = useState(open === true);
   const resting = phase !== undefined && cardRowFor(phase) === 'rest';
+  // Spec 660 §2.1 (b2 ruling a): a due move keeps the row; otherwise today's quest, and the move opens the sheet.
+  const choice = rows && quests ? cardRow({ resting, move: rows.move, now: Date.now(), board: quests.board, doneToday: quests.doneToday }) : resting ? { kind: 'rest' as const } : { kind: 'move' as const }; // eslint-disable-line react-hooks/purity
+  const move = rows ? <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} climb={yatra?.trek.climb} /> : <div className="next-move-slot" />;
   return <HomeCard expanded={expanded} onExpanded={setExpanded}
-    row={resting ? <p className="courtyard-rest-row">{COURTYARD_NIGHT_LINE}</p>
-      : rows ? <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} climb={yatra?.trek.climb} /> : <div className="next-move-slot" />}
+    row={choice.kind === 'rest' ? <p className="courtyard-rest-row">{COURTYARD_NIGHT_LINE}</p> : choice.kind === 'quest' ? <QuestRow quest={choice.quest} /> : move}
     sections={[
+      ...(choice.kind === 'quest' ? [{ id: 'move', node: move }] : []),
+      ...(!resting ? [{ id: 'quests', node: <QuestBoard initialMinutes={boardMinutes} /> }] : []),
       ...(rows && !resting ? [{ id: 'offer', node: <MoreOfferCard picks={rows.picks} /> }] : []),
       { id: 'share', node: <WeekEndShare /> },
       { id: 'week', node: <header className="home-notes"><UsefulLine /><RealThingsLine /></header> },

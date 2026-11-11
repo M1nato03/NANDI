@@ -86,6 +86,12 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
     close();
   }
   const notNow = () => answer('backed_out', async () => { await clearNightPause(); await goPhoneHome(); });
+  // Spec 660 §2.1: the hook moment. "Not now" stays first; this opens the courtyard's Quests at 5 minutes, in NANDI.
+  async function fiveMinuteQuest() {
+    if (demo) { close(); return; }
+    await answer('in_app', clearNightPause);
+    go('courtyard/quests/5');
+  }
   // Spec 39b, spec 52 D: the next real thing in NANDI instead, the same move Home offers. The card pays nothing for it.
   async function inApp() {
     if (demo) { close(); return; }
@@ -112,6 +118,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
           <button type="button" className="paper-choice" onClick={() => void openAnyway()}>Open {label} anyway</button>
         </div>
         <button type="button" className="ink-link pause-not-now" onClick={() => void notNow()}>Not now</button>
+        <button type="button" className="ink-link pause-quest-link" data-testid="pause-quest-link" onClick={() => void fiveMinuteQuest()}>Or a 5-min quest?</button>
       </>}
       {stage.kind === 'act' && <>
         <p className="eyebrow">Your 2&nbsp;minutes</p>

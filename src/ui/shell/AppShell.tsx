@@ -54,6 +54,9 @@ import { takeLaunchLink } from '../../platform/links';
 import { useWelcomeNeeded, Welcome } from '../welcome/Welcome';
 
 const Grow = lazy(() => import('../grow/Grow').then(module => ({ default: module.Grow })));
+const QuestScreen = lazy(() => import('../quests660/Quests').then(module => ({ default: module.QuestScreen })));
+const YouQuests = lazy(() => import('../quests660/Quests').then(module => ({ default: module.YouQuests })));
+const QuestSettings = lazy(() => import('../quests660/Quests').then(module => ({ default: module.QuestSettings })));
 const BookGameScreen = lazy(() => import('../bookGame/BookGame').then(module => ({ default: module.BookGameScreen })));
 const SleepDoor = lazy(() => import('../grow/SleepDoor').then(module => ({ default: module.SleepDoor })));
 const CrewScreen = lazy(() => import('../yatra/Crew').then(module => ({ default: module.CrewScreen })));
@@ -275,6 +278,11 @@ export function AppShell() {
   else if (key === 'you/contentreview') screen = <ContentReview />;
   else if (key === 'you/cast') screen = <MeetCast />;
   else if (key === 'you/courtyard') screen = <CourtyardHome />;
+  // Spec 660: a quest card (courtyard/quest/<id>), and the board opened from a link (courtyard/quests[/<minutes>]).
+  else if (/^you\/courtyard\/quest\/[a-z0-9-]+$/.test(key)) screen = <QuestScreen key={key} questId={key.split('/')[3]!} />;
+  else if (/^you\/courtyard\/quests(\/(5|15|30|60))?$/.test(key)) screen = <CourtyardHome key={key} open boardMinutes={key.split('/')[3] ? Number(key.split('/')[3]) as 5 | 15 | 30 | 60 : undefined} />;
+  else if (key === 'you/quests') screen = <YouQuests />;
+  else if (key === 'you/quests/settings') screen = <QuestSettings />;
   // Spec 35, kept in layout B: a tap on a friend opens its corner (its area, its days, what the next stage adds).
   else if (key.startsWith('you/courtyard/view')) screen = <CourtyardScreen key={key} area={key.split('/')[3]} />;
   else if (key === 'you/stories') screen = <StorybookList />;

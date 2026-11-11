@@ -164,3 +164,14 @@ export async function questPhotoUsage(db: NandiDb): Promise<{ count: number; byt
   const rows = await db.questPhotos.orderBy('takenAt').toArray();
   return { count: rows.length, bytes: rows.reduce((total, row) => total + row.bytes, 0), oldest: rows };
 }
+
+/** Settings › Quests: one photo removed to clear space; its quest stays and stops naming it. */
+export async function deleteQuestPhoto(db: NandiDb, photoId: string): Promise<void> {
+  await trackWrite(() => db.transaction('rw', [db.ledger, db.questPhotos], async () => {
+    const photo = await db.questPhotos.get(photoId);
+    if (!photo) return;
+    await db.questPhotos.delete(photoId);
+    const fact = await db.ledger.get(photo.questFactId);
+    if (fact && fact.inputs.photoId === photoId) { const { photoId: _photo, ...inputs } = fact.inputs; void _photo; await db.ledger.put({ ...fact, inputs }); }
+  }));
+}

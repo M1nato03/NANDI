@@ -1,0 +1,87 @@
+/* Spec 660 Quests: the board in the courtyard card's sheet, the quest screen and You › your quests. App tokens only. */
+.quest-board { --area-color: var(--area-plan, var(--accent)); display: grid; gap: 8px; container: quest-board / inline-size; }
+.quest-board h2 { margin: 0; font-size: 1.125rem; }
+.quest-board > .small { margin: 0; color: var(--ink-2); }
+.quest-filter { display: grid; gap: 6px; }
+.quest-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.quest-chips .ui-chip[aria-pressed='true'] { background: color-mix(in srgb, var(--area-color, var(--accent)) 22%, var(--surface-1)); color: var(--ink); font-weight: 700; }
+.quest-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.quest-card { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: start; padding: 10px 12px; border-radius: var(--radius-row, 12px); background: var(--surface-2); }
+.quest-card-friend { grid-row: span 2; }
+.quest-card-text { display: grid; gap: 2px; min-width: 0; }
+.quest-card-text strong { font-size: .9375rem; line-height: 1.3; }
+.quest-card-meta { color: var(--ink-2); font-size: .8125rem; }
+.quest-card-moves { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
+.quest-card-moves .quest-start { min-height: 44px; padding: 6px 18px; }
+.quest-card.is-done { opacity: .75; }
+.quest-empty { margin: 4px 0; color: var(--ink-2); }
+.quest-own { display: grid; gap: 8px; padding: 10px 12px; border-radius: var(--radius-row, 12px); background: var(--surface-2); }
+.quest-own input { width: 100%; min-width: 0; }
+.quest-own-moves { display: flex; flex-wrap: wrap; gap: 8px; }
+.quest-tracks h3 { margin: 6px 0; font-size: .9375rem; }
+.quest-tracks ul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.quest-track { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; width: 100%; padding: 8px 12px; background: var(--surface-2); color: var(--ink); text-align: left; }
+.quest-track span { grid-column: 1; color: var(--ink-2); font-size: .8125rem; font-weight: 400; }
+.quest-track em { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--ink-2); font-style: normal; font-variant-numeric: tabular-nums; }
+.quest-history-link { justify-self: start; }
+
+/* The safety question. */
+.quest-safety { display: grid; gap: 10px; }
+.quest-safety h2 { margin: 0; }
+.quest-safety p { margin: 0; }
+.quest-safety-row { display: flex; gap: 10px; align-items: center; min-height: 48px; }
+.quest-safety-row input { width: 24px; height: 24px; flex: none; }
+
+/* One quest: only the middle scrolls; the move stays pinned above the tab bar (spec 40's lessons). */
+.quest-screen { display: flex; flex-direction: column; min-height: calc(100dvh - var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) - 140px); margin-bottom: calc(var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) - 112px - env(safe-area-inset-bottom)); padding-bottom: 0; container: quest-screen / inline-size; }
+.quest-screen > * { margin-top: 0; }
+.quest-screen .eyebrow { margin-bottom: 4px; }
+.quest-hero { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 6px; }
+.quest-hero h1 { margin: 0 0 4px; font-size: 1.375rem; line-height: 1.25; }
+.quest-hinglish { margin: 0; color: var(--ink-2); font-size: .875rem; }
+.quest-meta { margin: 0 0 10px; color: var(--ink-2); font-weight: 600; }
+.quest-note { margin: 0 0 8px; padding: 8px 12px; border-radius: 10px; background: var(--surface-2); }
+.quest-scale, .quest-prediction, .quest-outcome, .quest-learned { margin: 0 0 12px; padding: 0; border: 0; }
+.quest-scale legend, .quest-prediction legend, .quest-outcome legend, .quest-learned legend { margin-bottom: 6px; font-weight: 700; }
+.quest-scale-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.quest-scale-row .ui-chip { justify-content: center; }
+.quest-scale-ends { display: flex; justify-content: space-between; margin: 4px 0 0; color: var(--ink-2); font-size: .8125rem; }
+.quest-doing { margin: 0 0 10px; font-size: 1.0625rem; }
+.quest-timer { margin: 0; font: 800 2rem/1.2 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; }
+.quest-error { color: var(--danger, #b3412f); }
+.quest-finish-line { margin: 0 0 4px; font-size: 1.125rem; }
+.quest-screen input[type='text'], .quest-screen input:not([type]) { width: 100%; min-width: 0; }
+.quest-actions { position: sticky; bottom: var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))); z-index: 3; display: flex; flex-wrap: wrap; gap: 8px; margin: auto -16px 0; padding: 10px 16px; background: var(--bg); box-shadow: 0 -8px 16px -12px rgba(0,0,0,.25); }
+.quest-actions::before { content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 28px; background: linear-gradient(to bottom, transparent, var(--bg)); pointer-events: none; }
+.quest-actions > button { flex: 1 1 8rem; }
+
+/* Plan: a quest taken on today, with its tag, and "+ quest". */
+.plan-quests { display: grid; gap: 6px; margin: 8px 0; }
+.plan-quest-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.plan-quest-link { display: flex; gap: 8px; align-items: center; width: 100%; padding: 8px 12px; background: var(--surface-2); color: var(--ink); text-align: left; font-weight: 600; }
+.plan-quest-tag { flex: none; padding: 2px 8px; border-radius: 999px; background: color-mix(in srgb, var(--area-plan, var(--accent)) 22%, var(--surface-1)); font-size: .75rem; font-weight: 800; }
+.plan-add-quest-link { justify-self: start; }
+
+/* You › your quests. */
+.reality-check h2 { margin-top: 0; }
+.reality-line { font-size: 1.0625rem; font-weight: 700; }
+.reality-list { display: grid; gap: 4px; margin: 8px 0; padding: 0; list-style: none; }
+.reality-list li { display: flex; justify-content: space-between; gap: 8px; font-size: .875rem; }
+.quest-stones-count { font-weight: 700; }
+.quest-done-list { display: grid; gap: 6px; padding: 0; list-style: none; }
+.quest-done-list li { display: grid; gap: 2px; padding: 8px 12px; border-radius: 10px; background: var(--surface-2); }
+.quest-done-list span { color: var(--ink-2); font-size: .8125rem; }
+
+/* Large text: kept LAST so these win over the base rules above at equal specificity (spec 40 lesson). */
+@container quest-screen (max-width: 20rem) {
+  .quest-hero { display: block; }
+  .quest-hero svg { display: none; }
+  .quest-actions { flex-direction: column; flex-wrap: nowrap; }
+  .quest-actions > button { flex: none; }
+  .quest-scale-row { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .quest-scale-row .ui-chip { padding-inline: 0; }
+}
+@container quest-board (max-width: 20rem) {
+  .quest-card { grid-template-columns: 1fr; }
+  .quest-card-friend { display: none; }
+}

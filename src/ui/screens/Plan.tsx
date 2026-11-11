@@ -10,6 +10,7 @@ import { needsFreshStart } from '../../core/tasks/complete';
 import { dayHorizon, effectiveShutdown, suggestSlots } from '../../core/tasks/planner';
 import { RULES } from '../../core/rules.config';
 import { SideQuests } from '../quests/SideQuests';
+import { PlanQuests } from '../quests660/Quests';
 import { PostponeSheet } from '../tasks/PostponeSheet';
 import { MorList, type OuterMove, type StartRequest } from '../tasks/MorList';
 import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
@@ -96,6 +97,7 @@ export function Plan({ questId }: { questId?: string }) {
     {/* Spec 27: the first screen is Mor, the add field and the three lists. Nothing else sits above or between them. */}
     <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} outerMove={outerMove} startRequest={startRequest} away={awayToday}
       heading={<><p className="eyebrow">Mor at the map</p><h1>Plan</h1>{awayToday && <p className="small">You're away. Rest well.</p>}</>} />
+    {!awayToday && <PlanQuests />}
     <RemindersOff />
     {!soft.state && !awayToday && <SoftChip afterBedtime={afterBed} />}{yesterdayWasSoft(softFacts, today) && <p className="small soft-note">Yesterday was a soft day. You still showed up.</p>}
     {/* Item 566: side quests sit on Plan itself again (Jenil, 5 Nov), after the first screen and before the Pause card. */}

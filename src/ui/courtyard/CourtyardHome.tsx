@@ -52,7 +52,7 @@ function useChrome(width: number, height: number): ScreenChromeCss | undefined {
  * Spec 571 §0.19 layout B (stage 2 commit 3): the Courtyard is the whole screen between the header and the tab bar,
  * with the §0.2 rows in one compact bottom card. Today's courtyard parts stand where the painted pass puts them.
  */
-export function CourtyardHome() {
+export function CourtyardHome({ boardMinutes, open }: { boardMinutes?: import('../../core/quests660/quests').QuestMinutes; open?: boolean } = {}) {
   const data = useCourtyard();
   const yatra = useYatra();
   const { width, height } = useViewport();
@@ -68,6 +68,6 @@ export function CourtyardHome() {
     {/* §0.14: the camp's name only as a caption outside the art, with the way to its postcard. */}
     {tapped && <p className="courtyard-keepsake-caption" role="status"><span>From {tapped.campName}</span>
       <button type="button" className="text-button" onClick={() => go(`yatra/journal/${tapped.landmarkId}`)}>See its postcard</button></p>}
-    <CourtyardCard phase={data?.phase} />
+    <CourtyardCard phase={data?.phase} boardMinutes={boardMinutes} open={open} />
   </section>;
 }
