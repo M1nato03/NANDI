@@ -70,7 +70,9 @@
 .book-game-card .eyebrow { color: var(--accent-ink); }
 .book-game-card .small { color: var(--ink-2); }
 /* Jan and Nov: the four split amounts as a 2×2 grid. */
-.book-game-chips[aria-label='Salary split'] { display: grid; grid-template-columns: 1fr 1fr; }
+.book-game-chips[aria-label='Salary split'], .book-game-chips[aria-label='Festival budget'] { display: grid; grid-template-columns: 1fr 1fr; }
+/* b2 12 Nov (the E12 pattern): story text meeting the footer dissolves in a soft fade instead of being sliced. */
+.book-game-actions::before { content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 28px; background: linear-gradient(to bottom, transparent, var(--bg)); pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { .book-game * { animation: none !important; transition: none !important; } }
 /* a9 12 Nov: the month's picks ride in the pinned footer, full width above the move. */
 .book-game-picks { flex: 1 1 100%; display: grid; gap: 6px; }
@@ -108,9 +110,11 @@
   /* the split amounts stack again (amount over %), or they overflow their buttons at large text */
   .book-game-picks .book-game-chips[aria-label='Salary split'] button { display: grid; justify-items: center; gap: 0; }
   .book-game-costs.is-story { display: block; margin: 0 0 10px; }
+  /* a9: the goal label sits over its amount, so neither wraps against the other */
+  .book-game-goal > div:first-child { flex-direction: column; gap: 0; }
   .book-game-costs.is-footer { display: none; }
   /* rows keep their content height when the list scrolls inside the capped footer */
-  .book-game-picks > .book-game-chips[aria-label='Salary split'] { grid-auto-rows: max-content; }
+  .book-game-picks > .book-game-chips[aria-label='Salary split'], .book-game-picks > .book-game-chips[aria-label='Festival budget'] { grid-auto-rows: max-content; }
   /* b2 12 Nov: the footer stays within 2/3 of the screen. Prompt, summary and the move stay fixed; when the picks
      would push it past that, only the picks list scrolls inside the footer. */
   .book-game-actions { flex-direction: column; flex-wrap: nowrap; max-height: 66vh; }
@@ -118,4 +122,11 @@
   .book-game-picks { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; }
   .book-game-picks > * { flex: none; }
   .book-game-picks > .book-game-chips, .book-game-picks > .book-game-subs { flex: 0 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-bottom: 4px; }
+}
+/* b2 12 Nov: a picks list that scrolls inside the footer fades its last visible row ("more below"). The fade runs on the
+   list's own scroll timeline: a list that does not scroll has no active timeline, so it is never masked, and the fade
+   lifts once the list is scrolled to its end. */
+@keyframes book-game-more-below { from { -webkit-mask-image: linear-gradient(#000 calc(100% - 28px), transparent); mask-image: linear-gradient(#000 calc(100% - 28px), transparent); } 99% { -webkit-mask-image: linear-gradient(#000 calc(100% - 28px), transparent); mask-image: linear-gradient(#000 calc(100% - 28px), transparent); } to { -webkit-mask-image: none; mask-image: none; } }
+@supports (animation-timeline: scroll()) {
+  .book-game-picks > .book-game-chips, .book-game-picks > .book-game-subs { animation: book-game-more-below linear both; animation-timeline: scroll(self); }
 }

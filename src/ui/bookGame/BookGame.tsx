@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { loadGame, playedMonths, playMove, saveDraft, startMonth } from '../../data/repos/bookGame';
@@ -107,6 +107,42 @@ function Teach({ state, onGoal, footer }: { state: ArkadState; onGoal: (goal: nu
   </section>;
 }
 
+/**
+ * a9/b2 12 Nov: a picks list that scrolls inside the capped footer must read as scrollable, so the row it cuts shows at
+ * least half of itself (under the fade). The footer's flex sizing picks the list's height; when that height would cut a
+ * row with less than 45% showing, the list is shortened to end halfway through the row above it instead.
+ */
+function usePeekingPicks(section: React.RefObject<HTMLElement | null>, key: unknown) {
+  useLayoutEffect(() => {
+    const root = section.current;
+    if (!root) return;
+    const fit = () => {
+      const list = root.querySelector<HTMLElement>('.book-game-picks > .book-game-chips, .book-game-picks > .book-game-subs');
+      if (!list) return;
+      list.style.maxHeight = '';
+      const height = list.clientHeight;
+      if (list.scrollHeight <= height + 1) return;
+      const top = list.getBoundingClientRect().top - list.scrollTop;
+      const rows = [...new Map([...list.children].map(child => { const r = child.getBoundingClientRect(); return [Math.round(r.top - top), { top: r.top - top, height: r.height }] as const; })).values()].sort((a, b) => a.top - b.top);
+      const cut = rows.findIndex(row => row.top < height && row.top + row.height > height);
+      if (cut < 0) {
+        // The edge falls in a gap: end halfway through the next row up.
+        const above = rows.filter(row => row.top + row.height <= height).pop();
+        if (above) list.style.maxHeight = `${Math.round(above.top + above.height / 2)}px`;
+        return;
+      }
+      const row = rows[cut]!;
+      if ((height - row.top) / row.height >= 0.45) return;
+      const above = rows[cut - 1];
+      if (above) list.style.maxHeight = `${Math.round(above.top + above.height / 2)}px`;
+    };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [section, key]);
+}
+
 function Scene({ kind, icon, children }: { kind: string; icon: string; children: ReactNode }) {
   return <div className="card book-game-scene"><div className="book-game-scene-head"><span aria-hidden="true">{icon}</span>{kind}</div><div>{children}</div></div>;
 }
@@ -114,6 +150,8 @@ function Scene({ kind, icon, children }: { kind: string; icon: string; children:
 function Play({ state, busy, onChange, onAct }: { state: ArkadState; busy: boolean; onChange: (next: ArkadState) => void; onAct: (action: Action) => void }) {
   const m = state.month;
   const [sheet, setSheet] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  usePeekingPicks(sectionRef, m);
   const head = <><p className="eyebrow">{MONTHS[m]} · Month {m + 1} of 12</p><h1>{PLAY_TITLES[m]}</h1><PotsStrip state={state} /><Cure month={m} /></>;
   // b2 (12 Nov): a single Continue-type move is the filled button; the choices in a decision month are all neutral, so
   // no answer (least of all the scam one) looks recommended.
@@ -172,7 +210,7 @@ function Play({ state, busy, onChange, onAct }: { state: ArkadState; busy: boole
     body = <Scene kind="December · your year" icon="◷">{state.course ? 'The course raised your pay. ' : 'Your pay stayed steady. '}{state.invested ? 'Growing grew (a fictional example).' : state.skippedGrowthPotential ? 'Growing missed ₹280 (an example).' : 'Growing stayed empty, a valid choice.'}</Scene>;
     moves = button('See my year', 'dec-commit');
   }
-  return <section className="screen book-game book-game-play" data-month={MONTH_IDS[m]}>
+  return <section ref={sectionRef} className="screen book-game book-game-play" data-month={MONTH_IDS[m]}>
     {head}{body}<GoalBar state={state} />
     <BottomActions>{picks && <div className="book-game-picks">{picks}</div>}{moves}</BottomActions>
     {sheet && SCENARIOS[m] && <CheckFirst month={m} busy={busy} onClose={() => setSheet(false)} onAct={action => { setSheet(false); onAct(action); }} />}

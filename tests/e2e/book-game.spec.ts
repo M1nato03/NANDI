@@ -51,12 +51,19 @@ async function movesInView(page: Page) {
   const footerTop = await page.locator('.book-game-actions').evaluate(node => node.getBoundingClientRect().top);
   // b2 12 Nov: at large text the picks list may scroll INSIDE the footer; then the list itself must be in view with
   // its first pick fully shown, and the rest are reached by that inner scroll (not the page's).
-  const choices = await page.locator('.book-game .book-game-chips button, .book-game .book-game-subs button').evaluateAll(nodes => nodes.map((node, i, all) => {
+  const choices = await page.locator('.book-game .book-game-chips button, .book-game .book-game-subs button').evaluateAll(nodes => nodes.map((node, _i, all) => {
     const r = node.getBoundingClientRect(), list = node.closest('.book-game-chips, .book-game-subs')!, l = list.getBoundingClientRect();
     const scrolls = list.scrollHeight > list.clientHeight + 1, first = all.find(other => other.closest('.book-game-chips, .book-game-subs') === list) === node;
     return scrolls && !first ? { label: node.textContent ?? '', top: l.top, bottom: l.bottom, pinned: true } : { label: node.textContent ?? '', top: r.top, bottom: r.bottom, pinned: !!node.closest('.book-game-actions') };
   }));
   for (const choice of choices) { expect(choice.top, choice.label).toBeGreaterThanOrEqual(0); expect(choice.bottom, choice.label).toBeLessThanOrEqual((choice.pinned ? tabTop : footerTop) + 1); }
+  // a9 12 Nov: a list that scrolls inside the footer shows at least 40% of the row it cuts, so it reads as scrollable.
+  const peeks = await page.locator('.book-game-picks > .book-game-chips, .book-game-picks > .book-game-subs').evaluateAll(lists => lists.filter(list => list.scrollHeight > list.clientHeight + 1).map(list => {
+    const l = list.getBoundingClientRect();
+    const cut = [...list.children].map(child => child.getBoundingClientRect()).find(r => r.top < l.bottom && r.bottom > l.bottom + 1);
+    return cut ? (l.bottom - cut.top) / cut.height : 0;
+  }));
+  for (const peek of peeks) expect(peek, 'the cut row shows at least 40%').toBeGreaterThanOrEqual(0.4);
   const rootPx = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
   if (rootPx >= 32) {
     const [footerHeight, viewport] = await page.locator('.book-game-actions').evaluate(node => [node.getBoundingClientRect().height, innerHeight]);
