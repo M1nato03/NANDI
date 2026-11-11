@@ -118,19 +118,21 @@ function Play({ state, busy, onChange, onAct }: { state: ArkadState; busy: boole
   // b2 (12 Nov): a single Continue-type move is the filled button; the choices in a decision month are all neutral, so
   // no answer (least of all the scam one) looks recommended.
   const button = (label: string, action: Action, choice = false) => <button type="button" className={choice ? 'secondary book-game-choice' : ''} disabled={busy} onClick={() => onAct(action)}>{label}</button>;
-  let body: ReactNode, moves: ReactNode;
+  // a9 (12 Nov): the month's picks (split chips, auto-charges, festival chips) sit in the pinned footer above the
+  // move, so they are in view at any text size; only the story above scrolls (the stage 3 rule for questions).
+  let body: ReactNode, moves: ReactNode, picks: ReactNode = null;
   if (m === 0 || m === 10) {
     const sp = SPLIT[state.pendingSplit]!;
     const room = Math.max(0, CUSHION_TARGET - state.pots.cushion);
     const raise = m === 10 && state.course && state.pendingSplit > 0 ? 3000 : 0;
     body = <Scene kind={`Salary credited · ${fmt(m === 10 && state.course ? 28000 : 25000)}`} icon="₹"><b>Choose what stays with you.</b>
-      <div className="book-game-chips" role="group" aria-label="Salary split">{SPLIT.map((x, j) => <button type="button" key={x.total} className={state.pendingSplit === j ? '' : 'secondary'} aria-pressed={state.pendingSplit === j} onClick={() => onChange({ ...state, pendingSplit: j })}>{fmt(x.total)}<small>{['0%', '10%', '20%', '30%'][j]}</small></button>)}</div>
-      <p className="small">Mine {fmt(sp.mine + Math.max(0, sp.cushion - room) + raise)} · Cushion {fmt(Math.min(sp.cushion, room))}</p>
       <p className="small">Rent / PG ₹8,000 · Food ₹6,000 · Travel + phone ₹2,500</p></Scene>;
+    picks = <><div className="book-game-chips" role="group" aria-label="Salary split">{SPLIT.map((x, j) => <button type="button" key={x.total} className={state.pendingSplit === j ? '' : 'secondary'} aria-pressed={state.pendingSplit === j} onClick={() => onChange({ ...state, pendingSplit: j })}>{fmt(x.total)}<small>{['0%', '10%', '20%', '30%'][j]}</small></button>)}</div>
+      <p className="small">Mine {fmt(sp.mine + Math.max(0, sp.cushion - room) + raise)} · Cushion {fmt(Math.min(sp.cushion, room))}</p></>;
     moves = button('Continue', 'split-commit');
   } else if (m === 1) {
-    body = <><Scene kind="Your monthly auto-charges" icon="↻">These renewed after payday. Swipe left to cancel one; a tap works too.</Scene>
-      <SubsList state={state} onChange={onChange} />
+    body = <Scene kind="Your monthly auto-charges" icon="↻">These renewed after payday. Swipe left to cancel one; a tap works too.</Scene>;
+    picks = <><SubsList state={state} onChange={onChange} />
       <p className="small">Stopped this month: <b>{fmt(state.subs.reduce((n, v, i) => n + (v ? SUBS[i]![1] : 0), 0))}</b> · stays in Cushion each month.</p></>;
     moves = button('Continue', 'feb-commit');
   } else if (SCENARIOS[m]) {
@@ -159,8 +161,8 @@ function Play({ state, busy, onChange, onAct }: { state: ArkadState; busy: boole
     body = <Scene kind="Weekend course · practical work" icon="✎">A ₹3,000 course could add ₹3,000 a month to November’s pay.</Scene>;
     moves = <>{button('Take the course', 'course', true)}{button('Skip it', 'skip', true)}</>;
   } else if (m === 9) {
-    body = <><Scene kind="Festival group chat" icon="✦">{state.lent ? 'Rohan offers a ₹1,000 gig. Pick one festival number first.' : 'Gifts and sales: pick one number before browsing.'}</Scene>
-      <div className="card"><b>Festival budget: {fmt(state.festival)}</b><div className="book-game-chips" role="group" aria-label="Festival budget">{FESTIVAL_CHOICES.map(n => <button type="button" key={n} className={state.festival === n ? '' : 'secondary'} aria-pressed={state.festival === n} onClick={() => onChange({ ...state, festival: n })}>{fmt(n)}</button>)}</div></div></>;
+    body = <Scene kind="Festival group chat" icon="✦">{state.lent ? 'Rohan offers a ₹1,000 gig. Pick one festival number first.' : 'Gifts and sales: pick one number before browsing.'}</Scene>;
+    picks = <><b>Festival budget: {fmt(state.festival)}</b><div className="book-game-chips" role="group" aria-label="Festival budget">{FESTIVAL_CHOICES.map(n => <button type="button" key={n} className={state.festival === n ? '' : 'secondary'} aria-pressed={state.festival === n} onClick={() => onChange({ ...state, festival: n })}>{fmt(n)}</button>)}</div></>;
     moves = button('Continue', 'festival-commit');
   } else {
     body = <Scene kind="December · your year" icon="◷">{state.course ? 'The course raised your pay. ' : 'Your pay stayed steady. '}{state.invested ? 'Growing grew (a fictional example).' : state.skippedGrowthPotential ? 'Growing missed ₹280 (an example).' : 'Growing stayed empty, a valid choice.'}</Scene>;
@@ -168,7 +170,7 @@ function Play({ state, busy, onChange, onAct }: { state: ArkadState; busy: boole
   }
   return <section className="screen book-game book-game-play" data-month={MONTH_IDS[m]}>
     {head}{body}<GoalBar state={state} />
-    <BottomActions>{moves}</BottomActions>
+    <BottomActions>{picks && <div className="book-game-picks">{picks}</div>}{moves}</BottomActions>
     {sheet && SCENARIOS[m] && <CheckFirst month={m} busy={busy} onClose={() => setSheet(false)} onAct={action => { setSheet(false); onAct(action); }} />}
   </section>;
 }

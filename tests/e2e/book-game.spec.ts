@@ -41,6 +41,12 @@ async function movesInView(page: Page) {
   expect(boxes.length).toBeGreaterThan(0);
   for (const box of boxes) { expect(box.top).toBeGreaterThanOrEqual(0); expect(box.bottom).toBeLessThanOrEqual(tabTop + 1); }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  // a9 12 Nov: the footer is sticky, so it is pinned in view even when the page is far too long; measuring only its
+  // buttons passed with the real choices (split chips, auto-charges, festival chips) pushed below the fold. Every
+  // choice must be fully in view with no scroll: above the tab bar, and not under the footer band unless it is in it.
+  const footerTop = await page.locator('.book-game-actions').evaluate(node => node.getBoundingClientRect().top);
+  const choices = await page.locator('.book-game .book-game-chips button, .book-game .book-game-subs button').evaluateAll(nodes => nodes.map(node => { const r = node.getBoundingClientRect(); return { label: node.textContent ?? '', top: r.top, bottom: r.bottom, pinned: !!node.closest('.book-game-actions') }; }));
+  for (const choice of choices) { expect(choice.top, choice.label).toBeGreaterThanOrEqual(0); expect(choice.bottom, choice.label).toBeLessThanOrEqual((choice.pinned ? tabTop : footerTop) + 1); }
 }
 
 test.beforeEach(async ({ page }) => { await page.clock.setFixedTime(NOON); });

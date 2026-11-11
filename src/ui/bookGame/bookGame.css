@@ -2,15 +2,6 @@
 .book-game { padding-bottom: 8px; container: book-game / inline-size; }
 .book-game strong, .book-game-delta, .book-game-net { font-variant-numeric: tabular-nums; }
 .book-game-ledger strong, .book-game-pot strong { white-space: nowrap; }
-/* a9: at large text the pots are one compact line, so the moves stay in view. */
-@container book-game (max-width: 20rem) {
-  .book-game-pots { display: flex; flex-wrap: wrap; gap: 2px 12px; }
-  .book-game-pot { display: inline-flex; align-items: baseline; gap: 4px; padding: 0 0 0 6px; border-radius: 0; background: none; }
-  .book-game-pot span, .book-game-pot small { font-size: .75rem; }
-  .book-game-pot strong { font-size: .875rem; }
-  .book-game-arkad { display: block; }
-  .book-game-portrait { display: none; }
-}
 .book-game h1 { margin-bottom: 8px; }
 .book-game .card { margin: 10px 0; }
 .book-game-pots { display: grid; grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr)); gap: 6px; margin: 8px 0; }
@@ -81,3 +72,23 @@
 /* Jan and Nov: the four split amounts as a 2×2 grid. */
 .book-game-chips[aria-label='Salary split'] { display: grid; grid-template-columns: 1fr 1fr; }
 @media (prefers-reduced-motion: reduce) { .book-game * { animation: none !important; transition: none !important; } }
+/* a9 12 Nov: the month's picks ride in the pinned footer, full width above the move. */
+.book-game-picks { flex: 1 1 100%; display: grid; gap: 6px; }
+.book-game-picks .book-game-chips, .book-game-picks .book-game-subs { margin: 0; }
+.book-game-picks p { margin: 0; }
+.book-game-picks .book-game-subs { gap: 6px; }
+/* a9: at large text the pots are one compact line, so the moves stay in view. Kept LAST: same specificity as the
+   base rules above, so it must come after them to win (a9 12 Nov). */
+@container book-game (max-width: 20rem) {
+  .book-game-pots { display: flex; flex-wrap: wrap; gap: 2px 12px; }
+  .book-game-pot { display: inline-flex; align-items: baseline; gap: 4px; padding: 0 0 0 6px; border-radius: 0; background: none; }
+  .book-game-pot span, .book-game-pot small { font-size: .75rem; }
+  .book-game-pot strong { font-size: .875rem; }
+  .book-game-arkad { display: block; }
+  .book-game-portrait { display: none; }
+  /* Feb's four charges as short rows (name wraps, price never does), so they fit the pinned footer. */
+  .book-game-subs button { min-height: 44px; padding: 4px 10px; gap: 8px; align-items: center; font-size: .8125rem; line-height: 1.2; text-align: left; }
+  .book-game-subs b { flex: none; white-space: nowrap; }
+  .book-game-picks { gap: 4px; }
+  .book-game-picks p { font-size: .75rem; }
+}

@@ -147,3 +147,34 @@ for (const theme of ['light', 'dark'] as const) {
     await context.close();
   });
 }
+
+// b2 12 Nov: one short recording with normal motion (reduced motion OFF), light only, so the pot/coin animation is
+// reviewed: Jan pick → result, the Mar Check-first sheet, the year end. To raw-motion → rec-motion-light.mp4.
+test('spec 40 recording, normal motion, light', async ({ browser }) => {
+  test.setTimeout(180_000);
+  const context = await browser.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, colorScheme: 'light', reducedMotion: 'no-preference', baseURL: test.info().project.use.baseURL, recordVideo: { dir: `${OUT}/raw-motion`, size: { width: 360, height: 800 } } });
+  const page = await context.newPage();
+  await page.clock.setFixedTime(NOON);
+  await page.goto('/?e2e#courtyard');
+  await chapters(page, 5);
+  await go(page, `grow/read/game/${BOOK}`, '.book-game-teach');
+  const pause = (ms = 1200) => page.waitForTimeout(ms);
+  await page.getByRole('button', { name: 'Start January' }).click(); await pause();
+  await page.getByRole('button', { name: /^₹7,500/ }).click(); await pause(800);
+  await page.getByRole('button', { name: 'Continue' }).click(); await pause(2500);
+  await page.getByRole('button', { name: 'Start Feb' }).click();
+  await page.locator('.book-game-actions').getByRole('button', { name: 'Continue', exact: true }).click(); await pause(600);
+  await page.getByRole('button', { name: 'Start Mar' }).click(); await pause();
+  await page.getByRole('button', { name: '+212% this week' }).click(); await pause(800);
+  await page.getByRole('button', { name: 'Check first' }).click(); await pause();
+  await page.getByRole('dialog', { name: 'Check first' }).getByRole('button', { name: 'Registered investment adviser' }).click(); await pause(1500);
+  await page.getByRole('dialog', { name: 'Check first' }).getByRole('button', { name: 'Say no' }).click(); await pause(2500);
+  for (const [start, move] of [['Apr', 'Say no'], ['May', 'Move ₹3,000'], ['Jun', 'Say yes'], ['Jul', 'Say no'], ['Aug', 'Handle the repair'], ['Sep', 'Take the course'], ['Oct', 'Continue'], ['Nov', 'Continue'], ['Dec', 'See my year']] as const) {
+    await page.getByRole('button', { name: `Start ${start}` }).click();
+    await page.locator('.book-game-actions').getByRole('button', { name: move, exact: true }).click();
+  }
+  await pause(2500);
+  await page.getByRole('button', { name: 'View the full year' }).click(); await pause(2500);
+  await page.mouse.wheel(0, 900); await pause(2000);
+  await context.close();
+});
