@@ -1,4 +1,5 @@
 import type { NandiDb } from '../db';
+import { TRAIL_SWITCH_PREFIX } from '../../core/yatra/journey';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
 import { getOrCreateDeviceId } from '../device';
@@ -48,16 +49,34 @@ export async function saveConstellationName(db: NandiDb, id: string, name: strin
   await trackWrite(() => db.settings.put({ key: `${CONSTELLATION_PREFIX}${id}`, value, updatedAt: now, deleted: value ? 0 : 1, deviceId }));
 }
 
+/** Spec 575 (must 12): the trail switch line was shown for this trail; a settings row, so a restore keeps it. */
+export async function markTrailSwitchSeen(db: NandiDb, trailId: string, now: number): Promise<void> {
+  const deviceId = await getOrCreateDeviceId(db, now);
+  await trackWrite(() => db.settings.put({ key: `${TRAIL_SWITCH_PREFIX}${trailId}`, value: true, updatedAt: now, deleted: 0, deviceId }));
+}
+
 /** Spec 54: one open plan in v1, a line the person writes for a camp ahead; editing or deleting it never loses anything. */
 export const JAR_PLAN_KEY = 'yatra.plan';
 export const PLAN_MAX = 60;
-export interface JarPlan { line: string; camp: number; setAt: number; needMinutes: number }
+/** Spec 575: `trailId` names the trail the camp is on; a plan saved before trails followed one another is on the first. */
+export interface JarPlan { line: string; camp: number; setAt: number; needMinutes: number; trailId: string }
+export const FIRST_TRAIL = 'hampta-pass';
 
 export function readJarPlan(value: unknown): JarPlan | null {
   if (!value || typeof value !== 'object') return null;
   const plan = value as Partial<JarPlan>;
   return typeof plan.line === 'string' && plan.line.trim() && typeof plan.camp === 'number' && typeof plan.setAt === 'number' && typeof plan.needMinutes === 'number'
-    ? { line: plan.line, camp: plan.camp, setAt: plan.setAt, needMinutes: plan.needMinutes } : null;
+    ? { line: plan.line, camp: plan.camp, setAt: plan.setAt, needMinutes: plan.needMinutes, trailId: typeof plan.trailId === 'string' ? plan.trailId : FIRST_TRAIL } : null;
+}
+
+/**
+ * Spec 575: a plan is reached once the walk stands at or past its camp: on a later trail, or on its own trail at or
+ * beyond the camp. A plan on a trail's last camp is reached at the switch, when the group stands at the next start.
+ */
+export function planReached(plan: JarPlan, journey: { trails: readonly { id: string }[]; index: number }, place: number): boolean {
+  const own = journey.trails.findIndex(trail => trail.id === plan.trailId);
+  if (own < 0) return false;
+  return journey.index > own || (journey.index === own && place >= plan.camp);
 }
 
 export async function saveJarPlan(db: NandiDb, plan: JarPlan, now: number): Promise<void> {

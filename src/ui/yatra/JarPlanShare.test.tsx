@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { PayoutCard } from './JarPlan';
-import type { Trek } from '../../core/yatra/trek';
+import type { JourneyTrek } from '../../core/yatra/journey';
 
 // The day window and the share are recorded, not run.
 const sent = vi.hoisted(() => ({ share: vi.fn() }));
@@ -28,8 +28,9 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 it('spec 54 privacy: the person\'s plan line stays on their screen and never reaches the image or the share text', async () => {
-  const trek = { trail: { places: [{ name: 'Jobra' }, { name: 'Chika' }] } } as unknown as Trek;
-  render(<PayoutCard trek={trek} plan={{ line: 'zq-plan-7731', camp: 1, setAt: 1, needMinutes: 30 }} done={vi.fn()} />);
+  const trail = { id: 'hampta-pass', places: [{ name: 'Jobra' }, { name: 'Chika' }] };
+  const trek = { trail, journey: { trails: [trail], index: 0 } } as unknown as JourneyTrek;
+  render(<PayoutCard trek={trek} plan={{ line: 'zq-plan-7731', camp: 1, setAt: 1, needMinutes: 30, trailId: 'hampta-pass' }} done={vi.fn()} />);
   // On the person's own card the line is there.
   expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('You reached Chika: zq-plan-7731');
   fireEvent.click(screen.getByRole('button', { name: 'Share' }));

@@ -3,9 +3,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { realThingsMs, receiptDuration, recapWindow, type ReceiptContent } from '../../core/recap';
 import { JAR, jarDuration } from '../../core/yatra/jar';
-import { STRETCHES_PER_LEG, type Trek } from '../../core/yatra/trek';
+import { STRETCHES_PER_LEG } from '../../core/yatra/trek';
+import type { JourneyTrek } from '../../core/yatra/journey';
 import { WEB_APP } from '../../core/puzzles/challenge';
-import { clearJarPlan, JAR_PLAN_KEY, PLAN_MAX, readJarPlan, saveJarPlan, type JarPlan } from '../../data/repos/yatra';
+import { clearJarPlan, JAR_PLAN_KEY, planReached, PLAN_MAX, readJarPlan, saveJarPlan, type JarPlan } from '../../data/repos/yatra';
 import { recapPng } from '../screens/recapCard';
 import { saveFileNow, shareFileNow, shareNote, useShareDay } from '../shareActions';
 import { useModalFocus } from '../shell/useModalFocus';
@@ -31,7 +32,7 @@ export function RealThingsLine() {
 }
 
 /** Minutes still to walk to a camp from where the trek stands. */
-const minutesTo = (trek: Trek, camp: number) => Math.max(0, (camp * STRETCHES_PER_LEG - (trek.place * STRETCHES_PER_LEG + trek.stretch)) * JAR.stretchMinutes - trek.jar.carry);
+const minutesTo = (trek: JourneyTrek, camp: number) => Math.max(0, (camp * STRETCHES_PER_LEG - (trek.place * STRETCHES_PER_LEG + trek.stretch)) * JAR.stretchMinutes - trek.jar.carry);
 
 /**
  * The payout share's image: the receipt's paper with the camp reached, nothing else. The person's own plan line stays
@@ -48,7 +49,10 @@ export const payoutShareText = (place: string) => `I reached ${place} on my NAND
  * Spec 54: one open plan for a camp ahead ("Add a plan to a camp ahead"), its bar in jar minutes (no deadline), and
  * the payout card on reaching it, with Share as an image the person sees first.
  */
-export function JarPlanArea({ trek }: { trek: Trek }) {
+/** Spec 575: the plan's camp name, read on its own trail (a plan can be on a trail the walk has already left). */
+const campName = (trek: JourneyTrek, plan: JarPlan) => trek.journey.trails.find(trail => trail.id === plan.trailId)?.places[plan.camp]?.name ?? '';
+
+export function JarPlanArea({ trek }: { trek: JourneyTrek }) {
   // Wrapped, so "no plan row yet" is not mistaken for "still loading".
   const read = useLiveQuery(async () => ({ row: await db.settings.get(JAR_PLAN_KEY) }), []);
   const row = read?.row;
@@ -57,7 +61,7 @@ export function JarPlanArea({ trek }: { trek: Trek }) {
   const [next, setNext] = useState(false);
   const ahead = trek.trail.places.map((place, index) => ({ place, index })).filter(({ index }) => index > trek.place);
   if (read === undefined) return null;
-  if (plan && trek.place >= plan.camp) return <PayoutCard trek={trek} plan={plan} done={() => { setNext(true); void clearJarPlan(db, Date.now()).catch(error => recordError('promise', error)); }} />;
+  if (plan && planReached(plan, trek.journey, trek.place)) return <PayoutCard trek={trek} plan={plan} done={() => { setNext(true); void clearJarPlan(db, Date.now()).catch(error => recordError('promise', error)); }} />;
   const sheet = editing && <PlanSheet trek={trek} plan={plan} ahead={ahead} close={() => setEditing(false)} />;
   if (!plan) return ahead.length ? <div className="jar-plan-add">
     <button type="button" className="text-button" onClick={() => setEditing(true)}>{next ? 'Add the next plan?' : 'Add a plan to a camp ahead'}</button>{sheet}
@@ -65,7 +69,7 @@ export function JarPlanArea({ trek }: { trek: Trek }) {
   const walked = trek.jar.entries.filter(entry => entry.at >= plan.setAt).reduce((total, entry) => total + entry.counted, 0);
   const need = Math.max(plan.needMinutes, walked + minutesTo(trek, plan.camp));
   return <section className="jar-plan" aria-label="Your plan on the trail">
-    <p className="jar-plan-line"><strong>{trek.trail.places[plan.camp]?.name}</strong> · {plan.line}</p>
+    <p className="jar-plan-line"><strong>{campName(trek, plan)}</strong> · {plan.line}</p>
     <div className="jar-plan-bar" role="progressbar" aria-label="Minutes walked toward this camp" aria-valuemin={0} aria-valuemax={need} aria-valuenow={Math.min(walked, need)}><i style={{ width: `${need ? Math.min(100, walked / need * 100) : 100}%` }} /></div>
     <p className="jar-plan-minutes">{jarDuration(walked)} of {jarDuration(need)}</p>
     <button type="button" className="text-button" onClick={() => setEditing(true)}>Change the plan</button>
@@ -73,10 +77,10 @@ export function JarPlanArea({ trek }: { trek: Trek }) {
   </section>;
 }
 
-function PlanSheet({ trek, plan, ahead, close }: { trek: Trek; plan: JarPlan | null; ahead: { place: { name: string }; index: number }[]; close: () => void }) {
+function PlanSheet({ trek, plan, ahead, close }: { trek: JourneyTrek; plan: JarPlan | null; ahead: { place: { name: string }; index: number }[]; close: () => void }) {
   const dialog = useModalFocus<HTMLElement>(close);
   const fallback = ahead.at(Math.min(ahead.length, 10) - 1)?.index ?? trek.place + 1;
-  const [camp, setCamp] = useState(plan && plan.camp > trek.place ? plan.camp : fallback);
+  const [camp, setCamp] = useState(plan && plan.trailId === trek.trail.id && plan.camp > trek.place ? plan.camp : fallback);
   const [line, setLine] = useState(plan?.line ?? '');
   const [busy, setBusy] = useState(false);
   const save = async () => {
@@ -84,8 +88,8 @@ function PlanSheet({ trek, plan, ahead, close }: { trek: Trek; plan: JarPlan | n
     setBusy(true);
     try {
       // A changed camp starts its bar again from now; the same camp keeps what was walked toward it.
-      const same = plan && plan.camp === camp;
-      await saveJarPlan(db, { line, camp, setAt: same ? plan.setAt : now, needMinutes: same ? plan.needMinutes : minutesTo(trek, camp) }, now);
+      const same = plan && plan.trailId === trek.trail.id && plan.camp === camp;
+      await saveJarPlan(db, { line, camp, trailId: trek.trail.id, setAt: same ? plan.setAt : now, needMinutes: same ? plan.needMinutes : minutesTo(trek, camp) }, now);
       close();
     } catch (error) { recordError('promise', error); setBusy(false); }
   };
@@ -105,8 +109,8 @@ function PlanSheet({ trek, plan, ahead, close }: { trek: Trek; plan: JarPlan | n
   </section></div>;
 }
 
-export function PayoutCard({ trek, plan, done }: { trek: Trek; plan: JarPlan; done: () => void }) {
-  const place = trek.trail.places[plan.camp]?.name ?? '';
+export function PayoutCard({ trek, plan, done }: { trek: JourneyTrek; plan: JarPlan; done: () => void }) {
+  const place = campName(trek, plan);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const day = useShareDay();
