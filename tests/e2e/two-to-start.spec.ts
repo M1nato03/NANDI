@@ -236,12 +236,16 @@ test.describe('lands in the thing in 2 s or less on the Low profile (median of 3
       const times: number[] = [];
       for (let run = 0; run < 3; run++) {
         const phone = await lowPhone(browser, testInfo, [land.area]);
-        // Spec 660 (b2 ruling a): a move that is not due now sits first in the card's sheet; the clock runs from its tap.
+        // Spec 660 (b2 ruling a, every size): a move that is not due now sits first in the card's sheet, so Home to the
+        // thing is at most 2 taps (open the card, the move), timed from the first tap; the move's tap starts it, with no
+        // confirm screen between (the first readable text is checked right after it).
         const handle = phone.page.locator('.courtyard-card-handle');
-        if (!await move(phone.page).isVisible() && await handle.getAttribute('aria-expanded') !== 'true') await handle.click();
-        await expect(move(phone.page)).toContainText(land.title);
+        let taps = 0;
         const start = performance.now();
-        await move(phone.page).click();
+        if (!await move(phone.page).isVisible() && await handle.getAttribute('aria-expanded') !== 'true') { await handle.click(); taps++; }
+        await expect(move(phone.page)).toContainText(land.title);
+        await move(phone.page).click(); taps++;
+        expect(taps, `${land.area}: taps from Home`).toBeLessThanOrEqual(2);
         await expect(land.first(phone.page)).toBeVisible({ timeout: 15_000 });
         times.push(Math.round(performance.now() - start));
         await expect(phone.page).toHaveURL(land.route);
@@ -260,7 +264,7 @@ test.describe('lands in the thing in 2 s or less on the Low profile (median of 3
       await putSettings(phone.page, [['pause.card.on', true], ['pause.act', 'do 10 squats'], ['night.pause.apps', ['com.instagram.android']], ['night.pause.dayMode', 'open']]);
       await phone.page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
       await phone.page.reload();
-      await expect(move(phone.page)).toBeVisible();
+      await expect(cardRow(phone.page)).toBeVisible();
       await phone.page.evaluate(() => {
         sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'open' }));
         window.dispatchEvent(new Event('nandi:night-pause'));
