@@ -302,7 +302,7 @@ export function QuestScreen({ questId }: { questId: string }) {
     const kept = outcome !== 'not-done';
     body = <div className="quest-finish" role="status">
       {kept ? <p className="quest-finish-line"><strong>Quest done.</strong> A stone for your path.</p>
-        : <p className="quest-finish-line">No stone this time, and nothing lost. It'll be here.</p>}
+        : <p className="quest-finish-line">No stone this time. It'll be here when you're ready.</p>}
       {photoNote && <p className="small">{photoNote}</p>}
     </div>;
     moves = <><button type="button" className="quest-go" onClick={() => go('courtyard')}>Back to the courtyard</button></>;

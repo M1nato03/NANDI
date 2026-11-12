@@ -390,6 +390,10 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .recap-sheet-backdrop { align-items: end; place-items: end center; padding: 0; background: rgb(0 0 0 / 65%); }
 .recap-sheet { width: min(100%, 760px); max-height: 90dvh; padding: 8px 20px calc(24px + env(safe-area-inset-bottom)); border: 0; border-radius: 28px 28px 0 0; background: var(--surface-1); box-shadow: var(--shadow-2); }
 .recap-sheet img { max-height: 58dvh; }
+/* b2 12 Nov: when the Lower-by-1 offer shows, the image gives way so the one thing to act on is in view. */
+.recap-sheet:has(.move-budget-line button) img { max-height: 45dvh; }
+/* A short top fade, as in spec 40: a scrolled title is never sliced by the sheet's rounded top. Takes no space. */
+.recap-sheet::before { content: ''; position: sticky; top: -8px; z-index: 2; display: block; height: 16px; margin: -8px -20px -8px; background: linear-gradient(var(--surface-1) 35%, transparent); pointer-events: none; }
 .recap-sheet-actions { margin-top: 20px; }
 /* Large text (b2 12 Nov, 17 at 200%): the image shrinks so Share / Save / Not now stay in view, pinned flush at the
    sheet's foot with nothing under them. Kept AFTER the sheet's base rules so it wins (spec 40 lesson). */
@@ -397,7 +401,7 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 /* The moves stay pinned at every text size (b2 12 Nov: the Lower-by-1 lines pushed them off at 100%). */
 .recap-sheet-actions { position: sticky; bottom: calc(-24px - env(safe-area-inset-bottom)); z-index: 1; margin: 20px -20px calc(-24px - env(safe-area-inset-bottom)); padding: 10px 20px calc(24px + env(safe-area-inset-bottom)); background: var(--surface-1); box-shadow: 0 -8px 12px -10px rgb(0 0 0 / 25%); }
 @container recap-backdrop (max-width: 20rem) {
-  .recap-sheet img { max-height: 40dvh; }
+  .recap-sheet img, .recap-sheet:has(.move-budget-line button) img { max-height: 40dvh; }
   .recap-sheet-actions { position: sticky; bottom: calc(-24px - env(safe-area-inset-bottom)); z-index: 1; flex-wrap: wrap; margin: 16px -20px calc(-24px - env(safe-area-inset-bottom)); padding: 10px 20px calc(24px + env(safe-area-inset-bottom)); background: var(--surface-1); box-shadow: 0 -8px 12px -10px rgb(0 0 0 / 25%); }
   .recap-sheet-actions > button { flex: 1 1 auto; }
 }

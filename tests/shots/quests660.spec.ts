@@ -388,15 +388,30 @@ for (const theme of ['light', 'dark'] as const) {
     // The offer comes in a month's first week when 3 of the last 4 weeks stayed under a budget above the floor (5).
     const lower = sheet.getByRole('button', { name: 'Lower it by 1?' });
     await expect(lower).toBeVisible();
-    await lower.scrollIntoViewIfNeeded();
-    // At 100% too, with the offer's lines, Share / Save image / Not now stay in view (pinned).
+    await sheet.evaluate(node => { node.scrollTop = 0; });
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    // b2 12 Nov: as the sheet opens at 100%, the offer is in view above the pinned row (the image gives way), and
+    // Share / Save image / Not now stay in view too.
+    expect(await sheet.evaluate(node => node.querySelector('.move-budget-line button')!.getBoundingClientRect().bottom <= node.querySelector('.recap-sheet-actions')!.getBoundingClientRect().top + 1), '17 offer in view at 100%').toBe(true);
+    await expect(lower).toBeInViewport({ ratio: 1 });
     for (const name of ['Share', 'Save image', 'Not now']) await expect(sheet.getByRole('button', { name, exact: true })).toBeInViewport({ ratio: 1 });
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-offer.png` });
+    await textAt200(page);
+    await lower.scrollIntoViewIfNeeded();
+    for (const name of ['Share', 'Save image', 'Not now']) await expect(sheet.getByRole('button', { name, exact: true })).toBeInViewport({ ratio: 1 });
+    await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-offer-200.png` });
+    await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
     await lower.click();
     await expect(sheet.locator('.move-budget-line')).toContainText('Move budget lowered to 5.');
     await expect(sheet.getByRole('button', { name: 'Lower it by 1?' })).toHaveCount(0);
     await sheet.locator('.move-budget-line').scrollIntoViewIfNeeded();
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-lowered.png` });
+    await textAt200(page);
+    await sheet.locator('.move-budget-line').scrollIntoViewIfNeeded();
+    for (const name of ['Share', 'Save image', 'Not now']) await expect(sheet.getByRole('button', { name, exact: true })).toBeInViewport({ ratio: 1 });
+    await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-lowered-200.png` });
+    await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
     // 18: Plan on a Sunday, and Plan › More.
     await snapAt(page, 'plan', '.plan-screen', `660-${t}-18-plan-sunday`, false, true);
     // 13 Dec 2026 is a Sunday: the two agency questions are on Plan itself; More names only what is inside it.
@@ -437,7 +452,7 @@ for (const theme of ['light', 'dark'] as const) {
     await expect(page.getByRole('button', { name: "Export this week's summary" })).toBeVisible({ timeout: 15_000 });
     await page.screenshot({ path: `${OUT}/660-${t}-22-backup.png`, fullPage: true });
     // 23: the old links, opened directly.
-    const links: [string, RegExp, string][] = [['you/shop', /#you\/history$/, '[data-testid="you-history"]'], ['you/badges', /#you\/history$/, '[data-testid="you-history"]'], ['you/season', /#you$/, '.you-screen'], ['plan/review', /#you$/, '.you-screen']];
+    const links: [string, RegExp, string][] = [['you/shop', /#you\/history$/, '[data-testid="you-history"]'], ['you/badges', /#you\/history$/, '[data-testid="you-history"]'], ['you/season', /#you$/, '[aria-label="Your season"] .economy-level'], ['plan/review', /#you$/, '[aria-label="Your season"] .economy-level']];
     for (const [route, home, ready] of links) {
       await page.goto(`/?e2e#${route}`);
       await page.reload();
