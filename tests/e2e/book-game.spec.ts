@@ -36,6 +36,15 @@ async function open(page: Page, route = `grow/read/game/${BOOK}`, ready = '.book
 }
 /** The moves sit above the tab bar, in view, before any tap and with no scroll. */
 async function movesInView(page: Page) {
+  // The month's play screen, not the screen it replaces: a Start tap writes, then the month draws, and its footer is a
+  // new node. CI (Linux, slower) read the old footer after it had gone (bottom 0, 12 Nov). So wait for the play screen,
+  // then for its footer to be laid out and still for two frames, before any one-shot read.
+  await expect(page.locator('.book-game-play')).toBeVisible();
+  await expect.poll(() => page.evaluate(() => new Promise<number>(resolve => {
+    const read = () => document.querySelector('.book-game-play .book-game-actions')?.getBoundingClientRect().bottom ?? 0;
+    const first = read();
+    requestAnimationFrame(() => requestAnimationFrame(() => { const second = read(); resolve(first > 0 && Math.abs(first - second) < 0.5 ? second : 0); }));
+  })), { message: 'the footer is laid out and still' }).toBeGreaterThan(0);
   await expect(page.locator('.book-game-actions')).toBeVisible();
   const tabTop = await page.locator('.tabbar').evaluate(node => node.getBoundingClientRect().top);
   const boxes = await page.locator('.book-game-actions button').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect()).map(r => ({ top: r.top, bottom: r.bottom })));
