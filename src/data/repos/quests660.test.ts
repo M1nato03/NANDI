@@ -151,4 +151,19 @@ describe('spec 660 §2.4: quest photos stay on this phone', () => {
     expect(await other.questPhotos.count()).toBe(0);
     expect((await other.ledger.get(id))?.inputs.photoId).toBe(added.ok ? added.id : '');
   });
+
+  it('b2 12 Nov: a restore drops the photos of quests the restored ledger does not hold, and keeps the rest', async () => {
+    const db = freshDb();
+    await db.settings.bulkPut([{ key: 'deviceId', value: 'device-a', ...stamp }]);
+    const kept = await finished(db, 'kapi-five-red');
+    await addQuestPhoto(db, kept, { blob: blob(500), w: 10, h: 10 }, NOON);
+    const file = await exportBackup(db, new Date(2026, 10, 13, 13));
+    // After the backup: one more quest with a photo, which the file does not know.
+    const later = await finished(db, 'mor-bag-reset');
+    await addQuestPhoto(db, later, { blob: blob(700), w: 10, h: 10 }, NOON + 1);
+    expect(await db.questPhotos.count()).toBe(2);
+    await importBackup(db, file);
+    expect((await db.questPhotos.toArray()).map(photo => photo.questFactId)).toEqual([kept]);
+    expect((await questPhotoUsage(db)).bytes).toBe(500);
+  });
 });

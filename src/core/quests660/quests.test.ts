@@ -153,6 +153,17 @@ describe('stones and Reality Check', () => {
     expect(check.feltAfter).toBe(2);
     expect(realityLine(check)).toBe('You predicted “they’ll ignore me” twice. It happened once.');
   });
+  it('b2 12 Nov (§2.3 "honest misses included"): a done quest whose prediction did not come true counts, made 1 happened 0', () => {
+    const rows = [
+      done('courage-ask-at-home', '2026-11-13', { prediction: 'freeze', outcome: 'better', fear: 4, felt: 1 }),
+      done('courage-tell-them', '2026-11-14', { prediction: 'freeze', outcome: 'fine', fear: 3, felt: 2 }),
+      done('speak-spin-60', '2026-11-15', { prediction: 'awkward', outcome: 'fine', fear: 2, felt: 2 }),
+    ];
+    const check = realityCheck(rows)!;
+    expect(check.quests).toBe(3);
+    expect(check.predictions.find(p => p.id === 'freeze')).toMatchObject({ made: 2, happened: 0 });
+    expect(check.predictions.find(p => p.id === 'awkward')).toMatchObject({ made: 1, happened: 0 });
+  });
   it('a quest not done this time is left out of the Reality Check', () => {
     const rows = ['a', 'b', 'c'].map((id, i) => done(id, `2026-11-1${i + 3}`, { prediction: 'awkward', outcome: i === 2 ? 'not-done' : 'fine' }));
     expect(realityCheck(rows)).toBeNull();

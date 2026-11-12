@@ -1,6 +1,7 @@
 import { exportDB, importInto } from 'dexie-export-import';
 import * as v from 'valibot';
 import { dayKey } from '../../core/time';
+import { QUEST_MODE } from '../../core/quests660/quests';
 import { trackWrite } from '../../core/pendingWrites';
 import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
@@ -380,7 +381,13 @@ async function restoreInto(db: NandiDb, restored: BackupEnvelope): Promise<void>
       filter: (table, value) => table === PHONE_USAGE_TABLE || table === QUEST_PHOTO_TABLE ? false : table !== 'settings' || !isDeviceLocal((value as SettingRow).key),
     });
     if (localMinutes.length) await db.phoneUsageMinutes.bulkPut(localMinutes);
-    if (localPhotos.length) await db.questPhotos.bulkPut(localPhotos);
+    // b2 12 Nov: only photos of quests the restored ledger still holds come back; the rest could never be seen again and
+    // would only fill the 200 MB cap.
+    if (localPhotos.length) {
+      const facts = new Set((await db.ledger.where('mode').equals(QUEST_MODE).toArray()).filter(row => !row.deleted).map(row => row.id));
+      const kept = localPhotos.filter(photo => facts.has(photo.questFactId));
+      if (kept.length) await db.questPhotos.bulkPut(kept);
+    }
     // The batch 5 courtyard cutoff takes the LATER of the two: a later day puts fewer days under the new rule,
     // so no courtyard corner shrinks after a restore (Codex review of batch 5, item 53).
     const theirV5 = await db.settings.get('economy.v5From');
