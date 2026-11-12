@@ -65,10 +65,11 @@ export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; li
     {open && day && <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => setOpen(false)}><section ref={dialog} tabIndex={-1} className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Your week's receipt" onClick={event => event.stopPropagation()}>
       <div className="ui-sheet-handle" aria-hidden="true" />
       <h2>Your week's receipt</h2>
-      {preview ? <img src={preview} width="1080" height="1920" alt={`Receipt, ${receiptWeek(card)}: ${receiptShareLines(card).join(', ')}.`} /> : <p>Making your receipt…</p>}
-      {/* Spec 660 §3.3: the weekly review's move-budget line, on the receipt (it never goes on the image). */}
-      <RealityCheckLine />
+      {/* Spec 660 §3.3: the weekly review's move-budget line, on the receipt (never on the image). b2 12 Nov: it sits
+          right under the title, so the one thing to act on is in view as the sheet opens, at any text size. */}
       <MoveBudgetLine />
+      {preview ? <img src={preview} width="1080" height="1920" alt={`Receipt, ${receiptWeek(card)}: ${receiptShareLines(card).join(', ')}.`} /> : <p>Making your receipt…</p>}
+      <RealityCheckLine />
       <div className="recap-sheet-actions">
         <button type="button" onClick={() => void share()} disabled={!blob || busy}>Share</button>
         <button type="button" className="secondary" onClick={() => void save()} disabled={!blob || busy}>Save image</button>

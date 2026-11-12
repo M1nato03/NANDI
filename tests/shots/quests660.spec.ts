@@ -308,6 +308,22 @@ for (const theme of ['light', 'dark'] as const) {
 
 // a9 checklist §8b, shots 15-23 (removals 3.1-3.4): each screen as it opens, light first, 360x800; * also 200%.
 // "Shards" may appear only in You › history and the Backup restore line: every other screen here is checked for it.
+/** The receipt's move-budget line sits fully in view, above the pinned moves (b2 12 Nov), as the sheet shows it. */
+async function budgetLineInView(page: Page, where: string) {
+  const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
+  await sheet.evaluate(node => { node.scrollTop = 0; });
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  const box = await sheet.evaluate(node => {
+    const line = node.querySelector('.move-budget-line')!.getBoundingClientRect();
+    const bar = node.querySelector('.recap-sheet-actions')!.getBoundingClientRect();
+    const top = Math.max(node.getBoundingClientRect().top, 0);
+    const handle = node.querySelector('.ui-sheet-handle')!.getBoundingClientRect();
+    const sheetTop = node.getBoundingClientRect().top;
+    // The grip sits clear of the sheet's top edge (not under the top fade).
+    return { ok: line.top >= top - 1 && line.bottom <= bar.top + 1 && handle.top >= sheetTop + 12, line: [Math.round(line.top), Math.round(line.bottom)], bar: Math.round(bar.top), grip: Math.round(handle.top - sheetTop) };
+  });
+  expect(box.ok, `${where}: move-budget line ${JSON.stringify(box)}`).toBe(true);
+}
 const noShards = async (page: Page, where: string) => expect(await page.locator('main').innerText(), `${where}: no "Shards"`).not.toMatch(/Shards/);
 const SUNDAY_EVE = new Date('2026-12-13T12:00:00'); // a Sunday before shutdown (shares hide after it); first week of a month, so Lower-by-1 can come
 async function phoneAt(browser: Browser, colorScheme: 'light' | 'dark', time: Date): Promise<Page> {
@@ -392,23 +408,22 @@ for (const theme of ['light', 'dark'] as const) {
     await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     // b2 12 Nov: as the sheet opens at 100%, the offer is in view above the pinned row (the image gives way), and
     // Share / Save image / Not now stay in view too.
-    expect(await sheet.evaluate(node => node.querySelector('.move-budget-line button')!.getBoundingClientRect().bottom <= node.querySelector('.recap-sheet-actions')!.getBoundingClientRect().top + 1), '17 offer in view at 100%').toBe(true);
+    await budgetLineInView(page, '17 offer at 100%');
     await expect(lower).toBeInViewport({ ratio: 1 });
     for (const name of ['Share', 'Save image', 'Not now']) await expect(sheet.getByRole('button', { name, exact: true })).toBeInViewport({ ratio: 1 });
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-offer.png` });
     await textAt200(page);
-    await lower.scrollIntoViewIfNeeded();
+    await budgetLineInView(page, '17 offer at 200%');
     for (const name of ['Share', 'Save image', 'Not now']) await expect(sheet.getByRole('button', { name, exact: true })).toBeInViewport({ ratio: 1 });
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-offer-200.png` });
     await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
     await lower.click();
     await expect(sheet.locator('.move-budget-line')).toContainText('Move budget lowered to 5.');
     await expect(sheet.getByRole('button', { name: 'Lower it by 1?' })).toHaveCount(0);
-    await sheet.locator('.move-budget-line').scrollIntoViewIfNeeded();
-    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await budgetLineInView(page, '17 lowered at 100%');
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-lowered.png` });
     await textAt200(page);
-    await sheet.locator('.move-budget-line').scrollIntoViewIfNeeded();
+    await budgetLineInView(page, '17 lowered at 200%');
     for (const name of ['Share', 'Save image', 'Not now']) await expect(sheet.getByRole('button', { name, exact: true })).toBeInViewport({ ratio: 1 });
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-lowered-200.png` });
     await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
