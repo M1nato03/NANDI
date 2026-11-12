@@ -376,6 +376,10 @@ for (const theme of ['light', 'dark'] as const) {
     }
     // 18: Plan on a Sunday, and Plan › More.
     await snapAt(page, 'plan', '.plan-screen', `660-${t}-18-plan-sunday`, false, true);
+    // 13 Dec 2026 is a Sunday: the two agency questions are on Plan itself; More names only what is inside it.
+    await expect(page.getByRole('region', { name: 'Time in NANDI' })).toBeVisible();
+    await expect(page.locator('.plan-more .agency-check')).toHaveCount(0);
+    await expect(page.locator('.plan-more summary')).toContainText('Your week, routines, focus');
     await page.locator('.plan-more summary').click();
     await expect(page.getByRole('region', { name: 'Last night' })).toHaveCount(0);
     await expect(page.getByRole('region', { name: 'Reminders' })).toHaveCount(0);

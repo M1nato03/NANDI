@@ -16,11 +16,13 @@ async function readLog(page: Page, dayKey: string) {
 }
 
 test('the weekly agency check comes to Plan on Sunday, saves in one tap each, and shows in the weekly review', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2026-10-25T12:00:00'));
+  await page.clock.setFixedTime(new Date('2026-10-25T12:00:00')); // a Sunday
   await page.goto('/#plan');
-  await openMore(page);
+  // b2 12 Nov: on Plan itself, with More still closed.
   const check = page.getByRole('region', { name: 'Time in NANDI' });
   await expect(check).toBeVisible();
+  await expect(page.locator('.plan-more')).not.toHaveAttribute('open', /.*/);
+  await expect(page.locator('.plan-more .agency-check')).toHaveCount(0);
   await check.getByRole('button', { name: '4 of 5' }).click();
   await expect(check.getByRole('button', { name: '4 of 5' })).toHaveAttribute('aria-pressed', 'true');
   await expect(check).toBeVisible();
@@ -34,9 +36,10 @@ test('the weekly agency check comes to Plan on Sunday, saves in one tap each, an
 });
 
 test('Plan does not ask on other days', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2026-10-22T12:00:00'));
+  await page.clock.setFixedTime(new Date('2026-10-26T12:00:00')); // the Monday after
   await page.goto('/#plan');
   await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Time in NANDI' })).toHaveCount(0);
   await openMore(page);
   await expect(page.getByRole('region', { name: 'Time in NANDI' })).toHaveCount(0);
 });

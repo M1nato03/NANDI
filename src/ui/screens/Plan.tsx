@@ -95,11 +95,13 @@ export function Plan({ questId }: { questId?: string }) {
     <SideQuests />
     {/* Spec 39: the Pause card, one plain row: what it does now and where to set it. */}
     <button type="button" className="card plan-pause-row" onClick={() => go('plan/pause')}><span><strong>Pause card</strong><small>{pauseCard.offToday ? 'Off for today' : pauseCard.on ? `On · ${pauseCard.packages.map(name => pauseAppLabel(name)).join(', ')}` : 'Off · show your plan when you open Instagram'}</small></span><span aria-hidden="true">›</span></button>
+    {/* Spec 660 §3.3 (b2 12 Nov): on a Sunday the two agency questions sit on Plan itself, not behind More. */}
+    {askAgency && <AgencyCheck now={board.now} />}
     {/* Item 183: everything else on Plan waits behind one closed More at the bottom. Nothing is removed, only moved.
-        Side quests came back out of More on 5 Nov at Jenil's request (item 566). */}
-    <details className="card plan-more"><summary><strong>More</strong><span className="small">Check-ins, routines, reminders</span></summary>
+        Side quests came back out of More on 5 Nov at Jenil's request (item 566). §3.4 moved the check-in and Reminders out. */}
+    <details className="card plan-more"><summary><strong>More</strong><span className="small">Your week, routines, focus</span></summary>
       {fresh && <section className="card fresh-start" aria-label="Fresh start"><p>Yesterday didn't go to plan. That's data, not a verdict.</p><div className="sheet-actions"><button type="button" onClick={() => { void dismissFresh(); go('plan/morning'); }}>Plan today</button><button type="button" className="secondary" onClick={() => setPickMust(true)}>Pick one Must</button></div>{pickMust && <div>{board.tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !board.tasks.some(child => child.parentId === task.id && !child.deleted)).map(task => <div key={task.id}><button type="button" className="secondary fresh-choice" onClick={() => void pinMust(task)}>{task.title}</button>{pickNote?.id === task.id && <p role="alert" tabIndex={-1} ref={pickNoteRef}>{pickNote.text}</p>}</div>)}</div>}</section>}
-      {askAgency && <AgencyCheck now={board.now} />}<StorybookCard today={today} /><CourtyardBanner />
+      <StorybookCard today={today} /><CourtyardBanner />
       {/* Spec 26: from 20:00 (until the 04:00 day line), Kachhua's kolam for tonight. */}
       {(new Date(board.now).getHours() >= 20 || new Date(board.now).getHours() < 4) && <section className="card kolam-card" aria-label="Tonight's kolam"><h2>Tonight's kolam</h2><p className="small">One slow line around every dot, with Kachhua.</p><button type="button" className="secondary" onClick={() => go('kolam')}>Trace it</button></section>}
       <PhoneChhutti />
