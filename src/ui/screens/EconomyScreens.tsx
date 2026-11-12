@@ -8,6 +8,7 @@ import { useModalFocus } from '../shell/useModalFocus';
 import { currentArcTitle } from '../../core/mysteries';
 import { boardSeats, rivalName, seatThreshold } from '../../core/economy/ladder';
 import { SHOP_ITEMS } from '../../core/economy/shop';
+import { badges } from '../../core/economy/gamify';
 import { recordShown } from '../../data/repos/gamify';
 import { RULES } from '../../core/rules.config';
 import { AWAY_KEY, awayRanges, planAway } from '../../core/economy/away';
@@ -202,11 +203,21 @@ export function YouHistory() {
   const { view } = economy;
   const names = new Map(SHOP_ITEMS.map(item => [item.id, item.name]));
   const owned = view.owned.map(id => names.get(id) ?? id);
+  // §3.1b: the highest tier of each badge earned (badge-tier facts; none are written from v12From).
+  const tiers = new Map<string, number>();
+  for (const row of economy.facts) {
+    const match = !row.deleted && row.kind === 'badge-tier' ? /^(.+):([1-3])$/.exec(row.refId) : null;
+    if (match && Number(match[2]) > (tiers.get(match[1]!) ?? 0)) tiers.set(match[1]!, Number(match[2]));
+  }
+  const earned = badges.filter(badge => tiers.has(badge.id)).map(badge => ({ title: badge.title, tier: ['Bronze', 'Silver', 'Gold'][tiers.get(badge.id)! - 1] ?? 'Gold' }));
   return <section className="screen you-history" data-testid="you-history"><p className="eyebrow">You</p><h1>Your history</h1>
     <section className="card" aria-labelledby="history-shards"><h2 id="history-shards">Shards kept: {view.shards.toLocaleString()}</h2>
       <p>The shop has closed. What you own stays yours{owned.length ? ':' : '.'}</p>
       {owned.length > 0 && <ul className="history-list">{owned.map(name => <li key={name}>{name}</li>)}</ul>}
       <p className="small">Rest days held: {view.streak.restDays}. They still keep a streak on a missed day, and more arrive on the 1st.</p>
+    </section>
+    <section className="card" aria-labelledby="history-badges"><h2 id="history-badges">Badges you earned</h2>
+      {earned.length ? <ul className="history-list">{earned.map(badge => <li key={badge.title}>{badge.title} · {badge.tier}</li>)}</ul> : <p>None were earned before badges ended.</p>}
     </section>
     <button type="button" className="secondary" onClick={() => go('you')}>Back to You</button>
   </section>;

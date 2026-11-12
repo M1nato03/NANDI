@@ -301,3 +301,20 @@ it('the courtyard cutoff starts after the furthest day shown, so a clock set bac
   await reconcileGamify(db, at('2026-11-04'));
   expect((await db.settings.get('economy.v5From'))?.value).toBe('2026-11-06');
 });
+
+it('spec 660 §3.1b: from v12From reconcile writes no badge tier; before it (an older build) the same facts earned one', async () => {
+  const db = createDb(`gamify-badges-${++serial}`); opened.push(db);
+  const day = '2026-11-13';
+  for (let index = 0; index < 5; index++) await db.ledger.add({ id: `done:b${index}`, mode: 'tasks', kind: 'done', refId: `b${index}`, dayKey: day, inputs: { plannedSize: 'M', isFirstDay: true, wasPlanned: true, postpones: 0 }, updatedAt: at(day), deleted: 0, deviceId: 'test' });
+  const tiers = async () => (await db.ledger.toArray()).filter(row => row.kind === 'badge-tier').length;
+  // The pre-fence rule (a v12From that never comes) still writes the tiers the facts reach...
+  await db.settings.put({ key: 'economy.v12From', value: '9999-12-31', updatedAt: 1, deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at(day));
+  const before = await tiers();
+  expect(before).toBeGreaterThan(0);
+  // ...and from v12From none more, however much more is done.
+  await db.settings.put({ key: 'economy.v12From', value: day, updatedAt: 2, deleted: 0, deviceId: 'test' });
+  for (let index = 5; index < 60; index++) await db.ledger.add({ id: `done:b${index}`, mode: 'tasks', kind: 'done', refId: `b${index}`, dayKey: day, inputs: { plannedSize: 'M', isFirstDay: true, wasPlanned: true, postpones: 0 }, updatedAt: at(day), deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at(day, '18:00'));
+  expect(await tiers()).toBe(before);
+});

@@ -354,9 +354,10 @@ test('G1 group 11: You', async ({ page }) => {
   await expect(page.getByRole('region', { name: 'Your week' }).getByRole('button', { name: 'Share my week' })).toBeVisible();
   // row 168: the W1 dailies, renamed "Small steps today" (spec 660, Jenil 8 Nov)
   await expect(page.getByRole('region', { name: 'Small steps today' })).toBeVisible();
-  // row 169: Badges and monthly challenge
-  await page.getByRole('button', { name: /Badges/ }).click();
-  await expect(page.getByRole('progressbar', { name: 'Monthly challenge progress' })).toBeVisible();
+  // row 169: Badges and monthly challenge → spec 660 §3.1b/c: ended; earned badges are read-only in You › history
+  await expect(page.getByRole('button', { name: /^Badges/ })).toHaveCount(0);
+  await page.getByTestId('history-link').click();
+  await expect(page.getByRole('region', { name: 'Badges you earned' })).toBeVisible();
   await you(page);
   // row 172: Six stats
   await expect(page.getByRole('region', { name: 'Your six stats' })).toBeVisible();

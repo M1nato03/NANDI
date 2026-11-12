@@ -3,7 +3,7 @@ import { bookConcepts, bookUnitId } from '../../core/learn/books';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, economyHorizon, fillHeldBonus, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, replayBonus, SEEN_KEY } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, shopClosedFrom, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, economyHorizon, fillHeldBonus, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, replayBonus, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { confirmUpdates, LONGEST_KEY, longestRun } from '../../core/economy/usefulDays';
@@ -130,7 +130,9 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     // Spec 33: one chest per book, under the id its unit had before it became chapters, so no chest is paid twice.
     for (const pack of topics) if (chestReady(bookConcepts(pack).map(c => c.id), mastered)) await add('unit-chest', bookUnitId(pack), today);
     // The tier is worked out once per badge (the loop condition used to re-count the whole ledger each pass; cj2 heavy data #4).
-    for (const badge of badges) { const reached = badgeTier(badge, facts); for (let tier = 1; tier <= reached; tier++) await add('badge-tier', `${badge.id}:${tier}`, today); }
+    // Spec 660 §3.1b: badges stop on v12From (the tiers earned before it stay, read-only in You › history).
+    const badgesStop = shopClosedFrom(await db.settings.toArray());
+    if (today < badgesStop) for (const badge of badges) { const reached = badgeTier(badge, facts); for (let tier = 1; tier <= reached; tier++) await add('badge-tier', `${badge.id}:${tier}`, today); }
     const month = today.slice(0, 7);
     if (monthlyQuestCount(facts, month) >= 20) await add('monthly-challenge', month, today);
     // Close the books: every finished day keeps the highest it has shown (a high-water mark, raised on each

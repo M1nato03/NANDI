@@ -56,12 +56,14 @@ async function answerItem(page: Page, wrong = false) {
   if (progress && Number(progress[1]) < Number(progress[2])) await expect(page.locator('.learn-drop-head')).toContainText(`${Number(progress[1]) + 1} / ${progress[2]}`);
 }
 
-test('seeded daily quests complete and a badge appears under You', async ({ page }, testInfo) => {
+test('seeded daily quests complete; badges ended (spec 660 §3.1b): no new tier, the earned ones read-only in You › history', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
   await page.goto('/#you');
   const rows = Array.from({ length: 5 }, (_, index) => fact('learn-answer', `drop:daily:${day}:${index}`, 'mind', { dropId: `drop:daily:${day}`, correct: true, afterBedtime: false }, index));
   // A finished drop writes its learn-drop fact; that, not a count of five answers, completes the drop quest.
   rows.push(fact('learn-drop', day, 'gamify', {}, 5), fact('perfect-drop', day, 'gamify', {}, 6), fact('lightsout', day, 'bonuses', { metTarget: true }, 7));
+  // A tier earned before the Quests build (an older build wrote it).
+  rows.push(fact('badge-tier', 'tasks:1', 'gamify', {}, 8));
   await seed(page, rows);
   const quests = page.getByRole('region', { name: 'Small steps today' });
   await expect(quests).toContainText('Small steps today');
@@ -73,10 +75,12 @@ test('seeded daily quests complete and a badge appears under You', async ({ page
     await quests.screenshot({ path: testInfo.outputPath('quests-dark-360.png') });
     await page.emulateMedia({ colorScheme: 'light' });
   }
-  await page.getByRole('button', { name: /Badges/ }).click();
-  await expect(page.getByRole('heading', { name: 'Badges', exact: true })).toBeVisible();
-  await expect(page.locator('.gamify-badges')).toContainText('Questions answered right');
-  await expect(page.locator('.gamify-badges')).toContainText('Bronze');
+  await expect(page.getByRole('button', { name: /^Badges/ })).toHaveCount(0);
+  await page.getByTestId('history-link').click();
+  const history = page.getByTestId('you-history').getByRole('region', { name: 'Badges you earned' });
+  await expect(history).toContainText('Tasks settled · Bronze');
+  // The five right answers would have earned "Questions answered right" before; from v12From no tier is written.
+  await expect(history).not.toContainText('Questions answered right');
   if (testInfo.project.name === 'mobile-360x800') {
     await page.screenshot({ path: testInfo.outputPath('badges-light-360.png'), fullPage: true });
     await page.emulateMedia({ colorScheme: 'dark' });

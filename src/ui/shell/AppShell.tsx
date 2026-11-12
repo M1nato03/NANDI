@@ -89,7 +89,6 @@ const UsefulDays = lazy(() => import('../yatra/Yatra').then(module => ({ default
 const SeasonLadder = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonLadder })));
 const PastResults = lazy(() => import('../season/SeasonResult').then(module => ({ default: module.PastResults })));
 const YouHistory = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.YouHistory })));
-const Badges = lazy(() => import('../screens/GamifyScreens').then(module => ({ default: module.Badges })));
 const Night = lazy(() => import('../screens/Night').then(module => ({ default: module.Night })));
 const NightPauseCard = lazy(() => import('../screens/NightPauseCard').then(module => ({ default: module.NightPauseCard })));
 // Spec 39: by day the pause is the Pause card (the person's own plan); at night it stays the night card.
@@ -274,7 +273,6 @@ export function AppShell() {
   if (key === 'ground/backup' || key === 'you/backup') screen = <Backup onRestored={restored} />;
   else if (key === 'you/season') screen = <SeasonLadder />;
   else if (key === 'you/history') screen = <YouHistory />;
-  else if (key === 'you/badges') screen = <Badges />;
   else if (key === 'you/contentreview') screen = <ContentReview />;
   else if (key === 'you/cast') screen = <MeetCast />;
   else if (key === 'you/courtyard') screen = <CourtyardHome />;
