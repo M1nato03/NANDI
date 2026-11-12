@@ -30,8 +30,14 @@ async function lineCount(page: Page, selector: string): Promise<number> {
   });
 }
 async function open(page: Page, route = `grow/read/game/${BOOK}`, ready = '.book-game') {
+  // b2 13 Nov: from another hash (E12 starts on #courtyard) this goto is a same-document hash change, and the gate (2
+  // workers, loaded) once reloaded before it had landed and so reopened the Courtyard. The probe (x20 at 390, noon) kept
+  // the hash every time: the app keeps the deep link, so the test waits for its own navigation before the reload.
+  const hash = () => page.evaluate(() => location.hash);
   await page.goto(`/?e2e#${route}`);
+  await expect.poll(hash, { message: 'the hash landed before the reload' }).toBe(`#${route}`);
   await page.reload();
+  await expect.poll(hash, { message: 'the reload kept the hash' }).toBe(`#${route}`);
   await expect(page.locator(ready).first()).toBeVisible({ timeout: 15_000 });
 }
 /** The moves sit above the tab bar, in view, before any tap and with no scroll. */
