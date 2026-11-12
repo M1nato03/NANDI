@@ -11,56 +11,113 @@
     {
       "id": "jobra",
       "name": "Jobra",
-      "altNames": ["Jobri"],
+      "altNames": [
+        "Jobri"
+      ],
       "kind": "start",
       "regionLine": "Road head above Manali, Kullu valley",
-      "altitudeM": null,
-      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+      "altitudeM": 2860,
+      "sources": [
+        "https://www.indiahikes.com/hampta-pass",
+        "https://www.potala-himalaya.com/trekking/hampta-pass-trek"
+      ],
+      "altitudeRangeM": [
+        2733,
+        2987
+      ]
     },
     {
       "id": "chika",
       "name": "Chika",
-      "altNames": ["Chikha", "Chhika", "Chikka"],
+      "altNames": [
+        "Chikha",
+        "Chhika",
+        "Chikka"
+      ],
       "kind": "camp",
       "regionLine": "Riverside meadow on the Kullu side",
-      "altitudeM": null,
-      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+      "altitudeM": 3070,
+      "sources": [
+        "https://www.indiahikes.com/hampta-pass",
+        "https://www.potala-himalaya.com/trekking/hampta-pass-trek"
+      ],
+      "altitudeRangeM": [
+        3048,
+        3100
+      ]
     },
     {
       "id": "balu-ka-ghera",
       "name": "Balu Ka Ghera",
-      "altNames": ["Balu ka Gera", "Balu Gera"],
+      "altNames": [
+        "Balu ka Gera",
+        "Balu Gera"
+      ],
       "kind": "camp",
       "regionLine": "Boulder camp below the pass",
-      "altitudeM": null,
-      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+      "altitudeM": 3660,
+      "sources": [
+        "https://www.indiahikes.com/hampta-pass",
+        "https://www.potala-himalaya.com/trekking/hampta-pass-trek"
+      ],
+      "altitudeRangeM": [
+        3600,
+        3725
+      ]
     },
     {
       "id": "hampta-pass",
       "name": "Hampta Pass",
-      "altNames": ["Hamta Pass"],
+      "altNames": [
+        "Hamta Pass"
+      ],
       "kind": "pass",
       "regionLine": "The crossing from Kullu into Lahaul",
-      "altitudeM": null,
-      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+      "altitudeM": 4250,
+      "sources": [
+        "https://www.indiahikes.com/hampta-pass",
+        "https://www.potala-himalaya.com/trekking/hampta-pass-trek"
+      ],
+      "altitudeRangeM": [
+        4200,
+        4300
+      ]
     },
     {
       "id": "shea-goru",
       "name": "Shea Goru",
-      "altNames": ["Shea-Goru"],
+      "altNames": [
+        "Shea-Goru"
+      ],
       "kind": "camp",
       "regionLine": "Stream-side meadow on the Lahaul side",
-      "altitudeM": null,
-      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+      "altitudeM": 3900,
+      "sources": [
+        "https://www.indiahikes.com/hampta-pass",
+        "https://www.potala-himalaya.com/trekking/hampta-pass-trek"
+      ],
+      "altitudeRangeM": [
+        3869,
+        3932
+      ]
     },
     {
       "id": "chatru",
       "name": "Chatru",
-      "altNames": ["Chhatru"],
+      "altNames": [
+        "Chhatru"
+      ],
       "kind": "camp",
       "regionLine": "End of the trek, by the Chandra River",
-      "altitudeM": null,
-      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+      "altitudeM": 3320,
+      "sources": [
+        "https://www.indiahikes.com/hampta-pass",
+        "https://www.potala-himalaya.com/trekking/hampta-pass-trek"
+      ],
+      "altitudeRangeM": [
+        3287,
+        3353
+      ]
     }
   ],
   "legs": [
@@ -68,7 +125,11 @@
       "id": "jobra-chika",
       "from": "jobra",
       "to": "chika",
-      "landmark": { "id": "rani-nallah", "name": "Rani Nallah", "kind": "river" },
+      "landmark": {
+        "id": "rani-nallah",
+        "name": "Rani Nallah",
+        "kind": "river"
+      },
       "postcard": {
         "title": "Rani Nallah",
         "lines": [
@@ -77,14 +138,40 @@
           "Cows and sheep graze its meadow, lined with maple and pine."
         ]
       },
-      "sources": ["https://www.indiahikes.com/hampta-pass"],
-      "constellation": "The Chika Kite"
+      "sources": [
+        "https://www.indiahikes.com/hampta-pass"
+      ],
+      "constellation": "The Chika Kite",
+      "terrain": {
+        "zone": "kullu-forest",
+        "features": [
+          {
+            "kind": "stream",
+            "at": 0.2,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          },
+          {
+            "kind": "log-bridge",
+            "at": 0.66,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          },
+          {
+            "kind": "boulders",
+            "at": 0.85,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          }
+        ]
+      }
     },
     {
       "id": "chika-balu-ka-ghera",
       "from": "chika",
       "to": "balu-ka-ghera",
-      "landmark": { "id": "jwara-meadow", "name": "Jwara", "kind": "meadow" },
+      "landmark": {
+        "id": "jwara-meadow",
+        "name": "Jwara",
+        "kind": "meadow"
+      },
       "postcard": {
         "title": "Jwara",
         "lines": [
@@ -93,14 +180,46 @@
           "Balu Ka Ghera, the next camp, sits among boulders below snowy peaks."
         ]
       },
-      "sources": ["https://www.potala-himalaya.com/trekking/hampta-pass-trek", "https://www.indiahikes.com/hampta-pass"],
-      "constellation": "The Jwara Lamp"
+      "sources": [
+        "https://www.potala-himalaya.com/trekking/hampta-pass-trek",
+        "https://www.indiahikes.com/hampta-pass"
+      ],
+      "constellation": "The Jwara Lamp",
+      "terrain": {
+        "zone": "valley-meadow",
+        "features": [
+          {
+            "kind": "ford",
+            "at": 0.25,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          },
+          {
+            "kind": "meadow",
+            "at": 0.5,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          },
+          {
+            "kind": "waterfall",
+            "at": 0.78,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          },
+          {
+            "kind": "boulders",
+            "at": 0.9,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          }
+        ]
+      }
     },
     {
       "id": "balu-ka-ghera-hampta-pass",
       "from": "balu-ka-ghera",
       "to": "hampta-pass",
-      "landmark": { "id": "hampta-glacier", "name": "Hampta Glacier", "kind": "glacier" },
+      "landmark": {
+        "id": "hampta-glacier",
+        "name": "Hampta Glacier",
+        "kind": "glacier"
+      },
       "postcard": {
         "title": "Hampta Glacier",
         "lines": [
@@ -108,14 +227,40 @@
           "It feeds the Hampta Nala, the stream you will camp beside at Shea Goru."
         ]
       },
-      "sources": ["https://www.indiahikes.com/hampta-pass"],
-      "constellation": "The Glacier Ladder"
+      "sources": [
+        "https://www.indiahikes.com/hampta-pass"
+      ],
+      "constellation": "The Glacier Ladder",
+      "terrain": {
+        "zone": "alpine-scree",
+        "features": [
+          {
+            "kind": "boulders",
+            "at": 0.2,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          },
+          {
+            "kind": "glacier-view",
+            "at": 0.66,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          },
+          {
+            "kind": "snow-patch",
+            "at": 0.85,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          }
+        ]
+      }
     },
     {
       "id": "hampta-pass-shea-goru",
       "from": "hampta-pass",
       "to": "shea-goru",
-      "landmark": { "id": "hampta-pass-top", "name": "Top of the pass", "kind": "pass" },
+      "landmark": {
+        "id": "hampta-pass-top",
+        "name": "Top of the pass",
+        "kind": "pass"
+      },
       "postcard": {
         "title": "Top of the pass",
         "lines": [
@@ -124,14 +269,37 @@
           "Shea Goru camp sits beside a glacial stream, on a meadow dotted with flowers."
         ]
       },
-      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"],
-      "constellation": "The Hampta Crown"
+      "sources": [
+        "https://www.indiahikes.com/hampta-pass",
+        "https://www.potala-himalaya.com/trekking/hampta-pass-trek"
+      ],
+      "constellation": "The Hampta Crown",
+      "terrain": {
+        "zone": "pass-snow",
+        "toZone": "lahaul-dry",
+        "features": [
+          {
+            "kind": "snow-patch",
+            "at": 0.15,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          },
+          {
+            "kind": "stream",
+            "at": 0.8,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          }
+        ]
+      }
     },
     {
       "id": "shea-goru-chatru",
       "from": "shea-goru",
       "to": "chatru",
-      "landmark": { "id": "chandra-river", "name": "Chandra River", "kind": "river" },
+      "landmark": {
+        "id": "chandra-river",
+        "name": "Chandra River",
+        "kind": "river"
+      },
       "postcard": {
         "title": "Chandra River",
         "lines": [
@@ -139,8 +307,26 @@
           "An easy trail runs along the Chandra River to Chatru, where the trek ends."
         ]
       },
-      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"],
-      "constellation": "The Chandra Boat"
+      "sources": [
+        "https://www.indiahikes.com/hampta-pass",
+        "https://www.potala-himalaya.com/trekking/hampta-pass-trek"
+      ],
+      "constellation": "The Chandra Boat",
+      "terrain": {
+        "zone": "lahaul-dry",
+        "features": [
+          {
+            "kind": "ford",
+            "at": 0.3,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          },
+          {
+            "kind": "river-view",
+            "at": 0.66,
+            "source": "https://www.indiahikes.com/hampta-pass"
+          }
+        ]
+      }
     }
   ],
   "notes": [

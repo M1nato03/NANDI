@@ -1,0 +1,354 @@
+{
+  "id": "tarsar-marsar",
+  "name": "Tarsar Marsar",
+  "region": "Lidder valley, Kashmir, India",
+  "sources": [
+    "https://trekthehimalayas.com/tarsar-marsar-trek",
+    "https://indiahikes.com/tarsar-marsar",
+    "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+  ],
+  "places": [
+    {
+      "id": "aru",
+      "name": "Aru",
+      "kind": "start",
+      "regionLine": "Village at the road head in the Lidder valley",
+      "altitudeM": 2400,
+      "altitudeRangeM": [
+        2400,
+        2400
+      ],
+      "sources": [
+        "https://trekthehimalayas.com/tarsar-marsar-trek",
+        "https://indiahikes.com/tarsar-marsar",
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+      ]
+    },
+    {
+      "id": "lidderwat",
+      "name": "Lidderwat",
+      "kind": "camp",
+      "regionLine": "Meadow camp in the Lidder valley",
+      "altitudeM": 2800,
+      "altitudeRangeM": [
+        2800,
+        2800
+      ],
+      "sources": [
+        "https://trekthehimalayas.com/tarsar-marsar-trek",
+        "https://indiahikes.com/tarsar-marsar",
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+      ]
+    },
+    {
+      "id": "shekwas",
+      "name": "Shekwas",
+      "kind": "camp",
+      "regionLine": "Open meadow below the lakes",
+      "altitudeM": 3350,
+      "altitudeRangeM": [
+        3350,
+        3350
+      ],
+      "sources": [
+        "https://trekthehimalayas.com/tarsar-marsar-trek",
+        "https://indiahikes.com/tarsar-marsar",
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+      ]
+    },
+    {
+      "id": "tarsar",
+      "name": "Tarsar",
+      "kind": "camp",
+      "regionLine": "Camp on the shore of Tarsar lake",
+      "altitudeM": 3800,
+      "altitudeRangeM": [
+        3800,
+        3800
+      ],
+      "sources": [
+        "https://trekthehimalayas.com/tarsar-marsar-trek",
+        "https://indiahikes.com/tarsar-marsar",
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+      ]
+    },
+    {
+      "id": "sundarsar",
+      "name": "Sundarsar",
+      "kind": "camp",
+      "regionLine": "Lake basin beyond a rocky pass",
+      "altitudeM": 4000,
+      "altitudeRangeM": [
+        4000,
+        4000
+      ],
+      "sources": [
+        "https://trekthehimalayas.com/tarsar-marsar-trek",
+        "https://indiahikes.com/tarsar-marsar",
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+      ]
+    },
+    {
+      "id": "marsar-ridge",
+      "name": "Marsar ridge",
+      "kind": "pass",
+      "regionLine": "High saddle above Marsar lake",
+      "altitudeM": 4100,
+      "altitudeRangeM": [
+        4100,
+        4100
+      ],
+      "sources": [
+        "https://trekthehimalayas.com/tarsar-marsar-trek",
+        "https://indiahikes.com/tarsar-marsar",
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+      ]
+    },
+    {
+      "id": "homwas",
+      "name": "Homwas",
+      "kind": "camp",
+      "regionLine": "Camp at the treeline, below the meadows",
+      "altitudeM": 3505,
+      "altitudeRangeM": [
+        3505,
+        3505
+      ],
+      "sources": [
+        "https://trekthehimalayas.com/tarsar-marsar-trek",
+        "https://indiahikes.com/tarsar-marsar",
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+      ]
+    }
+  ],
+  "legs": [
+    {
+      "id": "aru-lidderwat",
+      "from": "aru",
+      "to": "lidderwat",
+      "landmark": {
+        "id": "lidder-river",
+        "name": "Lidder river",
+        "kind": "river"
+      },
+      "terrain": {
+        "zone": "kullu-forest",
+        "features": [
+          {
+            "kind": "stream",
+            "at": 0.3,
+            "source": "https://indiahikes.com/tarsar-marsar"
+          },
+          {
+            "kind": "log-bridge",
+            "at": 0.66,
+            "source": "https://indiahikes.com/tarsar-marsar"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "Lidder river",
+        "lines": [
+          "From Aru, the path follows the Lidder river upstream.",
+          "Pine and fir forest lines the way, with wooden bridges over the water.",
+          "Lidderwat camp sits on a wide meadow."
+        ]
+      },
+      "sources": [
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary",
+        "https://trekthehimalayas.com/tarsar-marsar-trek",
+        "https://indiahikes.com/tarsar-marsar"
+      ],
+      "constellation": "The Lidder Oar"
+    },
+    {
+      "id": "lidderwat-shekwas",
+      "from": "lidderwat",
+      "to": "shekwas",
+      "landmark": {
+        "id": "meadow-ford",
+        "name": "Meadow stream",
+        "kind": "stream"
+      },
+      "terrain": {
+        "zone": "valley-meadow",
+        "features": [
+          {
+            "kind": "meadow",
+            "at": 0.3,
+            "source": "https://indiahikes.com/tarsar-marsar"
+          },
+          {
+            "kind": "ford",
+            "at": 0.66,
+            "source": "https://indiahikes.com/tarsar-marsar"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "Meadow stream",
+        "lines": [
+          "Above Lidderwat the forest opens into wide meadows.",
+          "Small streams cross the path through the grass.",
+          "Shekwas camp sits in the open, with the lakes still hidden above."
+        ]
+      },
+      "sources": [
+        "https://indiahikes.com/tarsar-marsar",
+        "https://trekthehimalayas.com/tarsar-marsar-trek"
+      ],
+      "constellation": "The Meadow Fan"
+    },
+    {
+      "id": "shekwas-tarsar",
+      "from": "shekwas",
+      "to": "tarsar",
+      "landmark": {
+        "id": "tarsar-lake",
+        "name": "Tarsar lake",
+        "kind": "lake"
+      },
+      "terrain": {
+        "zone": "valley-meadow",
+        "features": [
+          {
+            "kind": "meadow",
+            "at": 0.25,
+            "source": "https://indiahikes.com/tarsar-marsar"
+          },
+          {
+            "kind": "lake",
+            "at": 0.66,
+            "source": "https://indiahikes.com/tarsar-marsar"
+          }
+        ],
+        "toZone": "lake-basin"
+      },
+      "postcard": {
+        "title": "Tarsar lake",
+        "lines": [
+          "A grassy climb from Shekwas ends at the edge of Tarsar lake.",
+          "Tarsar is shaped like an almond, its water still below the slopes.",
+          "Tonight's camp is right on its shore."
+        ]
+      },
+      "sources": [
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary",
+        "https://indiahikes.com/tarsar-marsar"
+      ],
+      "constellation": "The Tarsar Cup"
+    },
+    {
+      "id": "tarsar-sundarsar",
+      "from": "tarsar",
+      "to": "sundarsar",
+      "landmark": {
+        "id": "sundarsar-lake",
+        "name": "Sundarsar lake",
+        "kind": "lake"
+      },
+      "terrain": {
+        "zone": "lake-basin",
+        "features": [
+          {
+            "kind": "boulders",
+            "at": 0.3,
+            "source": "https://indiahikes.com/tarsar-marsar"
+          },
+          {
+            "kind": "lake",
+            "at": 0.66,
+            "source": "https://indiahikes.com/tarsar-marsar"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "Sundarsar lake",
+        "lines": [
+          "Past Tarsar, the path climbs over a rocky pass.",
+          "On the other side lies a new lake basin, and Sundarsar lake."
+        ]
+      },
+      "sources": [
+        "https://trekthehimalayas.com/tarsar-marsar-trek",
+        "https://indiahikes.com/tarsar-marsar"
+      ],
+      "constellation": "The Sundarsar Comb"
+    },
+    {
+      "id": "sundarsar-marsar-ridge",
+      "from": "sundarsar",
+      "to": "marsar-ridge",
+      "landmark": {
+        "id": "marsar-lake",
+        "name": "Marsar lake",
+        "kind": "lake"
+      },
+      "terrain": {
+        "zone": "alpine-scree",
+        "features": [
+          {
+            "kind": "boulders",
+            "at": 0.3,
+            "source": "https://indiahikes.com/tarsar-marsar"
+          },
+          {
+            "kind": "lake",
+            "at": 0.66,
+            "source": "https://indiahikes.com/tarsar-marsar"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "Marsar lake",
+        "lines": [
+          "From a high saddle above Sundarsar, you look down on Marsar lake.",
+          "Marsar is shrouded in cloud, so it may show only for a moment.",
+          "This is the highest point of the trek."
+        ]
+      },
+      "sources": [
+        "https://trekthehimalayas.com/tarsar-marsar-trek",
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+      ],
+      "constellation": "The Marsar Arrow"
+    },
+    {
+      "id": "marsar-ridge-homwas",
+      "from": "marsar-ridge",
+      "to": "homwas",
+      "landmark": {
+        "id": "sundarsar-meadow",
+        "name": "Sundarsar meadow",
+        "kind": "meadow"
+      },
+      "terrain": {
+        "zone": "valley-meadow",
+        "features": [
+          {
+            "kind": "meadow",
+            "at": 0.4,
+            "source": "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+          },
+          {
+            "kind": "stream",
+            "at": 0.66,
+            "source": "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "Sundarsar meadow",
+        "lines": [
+          "After the viewpoint, a long descent runs through alpine meadows.",
+          "The grass of Sundarsar meadow leads down to the first trees.",
+          "Homwas camp waits at the treeline, where the trek ends."
+        ]
+      },
+      "sources": [
+        "https://www.mountroutes.com/treks/tarsar-marsar-lake-trek/itinerary"
+      ],
+      "constellation": "The Homwas Basket"
+    }
+  ]
+}

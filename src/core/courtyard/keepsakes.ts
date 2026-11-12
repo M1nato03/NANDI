@@ -1,4 +1,5 @@
-import type { Trek } from '../yatra/trek';
+import type { LegState, Trek } from '../yatra/trek';
+import type { Trail } from '../yatra/trail';
 import { K_GROWTH } from './layoutB';
 
 /**
@@ -19,12 +20,18 @@ export interface Keepsake {
   reachedOn: string;
 }
 
-export function treeKeepsakes(trek: Trek): Keepsake[] {
-  return trek.legs.filter(leg => leg.doneOn !== undefined).map((leg, index) => {
-    const place = trek.trail.places[leg.index + 1]!;
-    const landmark = trek.trail.legs[leg.index]!.landmark;
-    return { campId: place.id, campName: place.name, landmarkId: landmark.id, motif: landmark.kind, index, reachedOn: leg.doneOn! };
-  });
+/**
+ * Spec 575 (must 3): every walked trail's camps, finished trails first, in walking order, so a trail switch never takes
+ * a tag down (camp ids are unique across trails, so the key still holds).
+ */
+export function treeKeepsakes(trek: Trek & { journey?: { walked: readonly { trail: Trail; legs: readonly LegState[] }[] } }): Keepsake[] {
+  const walked = trek.journey?.walked ?? [{ trail: trek.trail, legs: trek.legs }];
+  return walked.flatMap(({ trail, legs }) => legs.filter(leg => leg.doneOn !== undefined).map(leg => ({ trail, leg })))
+    .map(({ trail, leg }, index) => {
+      const place = trail.places[leg.index + 1]!;
+      const landmark = trail.legs[leg.index]!.landmark;
+      return { campId: place.id, campName: place.name, landmarkId: landmark.id, motif: landmark.kind, index, reachedOn: leg.doneOn! };
+    });
 }
 
 /** §0.14: about 12 or more and the extra tags go on a small wooden peg-board at the tree's foot. */

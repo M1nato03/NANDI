@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { ACCESSORY, Cast, castNames, poses } from './Cast';
 import { CAMP, TrekScene } from '../yatra/TrekScene';
 import { deriveTrek } from '../../core/yatra/trek';
-import { currentTrail } from '../../data/yatra/trails';
+import { journeyTrails } from '../../data/yatra/trails';
 
 describe('cast placement', () => {
   it('uses the intended friend for each finish and a memory keeper for review', () => {
@@ -40,7 +40,7 @@ describe('area accessories (spec 25 §4)', () => {
 });
 
 describe('spec 45b: the five friends at camp', () => {
-  const trek = deriveTrek([], currentTrail()!, '2026-10-28', '2026-10-28');
+  const trek = deriveTrek([], journeyTrails()[0]!, '2026-10-28', '2026-10-28');
   const scene = (onFriend?: () => void) => renderToStaticMarkup(createElement(TrekScene, { trek, night: false, onRename: () => undefined, onFriend }));
   it('on Home each friend is a labelled button at its own place, to its own area', () => {
     const html = scene(() => undefined);

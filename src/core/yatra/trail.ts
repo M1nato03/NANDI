@@ -3,13 +3,24 @@
  * postcard (2-3 sourced lines) and the leg's suggested constellation name. All of it ships in the app (offline v1).
  */
 export type PlaceKind = 'start' | 'camp' | 'pass';
-/** Altitudes stay null: the sources disagree and the app shows none (item 196). */
-export interface Place { id: string; name: string; altNames?: string[]; kind: PlaceKind; regionLine: string; altitudeM?: number | null; sources?: string[] }
+/**
+ * Spec 575: `altitudeM` (the scene's midpoint of the published `altitudeRangeM`) shapes the path only; the app never
+ * shows an altitude or a source as text (item 196, M5).
+ */
+export interface Place { id: string; name: string; altNames?: string[]; kind: PlaceKind; regionLine: string; altitudeM?: number | null; altitudeRangeM?: [number, number]; sources?: string[] }
+/** Spec 575 §1: the 8 zones (§5' maps each to its ridges and kit). */
+export const ZONES = ['kullu-forest', 'valley-meadow', 'alpine-scree', 'pass-snow', 'lahaul-dry', 'lake-basin', 'rhodo-forest', 'ridge-meadow'] as const;
+export type Zone = typeof ZONES[number];
+export const FEATURE_KINDS = ['log-bridge', 'ford', 'meadow', 'boulders', 'waterfall', 'snow-patch', 'stream', 'glacier-view', 'river-view', 'lake'] as const;
+export type FeatureKind = typeof FEATURE_KINDS[number];
+/** A leg's ground: its zone (blending to `toZone` when given) and what stands along it, `at` 0-1 along the leg. */
+export interface Terrain { zone: Zone; toZone?: Zone; features: { kind: FeatureKind; at: number; source: string }[] }
 export interface Leg {
   id: string;
   from: string;
   to: string;
   landmark: { id: string; name: string; kind: string };
+  terrain?: Terrain;
   postcard: { title?: string; lines: string[] };
   sources: string[];
   constellation: string;
@@ -51,6 +62,20 @@ export function trailErrors(trail: Trail): string[] {
     const sources = leg.sources ?? [];
     if (!sources.length || sources.some(source => !/^https:\/\/\S+$/.test(source))) errors.push(`${name} postcard needs at least one https source`);
     if (!leg.constellation?.trim()) errors.push(`${name} needs a suggested constellation name`);
+    // Spec 575: a leg's terrain is checked when given (Hampta and the trails after it all give one).
+    if (leg.terrain) {
+      if (!ZONES.includes(leg.terrain.zone) || (leg.terrain.toZone !== undefined && !ZONES.includes(leg.terrain.toZone))) errors.push(`${name} zone must be one of the 8`);
+      (leg.terrain.features ?? []).forEach((feature, k) => {
+        if (!FEATURE_KINDS.includes(feature.kind)) errors.push(`${name} feature ${k + 1} kind is not known`);
+        if (!(feature.at >= 0 && feature.at <= 1)) errors.push(`${name} feature ${k + 1} must sit 0-1 along the leg`);
+        if (!/^https:\/\/\S+$/.test(feature.source ?? '')) errors.push(`${name} feature ${k + 1} needs an https source`);
+      });
+    }
+  });
+  places.forEach(place => {
+    const range = place.altitudeRangeM;
+    if (range && (range.length !== 2 || !(range[0] <= range[1]))) errors.push(`place ${place.id} altitude range must be [low, high]`);
+    if (range && typeof place.altitudeM === 'number' && (place.altitudeM < range[0] || place.altitudeM > range[1])) errors.push(`place ${place.id} altitude must sit inside its range`);
   });
   return errors;
 }

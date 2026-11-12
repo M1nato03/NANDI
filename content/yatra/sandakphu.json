@@ -1,0 +1,397 @@
+{
+  "id": "sandakphu",
+  "name": "Sandakphu",
+  "region": "Singalila ridge, Darjeeling district, West Bengal, India",
+  "sources": [
+    "https://indiahikes.com/sandakphu-phalut"
+  ],
+  "places": [
+    {
+      "id": "sepi",
+      "name": "Sepi",
+      "kind": "start",
+      "regionLine": "Village where the loop starts, below the forest",
+      "altitudeM": 1951,
+      "altitudeRangeM": [
+        1951,
+        1951
+      ],
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ]
+    },
+    {
+      "id": "samanden",
+      "name": "Samanden",
+      "kind": "camp",
+      "regionLine": "Camp in the pine and oak forest",
+      "altitudeM": 2365,
+      "altitudeRangeM": [
+        2365,
+        2365
+      ],
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ]
+    },
+    {
+      "id": "molley",
+      "name": "Molley",
+      "kind": "camp",
+      "regionLine": "Camp just above the treeline",
+      "altitudeM": 3420,
+      "altitudeRangeM": [
+        3420,
+        3420
+      ],
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ]
+    },
+    {
+      "id": "phalut",
+      "name": "Phalut",
+      "kind": "pass",
+      "regionLine": "High point where the ridge walk begins",
+      "altitudeM": 3600,
+      "altitudeRangeM": [
+        3600,
+        3600
+      ],
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ]
+    },
+    {
+      "id": "sabargram",
+      "name": "Sabargram",
+      "kind": "camp",
+      "regionLine": "Camp on the ridge",
+      "altitudeM": 3490,
+      "altitudeRangeM": [
+        3490,
+        3490
+      ],
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ]
+    },
+    {
+      "id": "aal",
+      "name": "Aal",
+      "kind": "camp",
+      "regionLine": "Camp on the ridge before the top",
+      "altitudeM": 3527,
+      "altitudeRangeM": [
+        3527,
+        3527
+      ],
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ]
+    },
+    {
+      "id": "sandakphu",
+      "name": "Sandakphu",
+      "kind": "pass",
+      "regionLine": "The top of the ridge",
+      "altitudeM": 3636,
+      "altitudeRangeM": [
+        3636,
+        3636
+      ],
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ]
+    },
+    {
+      "id": "gurdum",
+      "name": "Gurdum",
+      "kind": "camp",
+      "regionLine": "Forest camp on the way down",
+      "altitudeM": 2254,
+      "altitudeRangeM": [
+        2254,
+        2254
+      ],
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ]
+    },
+    {
+      "id": "sepi-return",
+      "name": "Sepi",
+      "kind": "camp",
+      "regionLine": "Back where the loop began",
+      "altitudeM": 1951,
+      "altitudeRangeM": [
+        1951,
+        1951
+      ],
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ]
+    }
+  ],
+  "legs": [
+    {
+      "id": "sepi-samanden",
+      "from": "sepi",
+      "to": "samanden",
+      "landmark": {
+        "id": "oak-forest",
+        "name": "Rhododendron and oak forest",
+        "kind": "forest"
+      },
+      "terrain": {
+        "zone": "rhodo-forest",
+        "features": [
+          {
+            "kind": "stream",
+            "at": 0.2,
+            "source": "https://indiahikes.com/sandakphu-phalut"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "Into the forest",
+        "lines": [
+          "From Sepi the trail climbs into a dense canopy of trees.",
+          "Pine, oak and rhododendron close in overhead.",
+          "Samanden is the first camp, still in the trees."
+        ]
+      },
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ],
+      "constellation": "The Forest Umbrella"
+    },
+    {
+      "id": "samanden-molley",
+      "from": "samanden",
+      "to": "molley",
+      "landmark": {
+        "id": "bamboo-belt",
+        "name": "Bamboo and rhododendron",
+        "kind": "forest"
+      },
+      "terrain": {
+        "zone": "rhodo-forest",
+        "features": [
+          {
+            "kind": "meadow",
+            "at": 0.85,
+            "source": "https://indiahikes.com/sandakphu-phalut"
+          }
+        ],
+        "toZone": "ridge-meadow"
+      },
+      "postcard": {
+        "title": "Bamboo and rhododendron",
+        "lines": [
+          "Pine and oak give way to belts of bamboo, then rhododendron.",
+          "Higher up the trees thin out, and you step above the treeline.",
+          "Molley camp sits on the open slope."
+        ]
+      },
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ],
+      "constellation": "The Bamboo Flute"
+    },
+    {
+      "id": "molley-phalut",
+      "from": "molley",
+      "to": "phalut",
+      "landmark": {
+        "id": "molley-meadow",
+        "name": "Molley meadow",
+        "kind": "meadow"
+      },
+      "terrain": {
+        "zone": "ridge-meadow",
+        "features": [
+          {
+            "kind": "meadow",
+            "at": 0.3,
+            "source": "https://indiahikes.com/sandakphu-phalut"
+          },
+          {
+            "kind": "boulders",
+            "at": 0.75,
+            "source": "https://indiahikes.com/sandakphu-phalut"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "Molley meadow",
+        "lines": [
+          "The day starts with half a kilometre of flat meadow.",
+          "Then a steep climb of about a kilometre lifts you onto the ridge at Phalut."
+        ]
+      },
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ],
+      "constellation": "The Molley Stair"
+    },
+    {
+      "id": "phalut-sabargram",
+      "from": "phalut",
+      "to": "sabargram",
+      "landmark": {
+        "id": "snow-range",
+        "name": "The far snow range",
+        "kind": "view"
+      },
+      "terrain": {
+        "zone": "ridge-meadow",
+        "features": [
+          {
+            "kind": "meadow",
+            "at": 0.5,
+            "source": "https://indiahikes.com/sandakphu-phalut"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "The ridge walk",
+        "lines": [
+          "From Phalut you walk along the ridge.",
+          "The Kanchenjunga range stays beside you the whole way.",
+          "Sabargram camp sits on the ridge itself."
+        ]
+      },
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ],
+      "constellation": "The Ridge Compass"
+    },
+    {
+      "id": "sabargram-aal",
+      "from": "sabargram",
+      "to": "aal",
+      "landmark": {
+        "id": "rolling-ridge",
+        "name": "The rolling ridge",
+        "kind": "ridge"
+      },
+      "terrain": {
+        "zone": "ridge-meadow",
+        "features": [
+          {
+            "kind": "meadow",
+            "at": 0.4,
+            "source": "https://indiahikes.com/sandakphu-phalut"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "The rolling ridge",
+        "lines": [
+          "A short day on the ridge, rising and dipping as it goes.",
+          "The snow peaks stay with you on the horizon until Aal."
+        ]
+      },
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ],
+      "constellation": "The Aal Teapot"
+    },
+    {
+      "id": "aal-sandakphu",
+      "from": "aal",
+      "to": "sandakphu",
+      "landmark": {
+        "id": "sandakphu-top",
+        "name": "Sandakphu top",
+        "kind": "summit"
+      },
+      "terrain": {
+        "zone": "ridge-meadow",
+        "features": [
+          {
+            "kind": "boulders",
+            "at": 0.6,
+            "source": "https://indiahikes.com/sandakphu-phalut"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "Sandakphu",
+        "lines": [
+          "The last climb on the ridge brings you to Sandakphu, the top of the trek.",
+          "The snow range stretches wider here than anywhere else on the walk."
+        ]
+      },
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ],
+      "constellation": "The Sandakphu Bow"
+    },
+    {
+      "id": "sandakphu-gurdum",
+      "from": "sandakphu",
+      "to": "gurdum",
+      "landmark": {
+        "id": "bamboo-forest",
+        "name": "Bamboo forest",
+        "kind": "forest"
+      },
+      "terrain": {
+        "zone": "rhodo-forest",
+        "features": [
+          {
+            "kind": "stream",
+            "at": 0.7,
+            "source": "https://indiahikes.com/sandakphu-phalut"
+          }
+        ]
+      },
+      "postcard": {
+        "title": "Bamboo forest",
+        "lines": [
+          "From the top the trail drops steeply, back into the pines.",
+          "Lower down it passes through dense bamboo forest.",
+          "It is quiet here: birdsong and pine needles underfoot."
+        ]
+      },
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ],
+      "constellation": "The Gurdum Kettle"
+    },
+    {
+      "id": "gurdum-sepi-return",
+      "from": "gurdum",
+      "to": "sepi-return",
+      "landmark": {
+        "id": "forest-stream",
+        "name": "Forest stream",
+        "kind": "stream"
+      },
+      "terrain": {
+        "zone": "rhodo-forest",
+        "features": [
+          {
+            "kind": "stream",
+            "at": 0.5,
+            "source": "https://indiahikes.com/sandakphu-phalut"
+          }
+        ],
+        "toZone": "kullu-forest"
+      },
+      "postcard": {
+        "title": "Back to Sepi",
+        "lines": [
+          "The last morning is all downhill, through the same forest as the climb.",
+          "The loop closes at Sepi, where the walk began."
+        ]
+      },
+      "sources": [
+        "https://indiahikes.com/sandakphu-phalut"
+      ],
+      "constellation": "The Sepi Lantern"
+    }
+  ]
+}
