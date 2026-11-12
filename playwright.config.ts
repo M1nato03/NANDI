@@ -1,6 +1,8 @@
 import { defineConfig } from '@playwright/test';
 
 const port = Number(process.env.PLAYWRIGHT_PORT ?? 4173);
+/** Spec 52 gate 5: the timed landings (two-to-start.spec.ts), run alone in their own projects below. */
+const TIMING = /lands in the thing in 2 s or less/;
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -20,10 +22,26 @@ export default defineConfig({
     {
       name: 'mobile-390x844',
       use: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },
+      grepInvert: TIMING,
     },
     {
       name: 'mobile-360x800',
       use: { viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true },
+      grepInvert: TIMING,
+    },
+    // b2 13 Nov (spec 52 gate 5): the 2 s landing timings run alone, after every other test has finished (the same
+    // `playwright test` in the gate and in CI), and one size after the other, so no other browser shares the CPU.
+    {
+      name: 'timing-390x844',
+      use: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },
+      grep: TIMING,
+      dependencies: ['mobile-390x844', 'mobile-360x800'],
+    },
+    {
+      name: 'timing-360x800',
+      use: { viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true },
+      grep: TIMING,
+      dependencies: ['timing-390x844'],
     },
   ],
   webServer: {
