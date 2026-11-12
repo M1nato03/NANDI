@@ -438,7 +438,8 @@ function viewUpTo(facts: readonly LedgerRow[], history: readonly RulesHistoryEnt
   // bonus a day before the cutoff held, less what the replay already pays. A level first reached after the cutoff
   // never mints Shards, even when a later deleted fact drops the replay below the peak.
   const stop = shardsStopFrom(settings);
-  if (stop !== '9999-12-31' && peakBonus > 0) {
+  // Only a view that reaches the stop day is capped: on the days before it Shards are still earned (a9 review, 12 Nov).
+  if (stop !== '9999-12-31' && end >= stop && peakBonus > 0) {
     const before = [...closes].filter(([day]) => day < stop).map(([, close]) => close.bonus ?? 0);
     const replayed = [...replay.daily].filter(([day]) => day < stop).map(([, day]) => day.bonus);
     const held = Math.max(0, ...before, ...replayed);

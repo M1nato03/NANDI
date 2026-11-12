@@ -15,7 +15,7 @@
 /* The corner done today: a soft warm light under the friend's feet. */
 .courtyard-today-glow { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, #ffd27a88, #ffd27a00); pointer-events: none; }
 .courtyard-held { position: absolute; transform: translate(-50%, -50%); pointer-events: none; }
-.courtyard-held .courtyard-quest-scroll { display: block; filter: drop-shadow(0 1px 1px rgba(80, 50, 20, .35)); animation: courtyard-scroll-bob 2.4s ease-in-out infinite; }
+.courtyard-held .courtyard-quest-scroll { display: block; filter: drop-shadow(0 1px 1px rgba(80, 50, 20, .35)); animation: courtyard-scroll-bob 2.4s ease-in-out 3; }
 @keyframes courtyard-scroll-bob { 50% { transform: translateY(-2px) rotate(-4deg); } }
 @media (prefers-reduced-motion: reduce) { .courtyard-held .courtyard-quest-scroll { animation: none; } }
 

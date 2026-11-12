@@ -4,6 +4,7 @@ import { dayKey } from '../../core/time';
 import { readReminders, REMINDERS_KEY } from '../../core/tasks/reminders';
 import { getOrCreateDeviceId } from '../device';
 import { trackWrite } from '../../core/pendingWrites';
+import { restoreActive } from '../restoreLock';
 
 /**
  * Spec 660 §3.4 (jenil-0b F4, 12 Nov): Plan's undated Reminders fold into Mor's list as Later items. Each open reminder
@@ -24,6 +25,8 @@ export async function migrateReminders(db: NandiDb, now = Date.now()): Promise<n
     const deviceId = await getOrCreateDeviceId(db, now);
     let made = 0;
     await db.transaction('rw', db.tasks, async () => {
+      // A restore that started while this waited for its lock owns the tables: leave it; the next reconcile folds again.
+      if (restoreActive()) return;
       for (const reminder of open) {
         const id = reminderTaskId(reminder.id);
         if (await db.tasks.get(id)) continue;

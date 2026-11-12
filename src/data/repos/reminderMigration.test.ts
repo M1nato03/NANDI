@@ -7,6 +7,7 @@ import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { jarActs } from '../../core/yatra/jar';
 import { createTaskRepos } from './tasks';
 import { deleteOldReminders, migrateReminders, reminderTaskId } from './reminderMigration';
+import { duringRestore } from '../restoreLock';
 
 let serial = 0;
 const opened: NandiDb[] = [];
@@ -49,6 +50,14 @@ describe('spec 660 §3.4: Reminders fold into Mor\'s list as Later tasks', () =>
     expect(facts.filter(fact => fact.mode === 'tasks')).toEqual([]);
     expect(deriveEconomy(facts, undefined, await db.settings.toArray(), '2026-11-13').totalXp).toBe(0);
     expect(jarActs(facts, [])).toEqual([]);
+  });
+
+  it('a9 review: while a restore runs it folds nothing (the next reconcile does)', async () => {
+    const db = fresh();
+    await seed(db, [{ id: 'a', text: 'Buy stamps', createdAt: NOW }]);
+    await duringRestore(async () => { await migrateReminders(db, NOW); });
+    expect(await db.tasks.count()).toBe(0);
+    expect(await migrateReminders(db, NOW + 1)).toBe(1);
   });
 
   it('"Delete old reminders" clears the kept originals and leaves the Later tasks', async () => {

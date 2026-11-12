@@ -19,7 +19,7 @@ async function expectLayout(page: Page) {
 }
 
 for (const scheme of ['light', 'dark'] as const) {
-  test(`planner rituals, review, settings and layout in ${scheme}`, async ({ page }) => {
+  test(`planner rituals, settings and layout in ${scheme}`, async ({ page }) => {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/#plan');
@@ -27,10 +27,11 @@ for (const scheme of ['light', 'dark'] as const) {
     await openMore(page);
     const rituals = page.getByRole('region', { name: 'Planning routines' });
     await expect(rituals.getByRole('heading', { name: 'Rituals' })).toBeVisible();
-    await expect(rituals.locator('.ritual-buttons button')).toHaveCount(3);
+    // Spec 660 §3.3: two routines; the weekly review became the Sunday receipt.
+    await expect(rituals.locator('.ritual-buttons button')).toHaveCount(2);
     await expect(rituals).toContainText('2 min');
     await expect(rituals).toContainText('5 min');
-    await expect(rituals).toContainText('Sundays');
+    await expect(rituals).not.toContainText('Sundays');
     await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Plan project outline');

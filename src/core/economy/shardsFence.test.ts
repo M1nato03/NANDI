@@ -104,6 +104,25 @@ describe('spec 660 §3.1: the Shards fence', () => {
     expect(oldAfter.shards).toBeGreaterThan(oldDown.shards);
   });
 
+  it('a9 review: on v12From itself (before the stop) the peak floor pays exactly as without the fence', () => {
+    // A level is reached on v12From (the stop is the day after); the peak records it; a sync deletes that day's facts
+    // before any close holds them. The view that day must equal the unfenced one.
+    // The first day after 20 Nov whose facts lift the level.
+    const levelOn = (d: string) => deriveEconomy(facts.filter(f => f.dayKey <= d), undefined, BASE, d).level;
+    const day = ALL.find(d => d > '2026-11-20' && levelOn(d) > levelOn(addEconomyDays(d, -1)))!;
+    expect(day).toBeDefined();
+    const upTo = facts.filter(f => f.dayKey <= day);
+    const fenced = closeDays([...BASE, setting('economy.v12From', day)], day), plain = closeDays(BASE, day);
+    const up = deriveEconomy(upTo, undefined, plain, day);
+    const gone = upTo.map(f => f.dayKey === day && f.mode !== 'economy' ? { ...f, deleted: 1 as const } : f);
+    const peak = setting(PEAK_KEY, { totalXp: up.totalXp, level: up.level });
+    const withFence = deriveEconomy(gone, undefined, [...fenced, peak], day);
+    const without = deriveEconomy(gone, undefined, [...plain, peak], day);
+    expect(deriveEconomy(gone, undefined, plain, day).level).toBeLessThan(up.level);
+    expect(withFence.shards).toBe(without.shards);
+    expect(withFence.level).toBe(without.level);
+  });
+
   it('the shop is closed from v12From itself; what is owned stays owned', () => {
     const rows = closeDays([...BASE, setting('economy.v12From', '2026-12-06')], TODAY);
     const view = deriveEconomy(facts, undefined, rows, TODAY);

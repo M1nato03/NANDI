@@ -133,3 +133,88 @@ for (const theme of ['light', 'dark'] as const) {
     writeFileSync(`${OUT}/forward-report-${theme}.json`, `${JSON.stringify(held, null, 2)}\n`);
   });
 }
+
+// a9 §8 shots 2-9 and 11-13: each screen as it opens (no tap before the picture), light and dark, 360x800; * also 200%.
+async function textAt200(page: Page) {
+  await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+  await expect.poll(() => page.evaluate(() => getComputedStyle(document.documentElement).fontSize)).toBe('32px');
+}
+const asked = { key: 'quests.safetyAsked', value: true, updatedAt: 1, deleted: 0, deviceId: 'q660' };
+const done = (id: string, day: string, inputs: Row) => ({ id: `quest660:${id}:${day}`, dayKey: day, mode: 'quests660', kind: 'quest-done', refId: id, inputs, updatedAt: new Date(`${day}T10:00:00`).getTime(), deleted: 0, deviceId: 'q660' });
+for (const theme of ['light', 'dark'] as const) {
+  const t = theme === 'light' ? 'l' : 'd';
+  test(`the screens, ${theme}`, async ({ browser }) => {
+    test.setTimeout(240_000);
+    const open = async (name: string, route: string, ready: string, rows: { store: string; rows: Row[] }[], big = false) => {
+      const page = await phone(browser, theme);
+      for (const row of rows) await put(page, row.store, row.rows);
+      await page.goto(`/?e2e#${route}`);
+      await page.reload();
+      await expect(page.locator(ready).first()).toBeVisible({ timeout: 15_000 });
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      await page.screenshot({ path: `${OUT}/660-${t}-${name}.png` });
+      if (big) { await textAt200(page); await page.screenshot({ path: `${OUT}/660-${t}-${name}-200.png` }); }
+      await page.context().close();
+    };
+    const settled = [{ store: 'settings', rows: [asked] }];
+    await open('02-board', 'courtyard/quests', '[data-testid="quest-board"]', settled, true);
+    await open('03-quest-card', 'courtyard/quest/courage-honest-feedback', '[data-testid="quest-screen"]', settled, true);
+    await open('04-safety', 'courtyard/quests', '[data-testid="quest-safety"]', []);
+    await open('05-settings', 'you/quests/settings', '[data-testid="quest-settings"]', settled, true);
+    const reality = [{ store: 'settings', rows: [asked] }, { store: 'ledger', rows: [
+      done('courage-ask-at-home', '2026-11-10', { prediction: 'ignore', outcome: 'fine', fear: 4, felt: 2 }),
+      done('courage-tell-them', '2026-11-11', { prediction: 'ignore', outcome: 'happened', fear: 4, felt: 3, learned: 'still-glad' }),
+      done('speak-spin-60', '2026-11-12', { prediction: 'freeze', outcome: 'better', fear: 5, felt: 1 }),
+    ] }];
+    await open('09-reality-check', 'you/quests', '[data-testid="reality-check"]', reality);
+    await open('12-small-steps', 'you', '[aria-label="Small steps today"]', settled);
+    await open('13-history', 'you/history', '[data-testid="you-history"]', [{ store: 'ledger', rows: [
+      { id: 'badge-tier:tasks:1', dayKey: '2026-11-05', mode: 'gamify', kind: 'badge-tier', refId: 'tasks:1', inputs: {}, updatedAt: 1, deleted: 0, deviceId: 'q660' },
+      { id: 'purchase:old-theme', dayKey: '2026-11-01', mode: 'economy', kind: 'purchase', refId: 'theme:linen', inputs: { itemId: 'theme:linen', price: 400, accepted: true }, updatedAt: 1, deleted: 0, deviceId: 'q660' },
+    ] }], true);
+  });
+}
+
+for (const theme of ['light', 'dark'] as const) {
+  const t = theme === 'light' ? 'l' : 'd';
+  test(`a courage quest's steps, each shot as the step opens, and the Pause card's quest button, ${theme}`, async ({ browser }) => {
+    test.setTimeout(180_000);
+    const page = await phone(browser, theme);
+    await put(page, 'settings', [asked]);
+    await page.goto('/?e2e#courtyard/quest/courage-honest-feedback');
+    await page.reload();
+    await expect(page.getByTestId('quest-screen')).toBeVisible({ timeout: 15_000 });
+    await page.getByRole('button', { name: 'Start', exact: true }).click();
+    await expect(page.locator('[data-step="before"]')).toBeVisible();
+    await page.screenshot({ path: `${OUT}/660-${t}-06-prediction.png` });
+    await textAt200(page);
+    await page.screenshot({ path: `${OUT}/660-${t}-06-prediction-200.png` });
+    await page.reload();
+    await expect(page.locator('[data-step="before"]').or(page.getByRole('button', { name: 'Start', exact: true })).first()).toBeVisible();
+    if (await page.getByRole('button', { name: 'Start', exact: true }).isVisible()) await page.getByRole('button', { name: 'Start', exact: true }).click();
+    await page.getByRole('group', { name: 'How scary does it feel?' }).getByRole('button', { name: '3' }).click();
+    await page.getByRole('button', { name: 'It’ll be awkward' }).click();
+    await page.getByRole('button', { name: 'Go do it' }).click();
+    await page.getByRole('button', { name: /I.m back/ }).click();
+    await expect(page.locator('[data-step="after"]')).toBeVisible();
+    await page.screenshot({ path: `${OUT}/660-${t}-07-outcome.png` });
+    await textAt200(page);
+    await page.screenshot({ path: `${OUT}/660-${t}-07-outcome-200.png` });
+    await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
+    await page.getByRole('button', { name: 'It went fine' }).click();
+    await page.getByRole('group', { name: 'How did it actually feel?' }).getByRole('button', { name: '2' }).click();
+    await page.getByRole('button', { name: 'Save' }).click();
+    await expect(page.locator('.quest-finish')).toBeVisible();
+    await page.screenshot({ path: `${OUT}/660-${t}-08-finish.png` });
+    // 11: the Pause card with "Or a 5-min quest?" (the e2e stand-in for the phone's pause).
+    await put(page, 'settings', [{ key: 'pause.card.on', value: true, updatedAt: 1, deleted: 0, deviceId: 'q660' }, { key: 'pause.act', value: 'do 10 squats', updatedAt: 1, deleted: 0, deviceId: 'q660' }, { key: 'night.pause.apps', value: ['com.instagram.android'], updatedAt: 1, deleted: 0, deviceId: 'q660' }, { key: 'night.pause.dayMode', value: 'open', updatedAt: 1, deleted: 0, deviceId: 'q660' }]);
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+    await page.goto('/?e2e#courtyard');
+    await page.reload();
+    await page.evaluate(() => { sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'open' })); window.dispatchEvent(new Event('nandi:night-pause')); });
+    const card = page.getByRole('dialog', { name: 'Pause card' });
+    await expect(card.getByTestId('pause-quest-link')).toBeVisible();
+    await page.screenshot({ path: `${OUT}/660-${t}-11-pause-card.png` });
+    await page.context().close();
+  });
+}
