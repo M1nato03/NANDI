@@ -217,6 +217,9 @@ export function useCardChoice(phase?: Phase) {
   // b2 13 Nov (a9's find): no choice until it is final. The move used to paint once the rows had loaded and then jump into
   // the closed sheet when the quests landed, so on a slow phone a tap could land on the other thing. Until the phase, the
   // rows and the quests are all in, the row is the empty slot (null), and nothing swaps after the first paint.
+  // Settled at load, not frozen: the choice can still change later ON PURPOSE with the clock (cardRow reads Date.now(),
+  // so a move becomes due at its time) or with what the person does (a quest done). data-ready means "settled at
+  // load", never "this row will not change".
   const choice = phase === undefined ? null : resting ? { kind: 'rest' as const }
     : rows && quests ? cardRow({ resting, move: rows.move, now: Date.now(), board: quests.board, doneToday: quests.doneToday }) : null; // eslint-disable-line react-hooks/purity
   return { rows, quests, resting, choice };
