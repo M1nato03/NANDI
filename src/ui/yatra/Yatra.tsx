@@ -211,7 +211,11 @@ export function useCardChoice(phase?: Phase) {
   const rows = useHomeRows();
   const quests = useQuestBoard();
   const resting = phase !== undefined && cardRowFor(phase) === 'rest';
-  const choice = rows && quests ? cardRow({ resting, move: rows.move, now: Date.now(), board: quests.board, doneToday: quests.doneToday }) : resting ? { kind: 'rest' as const } : { kind: 'move' as const }; // eslint-disable-line react-hooks/purity
+  // b2 13 Nov (a9's find): no choice until it is final. The move used to paint once the rows had loaded and then jump into
+  // the closed sheet when the quests landed, so on a slow phone a tap could land on the other thing. Until the phase, the
+  // rows and the quests are all in, the row is the empty slot (null), and nothing swaps after the first paint.
+  const choice = phase === undefined ? null : resting ? { kind: 'rest' as const }
+    : rows && quests ? cardRow({ resting, move: rows.move, now: Date.now(), board: quests.board, doneToday: quests.doneToday }) : null; // eslint-disable-line react-hooks/purity
   return { rows, quests, resting, choice };
 }
 
@@ -220,12 +224,12 @@ export function CourtyardCard({ boardMinutes, open, card }: { boardMinutes?: Que
   const { rows, resting, choice, quests } = card;
   const [expanded, setExpanded] = useState(open === true);
   const move = rows ? <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} climb={yatra?.trek.climb} /> : <div className="next-move-slot" />;
-  return <HomeCard expanded={expanded} onExpanded={setExpanded}
-    row={choice.kind === 'rest' ? <p className="courtyard-rest-row">{COURTYARD_NIGHT_LINE}</p> : choice.kind === 'quest' ? <QuestRow quest={choice.quest} /> : move}
+  return <HomeCard expanded={expanded} onExpanded={setExpanded} ready={choice !== null}
+    row={!choice ? <div className="next-move-slot" /> : choice.kind === 'rest' ? <p className="courtyard-rest-row">{COURTYARD_NIGHT_LINE}</p> : choice.kind === 'quest' ? <QuestRow quest={choice.quest} /> : move}
     sections={[
       // E12 (b2 12 Nov): until the safety question is answered, Quests (holding it) comes first, so it fits one screen.
       ...(!resting && quests && !quests.asked ? [{ id: 'quests', node: <QuestBoard initialMinutes={boardMinutes} /> }] : []),
-      ...(choice.kind === 'quest' ? [{ id: 'move', node: move }] : []),
+      ...(choice?.kind === 'quest' ? [{ id: 'move', node: move }] : []),
       ...(!resting && !(quests && !quests.asked) ? [{ id: 'quests', node: <QuestBoard initialMinutes={boardMinutes} /> }] : []),
       ...(rows && !resting ? [{ id: 'offer', node: <MoreOfferCard picks={rows.picks} /> }] : []),
       { id: 'share', node: <WeekEndShare /> },

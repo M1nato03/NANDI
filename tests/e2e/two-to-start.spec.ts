@@ -40,6 +40,11 @@ async function withPicks(page: Page, goals: string[], size = goals.length > 2 ? 
   await putSettings(page, [['profile.goals', goals], ['profile.size', size], ['profile.adultConfirmedAt', '2026-10-20T12:00:00.000Z'], ...extra]);
   await page.goto('/?e2e#courtyard');
   await page.reload();
+  await settled(page);
+}
+/** b2 13 Nov: the card's row is final (the phase, the rows and the quests are all in), so nothing swaps under a tap. */
+async function settled(page: Page) {
+  await expect(page.locator('.courtyard-card[data-ready]')).toHaveCount(1, { timeout: 15_000 });
   await expect(cardRow(page)).toBeVisible();
 }
 const move = (page: Page) => page.locator('.next-move-go');
@@ -228,6 +233,35 @@ const LANDS: { area: string; title: string; route: RegExp; first: (page: Page) =
 ];
 const median = (values: number[]) => [...values].sort((a, b) => a - b)[1]!;
 
+test('b2 13 Nov: on the Low profile the card row never swaps between its first paint and settled', async ({ browser }, testInfo) => {
+  test.setTimeout(120_000);
+  for (const goals of [['sleep'], ['train'], ['learn']]) {
+    const context = await browser.newContext({ baseURL: testInfo.project.use.baseURL, viewport: { width: 360, height: 800 }, reducedMotion: 'reduce' });
+    const page = await context.newPage();
+    await page.clock.setFixedTime(NOON);
+    await page.goto('/?e2e#plan');
+    await expect(page.locator('.plan-screen')).toBeVisible();
+    await putSettings(page, [['profile.goals', goals], ['profile.size', 'two'], ['profile.adultConfirmedAt', '2026-10-20T12:00:00.000Z']]);
+    // Every text the row shows, from the first paint on (a fresh document after the reload), recorded as it changes.
+    await page.addInitScript(() => {
+      const seen: string[] = [];
+      (window as unknown as { rowTexts: string[] }).rowTexts = seen;
+      const read = () => { const text = document.querySelector('.courtyard-card-next')?.textContent?.trim() ?? ''; if (text && seen[seen.length - 1] !== text) seen.push(text); };
+      new MutationObserver(read).observe(document, { subtree: true, childList: true, characterData: true });
+    });
+    const cdp = await context.newCDPSession(page);
+    await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+    await page.goto('/?e2e#courtyard');
+    await page.reload();
+    await settled(page);
+    await page.waitForTimeout(1000);
+    const texts = await page.evaluate(() => (window as unknown as { rowTexts: string[] }).rowTexts);
+    testInfo.annotations.push({ type: 'row', description: `${goals[0]}: ${texts.join(' -> ')}` });
+    expect(texts, `${goals[0]}: the row's texts from first paint`).toHaveLength(1);
+    await context.close();
+  }
+});
+
 test.describe('lands in the thing in 2 s or less on the Low profile (median of 3)', () => {
   test.describe.configure({ mode: 'serial' });
   for (const land of LANDS) {
@@ -241,6 +275,8 @@ test.describe('lands in the thing in 2 s or less on the Low profile (median of 3
         // confirm screen between (the first readable text is checked right after it).
         const handle = phone.page.locator('.courtyard-card-handle');
         let taps = 0;
+        // The clock runs from the first tap on a settled card (b2 13 Nov): the row the person sees is the one they tap.
+        await settled(phone.page);
         const start = performance.now();
         if (!await move(phone.page).isVisible() && await handle.getAttribute('aria-expanded') !== 'true') { await handle.click(); taps++; }
         await expect(move(phone.page)).toContainText(land.title);

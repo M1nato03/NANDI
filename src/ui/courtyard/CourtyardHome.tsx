@@ -61,7 +61,7 @@ export function CourtyardHome({ boardMinutes, open }: { boardMinutes?: import('.
   const chrome = useChrome(width, height);
   const card = useCardChoice(data?.phase);
   // Spec 660 §2.1: when the row offers a quest, its friend steps forward holding the scroll (the fit keeps them clear of the card).
-  const questFriend = card.choice.kind === 'quest' ? card.choice.quest.friend.toLowerCase() : undefined;
+  const questFriend = card.choice?.kind === 'quest' ? card.choice.quest.friend.toLowerCase() : undefined;
   const forward = questFriend && (FRIEND_IDS as readonly string[]).includes(questFriend) ? { id: questFriend as FriendId, dy: FORWARD_DY[questFriend as FriendId] } : undefined;
   const fit = homeFit(forward ? stepForward(ANCHORS, forward.id, forward.dy) : ANCHORS, width, height, TOP_MOST, undefined, chrome);
   const stones = pathStones(card.quests?.stones.length ?? 0);

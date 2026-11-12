@@ -38,11 +38,12 @@ export function HomeCardRow({ row }: { row: CardRow }) {
   </button>;
 }
 
-export function HomeCard({ expanded, onExpanded, row, sections }: { expanded: boolean; onExpanded: (open: boolean) => void; row: ReactNode; sections: readonly CardSection[] }) {
+/** `ready` marks the row as final (data-ready): it will not swap for another thing after this. */
+export function HomeCard({ expanded, onExpanded, row, sections, ready = true }: { expanded: boolean; onExpanded: (open: boolean) => void; row: ReactNode; sections: readonly CardSection[]; ready?: boolean }) {
   const start = useRef<number | null>(null);
   // A swipe ends in a click on the same button; that click must not toggle the card back.
   const swiped = useRef(false);
-  return <section className={`courtyard-card${expanded ? ' is-open' : ''}`} aria-label="Today">
+  return <section className={`courtyard-card${expanded ? ' is-open' : ''}`} aria-label="Today" data-ready={ready ? '' : undefined}>
     <button type="button" className="courtyard-card-handle" aria-expanded={expanded} aria-controls="courtyard-card-more"
       aria-label={expanded ? 'Show less' : 'Show this week and your crew'}
       onClick={() => { if (swiped.current) { swiped.current = false; return; } onExpanded(!expanded); }}
