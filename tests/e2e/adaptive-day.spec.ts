@@ -25,8 +25,11 @@ test('a busy day starts the night later and can be undone for today', async ({ p
   await page.goto('/#plan');
   await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
   await seedTasks(page, [90, 90, 90]);
-  // Spec 27: the busy-day line sits in Plan's More fold.
+  // Spec 660 §3.4: the busy-day line left Plan's More for Bedtime settings, with its button.
   await openMore(page);
+  await expect(page.locator('.busy-day')).toHaveCount(0);
+  await page.goto('/#you/settings');
+  await page.getByTestId('bedtime-link').click();
   const line = page.locator('.busy-day');
   await expect(line).toContainText('tonight starts 30 min later');
   await line.getByRole('button', { name: 'Keep my usual time' }).click();

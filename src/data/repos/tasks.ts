@@ -500,7 +500,8 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           xpShare: task.xpShare,
         };
         const id = `done:${taskId}`;
-        if (!(await db.ledger.get(id)))
+        // Spec 660 §3.4: a task folded in from Reminders writes no done fact (no XP, no jar, no Today dot), as before.
+        if (!task.fromReminder && !(await db.ledger.get(id)))
           await db.ledger.add({
             id,
             mode: 'tasks',

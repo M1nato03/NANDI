@@ -13,6 +13,7 @@ import { defaultSlot, localDateTime, visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { LearningTask } from '../mind/LearningTask';
 import { EmptyState } from '../EmptyState';
+import { MorningBackfill } from './MorningBackfill';
 import '../tasks/tasks.css';
 
 function tomorrowSlot(now: number) {
@@ -54,6 +55,10 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' }) {
   const board = useTaskBoard();
   const events = useLiveQuery(() => db.taskEvents.filter((row) => row.deleted === 0).toArray(), []) ?? [];
   const logs = useLiveQuery(() => db.dailyLog.filter((row) => row.deleted === 0).toArray(), []) ?? [];
+  // Did yesterday have anything in it? Only then does the last-night check-in ask (as it did on Plan).
+  const yesterday = dayKey(new Date(`${dayKey(board.now)}T12:00:00`).getTime() - 86_400_000);
+  const yesterdayFacts = useLiveQuery(() => db.ledger.where('dayKey').equals(yesterday).filter(row => row.deleted === 0).count(), [yesterday]) ?? 0;
+  const hadYesterday = logs.some(row => row.dayKey === yesterday) || yesterdayFacts > 0 || board.tasks.some(row => !row.deleted && (row.dayKey === yesterday || row.firstScheduledDayKey === yesterday || row.doneAt != null && dayKey(row.doneAt) === yesterday));
   const [moving, setMoving] = useState<TaskRow | null>(null);
   // Item 83 + spec 27: Shutdown's "Move to tomorrow" moves the task straight to tomorrow 9:00 and says so. No move is refused.
   async function moveTomorrow(task: TaskRow) {
@@ -106,6 +111,8 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' }) {
   return <section className="screen planner-screen"><p className="eyebrow">Your plan</p><h1>{mode === 'plan' ? 'Morning plan' : 'Shutdown'}</h1>
     {(board.message || exportMessage) && <div role="status">{board.message && <p>{board.message}</p>}{exportMessage && <p>{exportMessage}</p>}</div>}
     {mode === 'plan' && <>
+      {/* Spec 660 §3.4: the last-night check-in moved here from Plan's More; it is the morning plan's first step. */}
+      <MorningBackfill today={today} now={board.now} logs={logs} hadYesterday={hadYesterday} />
       <section className="card planner-capacity" aria-label="Time for today"><h2>Today you have about {minutesInWords(Math.max(0, room.available - room.planned))} free</h2><progress max={room.available} value={Math.min(room.planned, room.available)} aria-label="Time planned" /><p>{minutesInWords(room.planned)} planned</p><details><summary>How is this worked out?</summary><p>Your tasks usually take {overrunRatio.toFixed(1)}× your guess, so NANDI plans with that. You have about {minutesInWords(room.available)} available today.</p></details>{room.over && <p role="note">This is more than your usual time. Adjust your plan if useful.</p>}</section>
       <p>A few minutes to give the day a shape. You can skip this.</p>
       <TaskQuickAdd run={board.act} tasks={board.tasks} focus={board.focus} />

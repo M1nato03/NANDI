@@ -14,8 +14,11 @@ test('phone-down move leaves lights-out check-in for an explicit tap', async ({ 
   await page.getByRole('region', { name: 'Now deck' }).getByRole('button', { name: 'Next', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Lights-out check-in' })).toBeVisible();
   await page.clock.setFixedTime(new Date('2026-10-20T08:30:00'));
+  // Spec 660 §3.4: the last-night check-in is the morning plan's first step (it left Plan's More).
   await page.goto('/#plan');
   await openMore(page);
+  await expect(page.getByRole('region', { name: 'Last night' })).toHaveCount(0);
+  await page.goto('/#plan/morning');
   await expect(page.getByRole('region', { name: 'Last night' })).toBeVisible();
   await page.getByRole('region', { name: 'Last night' }).getByLabel('Phone-down time').selectOption('23:30');
   await page.getByRole('region', { name: 'Last night' }).getByLabel('Reels time').selectOption('none');

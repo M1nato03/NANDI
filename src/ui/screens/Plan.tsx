@@ -15,15 +15,12 @@ import { PostponeSheet } from '../tasks/PostponeSheet';
 import { MorList, type OuterMove, type StartRequest } from '../tasks/MorList';
 import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { TaskDetail } from '../tasks/TaskDetail';
-import { Reminders } from '../tasks/Reminders';
 import { PhoneChhutti } from '../tasks/PhoneChhutti';
 import { todayTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
 import { DeckGlyph } from '../DeckGlyph';
-import { MorningBackfill } from './MorningBackfill';
 import { isAway } from '../../core/economy/away';
-import { adaptiveNight, shiftOffKey } from '../../core/adaptive/day';
 import '../tasks/tasks.css';
 import { CourtyardBanner } from '../courtyard/Courtyard';
 import { StorybookCard } from '../courtyard/Storybook';
@@ -57,15 +54,9 @@ export function Plan({ questId }: { questId?: string }) {
   const pauseCard = readPauseCard(settings, dayKey(board.now));
   const softFacts = useSoftFacts();
   const today = dayKey(board.now);
-  const night = adaptiveNight(settings, board.tasks, today);
   // The weekly agency check comes to Plan on Sundays; once answered it stays for the rest of that day.
   const askAgency = new Date(`${today}T12:00:00`).getDay() === 0 && (!agencyAnsweredRecently(logs, today) || logs.some(row => row.dayKey === today && row.agency1to5 !== undefined));
-  const keepUsualNight = async () => { const now = Date.now(); await db.settings.put({ key: shiftOffKey(today), value: true, updatedAt: now, deleted: 0, deviceId: await getOrCreateDeviceId(db, now) }); }; // eslint-disable-line react-hooks/purity
   const awayToday = isAway(settings, today);
-  const yesterday = dayKey(new Date(`${today}T12:00:00`).getTime() - 86_400_000);
-  // Count only yesterday's facts through the dayKey index; the ledger grows every day.
-  const yesterdayFacts = useLiveQuery(() => db.ledger.where('dayKey').equals(yesterday).filter(row => row.deleted === 0).count(), [yesterday]) ?? 0;
-  const hadYesterday = logs.some(row => row.dayKey === yesterday) || yesterdayFacts > 0 || board.tasks.some(row => !row.deleted && (row.dayKey === yesterday || row.firstScheduledDayKey === yesterday || row.doneAt != null && dayKey(row.doneAt) === yesterday));
   const todayOpen = todayTasks(board.tasks, board.now);
   const avgHidden = settings.some(row => row.key === 'plan.averageHidden' && row.value === true);
   async function hideAverage() { const at = Date.now(); await db.settings.put({ key: 'plan.averageHidden', value: true, updatedAt: at, deleted: 0, deviceId: await getOrCreateDeviceId(db, at) }); }
@@ -108,7 +99,7 @@ export function Plan({ questId }: { questId?: string }) {
         Side quests came back out of More on 5 Nov at Jenil's request (item 566). */}
     <details className="card plan-more"><summary><strong>More</strong><span className="small">Check-ins, routines, reminders</span></summary>
       {fresh && <section className="card fresh-start" aria-label="Fresh start"><p>Yesterday didn't go to plan. That's data, not a verdict.</p><div className="sheet-actions"><button type="button" onClick={() => { void dismissFresh(); go('plan/morning'); }}>Plan today</button><button type="button" className="secondary" onClick={() => setPickMust(true)}>Pick one Must</button></div>{pickMust && <div>{board.tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !board.tasks.some(child => child.parentId === task.id && !child.deleted)).map(task => <div key={task.id}><button type="button" className="secondary fresh-choice" onClick={() => void pinMust(task)}>{task.title}</button>{pickNote?.id === task.id && <p role="alert" tabIndex={-1} ref={pickNoteRef}>{pickNote.text}</p>}</div>)}</div>}</section>}
-      <MorningBackfill today={today} now={board.now} logs={logs} hadYesterday={hadYesterday} />{askAgency && <AgencyCheck now={board.now} />}<StorybookCard today={today} /><CourtyardBanner />
+      {askAgency && <AgencyCheck now={board.now} />}<StorybookCard today={today} /><CourtyardBanner />
       {/* Spec 26: from 20:00 (until the 04:00 day line), Kachhua's kolam for tonight. */}
       {(new Date(board.now).getHours() >= 20 || new Date(board.now).getHours() < 4) && <section className="card kolam-card" aria-label="Tonight's kolam"><h2>Tonight's kolam</h2><p className="small">One slow line around every dot, with Kachhua.</p><button type="button" className="secondary" onClick={() => go('kolam')}>Trace it</button></section>}
       <PhoneChhutti />
@@ -116,9 +107,7 @@ export function Plan({ questId }: { questId?: string }) {
       {/* A fuller add form (size, priority, a start time, repeat, split preview) for those who want it. */}
       <TaskQuickAdd run={board.act} tasks={board.tasks} focus={board.focus} label="Add with details" />
       <button type="button" className="secondary" onClick={() => go('plan/focus')}>Focus timer with breaks</button>
-      {night.shift > 0 && <p className="small busy-day">Busy day: about {Math.round(night.plannedMinutes / 60)} h planned, so tonight starts {night.shift}&nbsp;min later (bedtime {night.bedtime}). <button type="button" className="text-button" onClick={() => void keepUsualNight()}>Keep my usual time</button></p>}
       <p className="day-horizon small">{dayHorizon(todayOpen.reduce((sum, task) => sum + (task.estimateMin ?? 0), 0), board.now, shutdownTime)}</p>
-      <Reminders />
     </details>
     {detail && <TaskDetail key={detail.id} task={board.tasks.find(row => row.id === detail.id) ?? detail} tasks={board.tasks} focus={board.focus} events={events} run={board.act} close={() => setDetail(null)} move={() => { setMoving(detail); setDetail(null); }} startStep={step => { setDetail(null); setStartRequest(current => ({ task: step, at: (current?.at ?? 0) + 1 })); }} />}
     {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} onMoved={at => setRespace({ task: moving, at })} onUndoable={(task, before, where) => setOuterMove(current => ({ task, before, where, at: (current?.at ?? 0) + 1, writes: board.writesRef.current }))} />}

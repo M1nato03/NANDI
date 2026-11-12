@@ -28,6 +28,8 @@ export interface TaskRow extends EntityRow {
   doneAt?: number;
   parentId?: string;
   checkpointOf?: string;
+  /** Spec 660 §3.4: a Later task folded in from Plan's old Reminders; finishing it pays no XP and fills no jar. */
+  fromReminder?: boolean;
   xpShare?: number;
   /** Repeating tasks: how it repeats, and which task this one follows. */
   repeat?: 'daily' | 'weekdays' | 'weekly';

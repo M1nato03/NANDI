@@ -1,4 +1,5 @@
 import { RULES } from '../../core/rules.config';
+import { migrateReminders } from './reminderMigration';
 import { bookConcepts, bookUnitId } from '../../core/learn/books';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
@@ -40,6 +41,8 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
   const today = dayKey(now);
   const deviceId = await getOrCreateDeviceId(db, now);
   await syncRestWeekday(db, now);
+  // Spec 660 §3.4: Plan's old Reminders fold into Mor's list as Later items (idempotent; nothing pays for them).
+  await migrateReminders(db, now);
   await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops, db.learnConcepts, db.dailyLog, db.settings, db.tasks], async () => {
     // Checked again inside the transaction: a restore may have started while this one waited for its lock.
     if (restoreActive()) return;
