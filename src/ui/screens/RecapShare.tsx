@@ -5,6 +5,7 @@ import { saveFileNow, shareFileNow, shareNote, useShareDay } from '../shareActio
 import { recapPng } from './recapCard';
 import { useModalFocus } from '../shell/useModalFocus';
 import { Kachhua } from '../cast/Cast';
+import { MoveBudgetLine, RealityCheckLine } from '../tasks/weekReview';
 
 /** Spec 53: the week as a receipt. Share sends the image with one text line and the app's link; Save keeps the image. */
 export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; link?: boolean }) {
@@ -65,6 +66,9 @@ export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; li
       <div className="ui-sheet-handle" aria-hidden="true" />
       <h2>Your week's receipt</h2>
       {preview ? <img src={preview} width="1080" height="1920" alt={`Receipt, ${receiptWeek(card)}: ${receiptShareLines(card).join(', ')}.`} /> : <p>Making your receipt…</p>}
+      {/* Spec 660 §3.3: the weekly review's move-budget line, on the receipt (it never goes on the image). */}
+      <RealityCheckLine />
+      <MoveBudgetLine />
       <div className="recap-sheet-actions">
         <button type="button" onClick={() => void share()} disabled={!blob || busy}>Share</button>
         <button type="button" className="secondary" onClick={() => void save()} disabled={!blob || busy}>Save image</button>

@@ -46,7 +46,8 @@ function legacyRoute(value: string): string {
   if (value === 'tasks') return 'plan';
   if (value === 'tasks/plan') return 'plan/morning';
   if (value === 'tasks/shutdown') return 'plan/shutdown';
-  if (value === 'tasks/review') return 'plan/review';
+  // Spec 660 §3.3: the weekly review became the Sunday receipt, on You's "Your week" card.
+  if (value === 'tasks/review' || value === 'plan/review') return 'you';
   // Spec 660 §3.1: the shop closed; its old links open You › history ("Shards kept").
   if (value === 'you/shop' || value.startsWith('you/shop/')) return 'you/history';
   // Spec 660 §3.1b: badges ended; the ones earned are listed in You › history.

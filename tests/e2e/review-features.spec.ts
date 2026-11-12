@@ -2,18 +2,16 @@
 import { expect, test } from '@playwright/test';
 import { openMore } from './helpers/plan';
 
-test('weekly review starts with plain words and keeps details optional', async ({ page }) => {
+test('spec 660 §3.3: the weekly review became the receipt; its export is in Settings › Backup, its past weeks in You › history', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-18T12:00:00') });
   await page.goto('/#plan/review');
-  const words = page.getByRole('region', { name: 'This week, in words' });
-  await expect(words).toContainText('Week of 12 Oct');
-  await expect(words).toContainText("A quiet week. That's data, not a verdict.");
-  await expect(page.getByRole('region', { name: 'What helped' })).toBeVisible();
-  await expect(page.getByRole('region', { name: 'What got in the way' })).toBeVisible();
-  const numbers = page.locator('.planner-numbers');
-  await expect(numbers).not.toHaveAttribute('open', '');
-  await numbers.locator('summary').click();
-  await expect(numbers).toContainText('Weekly move budget: 0 of 5 used');
+  await expect(page).toHaveURL(/#you$/);
+  await page.goto('/#you/backup');
+  const download = page.waitForEvent('download');
+  await page.getByRole('button', { name: "Export this week's summary" }).click();
+  expect((await download).suggestedFilename()).toMatch(/^nandi-week-2026-W\d{2}\.json$/);
+  await page.goto('/#you/history');
+  await expect(page.getByRole('region', { name: 'Past weeks' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 

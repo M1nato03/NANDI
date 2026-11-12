@@ -19,7 +19,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('button', { name: 'Focus timer with breaks' })).toBeVisible();
     await expect(page.getByRole('button', { name: /Morning plan/ })).toBeVisible();
     await expect(page.getByRole('button', { name: /Shutdown/ })).toBeVisible();
-    await expect(page.getByRole('button', { name: /Weekly review/ })).toBeVisible();
+    // Spec 660 §3.3: no Weekly review routine (it became the Sunday receipt).
+    await expect(page.getByRole('button', { name: /Weekly review/ })).toHaveCount(0);
     await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Call bank 15m');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();

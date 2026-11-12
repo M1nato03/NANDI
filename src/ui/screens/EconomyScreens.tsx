@@ -7,6 +7,7 @@ import { pendingTarget, readTargets, setTarget, TARGET_KEY, TARGETS, targetFor, 
 import { currentArcTitle } from '../../core/mysteries';
 import { SHOP_ITEMS } from '../../core/economy/shop';
 import { badges } from '../../core/economy/gamify';
+import { PastWeeks } from '../tasks/weekReview';
 import { finishedSeasons, seasonLine, seasonResult } from '../../core/economy/seasonResult';
 import { recordShown } from '../../data/repos/gamify';
 import { RULES } from '../../core/rules.config';
@@ -162,6 +163,7 @@ export function YouHistory() {
     <section className="card" aria-labelledby="history-seasons"><h2 id="history-seasons">Past seasons</h2>
       {seasons.length ? <ul className="history-list">{seasons.map(season => <li key={season.start}>{seasonLine(season)} · {season.usefulDays === 1 ? '1 useful day' : `${season.usefulDays} useful days`}</li>)}</ul> : <p>No season has finished yet.</p>}
     </section>
+    <PastWeeks />
     <section className="card" aria-labelledby="history-badges"><h2 id="history-badges">Badges you earned</h2>
       {earned.length ? <ul className="history-list">{earned.map(badge => <li key={badge.title}>{badge.title} · {badge.tier}</li>)}</ul> : <p>None were earned before badges ended.</p>}
     </section>

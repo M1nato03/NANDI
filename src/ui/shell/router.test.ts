@@ -132,7 +132,7 @@ describe('spec 571 stage 2: the alias table (tabs Courtyard · Yatra · Grow · 
     ['#tasks/plan', 'plan/morning', 'plan/morning', 'Yatra'],
     ['#plan/morning', 'plan/morning', 'plan/morning', 'Yatra'],
     ['#tasks/shutdown', 'plan/shutdown', 'plan/shutdown', 'Yatra'],
-    ['#tasks/review', 'plan/review', 'plan/review', 'Yatra'],
+    ['#tasks/review', 'you', 'you', 'You'],
     ['#plan/quest/q1', 'plan/quest/q1', 'plan/quest/q1', 'Yatra'],
     ['#yatra/journal', 'yatra/journal', 'yatra/journal', 'Yatra'],
     ['#yatra/crew', 'courtyard/crew', 'yatra/crew', 'Courtyard'],
@@ -193,8 +193,8 @@ describe('spec 40: the book game route', () => {
 
 it('spec 660 §3: the removed screens\' links open their one new home (alias table guard)', () => {
   expect([
-    '#you/shop', '#you/shop/theme', '#you/badges', '#you/season', '#you/days/seasons', '#yatra/days/seasons',
+    '#you/shop', '#you/shop/theme', '#you/badges', '#you/season', '#you/days/seasons', '#yatra/days/seasons', '#plan/review', '#tasks/review',
   ].map(canonicalRoute)).toEqual([
-    'you/history', 'you/history', 'you/history', 'you', 'you/history', 'you/history',
+    'you/history', 'you/history', 'you/history', 'you', 'you/history', 'you/history', 'you', 'you',
   ]);
 });

@@ -310,9 +310,6 @@ try {
     await nav('plan');
     await page.getByRole('button', { name: 'Shutdown' }).click();
     await page.getByRole('region', { name: 'Close today' }).waitFor();
-    await nav('plan');
-    await page.getByRole('button', { name: 'Weekly review' }).click();
-    await page.getByRole('region', { name: 'This week, in words' }).waitFor();
   });
   await step('settings-and-backup', async () => {
     await tab('You');
@@ -450,33 +447,17 @@ try {
     } finally { await context.setOffline(false); }
   });
   await step('close-recap-sheet', async () => { await page.getByRole('dialog', { name: 'Weekly recap preview' }).getByRole('button', { name: 'Not now' }).click(); });
-  await step('day2-economy-and-shop', async () => {
-    await tab('You');
-    const season = page.getByRole('region', { name: 'Your season' });
-    await season.getByText(/day streak/).waitFor();
-    await season.getByText(/of 4 Hat-tricks/).waitFor();
-    await season.getByText('Season 1 starts Monday 2 Nov').waitFor();
-    await season.getByRole('button', { name: 'Shop' }).click();
-    await page.getByRole('heading', { name: 'Shop' }).waitFor();
-    for (const item of ['Streak freeze', 'Linen theme', 'Soft sounds', 'Paths practice pack']) await page.getByRole('heading', { name: item }).waitFor();
-    if (await page.getByRole('button', { name: '50 Shards', exact: true }).isDisabled()) report.notExercised.push({ viewport: viewport.width, item: 'Day 2 freeze purchase', reason: 'Two starting freezes are still ready' });
-    if (await page.getByRole('button', { name: '400 Shards', exact: true }).isDisabled()) report.notExercised.push({ viewport: viewport.width, item: 'Day 2 theme purchase', reason: 'The two-day profile has insufficient Shards' });
+  // Spec 660 §3.1-3.2: the shop and the season ladder are gone; what they left is read-only in You › history.
+  await step('day2-history', async () => {
+    await nav('you/history');
+    await page.getByRole('heading', { name: /^Shards kept: \d/ }).waitFor();
+    await page.getByRole('region', { name: 'Past seasons' }).waitFor();
   });
   await page.clock.setFixedTime(new Date('2026-11-02T09:00:00+05:30'));
-  await step('season-one-ladder-and-rival', async () => {
-    await nav('you');
-    const season = page.getByRole('region', { name: 'Your season' });
-    await season.getByRole('button', { name: 'View the ladder' }).click();
-    const rank = (await page.locator('.ladder-seat.you strong').innerText()).trim();
-    if (!/^#\d+$/.test(rank)) throw new Error(`Invalid season rank: ${rank}`);
-    await nav('you');
-    await season.getByText(`${rank} of 500`, { exact: false }).waitFor();
-    await season.getByText(/sits just above/).waitFor();
-  });
   await step('legacy-route-redirects', async () => {
     const redirects = {
       now: 'plan', 'now/focus': 'plan/focus', today: 'plan/focus', tasks: 'plan', 'tasks/plan': 'plan/morning',
-      'tasks/shutdown': 'plan/shutdown', 'tasks/review': 'plan/review', 'tasks/quest/sample': 'plan/quest/sample',
+      'tasks/shutdown': 'plan/shutdown', 'tasks/review': 'you', 'tasks/quest/sample': 'plan/quest/sample',
       ground: 'you/settings', 'ground/backup': 'you/backup', 'ground/night': 'you/night',
       'you/settings': 'you/settings', 'you/train': 'train', 'you/train/history': 'train/history',
       'you/train/workout': 'train/workout', 'you/train/settings': 'train/settings', 'you/train/retest': 'train/retest',

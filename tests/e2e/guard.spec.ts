@@ -27,8 +27,10 @@ test('the weekly agency check comes to Plan on Sunday, saves in one tap each, an
   await check.getByRole('button', { name: 'No', exact: true }).click();
   await expect(check.getByRole('status')).toHaveText('Saved for this week. Thank you.');
   expect(await readLog(page, '2026-10-25')).toMatchObject({ agency1to5: 4, agencyOpenedInstead: false });
+  // Spec 660 §3.3: the weekly review is gone; the answer is kept and read back in You › history's past weeks, and the
+  // old review link opens You.
   await page.goto('/#plan/review');
-  await expect(page.getByRole('region', { name: 'Time in NANDI' }).getByRole('button', { name: '4 of 5' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page).toHaveURL(/#you$/);
 });
 
 test('Plan does not ask on other days', async ({ page }) => {

@@ -10,7 +10,7 @@ const at = '2026-10-17T12:00:00+05:30';
 const base = 'http://127.0.0.1:4187';
 const routes = [
   ['now-day', 'now'], ['plan', 'plan'], ['plan-morning', 'plan/morning'],
-  ['plan-shutdown', 'plan/shutdown'], ['plan-review', 'plan/review'],
+  ['plan-shutdown', 'plan/shutdown'], ['you-history', 'you/history'],
   ['you', 'you'], ['you-settings', 'you/settings'], ['you-learn', 'you/learn'],
   ['you-mind', 'you/mind'], ['you-mind-practice', 'you/mind/practice'],
   ['you-mind-case', 'you/mind/case'], ['you-mind-board', 'you/mind/board'],

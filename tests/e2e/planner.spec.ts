@@ -87,25 +87,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Complete shutdown' }).click();
     await expect(page.getByText('Shutdown complete. Wind-down has started.')).toBeVisible();
     await page.getByRole('button', { name: 'Back to Yatra' }).click();
-    await openMore(page);
-    await page.getByRole('button', { name: 'Weekly review' }).click();
-    await expect(page.getByRole('region', { name: 'This week, in words' })).toContainText('You finished 1 task.');
-    await expect(page.getByRole('region', { name: 'What helped' })).toContainText('You finished 1 of 1 task on the day you first planned it.');
-    await page.getByText('Numbers', { exact: true }).click();
-    await expect(page.locator('.planner-numbers')).toContainText('morning plan 1 · shutdown 1');
-    await expect(page.getByRole('region', { name: 'Someday items' })).toContainText('Keep for later');
-    await expect(page.getByRole('region', { name: 'Someday items' })).toContainText('Moved this week');
-    if (scheme === 'light' && page.viewportSize()?.width === 390) {
-      await page.evaluate(() => window.scrollTo(0, 0));
-      await capture(page, 'review-sample-390x844');
-    }
-    await expectLayout(page);
-    await page.getByRole('button', { name: 'Finish review' }).click();
-    await expect(page.getByText('Weekly review complete.')).toBeVisible();
-    const download = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'Export summary' }).click();
-    expect((await download).suggestedFilename()).toBe('nandi-week-2026-W41.json');
-    await expect(page.getByText('Saved nandi-week-2026-W41.json.')).toBeVisible();
+    // Spec 660 §3.3: the weekly review is gone. Its export lives in Settings › Backup (checked below); its Someday
+    // triage is Plan's Later list; the week in words is You's week card and You › history's past weeks.
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
     await page.getByRole('button', { name: /Settings/ }).click();
     // Spec 571: bedtime controls moved from Settings to Calm & Sleep.
@@ -132,7 +115,6 @@ test('empty rituals show a gentle start and fit a phone', async ({ page }) => {
   for (const [route, name] of [
     ['plan/morning', 'morning-empty-390x844'],
     ['plan/shutdown', 'shutdown-empty-390x844'],
-    ['plan/review', 'review-empty-390x844'],
   ] as const) {
     await page.goto(`/#${route}`);
     if (route === 'plan/morning') {
@@ -146,7 +128,6 @@ test('empty rituals show a gentle start and fit a phone', async ({ page }) => {
       await page.getByRole('button', { name: "Skip tomorrow's step" }).click();
       await expect(page.getByRole('button', { name: 'Complete shutdown' })).toBeEnabled();
     }
-    if (route === 'plan/review') await expect(page.getByRole('region', { name: 'This week, in words' })).toContainText("A quiet week. That's data, not a verdict.");
     await expectLayout(page);
     if (route !== 'plan/shutdown') await capture(page, name);
   }

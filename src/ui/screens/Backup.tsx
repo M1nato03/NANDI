@@ -12,6 +12,7 @@ import { errorMessage } from '../shell/errorMessage';
 import { Capacitor } from '@capacitor/core';
 import { readAutoBackupState, runAutoBackup, setAutoBackupEnabled, type AutoBackupState } from '../../data/autoBackup';
 import { listAutoBackups } from '../../platform/files';
+import { ExportWeekButton } from '../tasks/weekReview';
 
 type RestoreChoice = { kind: 'backup'; data: BackupEnvelope; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[]; privatePages?: number }
   | { kind: 'legacy'; data: LegacyExport; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[] };
@@ -126,7 +127,9 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     <p>Save a copy you control. The file is plain text and contains your personal data.</p>
     <p className="small">Your own Calm sounds stay on this phone and are not in backups.</p>
     <p className="small">{QUEST_PHOTOS_LINE}</p>
-    <div className="card"><h2>Save a copy</h2><p>{lastBackup === null ? 'No backup made on this phone yet.' : `Last backup: ${formatDayKey(dayKey(lastBackup))}`}</p><button disabled={busy} onClick={() => void exportFile()}>Export backup</button></div>
+    <div className="card"><h2>Save a copy</h2><p>{lastBackup === null ? 'No backup made on this phone yet.' : `Last backup: ${formatDayKey(dayKey(lastBackup))}`}</p><button disabled={busy} onClick={() => void exportFile()}>Export backup</button>
+      {/* Spec 660 §3.3: the week's summary file, moved here from the weekly review. */}
+      <ExportWeekButton /></div>
     {Capacitor.isNativePlatform() && <div className="card"><h2>Automatic backup</h2>
       <p>Automatic backup: {auto?.enabled === false ? 'off' : 'on'} · last saved {auto?.lastSavedAt ? new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).format(auto.lastSavedAt) : 'never'} · {autoKept} kept in Documents/NANDI/auto</p>
       <label><input type="checkbox" role="switch" checked={auto?.enabled !== false} onChange={event => void toggleAuto(event.target.checked)} /> Automatic backup</label>

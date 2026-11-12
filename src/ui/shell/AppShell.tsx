@@ -301,7 +301,6 @@ export function AppShell() {
   else if (key === 'mind/generator' || key === 'you/mind/generator') screen = <GeneratorCheck />;
   else if (key === 'tasks/plan' || key === 'plan/morning') screen = <Planner mode="plan" />;
   else if (key === 'tasks/shutdown' || key === 'plan/shutdown') screen = <Planner mode="shutdown" />;
-  else if (key === 'tasks/review' || key === 'plan/review') screen = <Planner mode="review" />;
   else if (key === 'plan/focus') screen = <Today />;
   else if (key === 'plan/pause') screen = <PauseSetup />;
   else if (import.meta.env.VITE_E2E === '1' && key === 'read/chiku-demo') screen = <ChikuDemo />;
