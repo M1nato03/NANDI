@@ -6,7 +6,8 @@ import { RULES } from '../../core/rules.config';
 import { effectiveShutdown } from '../../core/tasks/planner';
 import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { cardRowFor, COURTYARD_NIGHT_LINE, phaseAt, type Phase } from '../../core/courtyard/courtyard';
-import { deriveTrek, focusEarned, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Climb, type Constellation, type Trek } from '../../core/yatra/trek';
+import { focusEarned, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Climb, type Constellation, type Trek } from '../../core/yatra/trek';
+import { deriveJourney, TRAIL_SWITCH_PREFIX, trailSwitchLine, type JourneyTrek } from '../../core/yatra/journey';
 import { moveWords } from '../../core/nextMove';
 import { readNextMove } from './nextMoveRows';
 import { cleanWeeks, longestRun, usefulDates, usefulDays, usefulRecord } from '../../core/economy/usefulDays';
@@ -17,9 +18,9 @@ import { recordError } from '../errorRing';
 import { finishedSeasons } from '../../core/economy/seasonResult';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { taskFocusMs } from '../../core/tasks/focus';
-import { currentTrail } from '../../data/yatra/trails';
+import { journeyTrails } from '../../data/yatra/trails';
 import { prefetchRoute } from '../shell/prefetch';
-import { CONSTELLATION_PREFIX, ensureFocusRateFrom, ensureJarFrom, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
+import { CONSTELLATION_PREFIX, ensureFocusRateFrom, ensureJarFrom, ensureYatraStart, markTrailSwitchSeen, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
 import { focusRateFrom, JAR_FROM_KEY, questsFrom } from '../../core/yatra/jar';
 import { weatherFor, type Weather } from '../../core/yatra/weather';
 import { JarPlanArea, RealThingsLine } from './JarPlan';
@@ -43,8 +44,10 @@ const keepCard = (id: string) => { try { localStorage.setItem(CARDS_KEY, JSON.st
 /** Yatra's own dusk (item 203): the scene turns to night at 19:00, or at the evening switch if that comes first. */
 export const DUSK_HOUR = 19;
 
-export function useYatra(): { trek: Trek; night: boolean; dusk: boolean; weather: Weather } | null | undefined {
-  const trail = currentTrail();
+export function useYatra(): { trek: JourneyTrek; night: boolean; dusk: boolean; weather: Weather; switchSeen: boolean } | null | undefined {
+  // Spec 575: every trail in walking order; the one on screen is where the walk has reached (deriveJourney).
+  const trails = journeyTrails();
+  const trail = trails[0];
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
   useEffect(() => { if (trail) void ensureYatraStart(db, Date.now()).then(() => ensureJarFrom(db, Date.now())).then(() => ensureFocusRateFrom(db, Date.now())); }, [trail]);
@@ -54,7 +57,7 @@ export function useYatra(): { trek: Trek; night: boolean; dusk: boolean; weather
     tasks: await db.tasks.filter(row => row.deleted === 0).toArray(),
     // Spec 54: focus fills the jar too (each full 30 min in a day).
     focus: await db.focus.filter(row => row.deleted === 0).toArray(),
-  } : null, [trail?.id]);
+  } : null, [trails.map(row => row.id).join(' ')]);
   const yatra = (() => {
     if (!trail) return null;
     if (!source) return undefined;
@@ -66,12 +69,14 @@ export function useYatra(): { trek: Trek; night: boolean; dusk: boolean; weather
     // Spec 54: from jarFrom the trail walks in jar minutes; until it is written (the first run), the old walk.
     const jarFrom = source.settings.find(row => row.key === JAR_FROM_KEY)?.value;
     // Spec 571 stage 2: `now` lets a running focus's earned 3-min steps move the group (never a part step).
-    const trek = deriveTrek(source.facts, trail, read(YATRA_START, today), today, names, typeof jarFrom === 'string' ? { from: jarFrom, focus: source.focus, focusRateFrom: focusRateFrom(source.settings), questsFrom: questsFrom(source.settings), now } : undefined);
+    const trek = deriveJourney(source.facts, trails, read(YATRA_START, today), today, names, typeof jarFrom === 'string' ? { from: jarFrom, focus: source.focus, focusRateFrom: focusRateFrom(source.settings), questsFrom: questsFrom(source.settings), now } : undefined)!;
+    // Must 12: the switch line is seen once per trail, kept as a settings row (a restore keeps it).
+    const switchSeen = source.settings.some(row => row.key === `${TRAIL_SWITCH_PREFIX}${trek.trail.id}` && row.value === true);
     const phase = phaseAt(now, shutdown, night.bedtime);
     // The planning day turns at 04:00, so the small hours are still tonight.
     const hour = new Date(now).getHours();
     const sceneNight = phase === 'evening' || phase === 'night' || hour >= DUSK_HOUR || hour < 4;
-    return { trek, night: sceneNight, dusk: !sceneNight && hour === DUSK_HOUR - 1, weather: weatherFor(source.focus, now) };
+    return { trek, night: sceneNight, dusk: !sceneNight && hour === DUSK_HOUR - 1, weather: weatherFor(source.focus, now), switchSeen };
   })();
   // While a focus runs, its next earned step lands on time, not up to a minute late (the minute tick still runs).
   const nextStepAt = yatra?.trek.climb.nextStepAt;
@@ -267,7 +272,18 @@ export function TrekStrip() {
   }, [yatra, postcard]);
   const trek = yatra?.trek;
   const leg = trek && postcard !== null ? trek.trail.legs[postcard] : undefined;
-  const postcards = trek ? trek.legs.filter(row => row.gateOn).length : 0;
+  // Spec 575: the Journal holds every walked trail's postcards, so the count never drops at a trail switch.
+  const postcards = trek ? trek.journey.walked.reduce((sum, walked) => sum + walked.legs.filter(row => row.gateOn).length, 0) : 0;
+  // M1 / §4: one quiet line at a trail switch, shown once (no burst, no notification). It is marked seen as it shows,
+  // so it never comes back, not even after a restore.
+  const [switchLine, setSwitchLine] = useState<string | null>(null);
+  const switchTo = trek && yatra && !yatra.switchSeen ? trailSwitchLine(trek, false) : null;
+  useEffect(() => {
+    if (!switchTo || !trek) return;
+    // Kept on screen for this visit once the row is written (the row then hides it from every later visit).
+    void markTrailSwitchSeen(db, trek.trail.id, Date.now()).then(() => setSwitchLine(switchTo)).catch(error => recordError('promise', error));
+  }, [switchTo, trek?.trail.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const shownSwitch = switchTo ?? switchLine;
 
   // CLS gate C7 (stage 2): until the trek's data is read, hold the strip's settled height, so Mor's plan below never moves.
   if (yatra === undefined) return <div className="trek-slot" aria-hidden="true" />;
@@ -282,6 +298,7 @@ export function TrekStrip() {
     {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} weather={yatra.weather} onRename={row => { setName(row.name); setRenaming(row); }} onFriend={spot => go(spot.route)} />}
     {/* Below the scene, a quiet note on the trail: information, never a second action. */}
     {trek && yatra && <div className="trek-journey">
+      {shownSwitch && <p className="trek-switch-line" role="status">{shownSwitch}</p>}
       <div className="trek-journey-top"><strong>{trekLine(trek)}</strong></div>
       {!trek.complete && <div className="trek-rail" aria-hidden="true">{Array.from({ length: STRETCHES_PER_LEG }, (_, i) => <i key={i} className={i < trek.stretch ? 'filled' : undefined} />)}</div>}
       <p className="trek-narrative" role="status">{narrative(trek, yatra.night)}</p>
@@ -337,7 +354,8 @@ export function Journal({ focus }: { focus?: string } = {}) {
   // §0.14: a neem keepsake opens its camp's postcard here; it comes into view, marked.
   useEffect(() => { if (focus && yatra) document.getElementById(`postcard-${focus}`)?.scrollIntoView({ block: 'center' }); }, [focus, yatra]);
   if (yatra === undefined) return <section className="screen" role="status">Opening the journal…</section>;
-  const cards = yatra ? yatra.trek.legs.filter(row => row.gateOn).map(row => yatra.trek.trail.legs[row.index]!) : [];
+  // Spec 575: finished trails' postcards stay (keyed by landmark id, unique across trails), then the current trail's.
+  const cards = yatra ? yatra.trek.journey.walked.flatMap(walked => walked.legs.filter(row => row.gateOn).map(row => walked.trail.legs[row.index]!)) : [];
   const waitingIndex = focus && yatra && !cards.some(leg => leg.landmark.id === focus) ? yatra.trek.trail.legs.findIndex(leg => leg.landmark.id === focus) : -1;
   const waitingCamp = waitingIndex >= 0 ? yatra?.trek.trail.places[waitingIndex + 1]?.name : undefined;
   return <section className="screen yatra-journal">
