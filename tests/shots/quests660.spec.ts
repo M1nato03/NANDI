@@ -272,6 +272,8 @@ for (const theme of ['light', 'dark'] as const) {
     const back = page.getByRole('button', { name: 'Back to the courtyard' });
     const [t1, b1] = [await toast.boundingBox(), await back.boundingBox()];
     expect(t1!.y + t1!.height <= b1!.y || b1!.y + b1!.height <= t1!.y, '08: the toast does not cover Back to the courtyard').toBe(true);
+    // The finish page no longer repeats a jar promise; the toast carries the real minutes.
+    await expect(page.locator('.quest-finish')).not.toContainText('jar');
     await page.screenshot({ path: `${OUT}/660-${t}-08-finish-toast.png` });
     await expect(toast).toHaveCount(0, { timeout: 15_000 });
     await page.waitForTimeout(400);
@@ -361,6 +363,9 @@ for (const theme of ['light', 'dark'] as const) {
     await expect(sheet.getByRole('img')).toBeVisible({ timeout: 20_000 });
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt.png` });
     await textAt200(page);
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    // b2 12 Nov: at large text the image is capped, so Share / Save / Not now stay in view.
+    for (const name of ['Share', 'Save image', 'Not now']) await expect(sheet.getByRole('button', { name, exact: true })).toBeInViewport({ ratio: 1 });
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-200.png` });
     await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
     const lower = sheet.getByRole('button', { name: 'Lower it by 1?' });

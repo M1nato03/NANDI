@@ -263,7 +263,9 @@ export function QuestScreen({ questId }: { questId: string }) {
   let body: ReactNode, moves: ReactNode;
   if (step === 'card') {
     body = <>{doneToday && <p className="quest-note" role="status">Done today. You can do it again; it counts once.</p>}
-      <p className="small">Do it off the screen. NANDI can close while you do.</p></>;
+      <p className="small">Do it off the screen. NANDI can close while you do.</p>
+      {/* b2 12 Nov: before it is done, what it can add; after, the toast says what really went in. */}
+      <p className="small quest-jar-note">Adds up to {questJarMinutes(quest.minutes)}&nbsp;min to the jar.</p></>;
     moves = <><button type="button" className="quest-go" onClick={() => void start()}>Start</button>
       <button type="button" className="secondary" onClick={() => { void skipQuest(db, quest.id).catch(fail); go('courtyard'); }}>Skip, no cost</button></>;
   } else if (step === 'before') {
@@ -299,7 +301,7 @@ export function QuestScreen({ questId }: { questId: string }) {
   } else {
     const kept = outcome !== 'not-done';
     body = <div className="quest-finish" role="status">
-      {kept ? <><p className="quest-finish-line"><strong>Quest done.</strong> A stone for your path.</p><p className="small">+{questJarMinutes(quest.minutes)}&nbsp;min into the jar, if today's trail has room.</p></>
+      {kept ? <p className="quest-finish-line"><strong>Quest done.</strong> A stone for your path.</p>
         : <p className="quest-finish-line">No stone this time, and nothing lost. It'll be here.</p>}
       {photoNote && <p className="small">{photoNote}</p>}
     </div>;

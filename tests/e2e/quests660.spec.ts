@@ -60,7 +60,8 @@ test('the collapsed row offers a quest when nothing is due, and opens its card',
   await row.click();
   await expect(page).toHaveURL(/#courtyard\/quest\/[a-z0-9-]+$/);
   await expect(page.getByTestId('quest-screen')).toBeVisible();
-  // The next move moved into the sheet: its first section.
+  // The next move moved into the sheet: its first section (once the safety question is answered; until then it leads).
+  await answered(page);
   await open(page, 'courtyard', '.courtyard-card');
   await page.locator('.courtyard-card-handle').click();
   await expect(page.locator('.courtyard-card-section').first()).toHaveAttribute('data-section', 'move');
@@ -84,6 +85,13 @@ test('the board: the safety question once (all off), 3 quests from 3 friends, sw
   const safety = page.getByTestId('quest-safety');
   await expect(safety).toBeVisible();
   await expect(safety.getByRole('checkbox')).toHaveCount(3);
+  // E12 (b2 12 Nov): at 100% the question, all 3 boxes and Save / Not now fit one screen; no box under the pinned row.
+  await expect.poll(() => page.evaluate(() => {
+    const card = document.querySelector('.courtyard-card')!.getBoundingClientRect();
+    const bar = document.querySelector('.quest-safety-actions')!.getBoundingClientRect();
+    const rows = [...document.querySelectorAll('.quest-safety h3, .quest-safety-row')].map(node => node.getBoundingClientRect());
+    return rows.every(box => box.top >= card.top - 1 && box.bottom <= bar.top + 1) && bar.bottom <= Math.min(card.bottom, innerHeight) + 1;
+  })).toBe(true);
   for (const box of await safety.getByRole('checkbox').all()) await expect(box).not.toBeChecked();
   await safety.getByRole('button', { name: 'Not now' }).click();
   await expect(safety).toHaveCount(0);
