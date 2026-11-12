@@ -354,7 +354,7 @@ for (const theme of ['light', 'dark'] as const) {
     ]);
     // Finished weeks for You › history's Past weeks: a few tasks done in each of the last three weeks.
     await put(page, 'tasks', ['2026-11-24', '2026-11-26', '2026-12-01', '2026-12-02', '2026-12-04', '2026-12-09'].map((day, index) => ({ id: `past-${index}`, title: `Done task ${index + 1}`, status: 'done', dayKey: day, size: 'M', estimateMin: 30, category: 'general', mustOrCould: 'could', scheduledStart: null, scheduledEnd: null, postponeCount: 0, doneAt: new Date(`${day}T15:00:00`).getTime(), updatedAt: 1, deleted: 0, deviceId: 'q660' })));
-    await put(page, 'settings', [asked, settingRow('planner.budget', { budget: 6 }), settingRow('plan.reminders', [
+    await put(page, 'settings', [asked, settingRow('planner.budget', { baselineStart: '2026-10-05', baselineComplete: true, budget: 6, lastWeek: '2026-12-07', enforcementFromWeek: '2026-10-12', countsSinceRaise: [] }), settingRow('plan.reminders', [
       { id: 'r1', text: 'buy a notebook', createdAt: new Date('2026-12-01T10:00:00').getTime() },
       { id: 'r2', text: 'call Nani', createdAt: new Date('2026-12-02T10:00:00').getTime() },
     ])]);
@@ -389,9 +389,11 @@ for (const theme of ['light', 'dark'] as const) {
     const lower = sheet.getByRole('button', { name: 'Lower it by 1?' });
     await expect(lower).toBeVisible();
     await lower.scrollIntoViewIfNeeded();
+    // At 100% too, with the offer's lines, Share / Save image / Not now stay in view (pinned).
+    for (const name of ['Share', 'Save image', 'Not now']) await expect(sheet.getByRole('button', { name, exact: true })).toBeInViewport({ ratio: 1 });
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-offer.png` });
     await lower.click();
-    await expect(sheet.locator('.move-budget-line')).toContainText('Budget lowered to 5.');
+    await expect(sheet.locator('.move-budget-line')).toContainText('Move budget lowered to 5.');
     await expect(sheet.getByRole('button', { name: 'Lower it by 1?' })).toHaveCount(0);
     await sheet.locator('.move-budget-line').scrollIntoViewIfNeeded();
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-lowered.png` });

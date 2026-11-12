@@ -55,6 +55,15 @@ export function stepDownOffer(budget: number, lastFourCounts: number[]): number 
   return lastFourCounts.length === 4 && lastFourCounts.filter((count) => count < budget).length >= 3 && budget > RULES.tasks.postpone.autoBudgetMin ? budget - 1 : null;
 }
 
+/**
+ * The one rule for "Lower it by 1?" (b2 12 Nov): a month's first week, not already lowered this week, and 3 of the last
+ * 4 weeks under a budget above the floor. The receipt's offer and the action both read it, so an offer always works.
+ */
+export function budgetLowerOffer(state: { budget: number; steppedDownAtWeek?: string }, week: string, lastFourCounts: number[]): number | null {
+  const firstWeekOfMonth = new Date(`${week}T12:00:00`).getDate() <= 7;
+  return firstWeekOfMonth && state.steppedDownAtWeek !== week ? stepDownOffer(state.budget, lastFourCounts) : null;
+}
+
 type SummaryTask = { id: string; title?: string; status: string; dayKey: string; category?: string; estimateMin?: number; scheduledStart?: number | null; firstScheduledDayKey?: string; doneAt?: number; postponeCount?: number };
 type SummaryEvent = { taskId: string; kind: string; at: number; reason?: string; budgetCounted?: boolean };
 type SummaryFocus = { taskId: string; startedAt: number; endedAt?: number; pauses?: { at: number; resumeAt?: number }[]; switches?: number };

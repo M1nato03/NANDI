@@ -394,6 +394,8 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 /* Large text (b2 12 Nov, 17 at 200%): the image shrinks so Share / Save / Not now stay in view, pinned flush at the
    sheet's foot with nothing under them. Kept AFTER the sheet's base rules so it wins (spec 40 lesson). */
 .recap-sheet-backdrop { container: recap-backdrop / inline-size; }
+/* The moves stay pinned at every text size (b2 12 Nov: the Lower-by-1 lines pushed them off at 100%). */
+.recap-sheet-actions { position: sticky; bottom: calc(-24px - env(safe-area-inset-bottom)); z-index: 1; margin: 20px -20px calc(-24px - env(safe-area-inset-bottom)); padding: 10px 20px calc(24px + env(safe-area-inset-bottom)); background: var(--surface-1); box-shadow: 0 -8px 12px -10px rgb(0 0 0 / 25%); }
 @container recap-backdrop (max-width: 20rem) {
   .recap-sheet img { max-height: 40dvh; }
   .recap-sheet-actions { position: sticky; bottom: calc(-24px - env(safe-area-inset-bottom)); z-index: 1; flex-wrap: wrap; margin: 16px -20px calc(-24px - env(safe-area-inset-bottom)); padding: 10px 20px calc(24px + env(safe-area-inset-bottom)); background: var(--surface-1); box-shadow: 0 -8px 12px -10px rgb(0 0 0 / 25%); }

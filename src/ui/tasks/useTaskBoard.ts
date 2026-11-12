@@ -12,6 +12,8 @@ import { errorMessage } from '../shell/errorMessage';
 
 const reposPromise = getOrCreateDeviceId(db, Date.now()).then((id) => createTaskRepos(db, id));
 export type TaskRepos = Awaited<typeof reposPromise>;
+/** The task repos, for a screen that reads (not writes) through them, e.g. the receipt's budget offer. */
+export const taskRepos = () => reposPromise;
 
 /**
  * Spec 36: brings the open focus up to date with what the focus guard saw and with "Still working?". The guard's

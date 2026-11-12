@@ -8,7 +8,7 @@ import type { TaskRow, FocusRow, TaskEventRow } from '../types';
 import { dayKey, lightsOutNightKey } from '../../core/time/dayKey';
 import { RULES } from '../../core/rules.config';
 import { baselineBudget, nextBudget, postponeWeekKey } from '../../core/tasks/budget';
-import { nextBedtimeTarget, shutdownAt, stepDownOffer } from '../../core/tasks/planner';
+import { budgetLowerOffer, nextBedtimeTarget, shutdownAt } from '../../core/tasks/planner';
 import { respaceCheckpoints } from '../../core/tasks/complete';
 import {
   postponeGate,
@@ -114,6 +114,12 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
       .count();
     return { policy, weekStart, counted, baselineWeek: !policy.baselineComplete || weekStart < (policy.enforcementFromWeek ?? weekStart) };
   }
+  async function lowerOfferFor(state: BudgetState, now: number): Promise<number | null> {
+    const week = postponeWeekKey(now);
+    const starts = Array.from({ length: 4 }, (_, index) => { const date = new Date(`${week}T12:00:00`); date.setDate(date.getDate() - (4 - index) * 7); return dayKey(date); });
+    const counts = await Promise.all(starts.map((start) => db.taskEvents.filter((row) => row.deleted === 0 && row.kind === 'postponed' && row.budgetCounted === true && postponeWeekKey(row.at) === start).count()));
+    return budgetLowerOffer(state, week, counts);
+  }
   async function budgetState(now: number): Promise<BudgetState> {
     const week = postponeWeekKey(now);
     const stored = (await db.settings.get('planner.budget'))?.value as BudgetState | undefined;
@@ -184,15 +190,20 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
   return {
     ...repos,
     async plannerBudget(now: number): Promise<BudgetState> { return mutation(() => budgetState(now)); },
+    /** What "Lower it by 1?" would set the budget to now, or null: the same state and rule lowerBudget uses. */
+    async budgetLowerOffer(now: number): Promise<{ offer: number | null; state: BudgetState }> {
+      return mutation(async () => {
+        const state = await budgetState(now);
+        return { offer: await lowerOfferFor(state, now), state };
+      });
+    },
     async lowerBudget(now: number): Promise<BudgetState> {
       return mutation(async () => {
         const state = await budgetState(now);
         const week = postponeWeekKey(now);
-        const firstMonday = new Date(`${week}T12:00:00`).getDate() <= 7;
-        const starts = Array.from({ length: 4 }, (_, index) => { const date = new Date(`${week}T12:00:00`); date.setDate(date.getDate() - (4 - index) * 7); return dayKey(date); });
-        const counts = await Promise.all(starts.map((start) => db.taskEvents.filter((row) => row.deleted === 0 && row.kind === 'postponed' && row.budgetCounted === true && postponeWeekKey(row.at) === start).count()));
-        const lowered = stepDownOffer(state.budget, counts);
-        if (!firstMonday || state.steppedDownAtWeek === week || lowered == null) throw new Error('No budget adjustment available now');
+        const lowered = await lowerOfferFor(state, now);
+        // Only reachable if the week changed between the offer and the tap: say why, in plain words.
+        if (lowered == null) throw new Error('The move budget can only be lowered in the first week of a month, once.');
         state.budget = lowered;
         state.steppedDownAtWeek = week;
         state.countsSinceRaise = [];

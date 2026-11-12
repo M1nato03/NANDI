@@ -1,15 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import type { DailyLogRow, SessionRow, TaskRow } from '../../data/types';
 import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time/dayKey';
-import { stepDownOffer } from '../../core/tasks/planner';
 import { postponeWeekKey } from '../../core/tasks/budget';
 import { weekInWords, weekInWordsSummary } from '../../core/tasks/plannerCopy';
 import { buildWeeklySummary, isoFileWeek } from '../../core/weeklySummary';
 import { shareOrDownload } from '../../platform/files';
-import { useTaskBoard } from './useTaskBoard';
+import { taskRepos, useTaskBoard } from './useTaskBoard';
 import { QUEST_MODE, realityCheck, realityLine } from '../../core/quests660/quests';
 
 /**
@@ -49,18 +48,25 @@ export function ExportWeekButton() {
  */
 export function MoveBudgetLine() {
   const board = useTaskBoard();
-  const source = useLiveQuery(async () => ({ events: await db.taskEvents.filter(row => row.deleted === 0).toArray(), settings: await db.settings.toArray() }), []);
-  if (!source) return null;
-  const policy = policyOf(source.settings);
+  const source = useLiveQuery(async () => ({ events: await db.taskEvents.filter(row => row.deleted === 0).count(), settings: await db.settings.toArray() }), []);
+  // b2 12 Nov: the offer is read from the same state and rule the action uses (repos.budgetLowerOffer), so it shows
+  // only when "Lower it by 1?" will work. Re-read whenever the moves or the settings change.
+  const [read, setRead] = useState<Awaited<ReturnType<Awaited<ReturnType<typeof taskRepos>>['budgetLowerOffer']>> | null>(null);
+  useEffect(() => {
+    if (!source) return;
+    let live = true;
+    void taskRepos().then(repos => repos.budgetLowerOffer(Date.now())).then(next => { if (live) setRead(next); }).catch(() => undefined);
+    return () => { live = false; };
+  }, [source]);
+  if (!source || !read) return null;
+  const policy = policyOf(source.settings) ?? read.state;
   const currentWeek = postponeWeekKey(board.now);
-  const priorWeeks = Array.from({ length: 4 }, (_, index) => { const date = new Date(`${currentWeek}T12:00:00`); date.setDate(date.getDate() - (4 - index) * 7); return dayKey(date); });
-  const priorCounts = priorWeeks.map(start => source.events.filter(row => row.kind === 'postponed' && row.budgetCounted && postponeWeekKey(row.at) === start).length);
-  const seasonStart = new Date(`${currentWeek}T12:00:00`).getDate() <= 7;
-  const lowerOffer = seasonStart && policy?.steppedDownAtWeek !== currentWeek ? stepDownOffer(policy?.budget ?? RULES.tasks.postpone.weeklyBudget, priorCounts) : null;
-  if (policy?.raisedAtWeek === currentWeek) return <p className="small move-budget-line" role="status">Move budget raised to {policy.budget}. Plans should fit real life.</p>;
-  if (lowerOffer == null) return null;
+  if (policy.raisedAtWeek === currentWeek) return <p className="small move-budget-line" role="status">Move budget raised to {policy.budget}. Plans should fit real life.</p>;
+  // Lowered this week: the line stays, so the answer to the tap does not vanish with the offer.
+  if (policy.steppedDownAtWeek === currentWeek) return <p className="small move-budget-line" role="status">Move budget lowered to {policy.budget}.</p>;
+  if (read.offer == null) return null;
   return <p className="small move-budget-line">Under your move budget in 3 of the last 4 weeks.{' '}
-    <button type="button" className="text-button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.lowerBudget(now), `Budget lowered to ${lowerOffer}.`)}>Lower it by 1?</button>
+    <button type="button" className="text-button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.lowerBudget(now))}>Lower it by 1?</button>
     {board.message && <span role="status"> {board.message}</span>}</p>;
 }
 

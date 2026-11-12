@@ -58,7 +58,24 @@ describe('planner persistence', () => {
     for (let i = 0; i < 13; i++) await db.taskEvents.add({ id: `baseline-${i}`, taskId: `task-${i}`, kind: 'postponed', at: at(5, 10, i), budgetCounted: true, updatedAt: at(5), deleted: 0, deviceId: 'device' });
     const seasonStart = new Date(2026, 10, 2, 9).getTime();
     expect((await repos.plannerBudget(seasonStart)).budget).toBe(9);
+    expect((await repos.budgetLowerOffer(seasonStart)).offer).toBe(8);
     expect((await repos.lowerBudget(seasonStart)).budget).toBe(8);
-    await expect(repos.lowerBudget(seasonStart)).rejects.toThrow('No budget adjustment');
+    // Once lowered this week, the offer is gone and the action says why in plain words.
+    expect((await repos.budgetLowerOffer(seasonStart)).offer).toBeNull();
+    await expect(repos.lowerBudget(seasonStart)).rejects.toThrow('only be lowered in the first week of a month, once');
+  });
+  it('b2 12 Nov: whenever "Lower it by 1?" is offered, the tap succeeds and sets the offered budget (offer ⇒ lower)', async () => {
+    await repos.plannerBudget(at(5));
+    for (let i = 0; i < 13; i++) await db.taskEvents.add({ id: `baseline-${i}`, taskId: `task-${i}`, kind: 'postponed', at: at(5, 10, i), budgetCounted: true, updatedAt: at(5), deleted: 0, deviceId: 'device' });
+    // Every day from mid-October to mid-December: wherever an offer shows, lowering must work and land on it.
+    let offered = 0;
+    for (let day = 12; day <= 75; day++) {
+      const now = new Date(2026, 9, day, 9).getTime();
+      const { offer } = await repos.budgetLowerOffer(now);
+      if (offer == null) { await expect(repos.lowerBudget(now)).rejects.toThrow(); continue; }
+      offered++;
+      expect((await repos.lowerBudget(now)).budget).toBe(offer);
+    }
+    expect(offered).toBeGreaterThan(0);
   });
 });
