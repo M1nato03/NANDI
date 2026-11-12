@@ -1,5 +1,5 @@
 import { useId, type CSSProperties } from 'react';
-import { containFit, FRIEND_AREA, FRIEND_IDS, pointOnScreen, rectOnScreen, type Rect, type StageAnchors, type StageFit } from '../../core/courtyard/anchors';
+import { containFit, FRIEND_AREA, FRIEND_IDS, pointOnScreen, rectOnScreen, stepForward, type FriendId, type Rect, type StageAnchors, type StageFit } from '../../core/courtyard/anchors';
 import type { AreaId, CourtyardState, Phase } from '../../core/courtyard/courtyard';
 import { poseFor } from '../../core/courtyard/courtyard';
 import { Cast } from '../cast/Cast';
@@ -9,6 +9,8 @@ import { PROP_PARTS } from './layoutBParts';
 import { StageFriends } from './StageFriends';
 import { keepsakeSpots, TAG_H, TAG_W, type Keepsake } from '../../core/courtyard/keepsakes';
 import { KeepsakeTag, PegBoard } from './Keepsakes';
+import type { StoneSpot } from '../../core/quests660/path';
+import { QuestScroll, QuestStones } from './questArt';
 
 /**
  * Spec 571 §0.19 layout B, stage 2 (b2, 8 Nov): today's Scene.tsx parts at the painted pass's positions. The whole
@@ -50,9 +52,12 @@ export interface LayoutBProps {
   state: CourtyardState; phase: Phase; onFriend: (id: AreaId) => void;
   /** §0.14: the neem keepsakes (one per reached camp) and what a tap on one does. */
   keepsakes?: readonly Keepsake[]; onKeepsake?: (tag: Keepsake) => void;
+  /** Spec 660: the quest stones on the path, and today's quest friend stepped forward holding the scroll. */
+  stones?: readonly StoneSpot[]; forward?: { id: FriendId; dy: number };
 }
 
-export function LayoutBScene({ anchors, fit, width, height, state, phase, onFriend, keepsakes = [], onKeepsake }: LayoutBProps) {
+export function LayoutBScene({ anchors, fit, width, height, state, phase, onFriend, keepsakes = [], onKeepsake, stones = [], forward }: LayoutBProps) {
+  const standing = forward ? stepForward(anchors, forward.id, forward.dy) : anchors;
   const id = useId().replace(/[^a-zA-Z0-9]/g, '');
   const stageOf = (area: AreaId) => state.areas.find(row => row.id === area)?.stage ?? 0;
   // Each part where it stands at this stage (support.ts), drawn back to front: by foot, then DEPTH within a cluster.
@@ -85,6 +90,7 @@ export function LayoutBScene({ anchors, fit, width, height, state, phase, onFrie
         {/* The stone joints: rows across the whole width, and the tile lines fanning out from the middle, repeated past the
             frame's sides so a wide screen sees one floor (b2: no 360 strip over a wide sky). */}
         <path d={`${Array.from({ length: 30 }, (_, i) => `M-2000 ${WALL_FOOT + 26 + i * 26}h4360`).join('')}${FLOOR_LINES.map(x => `M${x} ${WALL_FOOT}l${(x - 180) * 0.6} 800`).join('')}`} stroke={C.floorLine} strokeWidth=".8" opacity=".35" />
+        <QuestStones stones={stones} />
         <Wall />
         <g transform={placed(DOOR_BOX, DOOR_RECT)}><Door /></g>
         {/* 9q's stone step under the door: the door's foot stands below the wall's (b2 10 Nov, 9q match). */}
@@ -108,15 +114,15 @@ export function LayoutBScene({ anchors, fit, width, height, state, phase, onFrie
       {FRIEND_IDS.map(friendId => {
         const area = state.areas.find(row => row.id === FRIEND_AREA[friendId]);
         if (!area) return null;
-        const [, , , tapH] = rectOnScreen(fit, anchors.friends[friendId].tap);
-        const [fx, fy] = pointOnScreen(fit, anchors.friends[friendId].foot);
+        const [, , , tapH] = rectOnScreen(fit, standing.friends[friendId].tap);
+        const [fx, fy] = pointOnScreen(fit, standing.friends[friendId].foot);
         const size = tapH;
-        return <span key={friendId} className="courtyard-b-friend" data-friend={area.friend} style={{ left: fx - size / 2, top: fy - size * 0.95, width: size }}>
+        return <span key={friendId} className="courtyard-b-friend" data-friend={area.friend} data-forward={forward?.id === friendId || undefined} style={{ left: fx - size / 2, top: fy - size * 0.95, width: size }}>
           <Cast name={area.friend} pose={poseFor(area.today, phase)} size={size} />
         </span>;
       })}
     </div>
-    <StageFriends anchors={anchors} fit={fit} areas={state.areas} onFriend={onFriend} />
+    <StageFriends anchors={anchors} fit={fit} areas={state.areas} onFriend={onFriend} forward={forward} held={<QuestScroll />} />
     {onKeepsake && <div className="courtyard-keepsake-taps">{keepsakes.map((tag, i) => {
       const spot = spots[i]!, k = spot.on === 'board' ? 0.7 : 1;
       // The hit area is the tag plus 5 CSS around it (side by side tags on the bark stay apart); the name and the way to

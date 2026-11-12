@@ -203,14 +203,22 @@ export function HomeRows() {
  * ten-day offer and the week's receipt, then This week (the useful days and the week's real things) and the crew bar,
  * which always close the sheet (spec 660's board goes above them later).
  */
-export function CourtyardCard({ phase, boardMinutes, open }: { phase?: Phase; boardMinutes?: QuestMinutes; open?: boolean }) {
-  const yatra = useYatra();
+/**
+ * Spec 660 §2.1 (b2 ruling a): what the collapsed row shows. A due move keeps the row; otherwise today's quest, and the
+ * move opens the sheet. The Courtyard home reads it too, so the quest's friend steps forward with the scroll.
+ */
+export function useCardChoice(phase?: Phase) {
   const rows = useHomeRows();
   const quests = useQuestBoard();
-  const [expanded, setExpanded] = useState(open === true);
   const resting = phase !== undefined && cardRowFor(phase) === 'rest';
-  // Spec 660 §2.1 (b2 ruling a): a due move keeps the row; otherwise today's quest, and the move opens the sheet.
   const choice = rows && quests ? cardRow({ resting, move: rows.move, now: Date.now(), board: quests.board, doneToday: quests.doneToday }) : resting ? { kind: 'rest' as const } : { kind: 'move' as const }; // eslint-disable-line react-hooks/purity
+  return { rows, quests, resting, choice };
+}
+
+export function CourtyardCard({ boardMinutes, open, card }: { boardMinutes?: QuestMinutes; open?: boolean; card: ReturnType<typeof useCardChoice> }) {
+  const yatra = useYatra();
+  const { rows, resting, choice } = card;
+  const [expanded, setExpanded] = useState(open === true);
   const move = rows ? <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} climb={yatra?.trek.climb} /> : <div className="next-move-slot" />;
   return <HomeCard expanded={expanded} onExpanded={setExpanded}
     row={choice.kind === 'rest' ? <p className="courtyard-rest-row">{COURTYARD_NIGHT_LINE}</p> : choice.kind === 'quest' ? <QuestRow quest={choice.quest} /> : move}

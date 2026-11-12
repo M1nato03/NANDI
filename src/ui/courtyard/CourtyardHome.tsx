@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import raw from './anchors.json';
-import { homeFit, parseAnchors, type ScreenChromeCss } from '../../core/courtyard/anchors';
+import { FRIEND_IDS, homeFit, parseAnchors, stepForward, type FriendId, type ScreenChromeCss } from '../../core/courtyard/anchors';
 import { nudgeAnchors } from '../../core/courtyard/nudges';
 import { useCourtyard } from './Courtyard';
 import { LayoutBScene } from './LayoutBScene';
 import { go } from '../shell/router';
-import { CourtyardCard, useYatra } from '../yatra/Yatra';
+import { CourtyardCard, useCardChoice, useYatra } from '../yatra/Yatra';
+import { pathStones } from '../../core/quests660/path';
+import { FORWARD_DY } from './questArt';
 import { treeKeepsakes, type Keepsake } from '../../core/courtyard/keepsakes';
 import './layoutB.css';
 
@@ -57,17 +59,22 @@ export function CourtyardHome({ boardMinutes, open }: { boardMinutes?: import('.
   const yatra = useYatra();
   const { width, height } = useViewport();
   const chrome = useChrome(width, height);
-  const fit = homeFit(ANCHORS, width, height, TOP_MOST, undefined, chrome);
+  const card = useCardChoice(data?.phase);
+  // Spec 660 §2.1: when the row offers a quest, its friend steps forward holding the scroll (the fit keeps them clear of the card).
+  const questFriend = card.choice.kind === 'quest' ? card.choice.quest.friend.toLowerCase() : undefined;
+  const forward = questFriend && (FRIEND_IDS as readonly string[]).includes(questFriend) ? { id: questFriend as FriendId, dy: FORWARD_DY[questFriend as FriendId] } : undefined;
+  const fit = homeFit(forward ? stepForward(ANCHORS, forward.id, forward.dy) : ANCHORS, width, height, TOP_MOST, undefined, chrome);
+  const stones = pathStones(card.quests?.stones.length ?? 0);
   const keepsakes = yatra ? treeKeepsakes(yatra.trek) : [];
   const [tapped, setTapped] = useState<Keepsake | null>(null);
   useEffect(() => { if (!tapped) return; const timer = window.setTimeout(() => setTapped(null), 6000); return () => window.clearTimeout(timer); }, [tapped]);
   return <section className="courtyard-b-home" aria-label="Courtyard">
     <h1 className="sr-only">Courtyard</h1>
     {data && <LayoutBScene anchors={ANCHORS} fit={fit} width={width} height={height} state={data.state} phase={data.phase} onFriend={area => go(`courtyard/view/${area}`)}
-      keepsakes={keepsakes} onKeepsake={setTapped} />}
+      keepsakes={keepsakes} onKeepsake={setTapped} stones={stones} forward={forward} />}
     {/* §0.14: the camp's name only as a caption outside the art, with the way to its postcard. */}
     {tapped && <p className="courtyard-keepsake-caption" role="status"><span>From {tapped.campName}</span>
       <button type="button" className="text-button" onClick={() => go(`yatra/journal/${tapped.landmarkId}`)}>See its postcard</button></p>}
-    <CourtyardCard phase={data?.phase} boardMinutes={boardMinutes} open={open} />
+    <CourtyardCard boardMinutes={boardMinutes} open={open} card={card} />
   </section>;
 }

@@ -6,14 +6,18 @@
 .courtyard-b { position: absolute; inset: 0; }
 .courtyard-b-scene { position: absolute; inset: 0; display: block; }
 .courtyard-b-friends { position: absolute; inset: 0; pointer-events: none; }
-.courtyard-b-friend { position: absolute; display: block; }
+.courtyard-b-friend { position: absolute; display: block; transition: top .45s ease-out; }
+@media (prefers-reduced-motion: reduce) { .courtyard-b-friend { transition: none; } }
 .courtyard-b-friend .cast-svg { display: block; width: 100%; height: auto; }
 .courtyard-stage-taps { position: absolute; inset: 0; pointer-events: none; }
 .courtyard-friend-tap { position: absolute; min-width: 0; min-height: 0; padding: 0; border: 0; border-radius: 14px; background: transparent; box-shadow: none; pointer-events: auto; }
 .courtyard-friend-tap:focus-visible { outline: 3px solid var(--focus, var(--ink)); outline-offset: 2px; }
 /* The corner done today: a soft warm light under the friend's feet. */
 .courtyard-today-glow { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, #ffd27a88, #ffd27a00); pointer-events: none; }
-.courtyard-held { position: absolute; transform: translate(-50%, -100%); pointer-events: none; }
+.courtyard-held { position: absolute; transform: translate(-50%, -50%); pointer-events: none; }
+.courtyard-held .courtyard-quest-scroll { display: block; filter: drop-shadow(0 1px 1px rgba(80, 50, 20, .35)); animation: courtyard-scroll-bob 2.4s ease-in-out infinite; }
+@keyframes courtyard-scroll-bob { 50% { transform: translateY(-2px) rotate(-4deg); } }
+@media (prefers-reduced-motion: reduce) { .courtyard-held .courtyard-quest-scroll { animation: none; } }
 
 /* The bottom card: collapsed = handle + one row; open = the sheet's sections. It grows with the text (200%). */
 .courtyard-card { position: fixed; z-index: 4; left: 10px; right: 10px; bottom: calc(var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) + 8px); max-height: calc(100dvh - var(--tabbar-h, 64px) - var(--topbar-h, 64px) - 24px); overflow-y: auto;
@@ -26,6 +30,8 @@
 .courtyard-card-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; width: 100%; min-height: 56px; padding: 8px 12px; text-align: left; }
 .courtyard-card-text { display: grid; gap: 2px; }
 .courtyard-card-meta { color: var(--ink-2); font-size: .875rem; line-height: 1.25rem; }
+/* Spec 660: the row is a filled button, so its meta line takes the button's own text colour (ink-2 on brown failed contrast). */
+.courtyard-card-row .courtyard-card-meta { color: inherit; }
 
 /* §0.14 neem keepsakes: the taps over the tags, the caption outside the art, a small sway from the peg. */
 .courtyard-keepsake-taps { position: absolute; inset: 0; pointer-events: none; }

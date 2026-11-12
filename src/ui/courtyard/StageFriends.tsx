@@ -10,8 +10,8 @@ import { FRIEND_AREA, FRIEND_IDS, rectOnScreen, stepForward, type FriendId, type
 export const friendLabel = (area: AreaState) => `${area.friend}, ${area.label}: ${area.days} ${area.days === 1 ? 'day' : 'days'}${area.today ? ', done today' : ''}`;
 
 /**
- * `forward` (spec 660, unused in stage 2): one friend steps toward the card by `dy` canvas px and gets a held-item slot
- * above its tap (the quest item goes there). Gated: layoutProblems(stepForward(anchors, id, dy), ...).
+ * `forward` (spec 660): one friend steps toward the card by `dy` canvas px and holds the quest's scroll out at its side
+ * (the held slot, at the tap's right, hand height). Gated: layoutProblems(stepForward(anchors, id, dy), ...).
  */
 export function StageFriends({ anchors: base, fit, areas, onFriend, forward, held }: { anchors: StageAnchors; fit: StageFit; areas: readonly AreaState[]; onFriend: (id: AreaId) => void; forward?: { id: FriendId; dy: number }; held?: ReactNode }) {
   const anchors = forward ? stepForward(base, forward.id, forward.dy) : base;
@@ -24,7 +24,7 @@ export function StageFriends({ anchors: base, fit, areas, onFriend, forward, hel
       return <span key={id} className="courtyard-friend-spot" data-friend={id}>
         {area.today && <i className="courtyard-today-glow" aria-hidden="true" style={{ left: gx, top: gy, width: gw, height: gh }} />}
         <button type="button" className="courtyard-friend-tap" data-area={area.id} aria-label={friendLabel(area)} style={{ left: x, top: y, width: w, height: h }} onClick={() => onFriend(area.id)} />
-        {forward?.id === id && <span className="courtyard-held" data-friend={id} style={{ left: x + w / 2, top: y }}>{held}</span>}
+        {forward?.id === id && <span className="courtyard-held" data-friend={id} style={{ left: x + w * 0.86, top: y + h * 0.58 }}>{held}</span>}
       </span>;
     })}
   </div>;
