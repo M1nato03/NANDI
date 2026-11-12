@@ -96,12 +96,10 @@ test('an empty week is only empty: no number warning, no "+0 places", and rest d
   await expect(season(page)).not.toContainText(/places this week|streak|missed|try harder|behind/i);
   await expect(week(page)).toContainText(/rest days? banked/);
   await expect(week(page).getByRole('button', { name: 'Plan days away' })).toBeVisible();
-  // Rest days are no longer sold.
+  // Rest days are not sold (spec 660 §3.1: no shop at all); the ones held show, read-only, in You › history.
   await page.goto('/?e2e#you/shop');
-  await expect(page.getByRole('heading', { name: 'Shop', level: 1 })).toBeVisible();
-  await expect(page.locator('.shop-item')).not.toHaveCount(0);
-  await expect(page.getByText('Adds one day to your rest bank.')).toHaveCount(0);
-  await expect(page.locator('.shop-item .eyebrow').filter({ hasText: 'Rest day' })).toHaveCount(0);
+  await expect(page.getByTestId('you-history')).toContainText(/Rest days held: \d+/);
+  await expect(page.locator('.shop-item')).toHaveCount(0);
 });
 
 test('L2: "Keep rank tucked away" hides the rank, places and rival on You; the ladder itself stays whole', async ({ page }) => {

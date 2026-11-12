@@ -383,9 +383,9 @@ test('G1 group 11: You', async ({ page }) => {
   // row 165: Hide ladder rank
   await expect(page.getByLabel('Keep rank tucked away')).toBeVisible();
   await you(page);
-  // row 166: Shards shop
-  await page.getByRole('button', { name: 'Shop' }).click();
-  await expect(page.getByRole('heading', { name: 'Shop' })).toBeVisible();
+  // row 166: Shards shop → spec 660 §3.1: closed; the Shards kept are read-only in You › history
+  await page.getByTestId('history-link').click();
+  await expect(page.getByRole('heading', { name: /^Shards kept: \d/ })).toBeVisible();
   await you(page);
   await page.getByTestId('door-link-remember').click();
   // row 160: Learning holding moved from You to Remember

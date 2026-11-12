@@ -47,6 +47,8 @@ function legacyRoute(value: string): string {
   if (value === 'tasks/plan') return 'plan/morning';
   if (value === 'tasks/shutdown') return 'plan/shutdown';
   if (value === 'tasks/review') return 'plan/review';
+  // Spec 660 §3.1: the shop closed; its old links open You › history ("Shards kept").
+  if (value === 'you/shop' || value.startsWith('you/shop/')) return 'you/history';
   if (value.startsWith('tasks/')) return `plan/${value.slice(6)}`;
   if (value === 'ground' || value === 'you/settings') return 'you/settings';
   if (value.startsWith('ground/')) return `you/${value.slice(7)}`;

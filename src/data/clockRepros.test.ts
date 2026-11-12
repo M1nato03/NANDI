@@ -18,7 +18,12 @@ import { dayKey } from '../core/time';
 const env = (globalThis as unknown as { process: { env: Record<string, string | undefined> } }).process.env;
 let db: NandiDb, n = 0, now = 0;
 const zone = env.TZ;
-beforeEach(() => { env.TZ = 'Asia/Kolkata'; vi.useFakeTimers({ toFake: ['Date'] }); db = createDb(`clock-repro-${++n}`); });
+// These repros pin the Shards rules from before spec 660 §3.1: a v12From that never comes keeps Shards earning (the
+// fence itself is checked in shardsFence.test.ts and the clock fuzz's cutoff run).
+beforeEach(async () => {
+  env.TZ = 'Asia/Kolkata'; vi.useFakeTimers({ toFake: ['Date'] }); db = createDb(`clock-repro-${++n}`);
+  await db.settings.put({ key: 'economy.v12From', value: '9999-12-31', updatedAt: 1, deleted: 0, deviceId: 'repro' });
+});
 afterEach(async () => { vi.useRealTimers(); env.TZ = zone; await db.delete(); });
 /** Local time in Asia/Kolkata. */
 const set = (iso: string) => { now = new Date(iso).getTime(); vi.setSystemTime(now); };

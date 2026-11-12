@@ -1,5 +1,5 @@
 import { RULES } from '../rules.config';
-import { deriveEconomy, seasonIndex, type EconomyView } from './deriveEconomy';
+import { deriveEconomy, seasonIndex, shopClosedFrom, type EconomyView } from './deriveEconomy';
 import type { RulesHistoryEntry } from '../rules.config';
 import type { LedgerRow, SettingRow } from '../../data/types';
 
@@ -38,6 +38,8 @@ export function catalogue(day: string): ShopItem[] {
 }
 /** `derived` lets a screen that lists every item derive the economy once (item 38). */
 export function purchaseDecision(itemId: string, facts: readonly LedgerRow[], settings: readonly SettingRow[], today: string, history?: readonly RulesHistoryEntry[], derived?: EconomyView): { ok: boolean; reason?: string; item?: ShopItem } {
+  // Spec 660 §3.1: the shop is closed from v12From; what is owned stays owned (purchases already made still replay).
+  if (today >= shopClosedFrom(settings)) return { ok: false, reason: 'The shop is closed. What you own stays yours.' };
   const item = catalogue(today).find(row => row.id === itemId);
   if (!item) return { ok: false, reason: 'This item is not in this season.' };
   const economy = derived ?? deriveEconomy(facts, history, settings, today);

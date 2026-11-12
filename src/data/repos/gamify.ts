@@ -58,7 +58,13 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     if (!await db.settings.get('economy.v10From')) await db.settings.put({ key: 'economy.v10From', value: today, updatedAt: now, deleted: 0, deviceId });
     // Spec 660 (Quests): finished quests fill the jar and the removed reward layers stop earning from the first day this
     // build ran; earlier days keep what they showed.
-    if (!await db.settings.get('economy.v12From')) await db.settings.put({ key: 'economy.v12From', value: today, updatedAt: now, deleted: 0, deviceId });
+    // Spec 660 §3.1: Shards stop the day after it (shardsStopFrom). A clock set ahead earlier has already shown later
+    // days and their Shards, so the cutoff is never before the furthest day shown: nothing shown ever drops.
+    if (!await db.settings.get('economy.v12From')) {
+      const seenRow = await db.settings.get(SEEN_KEY);
+      const seen = seenRow && !seenRow.deleted ? readSeenUpTo([seenRow]) : undefined;
+      await db.settings.put({ key: 'economy.v12From', value: [today, seen ?? ''].sort().at(-1)!, updatedAt: now, deleted: 0, deviceId });
+    }
     // Batch 5 (item 51): from the day after this build first runs, Mind after bedtime grows no courtyard corner.
     // Tomorrow, so nothing done earlier today stops counting, and never before the day after the furthest day this
     // phone has shown, so a clock set back on the upgrade day cannot shrink a corner later. Written once (items 53-54).

@@ -413,12 +413,39 @@ function withPeak(view: EconomyView, settings: readonly SettingRow[] | Record<st
   return { ...view, totalXp: Math.max(view.totalXp, peak.totalXp), level, nextLevelXp: level > view.level ? xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase) : view.nextLevelXp };
 }
 
+/** Spec 660 §3.1: the day the Quests build first ran (economy.v12From; a restore keeps this phone's), or never. */
+export function shopClosedFrom(settings: readonly SettingRow[] | Record<string, unknown>): string {
+  const stored = value(settings, 'economy.v12From');
+  return typeof stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(stored) ? stored : '9999-12-31';
+}
+/**
+ * Spec 660 §3.1 (b2 12 Nov): no Shard is earned from the day AFTER v12From. The shop closes on v12From itself, but the
+ * Shards a person already saw today (earned before the update, mid-day) never drop: every day shown before the update
+ * keeps what it showed, the update day included. Missing = never.
+ */
+export function shardsStopFrom(settings: readonly SettingRow[] | Record<string, unknown>): string {
+  const from = shopClosedFrom(settings);
+  return from === '9999-12-31' ? from : addEconomyDays(from, 1);
+}
+
 function viewUpTo(facts: readonly LedgerRow[], history: readonly RulesHistoryEntry[], settings: readonly SettingRow[] | Record<string, unknown>, end: string): EconomyView {
   const { replay, closes } = replayWithCloses(facts, history, settings, end);
   // A level the peak keeps but the replay no longer reaches keeps the Shards it paid: only the unpaid difference,
   // added before the floor, so a close that already holds that bonus never pays it twice (cj3 D, Codex review).
   const unpaidLevels = Math.max(0, readPeak(settings).level - replay.view.level);
-  const balance = replay.balance + unpaidLevels * (rulesFor(end, history)?.rules ?? RULES).shards.levelUpBonus;
+  let peakBonus = unpaidLevels * (rulesFor(end, history)?.rules ?? RULES).shards.levelUpBonus;
+  // Spec 660 §3.1: from v12From the peak floor only keeps a level bonus that was paid before it: at most the highest
+  // bonus a day before the cutoff held, less what the replay already pays. A level first reached after the cutoff
+  // never mints Shards, even when a later deleted fact drops the replay below the peak.
+  const stop = shardsStopFrom(settings);
+  if (stop !== '9999-12-31' && peakBonus > 0) {
+    const before = [...closes].filter(([day]) => day < stop).map(([, close]) => close.bonus ?? 0);
+    const replayed = [...replay.daily].filter(([day]) => day < stop).map(([, day]) => day.bonus);
+    const held = Math.max(0, ...before, ...replayed);
+    const paid = [...replay.daily.values()].at(-1)?.bonus ?? 0;
+    peakBonus = Math.max(0, Math.min(peakBonus, held - paid));
+  }
+  const balance = replay.balance + peakBonus;
   if (!closes.size) return { ...replay.view, shards: Math.max(0, balance) };
   const owned = [...new Set([...replay.view.owned, ...[...closes.values()].flatMap(close => close.owned)])];
   return { ...replay.view, shards: Math.max(0, balance, Math.floor(shardFloors(closes, replay, [end]).get(end)?.shards ?? -Infinity)), owned };
@@ -512,6 +539,9 @@ function replayEconomy(
   // first time a fact is written, so nothing is ever paid backwards. With the flag off no such fact exists.
   const v11Stored = value(settings, 'economy.v11From');
   const v11From = typeof v11Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v11Stored) ? v11Stored : '9999-12-31';
+  // Spec 660 §3.1 (b2 12 Nov): Shards stop being earned from v12From (perXp, level bonus, season award, per-fact).
+  const v12From = shardsStopFrom(settings);
+  const v12 = (key: string) => key >= v12From;
   const unpaidQuests = customQuestPay(ordered, v4From, history).unpaid;
   // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
   const restWeekdayFor = (key: string): number | undefined => {
@@ -639,9 +669,10 @@ function replayEconomy(
   for (const day of days) {
     const rules = rulesFor(day.dayKey, history)?.rules ?? RULES;
     totalXp += day.total;
-    earnedFromXp += day.total * rules.shards.perXp;
+    // Level and XP are untouched by spec 660 §3.1; only the Shards they pay stop at v12From.
+    if (!v12(day.dayKey)) earnedFromXp += day.total * rules.shards.perXp;
     const candidate = Math.floor((1 + Math.sqrt(1 + 8 * totalXp / rules.level.stepBase)) / 2);
-    if (candidate > level) { levelShardBonus += (candidate - level) * rules.shards.levelUpBonus; level = candidate; }
+    if (candidate > level) { if (!v12(day.dayKey)) levelShardBonus += (candidate - level) * rules.shards.levelUpBonus; level = candidate; }
     // Exact, not rounded down: a late fact on an earlier day then moves a close's earnings and the end's by the same
     // amount, so the Shards floor never loses a rounding Shard (cj3 fuzz seeds 2099, 2117). Only shown numbers round.
     earnedXpBy.push(earnedFromXp + levelShardBonus); bonusBy.push(levelShardBonus);
@@ -736,13 +767,14 @@ function replayEconomy(
     if (season.end < start && start >= (typeof v3Stored === 'string' ? v3From : today)) continue;
     const finalRank = rankFor(seasonSp(season) + seedFor(season), targetFor(season));
     const awardRules = rulesFor(season.end, history)?.rules ?? RULES;
-    const amount = awardRules.shards.seasonEnd[tierFor(finalRank) as keyof typeof RULES.shards.seasonEnd];
-    seasonAward += amount;
     const on = addEconomyDays(season.end, 1);
+    // Keyed on the payout day: a season ending the day before the cutoff pays nothing on the cutoff day.
+    const amount = v12(on) ? 0 : awardRules.shards.seasonEnd[tierFor(finalRank) as keyof typeof RULES.shards.seasonEnd];
+    seasonAward += amount;
     awardOn.set(on, (awardOn.get(on) ?? 0) + amount);
   }
   const factShardsOn = new Map<string, number>();
-  for (const row of ordered) { const amount = replayFactShards(row, history); if (amount) factShardsOn.set(row.dayKey, (factShardsOn.get(row.dayKey) ?? 0) + amount); }
+  for (const row of ordered) { if (v12(row.dayKey)) continue; const amount = replayFactShards(row, history); if (amount) factShardsOn.set(row.dayKey, (factShardsOn.get(row.dayKey) ?? 0) + amount); }
   let balance = Math.floor(earnedFromXp) + levelShardBonus + seasonAward;
   balance += [...factShardsOn.values()].reduce((sum, amount) => sum + amount, 0);
   const owned: string[] = [];

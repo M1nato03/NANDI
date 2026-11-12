@@ -228,7 +228,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
           <details className="read-chapter-ideas"><summary>{module.concepts.length} ideas<span className="read-chevron" aria-hidden="true">▸</span></summary>{ideaRows(topicId, module.concepts)}</details>
         </li>;
       })}</ol>
-      <div className="learn-trail-chest"><Cast name="Chiku" pose={chest ? 'cheer' : 'idle'} size={44} />Book chest · {chest ? 'Opened' : 'Keep reading'} · {RULES.gamify.unitChestShards} Shards</div>
+      <div className="learn-trail-chest"><Cast name="Chiku" pose={chest ? 'cheer' : 'idle'} size={44} />Book chest · {chest ? 'Opened' : 'Keep reading'}</div>
       {message && <p role="status">{message}</p>}{scene}
     </section>;
   }

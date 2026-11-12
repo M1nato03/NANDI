@@ -14,7 +14,7 @@ import { doSoftThing, setSoftState } from './repos/soft';
 import { putDailyBoardFact } from './repos/learn';
 import { exportBackup, importBackup, type BackupEnvelope } from './backup';
 import { getOrCreateDeviceId } from './device';
-import { deriveEconomy, type EconomyView } from '../core/economy/deriveEconomy';
+import { deriveEconomy, readSeenUpTo, shardsStopFrom, type EconomyView } from '../core/economy/deriveEconomy';
 import { catalogue } from '../core/economy/shop';
 import { dayKey } from '../core/time';
 import type { PuzzleRunRow } from './types';
@@ -59,13 +59,21 @@ function generate(seed: number, steps: number): Op[] {
 let serial = 0;
 const START = Date.UTC(2026, 9, 20, 6, 30); // 20 Oct 2026, 12:00 in Kolkata
 
-async function runSequence(ops: Op[]): Promise<string[]> {
+/**
+ * `cutoffAt`: spec 660 §3.1 (a9's assert F). Until that step the Shards rules from before the fence hold (v12From
+ * never comes); at it, v12From is set to that day, as the Quests build's first run does. From then on every close
+ * dated before the stop day stays exactly as it was, and the Shards shown never grow (outside a restore).
+ */
+async function runSequence(ops: Op[], cutoffAt = -1, record?: { closes: Map<string, string>[]; stop?: string }): Promise<string[]> {
   env.TZ = 'Asia/Kolkata';
   let now = START;
   vi.setSystemTime(now);
   const db: NandiDb = createDb(`clock-fuzz-${++serial}`);
   const failures: string[] = [];
   try {
+    if (cutoffAt >= 0) await db.settings.put({ key: 'economy.v12From', value: '9999-12-31', updatedAt: 1, deleted: 0, deviceId: 'fuzz' });
+    let fenced: { stop: string; closes: Map<string, string> } | undefined;
+    let fencedShards = Infinity;
     const deviceId = await getOrCreateDeviceId(db, now);
     const tasks = createTaskRepos(db, deviceId), train = createTrainRepos(db, deviceId);
     const backups: BackupEnvelope[] = [];
@@ -119,6 +127,15 @@ async function runSequence(ops: Op[]): Promise<string[]> {
     for (let step = 0; step < ops.length; step++) {
       const op = ops[step]!;
       let spent = 0;
+      if (step === cutoffAt) {
+        // As the Quests build's first reconcile writes it: today, or the furthest day already shown if later.
+        const seen = readSeenUpTo(await db.settings.toArray());
+        const from = [dayKey(now), seen ?? ''].sort().at(-1)!, stop = shardsStopFrom({ 'economy.v12From': from });
+        if (record) record.stop = stop;
+        await db.settings.put({ key: 'economy.v12From', value: from, updatedAt: now, deleted: 0, deviceId: 'fuzz' });
+        const closes = new Map((await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith('economy.close:') && row.key.slice(14) < stop).map(row => [row.key, JSON.stringify(row.value)] as const));
+        fenced = { stop, closes };
+      }
       const d = new Date(now);
       if (op.t === 'day') { d.setDate(d.getDate() + 1); d.setHours(op.hour, op.min, 0, 0); setClock(d); }
       else if (op.t === 'fwd' || op.t === 'back') { d.setDate(d.getDate() + (op.t === 'fwd' ? op.days : -op.days)); d.setHours(op.hour, 0, 0, 0); setClock(d); }
@@ -161,6 +178,23 @@ async function runSequence(ops: Op[]): Promise<string[]> {
         await reconcile();
       }
       await check(step, op.t === 'restore' ? { t: 'skipReconcile' } : op, spent);
+      if (record) record.closes.push(new Map((await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith('economy.close:')).map(row => [row.key, JSON.stringify(row.value)] as const)));
+      if (fenced && op.t === 'restore') {
+        // A restore merges its closes (the higher of each side's, item 38): the fenced set is re-read after it.
+        fencedShards = Infinity;
+        fenced.closes = new Map((await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith('economy.close:') && row.key.slice(14) < fenced!.stop).map(row => [row.key, JSON.stringify(row.value)] as const));
+      }
+      if (fenced && op.t !== 'restore' && op.t !== 'backup') {
+        // a9 F: closes before the stop day hold exactly; Shards shown never grow once past it (purchases are refused).
+        const today = dayKey(now);
+        // A clock set back before the stop day may earn on those days again (as every cutoff allows): start over.
+        if (today < fenced.stop) fencedShards = Infinity;
+        else {
+          const shards = (await view()).shards;
+          if (shards > fencedShards) failures.push(`step ${step} ${JSON.stringify(op)}: Shards grew past the fence ${fencedShards} -> ${shards} (today ${today})`);
+          fencedShards = Math.min(fencedShards, shards);
+        }
+      }
       if (env.FUZZ_TRACE) {
         const v = await view();
         const closes = (await db.settings.toArray()).filter(r => r.key.startsWith('economy.close:')).map(r => `${r.key.slice(14)}=${(r.value as { shards: number }).shards}`);
@@ -179,10 +213,30 @@ async function runSequence(ops: Op[]): Promise<string[]> {
 it('the economy never drops XP, level, a finished day, Shards or owned items under clock, time-zone and restore moves', async () => {
   vi.useFakeTimers({ toFake: ['Date'] });
   const broken: string[] = [];
+  // Before spec 660 §3.1 the Shards rules had no fence: these seeds keep testing them (v12From never comes).
+  const pinned = async (ops: Op[]) => runSequence(ops, ops.length + 1);
   // CI runs seeds 1000-1019; FUZZ_SEED runs one seed, FUZZ_BASE and FUZZ_COUNT a longer local run.
   const only = env.FUZZ_SEED ? [Number(env.FUZZ_SEED)] : Array.from({ length: Number(env.FUZZ_COUNT ?? 20) }, (_, i) => Number(env.FUZZ_BASE ?? 1000) + i);
   for (const seed of only) {
-    const failures = await runSequence(generate(seed, 60));
+    const failures = await pinned(generate(seed, 60));
+    if (failures.length) broken.push(`seed ${seed}: ${failures[0]}`);
+  }
+  vi.useRealTimers();
+  expect(broken).toEqual([]);
+}, 3_600_000);
+
+it('spec 660 §3.1 (a9 F): the cj3 seeds with v12From set mid-run: every close before the stop day equals the unfenced twin run, Shards never grow after it', async () => {
+  vi.useFakeTimers({ toFake: ['Date'] });
+  const broken: string[] = [];
+  for (const seed of [1000, 2016, 2020, 2099, 2117, 2128]) {
+    const ops = generate(seed, 60);
+    const twin = { closes: [] as Map<string, string>[] }, fenced: { closes: Map<string, string>[]; stop?: string } = { closes: [] };
+    const failures = [...await runSequence(ops, ops.length + 1, twin), ...await runSequence(ops, 30, fenced)];
+    // The same ops on the same clock: each step's closes dated before the stop day are the same with and without it.
+    for (let step = 0; step < Math.min(twin.closes.length, fenced.closes.length) && !failures.length; step++) {
+      for (const [key, value] of twin.closes[step]!) if (key.slice(14) < fenced.stop! && fenced.closes[step]!.get(key) !== value) failures.push(`step ${step}: ${key} ${value} -> ${fenced.closes[step]!.get(key)}`);
+      for (const key of fenced.closes[step]!.keys()) if (key.slice(14) < fenced.stop! && !twin.closes[step]!.has(key)) failures.push(`step ${step}: ${key} only with the cutoff`);
+    }
     if (failures.length) broken.push(`seed ${seed}: ${failures[0]}`);
   }
   vi.useRealTimers();

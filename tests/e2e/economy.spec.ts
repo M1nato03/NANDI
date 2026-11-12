@@ -14,6 +14,21 @@ const dayFacts = (day: string): Fact[] => [
   ...Array.from({ length: 20 }, () => fact(day, 'mind', 'card', { afterBedtime: false })),
   fact(day, 'mind', 'learn-drop', { afterBedtime: false }), fact(day, 'bonuses', 'lightsout', { metTarget: true }),
 ];
+/** A card back and a theme bought on an older build: their accepted purchase facts and the applied theme setting. */
+async function seedOwned(page: Page) {
+  await page.evaluate(async () => {
+    const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+    await new Promise<void>((resolve, reject) => {
+      const tx = database.transaction(['ledger', 'settings'], 'readwrite');
+      const at = new Date('2026-11-01T12:00:00').getTime();
+      for (const [id, price] of [['cardback:weave', 100], ['theme:linen', 400]] as const) tx.objectStore('ledger').put({ id: `purchase:old-${id}`, dayKey: '2026-11-01', mode: 'economy', kind: 'purchase', refId: id, inputs: { itemId: id, price, accepted: true }, updatedAt: at, deleted: 0, deviceId: 'old-build' });
+      tx.objectStore('settings').put({ key: 'economy.theme', value: 'theme:linen', updatedAt: at, deleted: 0, deviceId: 'old-build' });
+      tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error);
+    });
+    database.close();
+  });
+  await page.reload();
+}
 async function seed(page: Page, facts: Fact[]) {
   await page.evaluate(async rows => {
     const database = await new Promise<IDBDatabase>((resolve, reject) => {
@@ -54,7 +69,8 @@ test('seeded week shows rank and the useful week; a card back and theme survive 
   await expect(season.getByRole('region', { name: 'This week' }).getByRole('heading')).toHaveText('6 of your 4');
   await expect(season).toContainText('Useful days: 6 of your 4');
   await expect(season).not.toContainText(/day streak|Hat-tricks|Stamina/);
-  await expect(season).toContainText('Shards');
+  // Spec 660 §3.1: no Shards card on You any more; the balance is read-only in You › history.
+  await expect(season).not.toContainText('Shards');
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
   // 47-L1: the seat above is a pace-setter, named as one, with the SP to pass it (never "sits just above").
   const rival = season.locator('.economy-rival');
@@ -68,16 +84,16 @@ test('seeded week shows rank and the useful week; a card back and theme survive 
   await expect(page.locator('.ladder-seat.you')).toContainText(rankText!.split(' ')[0]!);
   expect(await page.locator('.ladder-seat').filter({ hasText: /SP/ }).count()).toBeGreaterThan(20);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  // Spec 660 §3.1: the shop closed. A card back and a theme bought on an older build (their purchase facts and the
+  // applied theme) stay owned and applied, and the old shop link opens You › history, read-only.
+  await seedOwned(page);
+  await expect(page.locator('html')).toHaveAttribute('data-economy-theme', 'linen');
   await page.goto('/#you/shop');
+  const history = page.getByTestId('you-history');
+  await expect(history.getByRole('heading', { name: /^Shards kept: \d/ })).toBeVisible();
+  await expect(history).toContainText('Linen theme');
+  await expect(history.getByRole('button', { name: /Shards$/ })).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
-  // Spec 47b: no rest day for sale; the cheapest item is a card back.
-  await expect(page.getByText('Adds one day to your rest bank.')).toHaveCount(0);
-  await page.locator('.shop-item', { hasText: 'Weave card back' }).getByRole('button', { name: '100 Shards' }).click();
-  await expect(page.getByText('Yours. Ready to use.')).toBeVisible();
-  await page.getByRole('button', { name: '400 Shards' }).click();
-  await expect(page.locator('html')).toHaveAttribute('data-economy-theme', 'linen');
-  await page.reload();
-  await expect(page.locator('html')).toHaveAttribute('data-economy-theme', 'linen');
   await page.goto('/#you/settings');
   await page.getByRole('button', { name: 'Backup and restore' }).click();
   const download = page.waitForEvent('download');
@@ -96,14 +112,19 @@ test('seeded week shows rank and the useful week; a card back and theme survive 
   await expect(page.locator('html')).toHaveAttribute('data-economy-theme', 'linen');
 });
 
-test('short balance leaves a theme unavailable', async ({ page }) => {
+test('spec 660 §3.1: the shop is closed; its link opens the read-only history and nothing can be bought', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-03T12:00:00') });
   await page.goto('/#you/shop');
-  // Route-ready: the shop and its balance have loaded (a busy machine can be slow to open it).
-  await expect(page.getByRole('heading', { name: 'Shop', level: 1 })).toBeVisible({ timeout: 15_000 });
-  await expect(page.getByText(/Shards ready$/)).toBeVisible();
-  await expect(page.getByRole('button', { name: '400 Shards' })).toBeDisabled();
-  await expect(page.getByText(/more Shards/).first()).toBeVisible();
+  await expect(page).toHaveURL(/#you\/history$/);
+  const history = page.getByTestId('you-history');
+  await expect(history.getByRole('heading', { name: /^Shards kept: \d/ })).toBeVisible({ timeout: 15_000 });
+  await expect(history).toContainText('The shop has closed. What you own stays yours.');
+  await expect(history).toContainText(/Rest days held: \d+/);
+  await expect(page.locator('.shop-item')).toHaveCount(0);
+  // One link from You.
+  await page.goto('/#you');
+  await page.getByTestId('history-link').click();
+  await expect(page).toHaveURL(/#you\/history$/);
 });
 
 test('days without a mark spend the rest bank as before, and You shows only its balance', async ({ page }) => {

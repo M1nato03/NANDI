@@ -44,6 +44,8 @@ export function You() {
     {/* Spec 33: private books are imported here. Train moved to Yatra (spec 34). */}
     <PrivateBooks />
     <HelpsWithRow open={() => go('you/helps')} />
+    {/* Spec 660 §3 (F1): one link to the read-only history of the removed reward layers. */}
+    <button type="button" className="card you-link" data-testid="history-link" onClick={() => go('you/history')}><strong>Your history</strong><span>Shards kept, badges earned and past seasons</span></button>
     <button type="button" className="card you-link deck-area-night settings-link" onClick={() => go('you/settings')}><DeckGlyph type="night" /><strong>Settings</strong><span>Night plan, day and night, notifications, appearance, backup and about</span></button>
   </section>;
 }

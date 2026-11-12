@@ -7,8 +7,7 @@ import { pendingTarget, readTargets, setTarget, TARGET_KEY, TARGETS, targetFor, 
 import { useModalFocus } from '../shell/useModalFocus';
 import { currentArcTitle } from '../../core/mysteries';
 import { boardSeats, rivalName, seatThreshold } from '../../core/economy/ladder';
-import { catalogue, purchaseDecision } from '../../core/economy/shop';
-import { purchaseShopItem } from '../../data/repos/economy';
+import { SHOP_ITEMS } from '../../core/economy/shop';
 import { recordShown } from '../../data/repos/gamify';
 import { RULES } from '../../core/rules.config';
 import { AWAY_KEY, awayRanges, planAway } from '../../core/economy/away';
@@ -163,7 +162,6 @@ export function YourSeason() {
     </div>}
     <ThisWeek settings={settings} today={economy.today} dates={weekDates} bank={view.streak.restDays} />
     <button type="button" className="card you-link you-courtyard-link useful-record-link" data-testid="useful-days-link" onClick={() => go('you/days')}><strong>Your record</strong><span>Every useful day, your longest run and Clean weeks</span></button>
-    {show.shards && <div className="card economy-shards"><div><span className="eyebrow">Shards</span><h2>{view.shards.toLocaleString()}</h2></div><button type="button" onClick={() => go('you/shop')}>Shop</button></div>}
     {how && <LadderHow target={target} onClose={() => setHow(false)} />}
   </section>;
 }
@@ -194,24 +192,23 @@ export function SeasonLadder() {
   </section>;
 }
 
-export function SeasonShop() {
+/**
+ * Spec 660 §3 (jenil-0b F1, 12 Nov): You › history, one read-only page for what the removed reward layers left behind.
+ * Nothing on it can be bought, raised or changed; each removal adds its own section.
+ */
+export function YouHistory() {
   const economy = useEconomy();
-  const [message, setMessage] = useState('');
-  const [busy, setBusy] = useState(false);
-  const theme = economy ? activeSetting(economy.settings, 'economy.theme') : undefined;
-  useEffect(() => { document.documentElement.dataset.economyTheme = typeof theme === 'string' ? theme.replace('theme:', '') : ''; }, [theme]);
-  if (!economy) return <section className="screen">Opening the shop…</section>;
-  const buy = async (id: string) => {
-    setBusy(true);
-    try {
-      const result = await purchaseShopItem(db, id);
-      setMessage(result.ok ? 'Yours. Ready to use.' : result.reason ?? 'Could not save this purchase.');
-    } catch { setMessage('Could not save this purchase. Try again.'); }
-    finally { setBusy(false); }
-  };
-  return <section className="screen economy-shop"><p className="eyebrow">Your season</p><h1>Shop</h1><p>{economy.view.shards} Shards ready</p><div className="shop-list">{catalogue(economy.today).map(item => {
-    const decision = purchaseDecision(item.id, economy.facts, economy.settings, economy.today, undefined, economy.view);
-    const owned = economy.view.owned.includes(item.id);
-    return <section className="card shop-item" key={item.id}><div><span className="eyebrow">{item.kind === 'freeze' ? 'Rest day' : item.kind.replace(/([A-Z])/g, ' $1')}</span><h2>{item.name}</h2><p>{item.description}</p></div><button type="button" disabled={busy || !decision.ok} onClick={() => void buy(item.id)}>{owned ? 'Owned' : `${item.price} Shards`}</button>{!decision.ok && !owned && <p className="small">{decision.reason}</p>}</section>;
-  })}</div>{message && <p role="status">{message}</p>}</section>;
+  if (!economy) return <section className="screen you-history" aria-busy="true" />;
+  const { view } = economy;
+  const names = new Map(SHOP_ITEMS.map(item => [item.id, item.name]));
+  const owned = view.owned.map(id => names.get(id) ?? id);
+  return <section className="screen you-history" data-testid="you-history"><p className="eyebrow">You</p><h1>Your history</h1>
+    <section className="card" aria-labelledby="history-shards"><h2 id="history-shards">Shards kept: {view.shards.toLocaleString()}</h2>
+      <p>The shop has closed. What you own stays yours{owned.length ? ':' : '.'}</p>
+      {owned.length > 0 && <ul className="history-list">{owned.map(name => <li key={name}>{name}</li>)}</ul>}
+      <p className="small">Rest days held: {view.streak.restDays}. They still keep a streak on a missed day, and more arrive on the 1st.</p>
+    </section>
+    <button type="button" className="secondary" onClick={() => go('you')}>Back to You</button>
+  </section>;
 }
+

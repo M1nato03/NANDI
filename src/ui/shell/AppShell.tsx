@@ -88,7 +88,7 @@ const Journal = lazy(() => import('../yatra/Yatra').then(module => ({ default: m
 const UsefulDays = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.UsefulDays })));
 const SeasonLadder = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonLadder })));
 const PastResults = lazy(() => import('../season/SeasonResult').then(module => ({ default: module.PastResults })));
-const SeasonShop = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonShop })));
+const YouHistory = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.YouHistory })));
 const Badges = lazy(() => import('../screens/GamifyScreens').then(module => ({ default: module.Badges })));
 const Night = lazy(() => import('../screens/Night').then(module => ({ default: module.Night })));
 const NightPauseCard = lazy(() => import('../screens/NightPauseCard').then(module => ({ default: module.NightPauseCard })));
@@ -273,7 +273,7 @@ export function AppShell() {
   const key = screenKey(path);
   if (key === 'ground/backup' || key === 'you/backup') screen = <Backup onRestored={restored} />;
   else if (key === 'you/season') screen = <SeasonLadder />;
-  else if (key === 'you/shop') screen = <SeasonShop />;
+  else if (key === 'you/history') screen = <YouHistory />;
   else if (key === 'you/badges') screen = <Badges />;
   else if (key === 'you/contentreview') screen = <ContentReview />;
   else if (key === 'you/cast') screen = <MeetCast />;
