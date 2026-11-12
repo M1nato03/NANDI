@@ -96,9 +96,11 @@ test('an empty week is only empty: no number warning, no "+0 places", and rest d
   await expect(season(page)).not.toContainText(/places this week|streak|missed|try harder|behind/i);
   await expect(week(page)).toContainText(/rest days? banked/);
   await expect(week(page).getByRole('button', { name: 'Plan days away' })).toBeVisible();
-  // Rest days are not sold (spec 660 §3.1: no shop at all); the ones held show, read-only, in You › history.
+  // Rest days are not sold (spec 660 §3.1: no shop at all). The banked count above is where they show; a new phone with
+  // no Shards and nothing owned never sees the closed shop's card in You › history (b2 12 Nov).
   await page.goto('/?e2e#you/shop');
-  await expect(page.getByTestId('you-history')).toContainText(/Rest days held: \d+/);
+  await expect(page.getByTestId('you-history')).toBeVisible();
+  await expect(page.getByRole('heading', { name: /^Shards kept/ })).toHaveCount(0);
   await expect(page.locator('.shop-item')).toHaveCount(0);
 });
 

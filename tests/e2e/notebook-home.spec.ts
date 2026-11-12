@@ -53,7 +53,10 @@ test('a new phone: no useful day yet, the camp, and one move to Read', async ({ 
   await expect(questRow(page)).toContainText(/has a quest/);
   await expect(row(page).locator('.next-move-go')).toHaveCount(0);
   await openCard(page);
-  await expect(page.locator('.courtyard-card-section').first()).toHaveAttribute('data-section', 'move');
+  // Spec 660 E12 (b2 12 Nov): on a new phone the safety question is unanswered, so Quests (holding it) leads the
+  // sheet and the one move comes right after it.
+  await expect(page.locator('.courtyard-card-section').first()).toHaveAttribute('data-section', 'quests');
+  await expect(page.locator('.courtyard-card-section').nth(1)).toHaveAttribute('data-section', 'move');
   await expect(page.getByRole('region', { name: 'One next move' })).toHaveCount(1);
   await expect(move(page)).toHaveCount(1);
   await expect(move(page)).toContainText('Read one idea');
