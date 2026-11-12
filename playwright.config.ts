@@ -3,6 +3,12 @@ import { defineConfig } from '@playwright/test';
 const port = Number(process.env.PLAYWRIGHT_PORT ?? 4173);
 /** Spec 52 gate 5: the timed landings (two-to-start.spec.ts), run alone in their own projects below. */
 const TIMING = /lands in the thing in 2 s or less/;
+/**
+ * Playwright applies --repeat-each only to the projects nothing depends on; a project another one depends on runs its
+ * own repeatEach (1 by default). The local gate sets PW_REPEAT_EACH=2 so every project repeats as before; CI sets
+ * nothing and runs each test once, as it always has.
+ */
+const REPEAT = Number(process.env.PW_REPEAT_EACH ?? 1);
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -23,11 +29,13 @@ export default defineConfig({
       name: 'mobile-390x844',
       use: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },
       grepInvert: TIMING,
+      repeatEach: REPEAT,
     },
     {
       name: 'mobile-360x800',
       use: { viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true },
       grepInvert: TIMING,
+      repeatEach: REPEAT,
     },
     // b2 13 Nov (spec 52 gate 5): the 2 s landing timings run alone, after every other test has finished (the same
     // `playwright test` in the gate and in CI), and one size after the other, so no other browser shares the CPU.
@@ -35,12 +43,16 @@ export default defineConfig({
       name: 'timing-390x844',
       use: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },
       grep: TIMING,
+      // One worker for the project, so the gate's two repeats run one after the other too.
+      workers: 1,
+      repeatEach: REPEAT,
       dependencies: ['mobile-390x844', 'mobile-360x800'],
     },
     {
       name: 'timing-360x800',
       use: { viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true },
       grep: TIMING,
+      workers: 1,
       dependencies: ['timing-390x844'],
     },
   ],

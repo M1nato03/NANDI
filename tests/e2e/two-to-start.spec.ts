@@ -214,9 +214,9 @@ test('nothing is locked: at two picks every route in the app table opens the sam
   expect(await screens()).toEqual(all);
 });
 
-/** Opens a fresh context on the Low profile (4x CPU), with these picks, on Home. */
+/** Opens a fresh context on the Low profile (4x CPU), with these picks, on Home, at the project's own size (a9 13 Nov). */
 async function lowPhone(browser: Browser, testInfo: TestInfo, goals: string[]) {
-  const context = await browser.newContext({ baseURL: testInfo.project.use.baseURL, viewport: { width: 360, height: 800 }, reducedMotion: 'reduce' });
+  const context = await browser.newContext({ baseURL: testInfo.project.use.baseURL, viewport: testInfo.project.use.viewport ?? { width: 360, height: 800 }, reducedMotion: 'reduce' });
   const page = await context.newPage();
   await page.clock.setFixedTime(NOON);
   await withPicks(page, goals);
