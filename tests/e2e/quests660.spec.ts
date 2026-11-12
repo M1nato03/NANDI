@@ -39,6 +39,19 @@ async function stepInView(page: Page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 }
 
+/**
+ * b2/a9 12 Nov: an outcome opens the "How did it actually feel?" scale, which Save waits on. It is brought fully into
+ * view above the pinned footer, and the disabled Save says why ("Pick how it felt").
+ */
+async function feltInView(page: Page) {
+  await expect(page.getByTestId('quest-why')).toHaveText('Pick how it felt');
+  await expect(page.locator('.quest-go')).toBeDisabled();
+  await expect.poll(() => page.locator('.quest-felt').evaluate(node => {
+    const r = node.getBoundingClientRect(), footer = document.querySelector('.quest-actions')!.getBoundingClientRect();
+    return r.top >= 0 && r.bottom <= footer.top + 1;
+  }), { message: 'the felt scale is in view above the footer' }).toBe(true);
+}
+
 test('the collapsed row offers a quest when nothing is due, and opens its card', async ({ page }) => {
   await open(page, 'courtyard', '.courtyard-card');
   const row = page.locator('.courtyard-card-next .courtyard-card-row[data-kind="quest"]');
@@ -131,6 +144,7 @@ test('Courage and Speak ask fear and a prediction; after 3 the Reality Check app
     await page.getByRole('button', { name: 'Go do it' }).click();
     await page.getByRole('button', { name: /I.m back/ }).click();
     await page.getByRole('button', { name: outcome }).click();
+    await feltInView(page);
     if (outcome === 'What I feared happened') await page.getByRole('button', { name: 'Still glad I tried' }).click();
     await page.getByRole('group', { name: 'How did it actually feel?' }).getByRole('button', { name: '2' }).click();
     await page.getByRole('button', { name: 'Save' }).click();
@@ -181,4 +195,6 @@ test('E12 at 200%: the quest card and its steps keep the move in view; only the 
   await page.getByRole('button', { name: 'Go do it' }).click();
   await page.getByRole('button', { name: /I.m back/ }).click();
   await stepInView(page);
+  await page.getByRole('button', { name: 'What I feared happened' }).click();
+  await feltInView(page);
 });

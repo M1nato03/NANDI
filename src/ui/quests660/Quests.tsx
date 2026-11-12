@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import pack from '../../../content/quests660/board.json';
 import { db } from '../../data/db';
@@ -178,6 +178,13 @@ export function QuestScreen({ questId }: { questId: string }) {
   const [prediction, setPrediction] = useState<Prediction>();
   const [outcome, setOutcome] = useState<Outcome>();
   const [felt, setFelt] = useState<number>();
+  // b2/a9 12 Nov: when an outcome opens the "How did it actually feel?" scale, bring it into view (Save waits on it).
+  const feltRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!outcome || outcome === 'not-done' || felt !== undefined) return;
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    feltRef.current?.scrollIntoView({ block: 'nearest', behavior: still ? 'auto' : 'smooth' });
+  }, [outcome]); // eslint-disable-line react-hooks/exhaustive-deps
   const [learned, setLearned] = useState<Learned>();
   const [line, setLine] = useState('');
   const [photo, setPhoto] = useState<File | null>(null);
@@ -235,13 +242,15 @@ export function QuestScreen({ questId }: { questId: string }) {
       {outcome === 'happened' && <fieldset className="quest-learned"><legend>What did you learn?</legend><div className="quest-chips">
         {LEARNED.map(l => <button type="button" key={l.id} className="ui-chip" aria-pressed={learned === l.id} onClick={() => setLearned(l.id)}>{l.label}</button>)}
       </div></fieldset>}
-      {quest.predicts && outcome && outcome !== 'not-done' && <Scale label="How did it actually feel?" value={felt} onChange={setFelt} low="Easy" high="Very hard" />}
+      {quest.predicts && outcome && outcome !== 'not-done' && <div ref={feltRef} className="quest-felt"><Scale label="How did it actually feel?" value={felt} onChange={setFelt} low="Easy" high="Very hard" /></div>}
       {outcome && outcome !== 'not-done' && <><label className="field-label" htmlFor="quest-line">A line for yourself (optional, kept on this phone)</label>
         <input id="quest-line" maxLength={140} value={line} onChange={event => setLine(event.target.value)} />
         <label className="quest-photo-pick"><span>{photo ? 'Photo added' : 'Add a photo (optional)'}</span><input type="file" accept="image/*" onChange={event => setPhoto(event.target.files?.[0] ?? null)} /></label>
         <p className="small">{QUEST_PHOTOS_LINE}</p></>}
       {error && <p className="quest-error" role="alert">{error}</p>}</>;
-    moves = <><button type="button" className="quest-go" disabled={!outcome || busy || (quest.predicts && outcome !== 'not-done' && !felt)} onClick={() => void finish()}>{busy ? 'Saving…' : 'Save'}</button></>;
+    // A disabled Save says what it waits for (never a dead button with no reason).
+    const waiting = !outcome ? 'Pick what happened' : quest.predicts && outcome !== 'not-done' && !felt ? 'Pick how it felt' : '';
+    moves = <>{waiting && <span className="quest-why small" data-testid="quest-why">{waiting}</span>}<button type="button" className="quest-go" disabled={!!waiting || busy} onClick={() => void finish()}>{busy ? 'Saving…' : 'Save'}</button></>;
   } else {
     const kept = outcome !== 'not-done';
     body = <div className="quest-finish" role="status">

@@ -197,11 +197,16 @@ for (const theme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Go do it' }).click();
     await page.getByRole('button', { name: /I.m back/ }).click();
     await expect(page.locator('[data-step="after"]')).toBeVisible();
+    // b2 12 Nov: shot 7 is taken AFTER the outcome tap: the felt scale in view and Save saying what it waits for.
+    await page.getByRole('button', { name: 'What I feared happened' }).click();
+    await expect(page.getByTestId('quest-why')).toBeVisible();
+    await page.waitForTimeout(400);
     await page.screenshot({ path: `${OUT}/660-${t}-07-outcome.png` });
     await textAt200(page);
+    await page.locator('.quest-felt').scrollIntoViewIfNeeded();
     await page.screenshot({ path: `${OUT}/660-${t}-07-outcome-200.png` });
     await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
-    await page.getByRole('button', { name: 'It went fine' }).click();
+    await page.getByRole('button', { name: 'Still glad I tried' }).click();
     await page.getByRole('group', { name: 'How did it actually feel?' }).getByRole('button', { name: '2' }).click();
     await page.getByRole('button', { name: 'Save' }).click();
     await expect(page.locator('.quest-finish')).toBeVisible();
