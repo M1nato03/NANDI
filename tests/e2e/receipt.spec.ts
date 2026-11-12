@@ -121,3 +121,21 @@ test('with the real fonts nothing on the receipt is clipped or overlaps: a full,
     }
   }
 });
+
+test('spec 660: the Home receipt counts the week\'s finished quests (the quest facts are read too)', async ({ page }) => {
+  await homeAt(page, '2026-11-09T12:00:00');
+  await seedRecapWeek(page, '2026-11-05');
+  await page.evaluate(async () => {
+    const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+    await new Promise<void>(resolve => {
+      const tx = database.transaction('ledger', 'readwrite');
+      tx.objectStore('ledger').put({ id: 'quest660:kapi-five-red:2026-11-06', mode: 'quests660', kind: 'quest-done', refId: 'kapi-five-red', dayKey: '2026-11-06', inputs: { outcome: 'fine', minutes: 5 }, updatedAt: new Date('2026-11-06T12:00:00').getTime(), deleted: 0, deviceId: 'e2e' });
+      tx.oncomplete = () => resolve();
+    });
+    database.close();
+  });
+  await openCard(page);
+  await link(page).click();
+  const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
+  await expect(sheet.getByRole('img')).toHaveAttribute('alt', /Quests 1/, { timeout: 20_000 });
+});

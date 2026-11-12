@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { QUEST_MODE } from '../../core/quests660/quests';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { buildRecap, type RecapSources } from '../../core/recap';
 import { dayKey } from '../../core/time/dayKey';
@@ -24,8 +25,8 @@ export function WeekEndShare({ now }: { now?: number }) {
   const sources = useLiveQuery(async (): Promise<RecapSources> => {
     const [tasks, focus, sessions, quests, concepts, logs, ledger] = await Promise.all([
       db.tasks.toArray(), db.focus.toArray(), db.sessions.toArray(), db.quests.toArray(), db.learnConcepts.toArray(), db.dailyLog.toArray(),
-      // Spec 53: only finished chapters and Calm sittings are read from the ledger.
-      db.ledger.where('mode').anyOf('read', 'calm').toArray(),
+      // Spec 53: only finished chapters and Calm sittings are read from the ledger; spec 660 adds finished quests.
+      db.ledger.where('mode').anyOf('read', 'calm', QUEST_MODE).toArray(),
     ]);
     return { tasks, focus, sessions, quests, concepts, logs, ledger };
   }, []);
