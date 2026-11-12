@@ -20,6 +20,8 @@ test('a cold open lands on the Courtyard, first and lit; the Yatra tab has the c
   // Exactly one next move on the Courtyard.
   await expect(strip(page)).toHaveCount(1);
   await expect(strip(page)).toContainText('Read one idea');
+  // Spec 660 (b2 ruling a): Read is not due now, so the card's row is today's quest; the move waits in the sheet.
+  await expect(page.locator('.courtyard-card-next .courtyard-card-row[data-kind="quest"]')).toContainText(/has a quest/);
   await tabs(page).getByRole('link', { name: 'Yatra' }).click();
   await expect(page).toHaveURL(/#yatra$/);
   await expect(camp(page)).toHaveText('Camp at Jobra');
@@ -65,6 +67,8 @@ test('a running focus is the one next move, and it opens the focus card', async 
   await tabs(page).getByRole('link', { name: 'Courtyard' }).click();
   // Spec 571 E1: 24 min of focus has earned 8 jar minutes (1 per full 3).
   await expect(strip(page)).toHaveText(/^Working on 'Write the report' · \+8\u00a0min\s*24:\d\d on the clock\s*↗$/);
+  // A running focus is due now: it has the row, not a quest.
+  await expect(page.locator('.courtyard-card-next .next-move-go')).toBeVisible();
   await strip(page).click();
   await expect(page).toHaveURL(/#plan$/);
   await expect(page.getByRole('region', { name: 'Focus' })).toBeVisible();

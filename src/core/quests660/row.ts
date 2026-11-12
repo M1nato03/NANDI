@@ -5,11 +5,12 @@ import type { BoardQuest } from './quests';
 export const DUE_SOON_MS = 30 * 60_000;
 
 /**
- * Spec 660 §2.1: the collapsed courtyard row shows the plan's next move when something is due now (a running focus, a
- * task timed within 30 min or overdue, a due book check, night), otherwise today's quest.
+ * Spec 660 §2.1: the collapsed courtyard row shows the plan's next move when something is due now (an open focus, running
+ * or held at "Still working?", a task timed within 30 min or overdue, a due book check, night), otherwise today's quest.
  */
 export function moveIsDue(move: NextMove, now: number): boolean {
-  if (move.kind === 'focus') return move.running;
+  // An open focus is work in hand, running or paused (its pause waits for the person, spec 36 Still working?).
+  if (move.kind === 'focus') return true;
   if (move.kind === 'task') return move.at !== undefined && move.at <= now + DUE_SOON_MS;
   return move.kind === 'book-check' || move.kind === 'night';
 }

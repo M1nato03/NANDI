@@ -18,7 +18,8 @@ async function homeAt(page: Page, time: string) {
 async function toHome(page: Page) {
   const deck = page.getByRole('button', { name: 'Leave night deck' });
   // After bedtime the card's row is the resting line, not a move (b2 9 Nov).
-  const row = page.locator('.next-move-go').or(page.locator('.courtyard-rest-row'));
+  // Spec 660: when nothing is due the row is today's quest instead of the move.
+  const row = page.locator('.courtyard-card-next .next-move-go').or(page.locator('.courtyard-card-next .courtyard-card-row')).or(page.locator('.courtyard-rest-row'));
   await expect(row.or(deck).first()).toBeVisible();
   if (await deck.isVisible()) { await deck.click(); await page.getByRole('link', { name: 'Courtyard' }).click(); }
   await expect(row.first()).toBeVisible();
@@ -64,7 +65,8 @@ test('Home offers the receipt from Sunday 18:05 through Monday 23:59, not on Tue
   await openCard(page);
   await expect(link(page)).toBeVisible();
   await homeAt(page, '2026-11-10T12:00:00');
-  await expect(page.locator('.next-move')).toBeVisible();
+  // Spec 660: the row is the move when due, else today's quest; either way the card's row is on show.
+  await expect(page.locator('.courtyard-card-next .next-move, .courtyard-card-next .courtyard-card-row').first()).toBeVisible();
   await expect(link(page)).toHaveCount(0);
   await homeAt(page, '2026-11-08T17:55:00');
   await expect(link(page)).toHaveCount(0);

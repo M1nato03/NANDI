@@ -40,9 +40,19 @@ async function withPicks(page: Page, goals: string[], size = goals.length > 2 ? 
   await putSettings(page, [['profile.goals', goals], ['profile.size', size], ['profile.adultConfirmedAt', '2026-10-20T12:00:00.000Z'], ...extra]);
   await page.goto('/?e2e#courtyard');
   await page.reload();
-  await expect(page.locator('.next-move-go')).toBeVisible();
+  await expect(cardRow(page)).toBeVisible();
 }
 const move = (page: Page) => page.locator('.next-move-go');
+/**
+ * Spec 660 (b2 ruling a): the card's collapsed row is the next move when it is due now, else today's quest (the move
+ * then opens the sheet, first). Either way the row is on show.
+ */
+const cardRow = (page: Page) => page.locator('.courtyard-card-next .next-move-go, .courtyard-card-next .courtyard-card-row').first();
+async function tapMove(page: Page) {
+  const handle = page.locator('.courtyard-card-handle');
+  if (!await move(page).isVisible() && await handle.getAttribute('aria-expanded') !== 'true') await handle.click();
+  await move(page).click();
+}
 /** Spec 571 stage 2: the Courtyard's card holds the week's rows; its handle opens it (a button as well as a swipe). */
 async function openCard(page: Page) {
   const handle = page.locator('.courtyard-card-handle');
@@ -132,8 +142,10 @@ test('an install from before spec 52 counts as Everything: Home, the rings and Y
   await expect(move(page)).toContainText('A short sitting with Chiku');
   // Spec 571 §0.20: Everything shows all three rings.
   await expect.poll(() => ringLines(page)).toEqual(ALL_RINGS);
+  // Spec 660: Read is not due now, so the row is today's quest and the move waits in the sheet, first.
+  await expect(page.locator('.courtyard-card-next .courtyard-card-row[data-kind="quest"]')).toContainText(/has a quest/);
   // The one change for existing installs: the card opens the chapter itself, not the Read tab's front page.
-  await move(page).click();
+  await tapMove(page);
   await expect(page).toHaveURL(/#grow\/read\/chapter\/psychology\/psychology-ch1$/);
   await page.goto('/?e2e#you');
   await expect(page.getByRole('button', { name: /^What NANDI helps with/ })).toContainText('Everything');
@@ -158,12 +170,12 @@ test('You: the same toggles; a change applies at once to the next move and the r
   // Train alone: the Body ring.
   await putSettings(page, [['profile.goals', ['train']]]);
   await page.reload();
-  await expect(move(page)).toBeVisible();
+  await expect(cardRow(page)).toBeVisible();
   await expect.poll(() => ringLines(page)).toEqual(['Body: one real move.']);
   // Sleep alone: no rings (the empty slot keeps the bar's size).
   await putSettings(page, [['profile.goals', ['sleep']]]);
   await page.reload();
-  await expect(move(page)).toBeVisible();
+  await expect(cardRow(page)).toBeVisible();
   await expect(page.getByRole('navigation', { name: "Today's rings" })).toHaveCount(0);
   await expect(page.locator('.today-rings-slot')).toHaveCount(1);
 });
@@ -272,7 +284,7 @@ test.describe('the ten-day offer', () => {
     const offer = page.getByRole('region', { name: 'Add one more thing' });
     await putFacts(page, days(21, 29).map(day => fact(day)));
     await page.reload();
-    await expect(move(page)).toBeVisible();
+    await expect(cardRow(page)).toBeVisible();
     await expect(offer).toHaveCount(0);
     await putFacts(page, [fact('2026-10-30')]);
     await page.reload();
@@ -284,11 +296,11 @@ test.describe('the ten-day offer', () => {
     await expect(offer).toHaveCount(0);
     await putFacts(page, [fact('2026-10-31')]);
     await page.reload();
-    await expect(move(page)).toBeVisible();
+    await expect(cardRow(page)).toBeVisible();
     await expect(offer).toHaveCount(0);
     await putFacts(page, days(1, 9).map(day => fact(day.replace('-10-', '-11-'))).filter(row => row.dayKey <= '2026-11-04'));
     await page.reload();
-    await expect(move(page)).toBeVisible();
+    await expect(cardRow(page)).toBeVisible();
     await expect(offer).toHaveCount(0);
     expect(await settingsOf(page, ['profile.moreOffer'])).toEqual({ 'profile.moreOffer': 'not-now' });
   });
@@ -312,7 +324,7 @@ test.describe('the ten-day offer', () => {
     await expect(page.getByRole('region', { name: 'Add one more thing' }).getByRole('button', { name: 'Everything' })).toBeVisible();
     await putSettings(page, [['profile.size', 'all']]);
     await page.reload();
-    await expect(move(page)).toBeVisible();
+    await expect(cardRow(page)).toBeVisible();
     await expect(page.getByRole('region', { name: 'Add one more thing' })).toHaveCount(0);
   });
 });

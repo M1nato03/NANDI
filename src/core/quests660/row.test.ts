@@ -8,9 +8,9 @@ const NOW = new Date('2026-11-13T12:00:00').getTime();
 const board = (pack as BoardPack).quests.slice(0, 3);
 
 describe('spec 660 §2.1: the collapsed row (b2 ruling a)', () => {
-  it('due now: a running focus, a task within 30 min or overdue, a due book check, night', () => {
+  it('due now: an open focus (running or paused), a task within 30 min or overdue, a due book check, night', () => {
     expect(moveIsDue({ kind: 'focus', title: 'x', running: true, route: 'plan' }, NOW)).toBe(true);
-    expect(moveIsDue({ kind: 'focus', title: 'x', running: false, route: 'plan' }, NOW)).toBe(false);
+    expect(moveIsDue({ kind: 'focus', title: 'x', running: false, route: 'plan' }, NOW)).toBe(true);
     expect(moveIsDue({ kind: 'task', title: 'x', at: NOW + 29 * 60_000, route: 'plan' }, NOW)).toBe(true);
     expect(moveIsDue({ kind: 'task', title: 'x', at: NOW - 60_000, route: 'plan' }, NOW)).toBe(true);
     expect(moveIsDue({ kind: 'task', title: 'x', at: NOW + 31 * 60_000, route: 'plan' }, NOW)).toBe(false);
