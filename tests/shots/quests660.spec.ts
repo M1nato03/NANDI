@@ -36,6 +36,8 @@ async function phone(browser: Browser, colorScheme: 'light' | 'dark'): Promise<P
   const page = await context.newPage();
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#courtyard');
+  // The app has opened its database before any seed is written.
+  await expect(page.locator('.courtyard-b')).toBeVisible({ timeout: 15_000 });
   return page;
 }
 async function home(page: Page) {
@@ -167,7 +169,7 @@ for (const theme of ['light', 'dark'] as const) {
       done('speak-spin-60', '2026-11-12', { prediction: 'freeze', outcome: 'better', fear: 5, felt: 1 }),
     ] }];
     await open('09-reality-check', 'you/quests', '[data-testid="reality-check"]', reality);
-    await open('12-small-steps', 'you', '[aria-label="Small steps today"]', settled);
+    await open('12-small-steps', 'you', '[aria-label="Small steps today"]', [...settled, { store: 'ledger', rows: corners(3) }]);
     await open('13-history', 'you/history', '[data-testid="you-history"]', [{ store: 'ledger', rows: [
       { id: 'badge-tier:tasks:1', dayKey: '2026-11-05', mode: 'gamify', kind: 'badge-tier', refId: 'tasks:1', inputs: {}, updatedAt: 1, deleted: 0, deviceId: 'q660' },
       { id: 'purchase:old-theme', dayKey: '2026-11-01', mode: 'economy', kind: 'purchase', refId: 'theme:linen', inputs: { itemId: 'theme:linen', price: 400, accepted: true }, updatedAt: 1, deleted: 0, deviceId: 'q660' },
@@ -233,6 +235,8 @@ async function phoneAt(browser: Browser, colorScheme: 'light' | 'dark', time: Da
   const page = await context.newPage();
   await page.clock.setFixedTime(time);
   await page.goto('/?e2e#courtyard');
+  await expect(page.locator('.courtyard-b, .night-route, main').first()).toBeVisible({ timeout: 15_000 });
+  await page.waitForFunction(() => new Promise(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => { const ok = request.result.objectStoreNames.contains('settings'); request.result.close(); resolve(ok); }; }));
   return page;
 }
 const settingRow = (key: string, value: unknown): Row => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 'q660' });
