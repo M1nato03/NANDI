@@ -18,6 +18,7 @@ import { finishedSeasons } from '../../core/economy/seasonResult';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { taskFocusMs } from '../../core/tasks/focus';
 import { currentTrail } from '../../data/yatra/trails';
+import { prefetchRoute } from '../shell/prefetch';
 import { CONSTELLATION_PREFIX, ensureFocusRateFrom, ensureJarFrom, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
 import { focusRateFrom, JAR_FROM_KEY, questsFrom } from '../../core/yatra/jar';
 import { weatherFor, type Weather } from '../../core/yatra/weather';
@@ -162,6 +163,8 @@ function NextMoveCard({ rows, capped, climb }: { rows: HomeRows; capped?: boolea
   const { move, current } = rows;
   const running = move.kind === 'focus' && move.running;
   useEffect(() => { if (!running) return; const timer = window.setInterval(() => setNow(Date.now()), 1000); return () => window.clearInterval(timer); }, [running]);
+  // The move's screen is fetched while the phone is idle, so its tap lands without waiting for code (spec 52 gate 5).
+  useEffect(() => prefetchRoute(move.route), [move.route]);
   const words = moveWords(move);
   // Spec 54: what the move adds to the jar, only for acts in its table and not once today's trail is done.
   // Spec 571 E1: a focus adds 1 jar min per full 3 min; the card says what this one has earned so far (never a part step).
