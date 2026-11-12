@@ -378,12 +378,8 @@ test('G1 group 11: You', async ({ page }) => {
   await page.getByRole('button', { name: /Past seasons/ }).click();
   await expect(page.getByRole('heading', { name: 'Past seasons' })).toBeVisible();
   await you(page);
-  // row 164: Season ladder
-  await page.getByRole('button', { name: 'View the ladder' }).click();
-  await expect(page.getByRole('heading', { name: '500 seats' })).toBeVisible();
-  // row 165: Hide ladder rank
-  await expect(page.getByLabel('Keep rank tucked away')).toBeVisible();
-  await you(page);
+  // rows 164-165: Season ladder and Hide ladder rank → spec 660 §3.2: the ladder went; you/season opens You
+  await expect(page.getByRole('button', { name: 'View the ladder' })).toHaveCount(0);
   // row 166: Shards shop → spec 660 §3.1: closed; the Shards kept are read-only in You › history
   await page.getByTestId('history-link').click();
   await expect(page.getByRole('heading', { name: /^Shards kept: \d/ })).toBeVisible();

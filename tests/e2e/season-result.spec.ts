@@ -1,9 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
-import { textAt200 } from './helpers/text';
 
-// Spec 47c: the season result. Once, on the first ordinary open after a season ends (Season 1: from Mon 7 Dec), never
-// on top of the opening breath, a Pause card or a link's page; Continue and Skip both close it; it is marked shown only
-// once it was on screen; the record keeps every past result. The words are spec 47 L4 with real numbers.
+// Spec 660 §3.2 (jenil-0b 12 Nov): the season ladder went, and the season-result moment with it (spec 47c). No page
+// opens when a season ends; each finished season stays readable in You › history, with its dates and useful days
+// only (no rank, tier or Shards). The record's "Past seasons" and every old link lead there.
 const MONDAY = new Date('2026-12-07T10:00:00');
 type Row = Record<string, unknown>;
 async function put(page: Page, store: 'settings' | 'ledger', rows: Row[]) {
@@ -38,90 +37,29 @@ async function open(page: Page) {
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-opening-breath', /shown|skipped/);
 }
-const result = (page: Page) => page.getByRole('dialog', { name: 'Season 1 result' });
-
 test.beforeEach(async ({ page }) => { await page.emulateMedia({ reducedMotion: 'reduce' }); });
 
-test('the first ordinary open after Season 1 shows its result once, with real numbers; Continue closes it for good', async ({ page }) => {
+test('the first ordinary open after Season 1 shows no result page; You › history keeps the season, without rank or Shards', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await ready(page, 'off');
   await open(page);
-  await expect(result(page)).toBeVisible();
-  await expect(page.getByRole('dialog')).toHaveCount(1);
-  await expect(result(page)).toContainText('Season 1 · 2 Nov–6 Dec 2026');
-  await expect(result(page).locator('.season-result-facts')).toHaveText(/^#\d+ of 500 · 3 useful days · (50|100|150|200|250|300) Shards\.$/);
-  await expect(result(page)).toContainText('Season 2 starts today with a fresh climb.');
-  await expect(result(page)).not.toContainText(/fail|fell|dropped|lost|missed/i);
-  // Focus starts on the sheet (its words read first), so a phone open draws no ring on Continue; Tab reaches Continue.
-  await expect(result(page)).toBeFocused();
-  await expect(result(page).locator('.level-friends > span')).toHaveCount(5);
-  await expect(result(page)).not.toContainText('goal');
-  // At 200% text it keeps to the phone's width and every way out stays reachable.
-  await textAt200(page);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && [...document.querySelectorAll('.season-result *')].every(node => node.getBoundingClientRect().right <= innerWidth + 1))).toBe(true);
-  await result(page).getByRole('button', { name: 'Skip' }).scrollIntoViewIfNeeded();
-  await expect(result(page).getByRole('button', { name: 'Skip' })).toBeInViewport();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect.poll(() => shownFlag(page)).toBeNull();
+  await page.goto('/?e2e#you/history');
+  const seasons = page.getByRole('region', { name: 'Past seasons' });
+  await expect(seasons).toContainText('Season 1 · 2 Nov–6 Dec 2026 · 3 useful days');
+  await expect(seasons).not.toContainText(/of 500|Shards|Bench|Challenger|Contender|Elite|Ace|Apex/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await expect.poll(() => shownFlag(page)).not.toBeNull();
-  await result(page).getByRole('button', { name: 'Continue' }).click();
-  await expect(page.getByRole('dialog')).toHaveCount(0);
-  await open(page);
-  await expect(result(page)).toHaveCount(0);
 });
 
-test('it waits for the opening breath and never stacks with it; Skip closes it the same way', async ({ page }) => {
-  await ready(page, 'daily');
-  await open(page);
-  const breath = page.getByRole('dialog', { name: 'Breathe with the square.' });
-  await expect(breath).toBeVisible();
-  await expect(result(page)).toHaveCount(0);
-  expect(await shownFlag(page)).toBeNull();
-  await breath.getByRole('button', { name: 'Skip →' }).click();
-  await expect(result(page)).toBeVisible();
-  await expect(page.getByRole('dialog')).toHaveCount(1);
-  await result(page).getByRole('button', { name: 'Skip' }).click();
-  await expect(page.getByRole('dialog')).toHaveCount(0);
-  await expect.poll(() => shownFlag(page)).not.toBeNull();
-});
-
-test('a link\'s open, or one before the season ends, shows nothing and keeps it for the next ordinary open', async ({ page }) => {
-  await ready(page, 'off', new Date('2026-12-06T20:00:00'));
-  await open(page);
-  await expect(result(page)).toHaveCount(0);
-  await page.clock.setFixedTime(MONDAY);
-  await page.goto('/?e2e#plan');
-  await page.reload();
-  await expect(page.locator('html')).toHaveAttribute('data-opening-breath', 'skipped');
-  await expect(result(page)).toHaveCount(0);
-  expect(await shownFlag(page)).toBeNull();
-  await open(page);
-  await expect(result(page)).toBeVisible();
-});
-
-test('with rank tucked away the result leaves out the rank; "See your useful days" opens the record, which keeps every past result', async ({ page }) => {
-  await ready(page, 'off', MONDAY, [setting('season.rankShown', false)]);
-  await open(page);
-  await expect(result(page).locator('.season-result-facts')).not.toContainText('of 500');
-  await expect(result(page).locator('.season-result-facts')).toContainText('3 useful days');
-  await result(page).getByRole('button', { name: 'See your useful days' }).click();
-  await expect(page.getByRole('dialog')).toHaveCount(0);
-  // Spec 571: the useful-days record belongs to You.
-  await expect(page).toHaveURL(/#you\/days$/);
+test('the record’s Past seasons and the old links (you/days/seasons, you/season) lead to one place each', async ({ page }) => {
+  await ready(page, 'off');
+  await page.goto('/?e2e#you/days');
   await page.getByRole('button', { name: /^Past seasons/ }).click();
-  await expect(page).toHaveURL(/#you\/days\/seasons$/);
-  await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toHaveText('Past seasons');
-  const row = page.getByRole('listitem', { name: 'Season 1' });
-  await expect(row).toContainText('Season 1 · 2 Nov–6 Dec 2026');
-  await expect(row.locator('p')).toHaveText(/^3 useful days · \d+ Shards\.$/);
-  await expect(row).not.toContainText(/fresh climb|You reached|is complete|of 500/);
-  await page.goBack();
-  await expect(page).toHaveURL(/#you\/days$/);
-});
-
-test('a phone first used after the season ended has no result for it', async ({ page }) => {
-  await page.clock.install({ time: MONDAY });
-  await page.goto('/?e2e#you');
-  await put(page, 'settings', [setting('welcome.done', '2026-12-07'), setting('notebook.breath.opening', 'off')]);
-  await open(page);
-  await expect(result(page)).toHaveCount(0);
+  await expect(page).toHaveURL(/#you\/history$/);
+  await page.goto('/?e2e#you/days/seasons');
+  await expect(page).toHaveURL(/#you\/history$/);
+  await page.goto('/?e2e#you/season');
+  await expect(page).toHaveURL(/#you$/);
+  await expect(page.getByRole('region', { name: 'Your season' })).not.toContainText(/of 500|pace-setter|places this week|View the ladder/);
 });

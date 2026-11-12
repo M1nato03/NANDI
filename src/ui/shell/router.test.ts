@@ -89,7 +89,7 @@ describe('spec 571 stage 1: the alias table (G7)', () => {
     ['#mind/reviews', 'grow/remember/cards', 'yatra/mind/reviews', 'Grow'],
     ['#yatra/calm', 'grow/calm', 'yatra/calm', 'Grow'],
     ['#yatra/days', 'you/days', 'yatra/days', 'You'],
-    ['#yatra/days/seasons', 'you/days/seasons', 'yatra/days/seasons', 'You'],
+    ['#yatra/days/seasons', 'you/history', 'you/history', 'You'],
     // Unchanged paths: the trek's journal, Night (widget + focus notice), kolam, settings.
     ['#yatra/journal', 'yatra/journal', 'yatra/journal', 'Yatra'],
     ['#night', 'night', 'night', 'Grow'],
@@ -189,4 +189,12 @@ describe('spec 40: the book game route', () => {
     expect(parentRoute('grow/read/game/richest-man-in-babylon')).toBe('grow/read/book/richest-man-in-babylon');
     expect(tabOf('grow/read/game/richest-man-in-babylon')).toBe(tabOf('grow/read'));
   });
+});
+
+it('spec 660 §3: the removed screens\' links open their one new home (alias table guard)', () => {
+  expect([
+    '#you/shop', '#you/shop/theme', '#you/badges', '#you/season', '#you/days/seasons', '#yatra/days/seasons',
+  ].map(canonicalRoute)).toEqual([
+    'you/history', 'you/history', 'you/history', 'you', 'you/history', 'you/history',
+  ]);
 });

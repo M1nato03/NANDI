@@ -57,14 +57,14 @@ test('pre-season level and the week appear before Season 1 begins (spec 47b: use
   await expect(season).not.toContainText('#500 of 500');
 });
 
-test('seeded week shows rank and the useful week; a card back and theme survive a backup round trip', async ({ page }) => {
+test('seeded week shows the level and the useful week (no rank, spec 660 §3.2); a card back and theme survive a backup round trip', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-08T12:00:00') });
   await page.goto('/#you');
   const days = ['2026-10-31', '2026-11-01', '2026-11-02', '2026-11-03', '2026-11-04', '2026-11-05', '2026-11-06', '2026-11-08'];
   await seed(page, days.flatMap(dayFacts));
   const season = page.getByRole('region', { name: 'Your season' });
   await expect(season).toContainText(/Level \d+/);
-  await expect(season).toContainText(/#\d+ of 500/);
+  await expect(season).not.toContainText(/of 500/);
   // Spec 47b: Mon 2 to Sun 8 Nov, six useful days (not Sat 7).
   await expect(season.getByRole('region', { name: 'This week' }).getByRole('heading')).toHaveText('6 of your 4');
   await expect(season).toContainText('Useful days: 6 of your 4');
@@ -72,18 +72,10 @@ test('seeded week shows rank and the useful week; a card back and theme survive 
   // Spec 660 §3.1: no Shards card on You any more; the balance is read-only in You › history.
   await expect(season).not.toContainText('Shards');
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
-  // 47-L1: the seat above is a pace-setter, named as one, with the SP to pass it (never "sits just above").
-  const rival = season.locator('.economy-rival');
-  await expect(rival).toHaveText(/^[^,]+, pace-setter, · \d+ SP to pass$/);
-  await expect(rival.locator('.pace-tag')).toHaveText('pace-setter');
-  await expect(season).not.toContainText(/sits just above|Real players/);
-  const rankText = (await season.locator('.economy-season-card strong').textContent())?.trim();
-  await season.getByRole('button', { name: 'View the ladder' }).click();
-  // 47-L1: the ladder says what its other 499 seats are.
-  await expect(page.locator('.ladder-pace')).toHaveText("Season 1 · you vs 499 pace-setters. They're fixed targets, not people. Nobody else can see your rank.");
-  await expect(page.locator('.ladder-seat.you')).toContainText(rankText!.split(' ')[0]!);
-  expect(await page.locator('.ladder-seat').filter({ hasText: /SP/ }).count()).toBeGreaterThan(20);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  // Spec 660 §3.2: no pace-setters, no ladder.
+  await expect(season.locator('.economy-rival')).toHaveCount(0);
+  await expect(season.getByRole('button', { name: 'View the ladder' })).toHaveCount(0);
+  const levelText = (await season.locator('.economy-level h2').textContent())?.trim();
   // Spec 660 §3.1: the shop closed. A card back and a theme bought on an older build (their purchase facts and the
   // applied theme) stay owned and applied, and the old shop link opens You › history, read-only.
   await seedOwned(page);
@@ -108,7 +100,7 @@ test('seeded week shows rank and the useful week; a card back and theme survive 
   await page.getByRole('button', { name: 'Confirm restore' }).click();
   await expect(page.getByRole('main').getByRole('status')).toContainText('Your data is ready.');
   await page.goto('/#you');
-  await expect(page.getByRole('region', { name: 'Your season' })).toContainText(rankText!);
+  await expect(page.getByRole('region', { name: 'Your season' })).toContainText(levelText!);
   await expect(page.locator('html')).toHaveAttribute('data-economy-theme', 'linen');
 });
 

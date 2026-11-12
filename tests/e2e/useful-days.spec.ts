@@ -102,52 +102,18 @@ test('an empty week is only empty: no number warning, no "+0 places", and rest d
   await expect(page.locator('.shop-item')).toHaveCount(0);
 });
 
-test('L2: "Keep rank tucked away" hides the rank, places and rival on You; the ladder itself stays whole', async ({ page }) => {
+test('spec 660 §3.2: the season card is a month\'s frame only (no rank, tier, places, pace-setters or ladder)', async ({ page }) => {
   await page.clock.install({ time: WED });
   await page.goto('/?e2e#you');
   await seed(page, [done('2026-11-02'), done('2026-11-03'), done('2026-11-04')]);
-  await expect(season(page)).toContainText(/#\d+ of 500/);
-  await season(page).getByRole('button', { name: 'View the ladder' }).click();
-  const choice = page.getByRole('group', { name: 'On your You page' });
-  await expect(choice.getByRole('radio', { name: 'Show my climb' })).toBeChecked();
-  await choice.getByRole('radio', { name: 'Keep rank tucked away' }).check();
-  await expect.poll(() => setting(page, 'season.rankShown')).toBe(false);
-  await expect(page.locator('.ladder-seat.you')).toBeVisible();
-  await page.goBack();
-  await expect(season(page)).not.toContainText(/of 500|places this week|pace-setter/);
-  await expect(season(page)).toContainText(/Bench|Challenger|Contender|Elite|Ace|Apex/);
   await expect(season(page)).toContainText('Useful days: 3 of your 4');
-  await expect(season(page).getByRole('button', { name: 'View the ladder' })).toBeVisible();
-  await season(page).getByRole('button', { name: 'View the ladder' }).click();
-  await page.getByRole('radio', { name: 'Show my climb' }).check();
-  await page.goBack();
-  await expect(season(page)).toContainText(/#\d+ of 500/);
-});
-
-test('L3: "How the ladder works" gives the real numbers, from the card and the ladder, and gives focus back', async ({ page }) => {
-  await page.clock.install({ time: WED });
-  await page.goto('/?e2e#you');
-  const open = season(page).getByRole('button', { name: 'How the ladder works' });
-  await open.click();
-  const sheet = page.getByRole('dialog', { name: 'How the ladder works' });
-  await expect(sheet).toContainText('up to 300 SP a day');
-  await expect(sheet).toContainText('Your rank never goes down within a season. There is no relegation.');
-  await expect(sheet).toContainText('10% of a season\'s SP carries into the next, capped at 10% of its target. It never changes a finished season.');
-  await expect(sheet.getByRole('row', { name: /^Apex/ })).toContainText('300 Shards');
-  await expect(sheet.getByRole('row', { name: /^Bench/ })).toContainText('0 SP');
-  await expect(sheet.getByRole('row', { name: /^Bench/ })).toContainText('50 Shards');
-  await expect(sheet).not.toContainText(/passed you|countdown|left in the season/i);
-  await page.keyboard.press('Escape');
-  await expect(sheet).toHaveCount(0);
-  await expect(open).toBeFocused();
+  await expect(season(page)).not.toContainText(/of 500|places this week|pace-setter|Bench|Challenger|Contender|Elite|Ace|Apex/);
+  await expect(season(page).getByRole('button', { name: /ladder/ })).toHaveCount(0);
   await page.goto('/?e2e#you/season');
-  await page.getByRole('button', { name: 'How the ladder works' }).click();
-  await expect(page.getByRole('dialog', { name: 'How the ladder works' })).toBeVisible();
-  await page.getByRole('dialog', { name: 'How the ladder works' }).getByRole('button', { name: 'Close' }).click();
-  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page).toHaveURL(/#you$/);
 });
 
-test('at 200% text You\'s week, the target choice, the record and the ladder sheet keep to the phone\'s width', async ({ page }) => {
+test('at 200% text You\'s week, the target choice and the record keep to the phone\'s width', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.clock.install({ time: WED });
   await page.goto('/?e2e#you');
@@ -157,12 +123,6 @@ test('at 200% text You\'s week, the target choice, the record and the ladder she
   await week(page).getByRole('button', { name: /^Change your weekly target/ }).click();
   await expect(week(page).getByRole('button', { name: 'Set target' })).toBeVisible();
   expect(await fits(page)).toBe(true);
-  await season(page).getByRole('button', { name: 'How the ladder works' }).click();
-  const close = page.getByRole('dialog', { name: 'How the ladder works' }).getByRole('button', { name: 'Close' });
-  await close.scrollIntoViewIfNeeded();
-  await expect(close).toBeInViewport();
-  expect(await fits(page)).toBe(true);
-  await close.click();
   await page.goto('/?e2e#you/days');
   await textAt200(page);
   await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toHaveText('1 useful day this season');

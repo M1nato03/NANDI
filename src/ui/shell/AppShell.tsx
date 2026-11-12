@@ -86,8 +86,6 @@ const CourtyardScreen = lazy(() => import('../courtyard/Courtyard').then(module 
 const Calm = lazy(() => import('../yatra/Calm').then(module => ({ default: module.Calm })));
 const Journal = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.Journal })));
 const UsefulDays = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.UsefulDays })));
-const SeasonLadder = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonLadder })));
-const PastResults = lazy(() => import('../season/SeasonResult').then(module => ({ default: module.PastResults })));
 const YouHistory = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.YouHistory })));
 const Night = lazy(() => import('../screens/Night').then(module => ({ default: module.Night })));
 const NightPauseCard = lazy(() => import('../screens/NightPauseCard').then(module => ({ default: module.NightPauseCard })));
@@ -271,7 +269,6 @@ export function AppShell() {
   // Spec 571 stage 1: a moved screen is looked up by its old key (grow/read → read, grow/play → yatra/mind, …).
   const key = screenKey(path);
   if (key === 'ground/backup' || key === 'you/backup') screen = <Backup onRestored={restored} />;
-  else if (key === 'you/season') screen = <SeasonLadder />;
   else if (key === 'you/history') screen = <YouHistory />;
   else if (key === 'you/contentreview') screen = <ContentReview />;
   else if (key === 'you/cast') screen = <MeetCast />;
@@ -327,7 +324,6 @@ export function AppShell() {
   else if (key.startsWith('yatra/journal/')) screen = <Journal key={key} focus={key.slice('yatra/journal/'.length)} />;
   else if (key === 'yatra/days') screen = <UsefulDays />;
   // Spec 47c: every finished season's result, from the record.
-  else if (key === 'yatra/days/seasons') screen = <PastResults />;
   else if (key === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
   else if (key === 'night') screen = <Now />;
   else if (key === 'kolam') screen = <KolamScreen />;

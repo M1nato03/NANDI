@@ -51,6 +51,10 @@ function legacyRoute(value: string): string {
   if (value === 'you/shop' || value.startsWith('you/shop/')) return 'you/history';
   // Spec 660 §3.1b: badges ended; the ones earned are listed in You › history.
   if (value === 'you/badges' || value.startsWith('you/badges/')) return 'you/history';
+  // Spec 660 §3.2: the season ladder went; its links open You (the level card).
+  if (value === 'you/season' || value.startsWith('you/season/')) return 'you';
+  // Past seasons have one home, You › history (no rank, tier or Shards there).
+  if (value === 'you/days/seasons' || value === 'yatra/days/seasons') return 'you/history';
   if (value.startsWith('tasks/')) return `plan/${value.slice(6)}`;
   if (value === 'ground' || value === 'you/settings') return 'you/settings';
   if (value.startsWith('ground/')) return `you/${value.slice(7)}`;
