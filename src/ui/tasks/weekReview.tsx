@@ -65,7 +65,7 @@ export function MoveBudgetLine() {
   // Lowered this week: the line stays, so the answer to the tap does not vanish with the offer.
   if (policy.steppedDownAtWeek === currentWeek) return <p className="small move-budget-line" role="status">Move budget lowered to {policy.budget}.</p>;
   if (read.offer == null) return null;
-  return <p className="small move-budget-line">Under your move budget in 3 of the last 4 weeks.{' '}
+  return <p className="small move-budget-line">Under your move budget in 3 of the last 4&nbsp;weeks.{' '}
     <button type="button" className="text-button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.lowerBudget(now))}>Lower it by 1?</button>
     {board.message && <span role="status"> {board.message}</span>}</p>;
 }
