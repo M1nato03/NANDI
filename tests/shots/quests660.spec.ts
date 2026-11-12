@@ -223,3 +223,146 @@ for (const theme of ['light', 'dark'] as const) {
     await page.context().close();
   });
 }
+
+// a9 checklist §8b, shots 15-23 (removals 3.1-3.4): each screen as it opens, light first, 360x800; * also 200%.
+// "Shards" may appear only in You › history and the Backup restore line: every other screen here is checked for it.
+const noShards = async (page: Page, where: string) => expect(await page.locator('main').innerText(), `${where}: no "Shards"`).not.toMatch(/Shards/);
+const SUNDAY_EVE = new Date('2026-12-13T18:30:00'); // the first week of a month, so the Lower-by-1 offer can come
+async function phoneAt(browser: Browser, colorScheme: 'light' | 'dark', time: Date): Promise<Page> {
+  const context = await browser.newContext({ viewport: { width: 360, height: 800 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
+  const page = await context.newPage();
+  await page.clock.setFixedTime(time);
+  await page.goto('/?e2e#courtyard');
+  return page;
+}
+const settingRow = (key: string, value: unknown): Row => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 'q660' });
+async function snapAt(page: Page, route: string, ready: string, name: string, big = false, full = false) {
+  await page.goto(`/?e2e#${route}`);
+  await page.reload();
+  await expect(page.locator(ready).first()).toBeVisible({ timeout: 15_000 });
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  await page.screenshot({ path: `${OUT}/${name}.png`, fullPage: full });
+  if (big) { await textAt200(page); await page.screenshot({ path: `${OUT}/${name}-200.png`, fullPage: full }); }
+}
+for (const theme of ['light', 'dark'] as const) {
+  const t = theme === 'light' ? 'l' : 'd';
+  test(`§8b removal screens 15-23, ${theme}`, async ({ browser }) => {
+    test.setTimeout(300_000);
+    // 16 empty: a new user's history, every section with its empty line.
+    let page = await phoneAt(browser, theme, NOON);
+    await snapAt(page, 'you/history', '[data-testid="you-history"]', `660-${t}-16-history-empty`);
+    for (const section of ['Past seasons', 'Past weeks', 'Badges you earned']) await expect(page.getByRole('region', { name: section }).locator('p, ul').first()).toBeVisible();
+    await page.context().close();
+
+    // A filled phone: a month of days, a badge and a theme from before, three predicted quests, two old reminders.
+    page = await phoneAt(browser, theme, SUNDAY_EVE);
+    await put(page, 'ledger', [...corners(4),
+      { id: 'badge-tier:tasks:1', dayKey: '2026-11-05', mode: 'gamify', kind: 'badge-tier', refId: 'tasks:1', inputs: {}, updatedAt: 1, deleted: 0, deviceId: 'q660' },
+      { id: 'purchase:old-theme', dayKey: '2026-11-01', mode: 'economy', kind: 'purchase', refId: 'theme:linen', inputs: { itemId: 'theme:linen', price: 400, accepted: true }, updatedAt: 1, deleted: 0, deviceId: 'q660' },
+      done('courage-ask-at-home', '2026-12-08', { prediction: 'ignore', outcome: 'fine', fear: 4, felt: 2 }),
+      done('courage-tell-them', '2026-12-09', { prediction: 'ignore', outcome: 'happened', fear: 4, felt: 3, learned: 'still-glad' }),
+      done('speak-spin-60', '2026-12-10', { prediction: 'freeze', outcome: 'better', fear: 5, felt: 1 }),
+    ]);
+    await put(page, 'settings', [asked, settingRow('planner.budget', { budget: 5 }), settingRow('plan.reminders', [
+      { id: 'r1', text: 'buy a notebook', createdAt: new Date('2026-12-01T10:00:00').getTime() },
+      { id: 'r2', text: 'call Nani', createdAt: new Date('2026-12-02T10:00:00').getTime() },
+    ])]);
+    // 15: You, top to bottom.
+    await snapAt(page, 'you', '.you-screen', `660-${t}-15-you`, true, true);
+    await expect(page.getByRole('region', { name: 'Your season' })).not.toContainText(/of 500|pace-setter|places this week/);
+    await expect(page.getByTestId('history-link')).toHaveCount(1);
+    await expect(page.getByRole('button', { name: /^(Badges|Shop)/ })).toHaveCount(0);
+    await noShards(page, 'You');
+    // 16 filled.
+    await snapAt(page, 'you/history', '[data-testid="you-history"]', `660-${t}-16-history`, true, true);
+    // 17: the Sunday receipt sheet, then Lower it by 1.
+    await page.goto('/?e2e#you');
+    await page.reload();
+    await page.getByRole('button', { name: 'Share my week' }).click();
+    const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
+    await expect(sheet.locator('.reality-check-line')).toBeVisible();
+    await expect(sheet.getByRole('img')).toBeVisible({ timeout: 20_000 });
+    await page.screenshot({ path: `${OUT}/660-${t}-17-receipt.png` });
+    await textAt200(page);
+    await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-200.png` });
+    await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
+    const lower = sheet.getByRole('button', { name: 'Lower it by 1?' });
+    if (await lower.count()) {
+      await lower.click();
+      await expect(sheet.locator('.move-budget-line')).toContainText('Budget lowered to 4.');
+      await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-lowered.png` });
+    }
+    // 18: Plan on a Sunday, and Plan › More.
+    await snapAt(page, 'plan', '.plan-screen', `660-${t}-18-plan-sunday`, false, true);
+    await page.locator('.plan-more summary').click();
+    await expect(page.getByRole('region', { name: 'Last night' })).toHaveCount(0);
+    await expect(page.getByRole('region', { name: 'Reminders' })).toHaveCount(0);
+    await page.screenshot({ path: `${OUT}/660-${t}-18-plan-more.png`, fullPage: true });
+    await noShards(page, 'Plan');
+    // 19: Later with the two migrated reminders; tick one: no XP toast, no jar fill.
+    const later = page.getByRole('region', { name: 'Later', exact: true });
+    await expect(later).toContainText('call Nani');
+    await later.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: `${OUT}/660-${t}-19-later.png` });
+    // 20: Settings › Reminders, before and after the delete.
+    await snapAt(page, 'you/settings', '[data-testid="old-reminders"]', `660-${t}-20-reminders`);
+    await page.getByTestId('old-reminders').scrollIntoViewIfNeeded();
+    await page.screenshot({ path: `${OUT}/660-${t}-20-reminders.png` });
+    await page.getByRole('button', { name: 'Delete old reminders' }).click();
+    await expect(page.getByTestId('old-reminders')).toHaveCount(0);
+    await page.screenshot({ path: `${OUT}/660-${t}-20-reminders-deleted.png` });
+    await page.context().close();
+
+    // 21: Bedtime settings with the busy-day line (three 90-minute tasks planned today).
+    page = await phoneAt(browser, theme, NOON);
+    await put(page, 'tasks', [0, 1, 2].map(index => ({ id: `busy-${index}`, title: `Busy block ${index + 1}`, status: 'planned', dayKey: DAY, size: 'L', estimateMin: 90, category: 'general', mustOrCould: 'could', scheduledStart: null, scheduledEnd: null, postponeCount: 0, updatedAt: 1, deleted: 0, deviceId: 'q660' })));
+    await page.goto('/?e2e#you/settings');
+    await page.reload();
+    await page.getByTestId('bedtime-link').click();
+    await expect(page.locator('.busy-day')).toBeVisible();
+    await page.locator('.busy-day').scrollIntoViewIfNeeded();
+    await page.screenshot({ path: `${OUT}/660-${t}-21-bedtime-busy.png` });
+    // 22: Settings › Backup with the week's export.
+    await page.goto('/?e2e#you/backup');
+    await page.reload();
+    await expect(page.getByRole('button', { name: "Export this week's summary" })).toBeVisible({ timeout: 15_000 });
+    await page.screenshot({ path: `${OUT}/660-${t}-22-backup.png`, fullPage: true });
+    // 23: the old links, opened directly.
+    const links: [string, RegExp, string][] = [['you/shop', /#you\/history$/, '[data-testid="you-history"]'], ['you/badges', /#you\/history$/, '[data-testid="you-history"]'], ['you/season', /#you$/, '.you-screen'], ['plan/review', /#you$/, '.you-screen']];
+    for (const [route, home, ready] of links) {
+      await page.goto(`/?e2e#${route}`);
+      await page.reload();
+      await expect(page).toHaveURL(home);
+      await expect(page.locator(ready).first()).toBeVisible({ timeout: 15_000 });
+      await page.screenshot({ path: `${OUT}/660-${t}-23-${route.replace('/', '-')}.png` });
+    }
+    await page.context().close();
+  });
+
+  test(`§8b shot 19b: ticking a migrated reminder gives no XP toast and no jar fill, ${theme}`, async ({ browser }) => {
+    const page = await phoneAt(browser, theme, NOON);
+    await put(page, 'settings', [asked, settingRow('plan.reminders', [{ id: 'r1', text: 'buy a notebook', createdAt: new Date('2026-11-12T10:00:00').getTime() }])]);
+    await page.goto('/?e2e#plan');
+    await page.reload();
+    await page.locator('.plan-more summary').click();
+    const later = page.getByRole('region', { name: 'Later', exact: true });
+    await expect(later).toContainText('buy a notebook');
+    const before = await page.evaluate(async () => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      const rows = await new Promise<{ mode: string }[]>(resolve => { const request = database.transaction('ledger').objectStore('ledger').getAll(); request.onsuccess = () => resolve(request.result); });
+      database.close();
+      return rows.filter(row => row.mode === 'tasks').length;
+    });
+    await later.getByRole('button', { name: 'Done: buy a notebook' }).click();
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: `${OUT}/660-${t}-19-later-ticked.png` });
+    const after = await page.evaluate(async () => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      const rows = await new Promise<{ mode: string }[]>(resolve => { const request = database.transaction('ledger').objectStore('ledger').getAll(); request.onsuccess = () => resolve(request.result); });
+      database.close();
+      return rows.filter(row => row.mode === 'tasks').length;
+    });
+    expect(after, 'no task fact: no XP, no jar').toBe(before);
+    await page.context().close();
+  });
+}

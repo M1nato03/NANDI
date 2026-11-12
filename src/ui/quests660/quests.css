@@ -55,8 +55,6 @@
 .quest-actions::before { content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 28px; background: linear-gradient(to bottom, transparent, var(--bg)); pointer-events: none; }
 .quest-actions > button { flex: 1 1 8rem; }
 .quest-why { flex: 1 1 100%; color: var(--ink-2); margin: 0; }
-/* The scale Save waits on comes into view above the pinned footer, not behind it. */
-.quest-felt { scroll-margin-bottom: 140px; }
 
 /* Plan: a quest taken on today, with its tag, and "+ quest". */
 .plan-quests { display: grid; gap: 6px; margin: 8px 0; }

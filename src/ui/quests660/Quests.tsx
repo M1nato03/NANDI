@@ -182,8 +182,15 @@ export function QuestScreen({ questId }: { questId: string }) {
   const feltRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!outcome || outcome === 'not-done' || felt !== undefined) return;
-    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    feltRef.current?.scrollIntoView({ block: 'nearest', behavior: still ? 'auto' : 'smooth' });
+    const node = feltRef.current;
+    if (!node) return;
+    // Measured, not a fixed margin: the pinned footer and the tab bar grow with large text (a9, 12 Nov). The scale's
+    // bottom comes to just above the footer's top; if it is taller than the room, its top comes into view instead.
+    const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    const box = node.getBoundingClientRect();
+    const limit = (node.closest('.quest-screen')?.querySelector('.quest-actions')?.getBoundingClientRect().top ?? window.innerHeight) - 8;
+    const by = box.bottom > limit ? Math.min(box.bottom - limit, box.top - 8) : box.top < 0 ? box.top - 8 : 0;
+    if (by) window.scrollBy({ top: by, behavior });
   }, [outcome]); // eslint-disable-line react-hooks/exhaustive-deps
   const [learned, setLearned] = useState<Learned>();
   const [line, setLine] = useState('');
