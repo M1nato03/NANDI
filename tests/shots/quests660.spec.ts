@@ -366,6 +366,9 @@ for (const theme of ['light', 'dark'] as const) {
     await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     // b2 12 Nov: at large text the image is capped, so Share / Save / Not now stay in view.
     for (const name of ['Share', 'Save image', 'Not now']) await expect(sheet.getByRole('button', { name, exact: true })).toBeInViewport({ ratio: 1 });
+    // Flush at the sheet's foot: nothing of the sheet shows under the pinned row (the spec 40 peek), and the image is capped.
+    expect(await sheet.evaluate(node => node.getBoundingClientRect().bottom - node.querySelector('.recap-sheet-actions')!.getBoundingClientRect().bottom)).toBeLessThanOrEqual(2);
+    expect(await sheet.locator('img').evaluate(node => node.getBoundingClientRect().height <= innerHeight * 0.4 + 1)).toBe(true);
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-200.png` });
     await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
     const lower = sheet.getByRole('button', { name: 'Lower it by 1?' });
