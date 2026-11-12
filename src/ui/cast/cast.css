@@ -27,8 +27,8 @@
 .cast-unit-card button { margin: 4px; }
 @media (prefers-reduced-motion: reduce) { .cast-unit-scene { display: none; } }
 :root[data-motion='reduce'] .cast-unit-scene { display: none; }
-body:has(.economy-toast) .screen .cast-svg, body:has(.economy-reveal) .screen .cast-svg, body:has(.cast-unit-scene) .screen .cast-svg { visibility: hidden; }
-.cast-unit-scene .cast-svg { visibility: visible !important; }
+body:has(.economy-toast) .screen .cast-svg, body:has(.economy-reveal) .screen .cast-svg, body:has(.cast-unit-scene) .screen .cast-svg { visibility: hidden; opacity: 0; }
+.cast-unit-scene .cast-svg { visibility: visible !important; opacity: 1 !important; }
 /* Spec 31, living friends: short moments on the existing drawing. Transform and opacity only; at most 1.2 s, except
    the breathe loop on a rest pose. Moments never take taps (the friend is never the button). */
 .cast-move, .cast-limb, .cast-eye { transform-box: fill-box; }

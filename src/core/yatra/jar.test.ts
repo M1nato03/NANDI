@@ -59,6 +59,12 @@ describe('spec 54: what fills the jar', () => {
     expect(jarFinishLine({ ...base, counted: 0 }, true)).toBe('Trail done for today.');
     expect(jarFinishLine(undefined, false)).toBeNull();
   });
+  it('b2 12 Nov: a quest states the minutes that really went in, and at 0 (trail full) has no jar line at all', () => {
+    const quest = { id: 'q', kind: 'quest' as const, dayKey: 'd', minutes: 5, at: 1, label: 'quest done' };
+    expect(jarFinishLine({ ...quest, counted: 5 }, false)).toBe('+5 min into the jar · quest done');
+    expect(jarFinishLine({ ...quest, counted: 3 }, true)).toBe('+3 min into the jar · quest done. Trail done for today.');
+    expect(jarFinishLine({ ...quest, counted: 0 }, true)).toBeNull();
+  });
   it('lights out met after midnight lands on the same planning day the economy pays', () => {
     const at = new Date('2026-11-06T00:30:00').getTime();
     const night = lightsOutNightKey(at);

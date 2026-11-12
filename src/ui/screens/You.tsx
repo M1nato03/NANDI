@@ -6,7 +6,7 @@ import { youWeekNumbers } from '../../core/recap';
 import { reasonsLine } from '../../core/pauseReasons';
 import { go } from '../shell/router';
 import { DeckGlyph } from '../DeckGlyph';
-import { YourSeason } from './EconomyScreens';
+import { HistoryLink, YourSeason } from './EconomyScreens';
 import { DailyQuests } from './GamifyScreens';
 import { BackupNudge } from './BackupNudge';
 import { HexagonCard } from './HexagonCard';
@@ -45,7 +45,7 @@ export function You() {
     <PrivateBooks />
     <HelpsWithRow open={() => go('you/helps')} />
     {/* Spec 660 §3 (F1): one link to the read-only history of the removed reward layers. */}
-    <button type="button" className="card you-link" data-testid="history-link" onClick={() => go('you/history')}><strong>Your history</strong><span>What you kept: past seasons, weeks and badges</span></button>
+    <HistoryLink />
     <button type="button" className="card you-link deck-area-night settings-link" onClick={() => go('you/settings')}><DeckGlyph type="night" /><strong>Settings</strong><span>Night plan, day and night, notifications, appearance, backup and about</span></button>
   </section>;
 }

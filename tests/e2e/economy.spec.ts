@@ -106,11 +106,19 @@ test('seeded week shows the level and the useful week (no rank, spec 660 §3.2);
 
 test('spec 660 §3.1: the shop is closed; its link opens the read-only history and nothing can be bought', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-03T12:00:00') });
+  // b2 12 Nov: a new user (no Shards, nothing owned, nothing finished) sees neither the closed shop nor the history link.
+  await page.goto('/#you');
+  await expect(page.locator('.you-screen')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByTestId('history-link')).toHaveCount(0);
   await page.goto('/#you/shop');
   await expect(page).toHaveURL(/#you\/history$/);
+  await expect(page.getByRole('region', { name: 'Past seasons' })).toContainText('No season has finished yet.');
+  await expect(page.getByRole('heading', { name: /^Shards kept/ })).toHaveCount(0);
+  // Someone who bought on an older build keeps what they own.
+  await seedOwned(page);
   const history = page.getByTestId('you-history');
   await expect(history.getByRole('heading', { name: /^Shards kept: \d/ })).toBeVisible({ timeout: 15_000 });
-  await expect(history).toContainText('The shop has closed. What you own stays yours.');
+  await expect(history).toContainText('The shop has closed. What you own stays yours:');
   await expect(history).toContainText(/Rest days held: \d+/);
   await expect(page.locator('.shop-item')).toHaveCount(0);
   // One link from You.

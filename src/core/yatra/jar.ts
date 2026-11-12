@@ -129,10 +129,14 @@ export function jarDay(entries: readonly JarEntry[], day: string): { minutes: nu
   return { minutes, capped: minutes >= JAR.dayCap };
 }
 
-/** "+5 min into the jar · chapter done", or "Trail done for today." once the cap is met. Nothing for acts outside the jar. */
+/**
+ * "+5 min into the jar · chapter done", or "Trail done for today." once the cap is met. Nothing for acts outside the jar.
+ * A quest that added 0 (today's trail already full) gets no jar line at all (b2 12 Nov): the toast only states minutes
+ * that really went in, and never a loss.
+ */
 export function jarFinishLine(entry: JarEntry | undefined, dayCapped: boolean): string | null {
   if (!entry) return null;
-  if (entry.counted === 0) return dayCapped ? 'Trail done for today.' : null;
+  if (entry.counted === 0) return dayCapped && entry.kind !== 'quest' ? 'Trail done for today.' : null;
   return dayCapped ? `+${entry.counted}\u00a0min into the jar · ${entry.label}. Trail done for today.` : `+${entry.counted}\u00a0min into the jar · ${entry.label}`;
 }
 

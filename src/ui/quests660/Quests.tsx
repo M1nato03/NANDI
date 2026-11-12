@@ -52,21 +52,45 @@ export function QuestRow({ quest }: { quest: BoardQuest }) {
   return <HomeCardRow row={{ friend: quest.friend, line: words.line, meta: words.meta, kind: 'quest', onOpen: () => go(`courtyard/quest/${quest.id}`) }} />;
 }
 
+/** Jenil's approved labels (decisions 4 Nov :227), word for word, in the question and in Settings › Quests alike. */
+export const SAFETY_LABELS: readonly (readonly [keyof QuestSafety, string])[] = [
+  ['strangers', 'Talking to people I don’t know'],
+  ['transit', 'Quests on buses, trains or metro'],
+  ['afterDark', 'Going out after dark'],
+];
+
+/** "12 Nov": the app's short date, never the stored ISO key. */
+const shortDay = (key: string) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(`${key}T12:00:00`));
+
 /**
  * The safety question, the first time Quests opens (Jenil 8 Nov, wording approved as drafted; all three off). It sits in
- * the board itself, in place of today's list until answered, so it never covers the rest of the card's sheet.
+ * the board itself, in place of today's list until answered, so it never covers the rest of the card's sheet. E12 (b2
+ * 12 Nov): when the sheet shows it, the sheet scrolls to it, so the question, the 3 boxes and Save / Not now fit one
+ * screen at 100%; at large text only its middle scrolls and Save / Not now stay pinned at the sheet's foot.
  */
 export function SafetyAsk() {
   const [picked, setPicked] = useState<QuestSafety>({ strangers: false, transit: false, afterDark: false });
+  const node = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const own = node.current;
+    if (!own || typeof ResizeObserver === 'undefined') return;
+    // The board is drawn while the card is still closed (hidden): scroll once it is laid out, i.e. the sheet opened.
+    let done = false;
+    const observer = new ResizeObserver(() => {
+      if (done || !own.offsetHeight) return;
+      done = true;
+      own.scrollIntoView({ block: 'start', behavior: 'auto' });
+      observer.disconnect();
+    });
+    observer.observe(own);
+    return () => observer.disconnect();
+  }, []);
   const finish = async (safety: QuestSafety) => { try { await saveSafety(db, safety); } catch (error) { fail(error); } };
-  const box = (key: keyof QuestSafety, label: string) => <label className="quest-safety-row"><input type="checkbox" checked={picked[key]} onChange={event => setPicked({ ...picked, [key]: event.target.checked })} /><span>{label}</span></label>;
-  return <section className="quest-safety" aria-labelledby="quest-safety-title" data-testid="quest-safety">
+  return <section ref={node} className="quest-safety" aria-labelledby="quest-safety-title" data-testid="quest-safety">
     <h3 id="quest-safety-title">Which quests are OK for you?</h3>
     <p>Some quests ask you to talk to people you don't know, travel somewhere, or go out after dark. Pick what suits you. You can change this any time.</p>
-    {box('strangers', 'Talking to people I don’t know')}
-    {box('transit', 'Quests on buses, trains or metro')}
-    {box('afterDark', 'Going out after dark')}
-    <div className="sheet-actions"><button type="button" onClick={() => void finish(picked)}>Save</button><button type="button" className="secondary" onClick={() => void finish({ strangers: false, transit: false, afterDark: false })}>Not now</button></div>
+    {SAFETY_LABELS.map(([key, label]) => <label key={key} className="quest-safety-row"><input type="checkbox" checked={picked[key]} onChange={event => setPicked({ ...picked, [key]: event.target.checked })} /><span>{label}</span></label>)}
+    <div className="quest-safety-actions"><button type="button" onClick={() => void finish(picked)}>Save</button><button type="button" className="secondary" onClick={() => void finish({ strangers: false, transit: false, afterDark: false })}>Not now</button></div>
   </section>;
 }
 
@@ -163,6 +187,19 @@ function Scale({ label, value, onChange, low, high }: { label: string; value?: n
   </fieldset>;
 }
 
+/**
+ * Brings a question just above the pinned footer (measured, not a fixed margin: the footer and the tab bar grow with
+ * large text, a9 12 Nov). If it is taller than the room, its top comes into view instead. Instant under reduced motion.
+ */
+function bringAboveFooter(node: HTMLElement | null) {
+  if (!node) return;
+  const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  const box = node.getBoundingClientRect();
+  const limit = (node.closest('.quest-screen')?.querySelector('.quest-actions')?.getBoundingClientRect().top ?? window.innerHeight) - 8;
+  const by = box.bottom > limit ? Math.min(box.bottom - limit, box.top - 8) : box.top < 0 ? box.top - 8 : 0;
+  if (by) window.scrollBy({ top: by, behavior });
+}
+
 /** The pinned footer: the step's one move (and its quiet second), always in view; only the middle scrolls. */
 const Actions = ({ children }: { children: ReactNode }) => <div className="quest-actions">{children}</div>;
 
@@ -182,16 +219,15 @@ export function QuestScreen({ questId }: { questId: string }) {
   const feltRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!outcome || outcome === 'not-done' || felt !== undefined) return;
-    const node = feltRef.current;
-    if (!node) return;
-    // Measured, not a fixed margin: the pinned footer and the tab bar grow with large text (a9, 12 Nov). The scale's
-    // bottom comes to just above the footer's top; if it is taller than the room, its top comes into view instead.
-    const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-    const box = node.getBoundingClientRect();
-    const limit = (node.closest('.quest-screen')?.querySelector('.quest-actions')?.getBoundingClientRect().top ?? window.innerHeight) - 8;
-    const by = box.bottom > limit ? Math.min(box.bottom - limit, box.top - 8) : box.top < 0 ? box.top - 8 : 0;
-    if (by) window.scrollBy({ top: by, behavior });
+    bringAboveFooter(feltRef.current);
   }, [outcome]); // eslint-disable-line react-hooks/exhaustive-deps
+  // b2 12 Nov (06 at 200%): on the prediction step, the first question not answered yet comes into view the same way.
+  const fearRef = useRef<HTMLDivElement>(null);
+  const predictionRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (step !== 'before') return;
+    bringAboveFooter(!fear ? fearRef.current : !prediction ? predictionRef.current : null);
+  }, [step, fear]); // eslint-disable-line react-hooks/exhaustive-deps
   const [learned, setLearned] = useState<Learned>();
   const [line, setLine] = useState('');
   const [photo, setPhoto] = useState<File | null>(null);
@@ -231,11 +267,13 @@ export function QuestScreen({ questId }: { questId: string }) {
     moves = <><button type="button" className="quest-go" onClick={() => void start()}>Start</button>
       <button type="button" className="secondary" onClick={() => { void skipQuest(db, quest.id).catch(fail); go('courtyard'); }}>Skip, no cost</button></>;
   } else if (step === 'before') {
-    body = <><Scale label="How scary does it feel?" value={fear} onChange={setFear} low="Not at all" high="Very" />
-      <fieldset className="quest-prediction"><legend>What do you think will happen?</legend><div className="quest-chips">
+    body = <><div ref={fearRef} className="quest-ask"><Scale label="How scary does it feel?" value={fear} onChange={setFear} low="Not at all" high="Very" /></div>
+      <div ref={predictionRef} className="quest-ask"><fieldset className="quest-prediction"><legend>What do you think will happen?</legend><div className="quest-chips">
         {PREDICTIONS.map(p => <button type="button" key={p.id} className="ui-chip" aria-pressed={prediction === p.id} onClick={() => setPrediction(p.id)}>{p.label}</button>)}
-      </div></fieldset></>;
-    moves = <><button type="button" className="quest-go" disabled={!fear || !prediction} onClick={() => setStep('doing')}>Go do it</button></>;
+      </div></fieldset></div></>;
+    // A disabled "Go do it" says what it waits for (the d2eca41 pattern).
+    const waiting = !fear ? 'Pick how scary it feels' : !prediction ? 'Pick what you think will happen' : '';
+    moves = <>{waiting && <span className="quest-why small" data-testid="quest-why">{waiting}</span>}<button type="button" className="quest-go" disabled={!!waiting} onClick={() => setStep('doing')}>Go do it</button></>;
   } else if (step === 'doing') {
     const seconds = startedAt === undefined ? 0 : Math.floor((now - startedAt) / 1000);
     body = <><p className="quest-doing">Go. Come back when it's done.</p>
@@ -289,7 +327,7 @@ export function YouQuests() {
     <p className="quest-stones-count">{data.stones.length} {data.stones.length === 1 ? 'stone' : 'stones'} on your path</p>
     {finished.length > 0 && <ul className="quest-done-list">{finished.slice(0, 30).map(row => {
       const quest = findQuest(row.refId, data.facts);
-      return <li key={row.id}><strong>{quest?.text.en ?? 'A quest'}</strong><span>{row.dayKey}{row.inputs.outcome === 'not-done' ? ' · not this time' : ''}</span>{typeof row.inputs.line === 'string' && <em>{row.inputs.line}</em>}</li>;
+      return <li key={row.id}><strong>{quest?.text.en ?? 'A quest'}</strong><span>{shortDay(row.dayKey)}{row.inputs.outcome === 'not-done' ? ' · not this time' : ''}</span>{typeof row.inputs.line === 'string' && <em>{row.inputs.line}</em>}</li>;
     })}</ul>}
     <button type="button" className="card you-link" onClick={() => go('you/quests/settings')}><strong>Quest settings</strong><span>Which quests are OK for you, and photos</span></button>
   </section>;
@@ -303,12 +341,10 @@ export function QuestSettings() {
   if (!data) return <section className="screen quest-settings" aria-busy="true" />;
   const safety = shown ?? data.safety;
   const toggle = (key: keyof QuestSafety) => { const next = { ...safety, [key]: !safety[key] }; setShown(next); void saveSafety(db, next).catch(fail); };
-  const row = (key: keyof QuestSafety, label: string) => <label className="toggle-row quest-switch"><span>{label}</span><input type="checkbox" checked={safety[key]} onChange={() => toggle(key)} /></label>;
+  const row = (key: keyof QuestSafety, label: string) => <label key={key} className="toggle-row quest-switch"><span>{label}</span><input type="checkbox" checked={safety[key]} onChange={() => toggle(key)} /></label>;
   return <section className="screen quest-settings calm-screen" data-testid="quest-settings"><p className="eyebrow">Settings</p><h1>Quests</h1>
     <section className="card"><h2>Which quests are OK for you?</h2>
-      {row('strangers', 'Talking to people you don’t know')}
-      {row('transit', 'Quests on buses, trains or metro')}
-      {row('afterDark', 'Quests after dark')}
+      {SAFETY_LABELS.map(([key, label]) => row(key, label))}
     </section>
     <QuestPhotos />
   </section>;

@@ -84,10 +84,13 @@ export function pastWeeks(tasks: readonly TaskRow[], sessions: readonly SessionR
 }
 
 /** You › history: the last eight weeks with anything in them, newest first. */
-export function PastWeeks() {
+/** The finished weeks, live (undefined while reading). */
+export function usePastWeeks(): PastWeek[] | undefined {
   const source = useLiveQuery(async () => ({ tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), logs: await db.dailyLog.toArray() }), []);
-  if (!source) return null;
-  const weeks = pastWeeks(source.tasks, source.sessions, source.logs, Date.now()); // eslint-disable-line react-hooks/purity
+  return source ? pastWeeks(source.tasks, source.sessions, source.logs, Date.now()) : undefined; // eslint-disable-line react-hooks/purity
+}
+
+export function PastWeeks({ weeks }: { weeks: readonly PastWeek[] }) {
   return <section className="card" aria-labelledby="history-weeks"><h2 id="history-weeks">Past weeks</h2>
     {weeks.length ? <ul className="history-list">{weeks.map(week => <li key={week.weekKey}><strong>Week of {weekInWords(week.weekKey)}</strong> · {week.words}{week.agency !== undefined ? ` Time well spent: ${week.agency}/5.` : ''}</li>)}</ul> : <p>Your weeks show here once one has finished.</p>}
   </section>;

@@ -147,29 +147,67 @@ for (const theme of ['light', 'dark'] as const) {
   const t = theme === 'light' ? 'l' : 'd';
   test(`the screens, ${theme}`, async ({ browser }) => {
     test.setTimeout(240_000);
-    const open = async (name: string, route: string, ready: string, rows: { store: string; rows: Row[] }[], big = false) => {
+    const open = async (name: string, route: string, ready: string, rows: { store: string; rows: Row[] }[], big = false, then?: (page: Page) => Promise<void>, frame?: string) => {
       const page = await phone(browser, theme);
       for (const row of rows) await put(page, row.store, row.rows);
       await page.goto(`/?e2e#${route}`);
       await page.reload();
       await expect(page.locator(ready).first()).toBeVisible({ timeout: 15_000 });
+      if (frame) await page.locator(frame).first().evaluate(node => node.scrollIntoView({ block: 'start' }));
       await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
       await page.screenshot({ path: `${OUT}/660-${t}-${name}.png` });
       if (big) { await textAt200(page); await page.screenshot({ path: `${OUT}/660-${t}-${name}-200.png` }); }
+      if (then) await then(page);
       await page.context().close();
     };
+    // §8 01: the collapsed row on Home with the quest's friend stepped forward (s3, 10 stones).
+    await open('01-row', 'courtyard', '.courtyard-card-next .courtyard-card-row', [...[{ store: 'settings', rows: [asked] }], { store: 'ledger', rows: [...corners(3), ...stones(10)] }]);
     const settled = [{ store: 'settings', rows: [asked] }];
-    await open('02-board', 'courtyard/quests', '[data-testid="quest-board"]', settled, true);
+    await open('02-board', 'courtyard/quests', '[data-testid="quest-board"]', settled, true, async page => {
+      await page.locator('.quest-list').first().evaluate(node => node.scrollIntoView({ block: 'start' }));
+      await expect(page.locator('.quest-list .quest-start').first()).toBeInViewport();
+      await page.screenshot({ path: `${OUT}/660-${t}-02-board-200-cards.png` });
+    });
     await open('03-quest-card', 'courtyard/quest/courage-honest-feedback', '[data-testid="quest-screen"]', settled, true);
-    await open('04-safety', 'courtyard/quests', '[data-testid="quest-safety"]', []);
-    await open('05-settings', 'you/quests/settings', '[data-testid="quest-settings"]', settled, true);
+    await open('04-safety', 'courtyard/quests', '[data-testid="quest-safety"]', [], false, async page => {
+      const safety = page.getByTestId('quest-safety');
+      for (const label of ['Talking to people I don’t know', 'Quests on buses, trains or metro', 'Going out after dark']) await expect(safety.getByText(label, { exact: true })).toBeVisible();
+      // E12 at 100% (the shot above): the question, the 3 boxes and both buttons inside the sheet's visible box.
+      const fits = async () => page.evaluate(() => {
+        const card = document.querySelector('.courtyard-card')!.getBoundingClientRect();
+        const parts = [...document.querySelectorAll('.quest-safety h3, .quest-safety-row input, .quest-safety-actions button')].map(node => node.getBoundingClientRect());
+        return parts.every(box => box.top >= card.top - 1 && box.bottom <= card.bottom + 1 && box.bottom <= innerHeight);
+      });
+      await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
+      expect(await fits(), '04 at 100%: one screen').toBe(true);
+      await textAt200(page);
+      await safety.evaluate(node => node.scrollIntoView({ block: 'start' }));
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      await page.screenshot({ path: `${OUT}/660-${t}-04-safety-200.png` });
+      // At 200% the buttons stay pinned at the sheet's foot while the middle scrolls.
+      const pinned = page.locator('.quest-safety-actions button');
+      for (const button of await pinned.all()) await expect(button).toBeInViewport();
+      await page.locator('.courtyard-card').evaluate(node => node.scrollBy(0, 120));
+      for (const button of await pinned.all()) await expect(button).toBeInViewport();
+      await page.screenshot({ path: `${OUT}/660-${t}-04-safety-200-scrolled.png` });
+    });
+    await open('05-settings', 'you/quests/settings', '[data-testid="quest-settings"]', settled, true, async page => {
+      const labels = await page.locator('.quest-switch > span').allInnerTexts();
+      expect(labels).toEqual(['Talking to people I don’t know', 'Quests on buses, trains or metro', 'Going out after dark']);
+      expect(await page.locator('.quest-switch > span').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).textAlign))).toEqual(['left', 'left', 'left']);
+    });
     const reality = [{ store: 'settings', rows: [asked] }, { store: 'ledger', rows: [
       done('courage-ask-at-home', '2026-11-10', { prediction: 'ignore', outcome: 'fine', fear: 4, felt: 2 }),
       done('courage-tell-them', '2026-11-11', { prediction: 'ignore', outcome: 'happened', fear: 4, felt: 3, learned: 'still-glad' }),
       done('speak-spin-60', '2026-11-12', { prediction: 'freeze', outcome: 'better', fear: 5, felt: 1 }),
     ] }];
     await open('09-reality-check', 'you/quests', '[data-testid="reality-check"]', reality);
-    await open('12-small-steps', 'you', '[aria-label="Small steps today"]', [...settled, { store: 'ledger', rows: corners(3) }]);
+    await open('12-small-steps', 'you', '[aria-label="Small steps today"]', [...settled, { store: 'ledger', rows: corners(3) }], false, undefined, '[aria-label="Small steps today"]');
+    // §8 14: Plan with its weekly side quests unchanged, and the quests' two links (one quest taken on today).
+    await open('14-plan-side-quests', 'plan', '.plan-screen', [...settled, { store: 'ledger', rows: [{ id: 'quest660-accept:kapi-five-red:2026-11-13', dayKey: DAY, mode: 'quests660', kind: 'quest-accept', refId: 'kapi-five-red', inputs: { from: 'board' }, updatedAt: NOON.getTime(), deleted: 0, deviceId: 'q660' }] }], false, async page => {
+      await expect(page.getByTestId('plan-add-quest-link')).toBeVisible();
+      await page.screenshot({ path: `${OUT}/660-${t}-14-plan-side-quests-full.png`, fullPage: true });
+    });
     await open('13-history', 'you/history', '[data-testid="you-history"]', [{ store: 'ledger', rows: [
       { id: 'badge-tier:tasks:1', dayKey: '2026-11-05', mode: 'gamify', kind: 'badge-tier', refId: 'tasks:1', inputs: {}, updatedAt: 1, deleted: 0, deviceId: 'q660' },
       { id: 'purchase:old-theme', dayKey: '2026-11-01', mode: 'economy', kind: 'purchase', refId: 'theme:linen', inputs: { itemId: 'theme:linen', price: 400, accepted: true }, updatedAt: 1, deleted: 0, deviceId: 'q660' },
@@ -188,9 +226,20 @@ for (const theme of ['light', 'dark'] as const) {
     await expect(page.getByTestId('quest-screen')).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: 'Start', exact: true }).click();
     await expect(page.locator('[data-step="before"]')).toBeVisible();
+    await expect(page.getByTestId('quest-why')).toHaveText('Pick how scary it feels');
     await page.screenshot({ path: `${OUT}/660-${t}-06-prediction.png` });
+    // 200%: a large-text reader opens the step at 200%. The first question comes into view above the footer.
+    await page.reload();
+    await expect(page.getByRole('button', { name: 'Start', exact: true }).or(page.locator('[data-step="before"]')).first()).toBeVisible();
     await textAt200(page);
+    if (await page.getByRole('button', { name: 'Start', exact: true }).isVisible()) await page.getByRole('button', { name: 'Start', exact: true }).click();
+    else { await page.goto('/?e2e#courtyard'); await page.goto('/?e2e#courtyard/quest/courage-honest-feedback'); await textAt200(page); await page.getByRole('button', { name: 'Start', exact: true }).click(); }
+    await expect(page.locator('[data-step="before"]')).toBeVisible();
+    await expect(page.getByTestId('quest-why')).toBeVisible();
+    await page.waitForTimeout(300);
+    await expect(page.getByRole('group', { name: 'How scary does it feel?' }).getByRole('button', { name: '5' })).toBeInViewport();
     await page.screenshot({ path: `${OUT}/660-${t}-06-prediction-200.png` });
+    await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
     await page.reload();
     await expect(page.locator('[data-step="before"]').or(page.getByRole('button', { name: 'Start', exact: true })).first()).toBeVisible();
     if (await page.getByRole('button', { name: 'Start', exact: true }).isVisible()) await page.getByRole('button', { name: 'Start', exact: true }).click();
@@ -212,6 +261,16 @@ for (const theme of ['light', 'dark'] as const) {
     await page.getByRole('group', { name: 'How did it actually feel?' }).getByRole('button', { name: '2' }).click();
     await page.getByRole('button', { name: 'Save' }).click();
     await expect(page.locator('.quest-finish')).toBeVisible();
+    const toast = page.locator('.economy-toast');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText(/^\+\d+\u00a0min into the jar/);
+    const back = page.getByRole('button', { name: 'Back to the courtyard' });
+    const [t1, b1] = [await toast.boundingBox(), await back.boundingBox()];
+    expect(t1!.y + t1!.height <= b1!.y || b1!.y + b1!.height <= t1!.y, '08: the toast does not cover Back to the courtyard').toBe(true);
+    await page.screenshot({ path: `${OUT}/660-${t}-08-finish-toast.png` });
+    await expect(toast).toHaveCount(0, { timeout: 15_000 });
+    await page.waitForTimeout(400);
+    await expect(page.locator('.quest-hero .cast-svg')).toHaveCSS('opacity', '1');
     await page.screenshot({ path: `${OUT}/660-${t}-08-finish.png` });
     // 11: the Pause card with "Or a 5-min quest?" (the e2e stand-in for the phone's pause).
     await put(page, 'settings', [{ key: 'pause.card.on', value: true, updatedAt: 1, deleted: 0, deviceId: 'q660' }, { key: 'pause.act', value: 'do 10 squats', updatedAt: 1, deleted: 0, deviceId: 'q660' }, { key: 'night.pause.apps', value: ['com.instagram.android'], updatedAt: 1, deleted: 0, deviceId: 'q660' }, { key: 'night.pause.dayMode', value: 'open', updatedAt: 1, deleted: 0, deviceId: 'q660' }]);
@@ -229,7 +288,7 @@ for (const theme of ['light', 'dark'] as const) {
 // a9 checklist §8b, shots 15-23 (removals 3.1-3.4): each screen as it opens, light first, 360x800; * also 200%.
 // "Shards" may appear only in You › history and the Backup restore line: every other screen here is checked for it.
 const noShards = async (page: Page, where: string) => expect(await page.locator('main').innerText(), `${where}: no "Shards"`).not.toMatch(/Shards/);
-const SUNDAY_EVE = new Date('2026-12-13T18:30:00'); // the first week of a month, so the Lower-by-1 offer can come
+const SUNDAY_EVE = new Date('2026-12-13T12:00:00'); // a Sunday before shutdown (shares hide after it); first week of a month, so Lower-by-1 can come
 async function phoneAt(browser: Browser, colorScheme: 'light' | 'dark', time: Date): Promise<Page> {
   const context = await browser.newContext({ viewport: { width: 360, height: 800 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
   const page = await context.newPage();
@@ -256,6 +315,11 @@ for (const theme of ['light', 'dark'] as const) {
     let page = await phoneAt(browser, theme, NOON);
     await snapAt(page, 'you/history', '[data-testid="you-history"]', `660-${t}-16-history-empty`);
     for (const section of ['Past seasons', 'Past weeks', 'Badges you earned']) await expect(page.getByRole('region', { name: section }).locator('p, ul').first()).toBeVisible();
+    // b2 12 Nov: a new user never sees the closed shop, and You has no history link while every section is empty.
+    await expect(page.getByRole('heading', { name: /^Shards kept/ })).toHaveCount(0);
+    await page.goto('/?e2e#you');
+    await expect(page.locator('.you-screen')).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByTestId('history-link')).toHaveCount(0);
     await page.context().close();
 
     // A filled phone: a month of days, a badge and a theme from before, three predicted quests, two old reminders.
@@ -267,6 +331,8 @@ for (const theme of ['light', 'dark'] as const) {
       done('courage-tell-them', '2026-12-09', { prediction: 'ignore', outcome: 'happened', fear: 4, felt: 3, learned: 'still-glad' }),
       done('speak-spin-60', '2026-12-10', { prediction: 'freeze', outcome: 'better', fear: 5, felt: 1 }),
     ]);
+    // Finished weeks for You › history's Past weeks: a few tasks done in each of the last three weeks.
+    await put(page, 'tasks', ['2026-11-24', '2026-11-26', '2026-12-01', '2026-12-02', '2026-12-04', '2026-12-09'].map((day, index) => ({ id: `past-${index}`, title: `Done task ${index + 1}`, status: 'done', dayKey: day, size: 'M', estimateMin: 30, category: 'general', mustOrCould: 'could', scheduledStart: null, scheduledEnd: null, postponeCount: 0, doneAt: new Date(`${day}T15:00:00`).getTime(), updatedAt: 1, deleted: 0, deviceId: 'q660' })));
     await put(page, 'settings', [asked, settingRow('planner.budget', { budget: 5 }), settingRow('plan.reminders', [
       { id: 'r1', text: 'buy a notebook', createdAt: new Date('2026-12-01T10:00:00').getTime() },
       { id: 'r2', text: 'call Nani', createdAt: new Date('2026-12-02T10:00:00').getTime() },
@@ -279,6 +345,8 @@ for (const theme of ['light', 'dark'] as const) {
     await noShards(page, 'You');
     // 16 filled.
     await snapAt(page, 'you/history', '[data-testid="you-history"]', `660-${t}-16-history`, true, true);
+    await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
+    await expect(page.getByRole('region', { name: 'Past weeks' }).locator('li')).not.toHaveCount(0);
     // 17: the Sunday receipt sheet, then Lower it by 1.
     await page.goto('/?e2e#you');
     await page.reload();
@@ -345,12 +413,18 @@ for (const theme of ['light', 'dark'] as const) {
 
   test(`§8b shot 19b: ticking a migrated reminder gives no XP toast and no jar fill, ${theme}`, async ({ browser }) => {
     const page = await phoneAt(browser, theme, NOON);
-    await put(page, 'settings', [asked, settingRow('plan.reminders', [{ id: 'r1', text: 'buy a notebook', createdAt: new Date('2026-11-12T10:00:00').getTime() }])]);
+    await put(page, 'settings', [asked, settingRow('plan.reminders', [
+      { id: 'r1', text: 'buy a notebook', createdAt: new Date('2026-11-11T10:00:00').getTime() },
+      { id: 'r2', text: 'call Nani', createdAt: new Date('2026-11-12T10:00:00').getTime() },
+    ])]);
     await page.goto('/?e2e#plan');
     await page.reload();
     await page.locator('.plan-more summary').click();
     const later = page.getByRole('region', { name: 'Later', exact: true });
     await expect(later).toContainText('buy a notebook');
+    await expect(later).toContainText('call Nani');
+    await later.evaluate(node => node.scrollIntoView({ block: 'start' }));
+    await page.screenshot({ path: `${OUT}/660-${t}-19-later-two.png` });
     const before = await page.evaluate(async () => {
       const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
       const rows = await new Promise<{ mode: string }[]>(resolve => { const request = database.transaction('ledger').objectStore('ledger').getAll(); request.onsuccess = () => resolve(request.result); });
@@ -359,6 +433,9 @@ for (const theme of ['light', 'dark'] as const) {
     });
     await later.getByRole('button', { name: 'Done: buy a notebook' }).click();
     await page.waitForTimeout(800);
+    await expect(page.locator('.economy-toast')).toHaveCount(0);
+    await expect(later.getByText('call Nani').or(later.getByText('buy a notebook'))).toHaveCount(1);
+    await later.evaluate(node => node.scrollIntoView({ block: 'start' }));
     await page.screenshot({ path: `${OUT}/660-${t}-19-later-ticked.png` });
     const after = await page.evaluate(async () => {
       const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });

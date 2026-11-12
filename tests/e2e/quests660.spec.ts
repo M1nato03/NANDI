@@ -139,8 +139,13 @@ test('Courage and Speak ask fear and a prediction; after 3 the Reality Check app
     await page.getByRole('button', { name: 'Start', exact: true }).click();
     await expect(page.locator('[data-step="before"]')).toBeVisible();
     await stepInView(page);
+    // A disabled "Go do it" says what it waits for, one question at a time (b2 12 Nov).
+    await expect(page.getByTestId('quest-why')).toHaveText('Pick how scary it feels');
+    await expect(page.getByRole('button', { name: 'Go do it' })).toBeDisabled();
     await page.getByRole('group', { name: 'How scary does it feel?' }).getByRole('button', { name: '4' }).click();
+    await expect(page.getByTestId('quest-why')).toHaveText('Pick what you think will happen');
     await page.getByRole('button', { name: prediction }).click();
+    await expect(page.getByTestId('quest-why')).toHaveCount(0);
     await page.getByRole('button', { name: 'Go do it' }).click();
     await page.getByRole('button', { name: /I.m back/ }).click();
     await page.getByRole('button', { name: outcome }).click();

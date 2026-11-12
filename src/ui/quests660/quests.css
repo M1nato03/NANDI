@@ -25,12 +25,17 @@
 .quest-track em { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--ink-2); font-style: normal; font-variant-numeric: tabular-nums; }
 .quest-history-link { justify-self: start; }
 
-/* The safety question. */
-.quest-safety { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+/* The safety question (E12): it fits one screen at 100%; at large text Save / Not now stay pinned at the sheet's foot. */
+.quest-safety { display: grid; gap: 8px; padding: 12px 14px 0; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); scroll-margin-top: 8px; }
 .quest-safety h3 { margin: 0; }
 .quest-safety p { margin: 0; }
-.quest-safety-row { display: flex; gap: 10px; align-items: center; min-height: 48px; }
-.quest-safety-row input { width: 24px; height: 24px; flex: none; }
+.quest-safety-row { display: flex; gap: 12px; align-items: center; justify-content: flex-start; min-height: 44px; margin: 0; text-align: left; }
+.quest-safety-row input { width: 24px; height: 24px; min-width: 0; min-height: 0; margin: 0; flex: none; }
+.quest-safety-row span { flex: 1; text-align: left; }
+.quest-safety-actions { position: sticky; bottom: 0; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px; margin: 0 -14px; padding: 10px 14px 12px; border-radius: 0 0 14px 14px; background: var(--surface); box-shadow: 0 -8px 12px -10px rgba(0,0,0,.25); }
+.quest-safety-actions > button { flex: 1 1 7rem; }
+/* Settings › Quests: the three labels sit left, like every other switch row. */
+.quest-switch > span { flex: 1; text-align: left; }
 
 /* One quest: only the middle scrolls; the move stays pinned above the tab bar (spec 40's lessons). */
 .quest-screen { display: flex; flex-direction: column; min-height: calc(100dvh - var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) - 140px); margin-bottom: calc(var(--tabbar-h, calc(64px + env(safe-area-inset-bottom))) - 112px - env(safe-area-inset-bottom)); padding-bottom: 0; container: quest-screen / inline-size; }

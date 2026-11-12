@@ -7,7 +7,7 @@ import { pendingTarget, readTargets, setTarget, TARGET_KEY, TARGETS, targetFor, 
 import { currentArcTitle } from '../../core/mysteries';
 import { SHOP_ITEMS } from '../../core/economy/shop';
 import { badges } from '../../core/economy/gamify';
-import { PastWeeks } from '../tasks/weekReview';
+import { PastWeeks, usePastWeeks } from '../tasks/weekReview';
 import { finishedSeasons, seasonLine, seasonResult } from '../../core/economy/seasonResult';
 import { recordShown } from '../../data/repos/gamify';
 import { RULES } from '../../core/rules.config';
@@ -139,31 +139,51 @@ export function YourSeason() {
  * Spec 660 §3 (jenil-0b F1, 12 Nov): You › history, one read-only page for what the removed reward layers left behind.
  * Nothing on it can be bought, raised or changed; each removal adds its own section.
  */
-export function YouHistory() {
+/** What You › history holds: Shards and owned items, finished seasons, finished weeks and earned badges. */
+function useHistory() {
   const economy = useEconomy();
-  if (!economy) return <section className="screen you-history" aria-busy="true" />;
-  const { view } = economy;
-  const names = new Map(SHOP_ITEMS.map(item => [item.id, item.name]));
-  const owned = view.owned.map(id => names.get(id) ?? id);
-  // §3.1b: the highest tier of each badge earned (badge-tier facts; none are written from v12From).
-  const tiers = new Map<string, number>();
-  for (const row of economy.facts) {
-    const match = !row.deleted && row.kind === 'badge-tier' ? /^(.+):([1-3])$/.exec(row.refId) : null;
-    if (match && Number(match[2]) > (tiers.get(match[1]!) ?? 0)) tiers.set(match[1]!, Number(match[2]));
-  }
-  // §3.2: each finished season, read-only: its dates and its useful days (no rank, tier or Shards).
-  const seasons = finishedSeasons(economy.today).map(season => seasonResult(economy.facts, economy.settings, season)).reverse();
-  const earned = badges.filter(badge => tiers.has(badge.id)).map(badge => ({ title: badge.title, tier: ['Bronze', 'Silver', 'Gold'][tiers.get(badge.id)! - 1] ?? 'Gold' }));
+  const weeks = usePastWeeks();
+  return useMemo(() => {
+    if (!economy || !weeks) return undefined;
+    const { view } = economy;
+    const names = new Map(SHOP_ITEMS.map(item => [item.id, item.name]));
+    const owned = view.owned.map(id => names.get(id) ?? id);
+    // §3.1b: the highest tier of each badge earned (badge-tier facts; none are written from v12From).
+    const tiers = new Map<string, number>();
+    for (const row of economy.facts) {
+      const match = !row.deleted && row.kind === 'badge-tier' ? /^(.+):([1-3])$/.exec(row.refId) : null;
+      if (match && Number(match[2]) > (tiers.get(match[1]!) ?? 0)) tiers.set(match[1]!, Number(match[2]));
+    }
+    // §3.2: each finished season, read-only: its dates and its useful days (no rank, tier or Shards).
+    const seasons = finishedSeasons(economy.today).map(season => seasonResult(economy.facts, economy.settings, season)).reverse();
+    const earned = badges.filter(badge => tiers.has(badge.id)).map(badge => ({ title: badge.title, tier: ['Bronze', 'Silver', 'Gold'][tiers.get(badge.id)! - 1] ?? 'Gold' }));
+    // b2 12 Nov: a person who never held a Shard or bought anything never sees the closed shop.
+    const shardsCard = view.shards > 0 || owned.length > 0;
+    return { view, owned, seasons, earned, weeks, shardsCard, empty: !shardsCard && !seasons.length && !weeks.length && !earned.length };
+  }, [economy, weeks]);
+}
+
+/** You's one link to the history, hidden while every section of it would be empty (a new user sees none of it). */
+export function HistoryLink() {
+  const history = useHistory();
+  if (!history || history.empty) return null;
+  return <button type="button" className="card you-link history-link" data-testid="history-link" onClick={() => go('you/history')}><strong>Your history</strong><span>What you kept: past seasons, weeks and badges</span></button>;
+}
+
+export function YouHistory() {
+  const history = useHistory();
+  if (!history) return <section className="screen you-history" aria-busy="true" />;
+  const { view, owned, seasons, earned, weeks, shardsCard } = history;
   return <section className="screen you-history" data-testid="you-history"><p className="eyebrow">You</p><h1>Your history</h1>
-    <section className="card" aria-labelledby="history-shards"><h2 id="history-shards">Shards kept: {view.shards.toLocaleString()}</h2>
+    {shardsCard && <section className="card" aria-labelledby="history-shards"><h2 id="history-shards">Shards kept: {view.shards.toLocaleString()}</h2>
       <p>The shop has closed. What you own stays yours{owned.length ? ':' : '.'}</p>
       {owned.length > 0 && <ul className="history-list">{owned.map(name => <li key={name}>{name}</li>)}</ul>}
       <p className="small">Rest days held: {view.streak.restDays}. They still keep a streak on a missed day, and more arrive on the 1st.</p>
-    </section>
+    </section>}
     <section className="card" aria-labelledby="history-seasons"><h2 id="history-seasons">Past seasons</h2>
       {seasons.length ? <ul className="history-list">{seasons.map(season => <li key={season.start}>{seasonLine(season)} · {season.usefulDays === 1 ? '1 useful day' : `${season.usefulDays} useful days`}</li>)}</ul> : <p>No season has finished yet.</p>}
     </section>
-    <PastWeeks />
+    <PastWeeks weeks={weeks} />
     <section className="card" aria-labelledby="history-badges"><h2 id="history-badges">Badges you earned</h2>
       {earned.length ? <ul className="history-list">{earned.map(badge => <li key={badge.title}>{badge.title} · {badge.tier}</li>)}</ul> : <p>None were earned before badges ended.</p>}
     </section>
