@@ -26,8 +26,8 @@
 .quest-history-link { justify-self: start; }
 
 /* The safety question. */
-.quest-safety { display: grid; gap: 10px; }
-.quest-safety h2 { margin: 0; }
+.quest-safety { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.quest-safety h3 { margin: 0; }
 .quest-safety p { margin: 0; }
 .quest-safety-row { display: flex; gap: 10px; align-items: center; min-height: 48px; }
 .quest-safety-row input { width: 24px; height: 24px; flex: none; }

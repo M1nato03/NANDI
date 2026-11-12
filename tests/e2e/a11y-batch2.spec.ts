@@ -41,13 +41,23 @@ test('C7: every "spot the part" choice is at least 44 by 44 px', async ({ page }
 
 test('C9: at 200% text the trek captions, place signs and focus strip show every word', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
+  // Spec 660 (b2 ruling a): nothing is due yet, so the card's row is today's quest, and it shows every word at 200% too.
+  await page.goto('/?e2e#courtyard');
+  const questRow = page.locator('.courtyard-card-next .courtyard-card-row[data-kind="quest"]');
+  await expect(questRow).toContainText(/has a quest/);
+  await expect(page.locator('.courtyard-card-next .next-move-go')).toHaveCount(0);
+  await page.addStyleTag({ content: '.courtyard-card-text strong { font-size: 32px !important; } .courtyard-card-meta { font-size: 28px !important; }' });
+  expect(await fits(page, '.courtyard-card-text strong')).toBe(true);
+  expect(await fits(page, '.courtyard-card-meta')).toBe(true);
   await page.goto('/?e2e#plan/focus');
   await page.getByLabel('Add a task').fill('Write the long quarterly report for the regional office');
   await page.getByRole('button', { name: 'Add', exact: true }).click();
   await page.getByRole('button', { name: 'Start focus' }).click();
   // Spec 571 stage 2: the focus is the one next move on the Courtyard's card; the camp and its signs are on the Yatra tab.
+  // Spec 660: a running focus is due now, so the move has the row, not the quest.
   await page.goto('/?e2e#courtyard');
-  await expect(page.locator('.next-move')).toContainText('Working on');
+  await expect(page.locator('.courtyard-card-next .next-move')).toContainText('Working on');
+  await expect(questRow).toHaveCount(0);
   await doubleText(page);
   expect(await fits(page, '.next-move-text strong')).toBe(true);
   await page.goto('/?e2e#yatra');

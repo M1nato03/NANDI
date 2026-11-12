@@ -236,6 +236,9 @@ test.describe('lands in the thing in 2 s or less on the Low profile (median of 3
       const times: number[] = [];
       for (let run = 0; run < 3; run++) {
         const phone = await lowPhone(browser, testInfo, [land.area]);
+        // Spec 660 (b2 ruling a): a move that is not due now sits first in the card's sheet; the clock runs from its tap.
+        const handle = phone.page.locator('.courtyard-card-handle');
+        if (!await move(phone.page).isVisible() && await handle.getAttribute('aria-expanded') !== 'true') await handle.click();
         await expect(move(phone.page)).toContainText(land.title);
         const start = performance.now();
         await move(phone.page).click();

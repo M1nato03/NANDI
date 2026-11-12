@@ -49,15 +49,15 @@ test('a new phone: no useful day yet, the camp, and one move to Read', async ({ 
   // No time number, no bar, no time-back claim.
   await expect(page.locator('main')).not.toContainText(/back to you|time back|returned|\d+ h \d+ m|recorded/i);
   await expect(page.locator('.courtyard-card progress, .courtyard-card [role="progressbar"]')).toHaveCount(0);
+  // Spec 660: Read is not due now, so the row is today's quest and the one move opens the sheet, first.
+  await expect(questRow(page)).toContainText(/has a quest/);
+  await expect(row(page).locator('.next-move-go')).toHaveCount(0);
+  await openCard(page);
+  await expect(page.locator('.courtyard-card-section').first()).toHaveAttribute('data-section', 'move');
   await expect(page.getByRole('region', { name: 'One next move' })).toHaveCount(1);
   await expect(move(page)).toHaveCount(1);
   await expect(move(page)).toContainText('Read one idea');
-  // Spec 660: Read is not due now, so the row is today's quest and the move opens the sheet, first.
-  await expect(questRow(page)).toContainText(/has a quest/);
-  await expect(row(page).locator('.next-move-go')).toHaveCount(0);
-  await expect(page.locator('.courtyard-card-section').first()).toHaveAttribute('data-section', 'move');
   // The record with no useful day yet is only its one-line rule.
-  await openCard(page);
   await page.locator('.home-week').click();
   // Spec 47b: before Season 1 the record is plainly "Your record", its week in words.
   await expect(page.getByRole('heading', { name: 'Your record', level: 1 })).toBeVisible();

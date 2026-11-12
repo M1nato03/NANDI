@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import pack from '../../../content/quests660/board.json';
 import { db } from '../../data/db';
@@ -14,7 +14,6 @@ import { QUEST_PHOTOS_LINE } from '../../data/backup';
 import { Cast } from '../cast/Cast';
 import { HomeCardRow } from '../courtyard/HomeCard';
 import { go } from '../shell/router';
-import { useModalFocus } from '../shell/useModalFocus';
 import { recordError } from '../errorRing';
 import './quests.css';
 
@@ -53,20 +52,22 @@ export function QuestRow({ quest }: { quest: BoardQuest }) {
   return <HomeCardRow row={{ friend: quest.friend, line: words.line, meta: words.meta, kind: 'quest', onOpen: () => go(`courtyard/quest/${quest.id}`) }} />;
 }
 
-/** The safety question, the first time Quests opens (Jenil 8 Nov, wording approved as drafted; all three off). */
-export function SafetySheet({ onClose }: { onClose: () => void }) {
+/**
+ * The safety question, the first time Quests opens (Jenil 8 Nov, wording approved as drafted; all three off). It sits in
+ * the board itself, in place of today's list until answered, so it never covers the rest of the card's sheet.
+ */
+export function SafetyAsk() {
   const [picked, setPicked] = useState<QuestSafety>({ strangers: false, transit: false, afterDark: false });
-  const finish = async (safety: QuestSafety) => { try { await saveSafety(db, safety); } catch (error) { fail(error); } onClose(); };
-  const focusRef = useModalFocus<HTMLElement>(() => void finish({ strangers: false, transit: false, afterDark: false }));
+  const finish = async (safety: QuestSafety) => { try { await saveSafety(db, safety); } catch (error) { fail(error); } };
   const box = (key: keyof QuestSafety, label: string) => <label className="quest-safety-row"><input type="checkbox" checked={picked[key]} onChange={event => setPicked({ ...picked, [key]: event.target.checked })} /><span>{label}</span></label>;
-  return <div className="sheet-backdrop"><section ref={focusRef} tabIndex={-1} className="ui-sheet task-sheet quest-safety" role="dialog" aria-modal="true" aria-labelledby="quest-safety-title" data-testid="quest-safety">
-    <h2 id="quest-safety-title">Which quests are OK for you?</h2>
+  return <section className="quest-safety" aria-labelledby="quest-safety-title" data-testid="quest-safety">
+    <h3 id="quest-safety-title">Which quests are OK for you?</h3>
     <p>Some quests ask you to talk to people you don't know, travel somewhere, or go out after dark. Pick what suits you. You can change this any time.</p>
     {box('strangers', 'Talking to people I don’t know')}
     {box('transit', 'Quests on buses, trains or metro')}
     {box('afterDark', 'Going out after dark')}
     <div className="sheet-actions"><button type="button" onClick={() => void finish(picked)}>Save</button><button type="button" className="secondary" onClick={() => void finish({ strangers: false, transit: false, afterDark: false })}>Not now</button></div>
-  </section></div>;
+  </section>;
 }
 
 function QuestCardRow({ quest, done, onSwap }: { quest: BoardQuest; done: boolean; onSwap: () => void }) {
@@ -119,14 +120,12 @@ export function QuestBoard({ initialMinutes }: { initialMinutes?: QuestMinutes }
   const [minutes, setMinutes] = useState<QuestMinutes | undefined>(initialMinutes);
   const [where, setWhere] = useState<QuestWhere | undefined>();
   const data = useQuestBoard({ minutes, where });
-  const [asking, setAsking] = useState(false);
-  const askedOnce = useRef(false);
-  useEffect(() => { if (data && !data.asked && !askedOnce.current) { askedOnce.current = true; setAsking(true); } }, [data]);
   if (!data) return <section className="quest-board" data-testid="quest-board" aria-busy="true" />;
   const filtered = minutes !== undefined || where !== undefined;
   return <section className="quest-board" data-testid="quest-board" aria-labelledby="quest-board-title">
     <h2 id="quest-board-title">Quests</h2>
     <p className="small">Off the screen, in the next minute. Skip any, at no cost.</p>
+    {!data.asked ? <SafetyAsk /> : <>
     <div className="quest-filter">
       <div className="quest-chips" role="group" aria-label="Time">{QUEST_MINUTES.map(n => <button type="button" key={n} className="ui-chip" aria-pressed={minutes === n} onClick={() => setMinutes(minutes === n ? undefined : n)}>{n}&nbsp;min</button>)}</div>
       <div className="quest-chips" role="group" aria-label="Where">{QUEST_WHERE.map(place => <button type="button" key={place} className="ui-chip" aria-pressed={where === place} onClick={() => setWhere(where === place ? undefined : place)}>{WHERE_WORD[place]}</button>)}</div>
@@ -139,7 +138,7 @@ export function QuestBoard({ initialMinutes }: { initialMinutes?: QuestMinutes }
     <button type="button" className="text-button quest-history-link" data-testid="quest-history-link" onClick={() => go('you/quests')}>
       {data.check ? 'Your Reality Check' : `Your quests${data.stones.length ? ` · ${data.stones.length} ${data.stones.length === 1 ? 'stone' : 'stones'}` : ''}`}
     </button>
-    {asking && <SafetySheet onClose={() => setAsking(false)} />}
+    </>}
   </section>;
 }
 
@@ -283,9 +282,12 @@ export function YouQuests() {
 /** Settings › Quests: the three switches (each with its plain line), all off on a fresh install. */
 export function QuestSettings() {
   const data = useQuestBoard();
+  // The switch moves at the tap; the saved setting follows (a live query is a tick behind).
+  const [shown, setShown] = useState<QuestSafety | null>(null);
   if (!data) return <section className="screen quest-settings" aria-busy="true" />;
-  const toggle = (key: keyof QuestSafety) => void saveSafety(db, { ...data.safety, [key]: !data.safety[key] }).catch(fail);
-  const row = (key: keyof QuestSafety, label: string) => <label className="toggle-row quest-switch"><span>{label}</span><input type="checkbox" checked={data.safety[key]} onChange={() => toggle(key)} /></label>;
+  const safety = shown ?? data.safety;
+  const toggle = (key: keyof QuestSafety) => { const next = { ...safety, [key]: !safety[key] }; setShown(next); void saveSafety(db, next).catch(fail); };
+  const row = (key: keyof QuestSafety, label: string) => <label className="toggle-row quest-switch"><span>{label}</span><input type="checkbox" checked={safety[key]} onChange={() => toggle(key)} /></label>;
   return <section className="screen quest-settings calm-screen" data-testid="quest-settings"><p className="eyebrow">Settings</p><h1>Quests</h1>
     <section className="card"><h2>Which quests are OK for you?</h2>
       {row('strangers', 'Talking to people you don’t know')}

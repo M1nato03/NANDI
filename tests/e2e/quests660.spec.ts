@@ -55,11 +55,12 @@ test('the collapsed row offers a quest when nothing is due, and opens its card',
 });
 
 test('a due move keeps the row: a running focus shows the next move, not a quest', async ({ page }) => {
-  await open(page, 'plan', '.plan-screen');
-  await page.getByRole('textbox').first().fill('Write the report');
-  await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: /^Start/ }).first().click();
-  await open(page, 'courtyard', '.courtyard-card');
+  await page.goto('/?e2e#plan/focus');
+  await page.getByLabel('Add a task').fill('Write the report');
+  await page.getByRole('button', { name: 'Add', exact: true }).click();
+  await page.getByRole('button', { name: 'Start focus' }).click();
+  await page.goto('/?e2e#courtyard');
+  await expect(page.locator('.courtyard-card')).toBeVisible();
   await expect(page.locator('.courtyard-card-next .next-move-go')).toBeVisible();
   await expect(page.locator('.courtyard-card-next [data-kind="quest"]')).toHaveCount(0);
 });
@@ -82,7 +83,7 @@ test('the board: the safety question once (all off), 3 quests from 3 friends, sw
   await cards.first().getByRole('button', { name: /^Swap/ }).click();
   await expect(board.locator(`.quest-card[data-quest="${first}"]`)).toHaveCount(0);
   await expect(cards).toHaveCount(3);
-  await board.getByRole('group', { name: 'Time' }).getByRole('button', { name: '5\u00a0min' }).click();
+  await board.getByRole('group', { name: 'Time' }).getByRole('button', { name: '5\u00a0min', exact: true }).click();
   for (const meta of await cards.locator('.quest-card-meta').allTextContents()) expect(meta).toContain('5\u00a0min');
   // Asked once: a reload does not ask again.
   await open(page, 'courtyard', '.courtyard-card');
@@ -95,7 +96,7 @@ test('one quest start to finish: card → do it → what happened → a stone, a
   await open(page, 'courtyard', '.courtyard-card');
   await answered(page);
   await open(page, 'courtyard/quest/kapi-five-red', '[data-testid="quest-screen"]');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Spot 5 red things on your way.');
+  await expect(page.getByTestId('quest-screen').getByRole('heading', { level: 1 })).toHaveText('Spot 5 red things on your way.');
   await expect(page.getByRole('button', { name: 'Skip, no cost' })).toBeVisible();
   await stepInView(page);
   await page.getByRole('button', { name: 'Start', exact: true }).click();
@@ -162,7 +163,7 @@ test('Plan\'s "+ quest" and the Pause card\'s "Or a 5-min quest?" open the board
   await page.getByTestId('plan-add-quest-link').click();
   await expect(page.getByTestId('quest-board')).toBeVisible();
   await open(page, 'courtyard/quests/5', '[data-testid="quest-board"]');
-  await expect(page.getByRole('group', { name: 'Time' }).getByRole('button', { name: '5\u00a0min' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('group', { name: 'Time' }).getByRole('button', { name: '5\u00a0min', exact: true })).toHaveAttribute('aria-pressed', 'true');
   for (const meta of await page.locator('.quest-list').first().locator('.quest-card-meta').allTextContents()) expect(meta).toContain('5\u00a0min');
 });
 
