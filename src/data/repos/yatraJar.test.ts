@@ -77,4 +77,6 @@ it('spec 575: a plan on the last camp of a trail pays out once the walk switches
   expect(planReached(tarsar, { trails, index: 0 }, 5)).toBe(false);
   expect(planReached(tarsar, { trails, index: 1 }, 1)).toBe(false);
   expect(planReached(tarsar, { trails, index: 1 }, 2)).toBe(true);
+  // An unknown trail id pays once rather than never (no loss states); shipped ids are frozen (trails.test.ts).
+  expect(planReached({ ...old, trailId: 'gone' }, { trails, index: 0 }, 0)).toBe(true);
 });

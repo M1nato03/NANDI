@@ -75,7 +75,8 @@ export function readJarPlan(value: unknown): JarPlan | null {
  */
 export function planReached(plan: JarPlan, journey: { trails: readonly { id: string }[]; index: number }, place: number): boolean {
   const own = journey.trails.findIndex(trail => trail.id === plan.trailId);
-  if (own < 0) return false;
+  // b2 13 Nov: a plan on a trail no longer walked counts as reached, so it pays once and never silently dies.
+  if (own < 0) return true;
   return journey.index > own || (journey.index === own && place >= plan.camp);
 }
 

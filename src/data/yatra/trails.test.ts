@@ -3,6 +3,9 @@ import { FEATURE_KINDS, trailErrors, ZONES } from '../../core/yatra/trail';
 import { STRETCHES_PER_LEG } from '../../core/yatra/trek';
 import { JAR } from '../../core/yatra/jar';
 import { journeyTrails, ORDER, shipped } from './trails';
+import { deriveJourney } from '../../core/yatra/journey';
+import { treeKeepsakes } from '../../core/courtyard/keepsakes';
+import type { LedgerRow } from '../types';
 
 // Spec 575 gates (d) and must 4: the three trails ship in a fixed order, none is silently dropped, ids never move.
 describe('spec 575: the shipped trails', () => {
@@ -62,5 +65,28 @@ describe('spec 575: the shipped trails', () => {
     const heights = (index: number) => shipped[index]!.places.map(place => place.altitudeM);
     expect(heights(0)).toEqual([2860, 3070, 3660, 4250, 3900, 3320]);
     expect(heights(2)).toEqual([1951, 2365, 3420, 3600, 3490, 3527, 3636, 2254, 1951]);
+  });
+});
+
+describe('spec 575 on the shipped journey', () => {
+  const day = (n: number) => new Date(Date.parse('2026-11-01T12:00:00Z') + n * 86_400_000).toISOString().slice(0, 10);
+  /** `count` jar sessions of 10 min, 6 a day (the cap), the first of each day a Mind board. */
+  const jarDays = (count: number): LedgerRow[] => Array.from({ length: count }, (_, i) => ({ id: `s${String(i).padStart(4, '0')}`, dayKey: day(Math.floor(i / 6)), mode: i % 6 === 0 ? 'mind' : 'calm', kind: i % 6 === 0 ? 'board' : 'session', refId: String(i), inputs: {}, updatedAt: i + 1, deleted: 0 as const, deviceId: 't' }));
+  const jar = { from: '2026-11-01', focus: [] };
+
+  it('trail ids are frozen: every shipped id stays in the journey (plans and switch rows hang on them)', () => {
+    expect(journeyTrails().map(trail => trail.id)).toEqual(['hampta-pass', 'tarsar-marsar', 'sandakphu']);
+  });
+
+  it('290 jar minutes land in Tarsar Marsar with Hampta\'s 5 tags on the neem; 570 end complete at sepi-return', () => {
+    const at290 = deriveJourney(jarDays(29), journeyTrails(), '2026-11-01', day(5), {}, jar)!;
+    expect(at290.trail.id).toBe('tarsar-marsar');
+    expect([at290.place, at290.stretch]).toEqual([4, 2]);
+    expect(treeKeepsakes(at290).slice(0, 5).map(tag => tag.campId)).toEqual(['chika', 'balu-ka-ghera', 'hampta-pass', 'shea-goru', 'chatru']);
+    const at570 = deriveJourney(jarDays(57), journeyTrails(), '2026-11-01', day(10), {}, jar)!;
+    expect(at570.trail.id).toBe('sandakphu');
+    expect(at570.complete).toBe(true);
+    expect(at570.trail.places[at570.place]!.id).toBe('sepi-return');
+    expect(treeKeepsakes(at570)).toHaveLength(19);
   });
 });

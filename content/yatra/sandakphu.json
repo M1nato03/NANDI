@@ -215,11 +215,6 @@
             "kind": "meadow",
             "at": 0.3,
             "source": "https://indiahikes.com/sandakphu-phalut"
-          },
-          {
-            "kind": "boulders",
-            "at": 0.75,
-            "source": "https://indiahikes.com/sandakphu-phalut"
           }
         ]
       },
@@ -309,13 +304,7 @@
       },
       "terrain": {
         "zone": "ridge-meadow",
-        "features": [
-          {
-            "kind": "boulders",
-            "at": 0.6,
-            "source": "https://indiahikes.com/sandakphu-phalut"
-          }
-        ]
+        "features": []
       },
       "postcard": {
         "title": "Sandakphu",
@@ -340,13 +329,7 @@
       },
       "terrain": {
         "zone": "rhodo-forest",
-        "features": [
-          {
-            "kind": "stream",
-            "at": 0.7,
-            "source": "https://indiahikes.com/sandakphu-phalut"
-          }
-        ]
+        "features": []
       },
       "postcard": {
         "title": "Bamboo forest",
