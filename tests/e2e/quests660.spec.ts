@@ -170,8 +170,8 @@ test('Settings › Quests: three switches, all off on a fresh install; one on le
   const switches = page.getByTestId('quest-settings').getByRole('checkbox');
   await expect(switches).toHaveCount(3);
   for (const box of await switches.all()) await expect(box).not.toBeChecked();
-  await page.getByRole('checkbox', { name: 'Talking to people you don’t know' }).check();
-  await expect(page.getByRole('checkbox', { name: 'Talking to people you don’t know' })).toBeChecked();
+  await page.getByRole('checkbox', { name: 'Talking to people I don’t know' }).check();
+  await expect(page.getByRole('checkbox', { name: 'Talking to people I don’t know' })).toBeChecked();
   await expect(page.getByText('Quest photos stay on this phone. They are not in backups or shares.')).toBeVisible();
 });
 

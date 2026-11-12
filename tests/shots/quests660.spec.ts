@@ -176,7 +176,10 @@ for (const theme of ['light', 'dark'] as const) {
       const fits = async () => page.evaluate(() => {
         const card = document.querySelector('.courtyard-card')!.getBoundingClientRect();
         const parts = [...document.querySelectorAll('.quest-safety h3, .quest-safety-row input, .quest-safety-actions button')].map(node => node.getBoundingClientRect());
-        return parts.every(box => box.top >= card.top - 1 && box.bottom <= card.bottom + 1 && box.bottom <= innerHeight);
+        const bar = document.querySelector('.quest-safety-actions')!.getBoundingClientRect();
+        const rows = [...document.querySelectorAll('.quest-safety h3, .quest-safety-row')].map(node => node.getBoundingClientRect());
+        // Every part inside the sheet, and no box or label under the pinned buttons.
+        return parts.every(box => box.top >= card.top - 1 && box.bottom <= card.bottom + 1 && box.bottom <= innerHeight) && rows.every(box => box.bottom <= bar.top + 1);
       });
       await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
       expect(await fits(), '04 at 100%: one screen').toBe(true);
@@ -189,6 +192,8 @@ for (const theme of ['light', 'dark'] as const) {
       for (const button of await pinned.all()) await expect(button).toBeInViewport();
       await page.locator('.courtyard-card').evaluate(node => node.scrollBy(0, 120));
       for (const button of await pinned.all()) await expect(button).toBeInViewport();
+      // §9 footer peek: nothing of the middle shows between the pinned buttons and the sheet's foot.
+      expect(await page.evaluate(() => document.querySelector('.courtyard-card')!.getBoundingClientRect().bottom - document.querySelector('.quest-safety-actions')!.getBoundingClientRect().bottom)).toBeLessThanOrEqual(2);
       await page.screenshot({ path: `${OUT}/660-${t}-04-safety-200-scrolled.png` });
     });
     await open('05-settings', 'you/quests/settings', '[data-testid="quest-settings"]', settled, true, async page => {

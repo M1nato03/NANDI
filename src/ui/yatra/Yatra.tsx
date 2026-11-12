@@ -217,14 +217,16 @@ export function useCardChoice(phase?: Phase) {
 
 export function CourtyardCard({ boardMinutes, open, card }: { boardMinutes?: QuestMinutes; open?: boolean; card: ReturnType<typeof useCardChoice> }) {
   const yatra = useYatra();
-  const { rows, resting, choice } = card;
+  const { rows, resting, choice, quests } = card;
   const [expanded, setExpanded] = useState(open === true);
   const move = rows ? <NextMoveCard rows={rows} capped={yatra?.trek.jar.capped} climb={yatra?.trek.climb} /> : <div className="next-move-slot" />;
   return <HomeCard expanded={expanded} onExpanded={setExpanded}
     row={choice.kind === 'rest' ? <p className="courtyard-rest-row">{COURTYARD_NIGHT_LINE}</p> : choice.kind === 'quest' ? <QuestRow quest={choice.quest} /> : move}
     sections={[
+      // E12 (b2 12 Nov): until the safety question is answered, Quests (holding it) comes first, so it fits one screen.
+      ...(!resting && quests && !quests.asked ? [{ id: 'quests', node: <QuestBoard initialMinutes={boardMinutes} /> }] : []),
       ...(choice.kind === 'quest' ? [{ id: 'move', node: move }] : []),
-      ...(!resting ? [{ id: 'quests', node: <QuestBoard initialMinutes={boardMinutes} /> }] : []),
+      ...(!resting && !(quests && !quests.asked) ? [{ id: 'quests', node: <QuestBoard initialMinutes={boardMinutes} /> }] : []),
       ...(rows && !resting ? [{ id: 'offer', node: <MoreOfferCard picks={rows.picks} /> }] : []),
       { id: 'share', node: <WeekEndShare /> },
       { id: 'week', node: <header className="home-notes"><UsefulLine /><RealThingsLine /></header> },

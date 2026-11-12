@@ -32,7 +32,7 @@
 .quest-safety-row { display: flex; gap: 12px; align-items: center; justify-content: flex-start; min-height: 44px; margin: 0; text-align: left; }
 .quest-safety-row input { width: 24px; height: 24px; min-width: 0; min-height: 0; margin: 0; flex: none; }
 .quest-safety-row span { flex: 1; text-align: left; }
-.quest-safety-actions { position: sticky; bottom: 0; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px; margin: 0 -14px; padding: 10px 14px 12px; border-radius: 0 0 14px 14px; background: var(--surface); box-shadow: 0 -8px 12px -10px rgba(0,0,0,.25); }
+.quest-safety-actions { position: sticky; bottom: -10px; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px; margin: 0 -14px; padding: 10px 14px 22px; border-radius: 0 0 14px 14px; background: var(--surface); box-shadow: 0 -8px 12px -10px rgba(0,0,0,.25); }
 .quest-safety-actions > button { flex: 1 1 7rem; }
 /* Settings › Quests: the three labels sit left, like every other switch row. */
 .quest-switch > span { flex: 1; text-align: left; }
