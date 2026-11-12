@@ -190,7 +190,21 @@ for (const theme of ['light', 'dark'] as const) {
       // At 200% the buttons stay pinned at the sheet's foot while the middle scrolls.
       const pinned = page.locator('.quest-safety-actions button');
       for (const button of await pinned.all()) await expect(button).toBeInViewport();
-      await page.locator('.courtyard-card').evaluate(node => node.scrollBy(0, 120));
+      // Scroll the sheet's middle until the 3 boxes sit just above the pinned row (a9 12 Nov: the scroll must really move).
+      const before = await page.locator('.courtyard-card').evaluate(node => node.scrollTop);
+      await page.locator('.courtyard-card').evaluate(node => {
+        const bar = node.querySelector('.quest-safety-actions')!.getBoundingClientRect();
+        const last = [...node.querySelectorAll('.quest-safety-row')].at(-1)!.getBoundingClientRect();
+        node.scrollBy(0, last.bottom - bar.top + 8);
+      });
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      expect(await page.locator('.courtyard-card').evaluate(node => node.scrollTop), 'the middle scrolled').toBeGreaterThan(before);
+      const inView = await page.evaluate(() => {
+        const card = document.querySelector('.courtyard-card')!.getBoundingClientRect();
+        const bar = document.querySelector('.quest-safety-actions')!.getBoundingClientRect();
+        return [...document.querySelectorAll('.quest-safety-row')].map(node => node.getBoundingClientRect()).filter(box => box.top >= card.top - 1 && box.bottom <= bar.top + 1).length;
+      });
+      expect(inView, 'all 3 boxes in view above the pinned row').toBe(3);
       for (const button of await pinned.all()) await expect(button).toBeInViewport();
       // §9 footer peek: nothing of the middle shows between the pinned buttons and the sheet's foot.
       expect(await page.evaluate(() => document.querySelector('.courtyard-card')!.getBoundingClientRect().bottom - document.querySelector('.quest-safety-actions')!.getBoundingClientRect().bottom)).toBeLessThanOrEqual(2);
@@ -340,7 +354,7 @@ for (const theme of ['light', 'dark'] as const) {
     ]);
     // Finished weeks for You › history's Past weeks: a few tasks done in each of the last three weeks.
     await put(page, 'tasks', ['2026-11-24', '2026-11-26', '2026-12-01', '2026-12-02', '2026-12-04', '2026-12-09'].map((day, index) => ({ id: `past-${index}`, title: `Done task ${index + 1}`, status: 'done', dayKey: day, size: 'M', estimateMin: 30, category: 'general', mustOrCould: 'could', scheduledStart: null, scheduledEnd: null, postponeCount: 0, doneAt: new Date(`${day}T15:00:00`).getTime(), updatedAt: 1, deleted: 0, deviceId: 'q660' })));
-    await put(page, 'settings', [asked, settingRow('planner.budget', { budget: 5 }), settingRow('plan.reminders', [
+    await put(page, 'settings', [asked, settingRow('planner.budget', { budget: 6 }), settingRow('plan.reminders', [
       { id: 'r1', text: 'buy a notebook', createdAt: new Date('2026-12-01T10:00:00').getTime() },
       { id: 'r2', text: 'call Nani', createdAt: new Date('2026-12-02T10:00:00').getTime() },
     ])]);
@@ -371,12 +385,16 @@ for (const theme of ['light', 'dark'] as const) {
     expect(await sheet.locator('img').evaluate(node => node.getBoundingClientRect().height <= innerHeight * 0.4 + 1)).toBe(true);
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-200.png` });
     await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
+    // The offer comes in a month's first week when 3 of the last 4 weeks stayed under a budget above the floor (5).
     const lower = sheet.getByRole('button', { name: 'Lower it by 1?' });
-    if (await lower.count()) {
-      await lower.click();
-      await expect(sheet.locator('.move-budget-line')).toContainText('Budget lowered to 4.');
-      await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-lowered.png` });
-    }
+    await expect(lower).toBeVisible();
+    await lower.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-offer.png` });
+    await lower.click();
+    await expect(sheet.locator('.move-budget-line')).toContainText('Budget lowered to 5.');
+    await expect(sheet.getByRole('button', { name: 'Lower it by 1?' })).toHaveCount(0);
+    await sheet.locator('.move-budget-line').scrollIntoViewIfNeeded();
+    await page.screenshot({ path: `${OUT}/660-${t}-17-receipt-lowered.png` });
     // 18: Plan on a Sunday, and Plan › More.
     await snapAt(page, 'plan', '.plan-screen', `660-${t}-18-plan-sunday`, false, true);
     // 13 Dec 2026 is a Sunday: the two agency questions are on Plan itself; More names only what is inside it.
