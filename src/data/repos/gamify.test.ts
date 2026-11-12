@@ -318,3 +318,17 @@ it('spec 660 §3.1b: from v12From reconcile writes no badge tier; before it (an 
   await reconcileGamify(db, at(day, '18:00'));
   expect(await tiers()).toBe(before);
 });
+
+it('spec 660 §3.1c: from v12From a month with 20 small steps writes no monthly challenge', async () => {
+  const db = createDb(`gamify-monthly-${++serial}`); opened.push(db);
+  const day = '2026-11-28';
+  for (let index = 0; index < 20; index++) await db.ledger.add({ id: `daily-quest:m${index}`, mode: 'gamify', kind: 'daily-quest', refId: `2026-11-${String(index + 1).padStart(2, '0')}:q`, dayKey: `2026-11-${String(index + 1).padStart(2, '0')}`, inputs: {}, updatedAt: at(day), deleted: 0, deviceId: 'test' });
+  const monthly = async () => (await db.ledger.toArray()).filter(row => row.kind === 'monthly-challenge').length;
+  await db.settings.put({ key: 'economy.v12From', value: '2026-11-20', updatedAt: 1, deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at(day));
+  expect(await monthly()).toBe(0);
+  // The pre-fence rule wrote it for the same month.
+  await db.settings.put({ key: 'economy.v12From', value: '9999-12-31', updatedAt: 2, deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at(day, '18:00'));
+  expect(await monthly()).toBe(1);
+});

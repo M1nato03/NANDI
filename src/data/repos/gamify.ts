@@ -134,7 +134,8 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     const badgesStop = shopClosedFrom(await db.settings.toArray());
     if (today < badgesStop) for (const badge of badges) { const reached = badgeTier(badge, facts); for (let tier = 1; tier <= reached; tier++) await add('badge-tier', `${badge.id}:${tier}`, today); }
     const month = today.slice(0, 7);
-    if (monthlyQuestCount(facts, month) >= 20) await add('monthly-challenge', month, today);
+    // Spec 660 §3.1c: the monthly challenge ends on v12From too (its count stays in the facts; it never paid Shards or XP).
+    if (today < badgesStop && monthlyQuestCount(facts, month) >= 20) await add('monthly-challenge', month, today);
     // Close the books: every finished day keeps the highest it has shown (a high-water mark, raised on each
     // run, never lowered), so no later sync, import, restore or rule fix can lower it (second opinions 22, 25).
     const rows = await db.settings.toArray();
