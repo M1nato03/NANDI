@@ -1,9 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openIdeas, seedTaughtTopics, selectBooks } from './learn-helpers';
 
-// Item 135: a friend appears only in its own area's panels. The courtyard banner shows the whole cast on purpose.
+// Item 135: a friend appears only in its own area's panels. The courtyard banner and the Yatra tab's camp strip
+// (571 stage 2: the trek above Mor's plan) show the whole cast on purpose.
 const friendsOnScreen = (page: Page) => page.evaluate(() => [...document.querySelectorAll('main [data-cast]')]
-  .filter(node => !node.closest('.courtyard-banner')).map(node => node.getAttribute('data-cast')));
+  .filter(node => !node.closest('.courtyard-banner, .trek-strip')).map(node => node.getAttribute('data-cast')));
 
 async function seedDueIdeas(page: Page, ids: string[], at: number) {
   await page.evaluate(async ({ ids, at }) => {
@@ -22,6 +23,8 @@ test('Plan has one Mor, on its stage, and Mor reacts there', async ({ page }) =>
   await page.goto('/#plan');
   await expect(page.getByRole('region', { name: "Mor's stage" })).toBeVisible();
   await expect(page.getByText('Your list for today.')).toHaveCount(0);
+  // The camp strip is a lazy chunk: read the friends once it has painted, so the read never races it (CI 43389063511).
+  await expect(page.locator('main .trek-strip')).toBeVisible();
   expect(await friendsOnScreen(page)).toEqual(['Mor']);
   await page.getByLabel('Add a task').fill('Water the plants');
   await page.getByRole('button', { name: 'Add', exact: true }).click();
