@@ -79,8 +79,9 @@ export function placeAt(prop: string, props: Readonly<Record<string, Rect>>, sta
     return { rect: [stack[0] + (stack[2] - w) / 2, stack[1] - h, w, h], support: { on: 'chiku-book-stack' } };
   }
   if (prop === 'chiku-book-stack' && learn === 2) return { rect: CHIKU_EARLY.stack, support: { on: 'chiku-reading-mat' } };
-  // J1/J2 (a9 13 Nov): the picture frame hangs 22 px up the wall face; the jar shelf sits 6 px higher on it.
-  if (prop === 'moti-picture-frame') return { rect: [rect[0], rect[1] - 22, rect[2], rect[3]], support };
+  // J1/J2 (a9 13 Nov): the picture frame hangs up the wall face; the jar shelf sits 6 px higher on it. The frame rises 8,
+  // not 22: at 22 the tree's s4-s5 swing seat covered its cord and nail (shots-sat14-165d1af); support.test checks it.
+  if (prop === 'moti-picture-frame') return { rect: [rect[0], rect[1] - 8, rect[2], rect[3]], support };
   if (prop === 'moti-shelf-three-jars') return { rect: [rect[0], rect[1] - 6, rect[2], rect[3]], support };
   // a9 13 Nov: with the shelf up, the bulb string's photos touched the jar lids (shots-sat14-9b358b0 s5); it hangs 3 px higher.
   if (prop === 'moti-bulbs-small-photos') return { rect: [rect[0], rect[1] - 3, rect[2], rect[3]], support };

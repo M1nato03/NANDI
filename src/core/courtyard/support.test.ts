@@ -3,7 +3,7 @@ import raw from '../../ui/courtyard/anchors.json';
 import { EDGE_CSS, parseAnchors, type Rect } from './anchors';
 import { AREAS } from './courtyard';
 import { LAYOUT_B_PLACES_CSS, nudgeAnchors } from './nudges';
-import { crownBottom, crownBox, crownFit, CROWN_CLEAR, KAPI_EARLY, LINES, placeAt, SUPPORT, supportProblems } from './support';
+import { crownBottom, crownBox, crownFit, crownShape, CROWN_CLEAR, KAPI_EARLY, LINES, placeAt, SUPPORT, supportProblems, TREE_AT, TREE_SCALE } from './support';
 import { PROP_PARTS } from '../../ui/courtyard/layoutBParts';
 
 // The 9 Nov support hotfix (b2 + a9): every part stands on something at every stage, on rects (the shots' alpha check
@@ -91,5 +91,24 @@ describe('the support rule (b2 + a9, 9 Nov)', () => {
     expect(placedAt(3).some(row => row.prop === 'chiku-reading-mat')).toBe(false);
     expect(book(3).rect[1] + book(3).rect[3]).toBeCloseTo(propsCss['chiku-book-stack']![1], 5);
     expect(AREAS.some(area => area.id === 'learn')).toBe(true);
+  });
+});
+
+describe("a9 13 Nov: Moti's hung frame clears the swing seat", () => {
+  it('for tree stages 4-5 and remember stages 2-5, the frame and 4 CSS of its cord sit at least 2 CSS under the seat', () => {
+    for (const tree of [4, 5]) {
+      const { k } = crownShape(tree);
+      const lift = crownFit(tree, propsCss).lift;
+      // Scene.tsx Tree: the seat is x 195-225, bottom y 124 in tree units, under the crown's lift; layout B draws the tree
+      // at TREE_SCALE about TREE_AT, so a tree point lands at 180 + 1.3k(x - 180), 377 + 1.3k(y - 140) - lift.
+      const seat = { left: TREE_AT[0] + TREE_SCALE * k * (195 - 180), right: TREE_AT[0] + TREE_SCALE * k * (225 - 180), bottom: TREE_AT[1] + TREE_SCALE * k * (124 - 140) - lift };
+      for (const remember of [2, 3, 4, 5]) {
+        const at = placeAt('moti-picture-frame', propsCss, area => area === 'remember' ? remember : tree);
+        expect(at).not.toBeNull();
+        const [x, y, w] = at!.rect;
+        const under = x + w <= seat.left || x >= seat.right || y - 4 >= seat.bottom + 2;
+        expect(under, `tree s${tree}, remember s${remember}: frame top ${y.toFixed(1)}, seat bottom ${seat.bottom.toFixed(1)}`).toBe(true);
+      }
+    }
   });
 });
