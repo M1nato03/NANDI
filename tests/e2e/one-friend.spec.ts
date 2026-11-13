@@ -31,6 +31,8 @@ test('Plan has one Mor, the camp’s, and Mor reacts there (J3, Jenil 13 Nov)', 
   await expect(page.getByRole('region', { name: "Mor's stage" }).locator('[data-cast]')).toHaveCount(0);
   // (The courtyard banner inside Plan's closed More shows the whole cast on purpose.)
   await expect(page.locator('main [data-cast="Mor"]:not(.courtyard-banner *)')).toHaveCount(1);
+  // a9 13 Nov: no named Mor beside it either (Cast names itself by aria-label and a <title> child, not a title attribute).
+  await expect(page.locator('main :is([data-cast="Mor"], [aria-label="Mor"], [title="Mor"]):not(.courtyard-banner *)')).toHaveCount(1);
   await page.getByLabel('Add a task').fill('Water the plants');
   await page.getByRole('button', { name: 'Add', exact: true }).click();
   await expect(campMor).toHaveAttribute('data-moment', 'add');

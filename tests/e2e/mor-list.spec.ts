@@ -125,6 +125,11 @@ test('Mor reacts once per action and stays still under reduced motion', async ({
   await expect(mor).toBeVisible();
   await add(page, 'Water the plants');
   await expect(mor).toHaveAttribute('data-moment', 'add');
+  // a9 13 Nov: the Mor that reacts is on screen when the task is added (not scrolled away above the list).
+  const box = await mor.boundingBox();
+  const view = page.viewportSize()!;
+  expect(box, 'camp Mor has a box').not.toBeNull();
+  expect({ top: box!.y >= 0, bottom: box!.y + box!.height <= view.height, left: box!.x >= 0, right: box!.x + box!.width <= view.width }, JSON.stringify(box)).toEqual({ top: true, bottom: true, left: true, right: true });
   await taskRow(page, 'Today', 'Water the plants').getByRole('button', { name: 'Done: Water the plants' }).click();
   await expect(mor).toHaveAttribute('data-moment', 'done');
   await page.emulateMedia({ reducedMotion: 'reduce' });

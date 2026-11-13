@@ -62,6 +62,15 @@ test('Home, You and the record count the same useful days, each date once, and t
   await expect.poll(() => setting(page, 'useful.confirmed:2026-11-02')).toEqual(['2026-11-02', '2026-11-04']);
 });
 
+test('B2 (Sat): the week counts this week only and the season card counts the whole season (Wed 11 Nov: 4 and 10 Nov)', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-11-11T12:00:00') });
+  await page.goto('/?e2e#you');
+  // 4 Nov is last week (the season's, not this week's); 10 Nov is this week's Tuesday.
+  await seed(page, [done('2026-11-04'), done('2026-11-10')]);
+  await expect(week(page).getByRole('heading')).toHaveText('1 of your 4');
+  await expect(season(page)).toContainText('Useful days this season: 2');
+});
+
 test('a new target starts next Monday; this week keeps its own, and a second change replaces the first', async ({ page }) => {
   await page.clock.install({ time: WED });
   await page.goto('/?e2e#you');
