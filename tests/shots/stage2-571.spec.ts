@@ -355,7 +355,7 @@ test('alpha check: beside, G-corner, support and the neem on the real pixels, s1
       const own: Record<string, string> = { Mor: 'mor-', Moti: 'moti-', Kapi: 'kapi-', Nandi: 'nandi-', Kachhua: 'kachhua-', Chiku: 'chiku-' };
       const mats = ['nandi-mat', 'kachhua-sleeping-mat'];
       const partMasks = await Promise.all(parts.map(async part => { const mask = await raster(part.svg); return { ...part, mask, box: bounds(mask) }; }));
-      const out: string[] = [], gaps: string[] = [], feet: string[] = [];
+      const out: string[] = [], gaps: string[] = [], feet: string[] = [], matShares: string[] = [];
       // a9 10 Nov: the crown stays round at every stage (box w/h ≥ 0.9).
       const crownBox = scene.querySelector('.courtyard-crown-leaves')?.getBoundingClientRect();
       if (crownBox && crownBox.width / crownBox.height < 0.9) out.push(`neem crown w/h ${(crownBox.width / crownBox.height).toFixed(2)} < 0.9`);
@@ -403,6 +403,8 @@ test('alpha check: beside, G-corner, support and the neem on the real pixels, s1
           const mine = part.prop.startsWith(own[friend.friend]!);
           if (mine && touch) near = true;
           if (mine && shared > 0 && !mats.includes(part.prop)) out.push(`${friend.friend}: ${shared} px over its own ${part.prop}`);
+          // b2 13 Nov: the mats stay excepted, but each friend's real share of its own mat is logged (6 Nov: 9.1%).
+          if (mine && mats.includes(part.prop) && partPixels) matShares.push(`${friend.friend}: ${(shared / partPixels).toFixed(3)}`);
           if (!mine && partPixels && shared / partPixels > 0.15) out.push(`${friend.friend}: covers ${(100 * shared / partPixels).toFixed(0)}% of ${part.prop}`);
         }
         if (!near && partMasks.some(part => part.prop.startsWith(own[friend.friend]!))) out.push(`${friend.friend}: more than 6 px from its own things`);
@@ -417,11 +419,12 @@ test('alpha check: beside, G-corner, support and the neem on the real pixels, s1
         }
         if (best < Infinity) gaps.push(`${friend.friend}: ${best.toFixed(1)} px to ${bestProp}`);
       }
-      return { problems: out, gaps, feet };
+      return { problems: out, gaps, feet, matShares };
     });
     await page.context().close();
   }
   writeFileSync(`${OUT}/alpha-report.json`, `${JSON.stringify(report, null, 2)}\n`);
+  for (const [stage, row] of Object.entries(report)) for (const line of (row as { matShares: string[] }).matShares) console.log(`mat share ${line.replace(':', ` ${stage}:`)}`);
   console.log(`stage 2 alpha check: ${JSON.stringify(Object.fromEntries(Object.entries(report).map(([stage, row]) => [stage, (row as { problems: string[] }).problems])))}`);
   // b2 9 Nov: all green, no relaxed rule (beside ≤ 6 px, nothing over its own things but the mats, every part supported,
   // nothing over the neem).
