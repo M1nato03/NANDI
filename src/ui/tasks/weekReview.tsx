@@ -10,7 +10,7 @@ import { buildWeeklySummary, isoFileWeek } from '../../core/weeklySummary';
 import { shareOrDownload } from '../../platform/files';
 import { taskRepos, useTaskBoard } from './useTaskBoard';
 import { QUEST_MODE, realityCheck, realityLine } from '../../core/quests660/quests';
-import { QUEST_PHOTOS_LINE } from '../../data/backup';
+import { QUEST_PHOTOS_LINE } from '../../data/backup/questPhotosLine';
 
 /**
  * Spec 660 §3.3 (jenil-0b F3, 12 Nov): the weekly review's controls, each in its one new home. The review screen

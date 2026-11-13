@@ -29,7 +29,7 @@ const PHONE_USAGE_TABLE = 'phoneUsageMinutes';
 /** Spec 660 §2.4: quest photos stay on this phone; the table is always empty in a backup file. */
 export const QUEST_PHOTO_TABLE = 'questPhotos';
 /** The line on the Backup screen and the Reality Check share. */
-export const QUEST_PHOTOS_LINE = 'Quest photos stay on this phone. They are not in backups or shares.';
+export { QUEST_PHOTOS_LINE } from './questPhotosLine';
 /** Spec 43: practice runs and the private notebook. Unlike the minutes record, they travel in a backup. */
 const SKILL_TABLES = [['skillAttempts', 'id, trackId, lessonId, dayKey, status, retryDue'], ['notebookPages', 'id, trackId, createdAt'], ['notebookVersions', 'id, pageId, createdAt']] as const;
 export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.1.0';
