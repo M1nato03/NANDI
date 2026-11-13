@@ -20,8 +20,10 @@ async function toHome(page: Page) {
   // After bedtime the card's row is the resting line, not a move (b2 9 Nov).
   // Spec 660: when nothing is due the row is today's quest instead of the move.
   const row = page.locator('.courtyard-card-next .next-move-go').or(page.locator('.courtyard-card-next .courtyard-card-row')).or(page.locator('.courtyard-rest-row'));
-  // K2: the card's row is chosen once its data is in (data-ready, b922833); wait on that, not on a fixed time. The deck
-  // can open after the card has settled (sat-targeted-785138b), so leave it whenever it shows, until Home stays put.
+  // K2: the card's row is chosen once its data is in (data-ready, b922833); wait on that, not on a fixed time. The
+  // opening night check can open the deck after the card has settled (it waits for the night settings), so wait for that
+  // check first (html[data-night-checked]), then leave the deck if it opened.
+  await expect(page.locator('html[data-night-checked]')).toBeAttached({ timeout: 15_000 });
   await expect(async () => {
     if (await deck.isVisible()) { await deck.click(); await page.getByRole('link', { name: 'Courtyard' }).click(); }
     await expect(page.locator('.courtyard-card[data-ready]')).toBeAttached({ timeout: 2_000 });
@@ -33,9 +35,15 @@ async function toHome(page: Page) {
 /** Spec 571 stage 2: the Courtyard's card holds the week's rows; its handle opens it (a button as well as a swipe). */
 async function openCard(page: Page) {
   const handle = page.locator('.courtyard-card-handle');
-  await expect(handle).toBeVisible();
-  if (await handle.getAttribute('aria-expanded') !== 'true') await handle.click();
-  await expect(handle).toHaveAttribute('aria-expanded', 'true');
+  const deck = page.getByRole('button', { name: 'Leave night deck' });
+  // gate-sat-3e0dd52: after shutdown the night deck can still open after Home has settled and take the handle away;
+  // leave it whenever it shows, until the card stays open.
+  await expect(async () => {
+    if (await deck.isVisible()) { await deck.click(); await page.getByRole('link', { name: 'Courtyard' }).click(); }
+    await expect(handle).toBeVisible({ timeout: 2_000 });
+    if (await handle.getAttribute('aria-expanded', { timeout: 2_000 }) !== 'true') await handle.click({ timeout: 2_000 });
+    await expect(handle).toHaveAttribute('aria-expanded', 'true', { timeout: 2_000 });
+  }).toPass({ timeout: 20_000 });
 }
 
 async function setting(page: Page, key: string, value: unknown) {

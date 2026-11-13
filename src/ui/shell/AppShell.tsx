@@ -161,6 +161,8 @@ export function AppShell() {
       openingChecked.current = true;
       wasNight.current = active;
       if (active && route() !== 'night') go('night');
+      // K2 (Sat): the opening night check has run (the deck, if due, is open now); tests wait on it, not on a time.
+      document.documentElement.dataset.nightChecked = '1';
       return;
     }
     const destination = nightRouteTransition(wasNight.current ?? active, active, route());
