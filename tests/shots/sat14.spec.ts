@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { expect, test, type Browser, type Page } from '@playwright/test';
 import { textAt200 } from '../e2e/helpers/text';
 
@@ -50,9 +50,21 @@ for (const theme of ['light', 'dark'] as const) {
   const t = theme === 'light' ? 'l' : 'd';
 
   test(`O1: the Yatra heading and its JOURNAL stamp at 100% and 200%, ${theme}`, async ({ browser }) => {
-    const page = await phone(browser, theme);
-    await put(page, 'ledger', corners(3));
+    // The legacy walk (as trek575.spec): three sessions reach one place a day, the first a Mind board so each passed
+    // landmark opens. Four days in, the journal holds postcards and its stamp shows; every landmark counts as kept, so
+    // no "Keep in the journal" sheet opens over the shot.
+    const START = '2026-10-01';
+    const dayOf = (n: number) => new Date(Date.parse(`${START}T12:00:00Z`) + n * 86_400_000).toISOString().slice(0, 10);
+    const walk = Array.from({ length: 12 }, (_, i) => fact(dayOf(Math.floor(i / 3)), i % 3 === 0 ? 'mind' : 'train', i % 3 === 0 ? 'board' : 'session', i % 3 === 0 ? {} : { xp: 60, workingSets: 6 }));
+    const page = await phone(browser, theme, new Date(`${dayOf(4)}T12:00:00`));
+    await put(page, 'ledger', walk);
+    // The trek counts from its start day (trek575.spec's seed); the app's own theme follows the shot's.
+    await put(page, 'settings', [{ key: 'yatra.startDay', value: START, updatedAt: 1, deleted: 0, deviceId: 'sat14' }, { key: 'theme', value: theme, updatedAt: 1, deleted: 0, deviceId: 'sat14' }]);
+    const kept = readdirSync('content/yatra').filter(name => name.endsWith('.json'))
+      .flatMap(name => (JSON.parse(readFileSync(`content/yatra/${name}`, 'utf8')) as { legs?: { landmark: { id: string } }[] }).legs?.map(leg => leg.landmark.id) ?? []);
+    await page.evaluate(ids => localStorage.setItem('nandi.yatra.cards', JSON.stringify(ids)), kept);
     await open(page, 'yatra', '.trek-strip');
+    await expect(page.locator('.home-permit')).toBeVisible();
     // The top of the tab: the heading and its stamp (the stamp sits above the heading's line, so frame from the top).
     const top = { x: 0, y: 0, width: 360, height: 420 };
     await snap(page, `o1-${t}-yatra-heading-100`, { clip: top });
