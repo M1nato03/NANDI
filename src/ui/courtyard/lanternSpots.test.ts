@@ -36,6 +36,12 @@ describe('layout B soft-day lanterns (a9 13 Nov, option a)', () => {
     expect(lanternSpots(6, 'two').every(spot => spot.string === lanternSpots(1, 'two')[0]!.string)).toBe(true);
   });
 
+  it("the upper string's lanterns end above the lower string", () => {
+    const spots = lanternSpots(12, 'two');
+    const lower = Math.max(...spots.map(spot => spot.string));
+    expect(spots.filter(spot => spot.string < lower).every(spot => spot.top + 10 < lower)).toBe(true);
+  });
+
   it('neighbours on a string never touch', () => {
     const row = lanternSpots(6, 'two');
     for (let i = 1; i < row.length; i++) expect(row[i]!.x - row[i - 1]!.x).toBeGreaterThan(row[i]!.width);
