@@ -53,12 +53,12 @@ for (const theme of ['light', 'dark'] as const) {
     const page = await phone(browser, theme);
     await put(page, 'ledger', corners(3));
     await open(page, 'yatra', '.trek-strip');
-    const heading = page.locator('main h2, main h1').first();
-    const box = async () => { const b = (await heading.boundingBox())!; return { x: 0, y: Math.max(0, b.y - 16), width: 360, height: b.height + 48 }; };
-    await snap(page, `o1-${t}-yatra-heading-100`, { clip: await box() });
+    // The top of the tab: the heading and its stamp (the stamp sits above the heading's line, so frame from the top).
+    const top = { x: 0, y: 0, width: 360, height: 420 };
+    await snap(page, `o1-${t}-yatra-heading-100`, { clip: top });
     await textAt200(page);
     await settle(page);
-    await snap(page, `o1-${t}-yatra-heading-200`, { clip: await box() });
+    await snap(page, `o1-${t}-yatra-heading-200`, { clip: top });
     await page.context().close();
   });
 

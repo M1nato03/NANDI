@@ -432,6 +432,10 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .backup-screen .card { margin-block: 12px; }
 .backup-screen .card > p { margin: 8px 0 14px; }
 .backup-screen .count-list { display: grid; gap: 8px; }
+/* Sat H8: the backup nudge's two buttons sit side by side while their words fit and stack at large text; a word never
+   splits ("backu p" at 200%, shots-sat14-d7bccc4). */
+.backup-nudge .sheet-actions { display: flex; flex-wrap: wrap; }
+.backup-nudge .sheet-actions button { flex: 1 1 auto; white-space: nowrap; }
 .backup-screen .count-list li { min-height: 48px; align-items: center; padding: 8px 12px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); }
 @media (prefers-reduced-motion: reduce) { .settings-group input[type='checkbox']::after, .backup-screen input[type='checkbox']::after, .train-switch input[type='checkbox']::after { transition: none; } }
 :root[data-motion='reduce'] .settings-group input[type='checkbox']::after, :root[data-motion='reduce'] .backup-screen input[type='checkbox']::after, :root[data-motion='reduce'] .train-switch input[type='checkbox']::after { transition: none; }
