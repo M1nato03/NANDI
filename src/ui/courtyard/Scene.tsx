@@ -274,9 +274,18 @@ function Rest({ stage, glowLayer }: { stage: number; glowLayer?: boolean }) {
   </g>;
 }
 
+/** Spec 15: the string holds this many lanterns; more soft days still count, the string is simply full. */
+export const LANTERNS_DRAWN = 12;
+/** b2 13 Nov: the title names the soft-day string, not "Kachhua's corner" (that is the stage-4 stand lantern). */
+export function lanternLine(count: number): string {
+  if (count <= 0) return '';
+  if (count > LANTERNS_DRAWN) return 'Lanterns fill Kachhua’s string.';
+  return count === 1 ? 'One lantern hangs on Kachhua’s string.' : `${count} lanterns hang on Kachhua’s string.`;
+}
+
 /** Spec 15: one lantern on Kachhua's string for each soft day (up to 12 drawn); they never go away. */
 export function Lanterns({ count, glowLayer }: { count: number; glowLayer?: boolean }) {
-  const shown = Math.min(count, 12);
+  const shown = Math.min(count, LANTERNS_DRAWN);
   if (!shown) return null;
   const xs = Array.from({ length: shown }, (_, index) => 16 + index * 9);
   if (glowLayer) return <g className="courtyard-flicker">{xs.map(x => <circle key={x} cx={x} cy="147" r="7" fill={C.glow} opacity=".35" />)}</g>;

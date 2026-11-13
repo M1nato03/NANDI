@@ -32,6 +32,7 @@ import { HomeCard } from '../courtyard/HomeCard';
 import { QuestBoard, QuestRow, useQuestBoard } from '../quests660/Quests';
 import { cardRow } from '../../core/quests660/row';
 import type { QuestMinutes } from '../../core/quests660/quests';
+import type { MorBeat } from '../tasks/MorList';
 import { campLine, TrekScene } from './TrekScene';
 import { WeekEndShare } from '../screens/WeekEndShare';
 import './yatra.css';
@@ -254,7 +255,7 @@ export function CourtyardCard({ boardMinutes, open, card }: { boardMinutes?: Que
  * Spec 571 stage 2: the trek strip at the top of the Yatra tab: where the camp is, the trail scene, the trail note, the
  * camp plan, and the postcards and constellation names it opens. Mor's plan follows it (YatraTab).
  */
-export function TrekStrip() {
+export function TrekStrip({ morBeat }: { morBeat?: MorBeat } = {}) {
   const yatra = useYatra();
   const [postcard, setPostcard] = useState<number | null>(null);
   const [renaming, setRenaming] = useState<Constellation | null>(null);
@@ -321,7 +322,7 @@ export function TrekStrip() {
         <span>Journal</span><b>{postcards}</b>
       </button>}
     </div>
-    {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} weather={yatra.weather} onRename={row => { setName(row.name); setRenaming(row); }} onFriend={spot => go(spot.route)} />}
+    {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} weather={yatra.weather} onRename={row => { setName(row.name); setRenaming(row); }} onFriend={spot => go(spot.route)} morBeat={morBeat} />}
     {/* Below the scene, a quiet note on the trail: information, never a second action. */}
     {trek && yatra && <div className="trek-journey">
       {shownSwitch && <p className="trek-switch-line" role="status">{shownSwitch}</p>}

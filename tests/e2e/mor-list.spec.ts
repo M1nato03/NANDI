@@ -120,7 +120,9 @@ test('moving a task in focus stops its timer and it leaves the focus card', asyn
 });
 
 test('Mor reacts once per action and stays still under reduced motion', async ({ page }) => {
-  const mor = page.locator('.mor-friend');
+  // J3 (Jenil 13 Nov): the camp's Mor above the list is the one that reacts; wait for the strip before acting.
+  const mor = page.locator('.trek-strip .mor-friend');
+  await expect(mor).toBeVisible();
   await add(page, 'Water the plants');
   await expect(mor).toHaveAttribute('data-moment', 'add');
   await taskRow(page, 'Today', 'Water the plants').getByRole('button', { name: 'Done: Water the plants' }).click();

@@ -18,17 +18,22 @@ async function seedDueIdeas(page: Page, ids: string[], at: number) {
   }, { ids, at });
 }
 
-test('Plan has one Mor, on its stage, and Mor reacts there', async ({ page }) => {
+test('Plan has one Mor, the camp’s, and Mor reacts there (J3, Jenil 13 Nov)', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-26T12:00:00') });
   await page.goto('/#plan');
   await expect(page.getByRole('region', { name: "Mor's stage" })).toBeVisible();
   await expect(page.getByText('Your list for today.')).toHaveCount(0);
   // The camp strip is a lazy chunk: read the friends once it has painted, so the read never races it (CI 43389063511).
-  await expect(page.locator('main .trek-strip')).toBeVisible();
-  expect(await friendsOnScreen(page)).toEqual(['Mor']);
+  const campMor = page.locator('main .trek-strip .mor-friend');
+  await expect(campMor).toBeVisible();
+  // J3: Plan's heading keeps its words only; the one Mor on screen is the camp's (in the strip above).
+  expect(await friendsOnScreen(page)).toEqual([]);
+  await expect(page.getByRole('region', { name: "Mor's stage" }).locator('[data-cast]')).toHaveCount(0);
+  // (The courtyard banner inside Plan's closed More shows the whole cast on purpose.)
+  await expect(page.locator('main [data-cast="Mor"]:not(.courtyard-banner *)')).toHaveCount(1);
   await page.getByLabel('Add a task').fill('Water the plants');
   await page.getByRole('button', { name: 'Add', exact: true }).click();
-  await expect(page.getByRole('region', { name: "Mor's stage" }).locator('.mor-friend')).toHaveAttribute('data-moment', 'add');
+  await expect(campMor).toHaveAttribute('data-moment', 'add');
 });
 
 test("Read: Continue is Chiku's, idea checks get Moti's own card, and a book's ideas and chest are Chiku's", async ({ page }) => {

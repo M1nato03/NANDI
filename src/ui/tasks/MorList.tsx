@@ -56,9 +56,12 @@ export type OuterMove = { task: TaskRow; before: MoveSnapshot; where: string; at
 export type StartRequest = { task: TaskRow; at: number };
 
 /** Mor's list sits under Mor's stage at the top of Plan: the stage's Mor is the one that reacts (item 135, one Mor per screen). */
-export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, startRequest, heading, away }: { board: Board; onDetail: (task: TaskRow) => void; avgHidden: boolean; hideAverage: () => void; outerMove?: OuterMove; startRequest?: StartRequest; heading?: ReactNode; away?: boolean }) {
+export type MorBeat = { kind: MorMoment; at: number };
+export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, startRequest, heading, away, friendAbove, onMoment }: { board: Board; onDetail: (task: TaskRow) => void; avgHidden: boolean; hideAverage: () => void; outerMove?: OuterMove; startRequest?: StartRequest; heading?: ReactNode; away?: boolean; friendAbove?: boolean; onMoment?: (beat: MorBeat) => void }) {
   const today = dayKey(board.now);
-  const [moment, setMoment] = useState<{ kind: MorMoment; at: number }>({ kind: 'open', at: 0 });
+  const [moment, setMoment] = useState<MorBeat>({ kind: 'open', at: 0 });
+  // J3 (Jenil 13 Nov): on the Yatra tab the camp's Mor is the one Mor, so each action's beat goes up to it.
+  useEffect(() => { if (moment.at) onMoment?.(moment); }, [moment]); // eslint-disable-line react-hooks/exhaustive-deps
   const [noted, setNoted] = useState('');
   const [toast, setToast] = useState<{ text: string; undo?: () => void; at: number; writes?: number } | null>(null);
   const [title, setTitle] = useState('');
@@ -190,7 +193,9 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
   };
 
   return <div className="mor-plan">
-    <FriendStage area="plan" compact art={<span className={`mor-friend mor-${shown}`} key={`${shown}-${moment.at}`} data-moment={shown}><Cast name="Mor" pose={POSE[shown]} size={64} title="Mor" /></span>}>{heading}</FriendStage>
+    {friendAbove
+      ? <FriendStage area="plan" compact bare>{heading}</FriendStage>
+      : <FriendStage area="plan" compact art={<span className={`mor-friend mor-${shown}`} key={`${shown}-${moment.at}`} data-moment={shown}><Cast name="Mor" pose={POSE[shown]} size={64} title="Mor" /></span>}>{heading}</FriendStage>}
     {runningTask && running && <section className="card mor-focus" aria-label="Focus">
       {/* Pause holds the clock; Resume carries on from the same second. The clock is the task's whole time, so Start
           after Stop for now continues from where it left off (item 214). */}

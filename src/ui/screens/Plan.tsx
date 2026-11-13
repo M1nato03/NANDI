@@ -12,7 +12,7 @@ import { RULES } from '../../core/rules.config';
 import { SideQuests } from '../quests/SideQuests';
 import { PlanQuests } from '../quests660/Quests';
 import { PostponeSheet } from '../tasks/PostponeSheet';
-import { MorList, type OuterMove, type StartRequest } from '../tasks/MorList';
+import { MorList, type MorBeat, type OuterMove, type StartRequest } from '../tasks/MorList';
 import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { TaskDetail } from '../tasks/TaskDetail';
 import { PhoneChhutti } from '../tasks/PhoneChhutti';
@@ -33,7 +33,7 @@ import { useModalFocus } from '../shell/useModalFocus';
 import { errorMessage } from '../shell/errorMessage';
 import { RemindersOff } from '../shell/RemindersOff';
 
-export function Plan({ questId }: { questId?: string }) {
+export function Plan({ questId, friendAbove, onMorMoment }: { questId?: string; friendAbove?: boolean; onMorMoment?: (beat: MorBeat) => void }) {
   const board = useTaskBoard();
   const [moving, setMoving] = useState<TaskRow | null>(null);
   const [outerMove, setOuterMove] = useState<OuterMove | undefined>();
@@ -86,7 +86,7 @@ export function Plan({ questId }: { questId?: string }) {
   // Item 135: one friend per area. Mor's stage heads Plan and is the Mor that reacts; away days rest Mor (no Kachhua here).
   return <section className="screen plan-screen">
     {/* Spec 27: the first screen is Mor, the add field and the three lists. Nothing else sits above or between them. */}
-    <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} outerMove={outerMove} startRequest={startRequest} away={awayToday}
+    <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} outerMove={outerMove} startRequest={startRequest} away={awayToday} friendAbove={friendAbove} onMoment={onMorMoment}
       heading={<><p className="eyebrow">Mor at the map</p><h1>Plan</h1>{awayToday && <p className="small">You’re away. Rest well.</p>}</>} />
     {!awayToday && <PlanQuests />}
     <RemindersOff />

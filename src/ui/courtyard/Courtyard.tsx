@@ -8,7 +8,7 @@ import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { AREAS, COURTYARD_KINDS, courtyardLine, courtyardNightFrom, deriveCourtyard, phaseAt, poseFor, TREE_OBJECTS, type AreaId, type AreaState, type CourtyardState, type Phase } from '../../core/courtyard/courtyard';
 import { Cast } from '../cast/Cast';
 import { go } from '../shell/router';
-import { CourtyardScene, SCENE_H, SCENE_W, type Stages } from './Scene';
+import { CourtyardScene, lanternLine, SCENE_H, SCENE_W, type Stages } from './Scene';
 import './courtyard.css';
 
 /** Where each friend stands, in scene units: centre x, feet y, size. Kachhua moves onto the cot once there is one. */
@@ -46,7 +46,7 @@ function firstViewToday(): boolean {
 export function CourtyardView({ state, phase, onFriend, selected, forcePose }: { state: CourtyardState; phase: Phase; onFriend?: (id: AreaId) => void; selected?: AreaId; forcePose?: 'idle' }) {
   const [taps, setTaps] = useState<Partial<Record<AreaId, number>>>({});
   const [nod] = useState(firstViewToday);
-  const title = `${PHASE_WORD[phase]} in the courtyard. ${courtyardLine(state, phase)}${state.lanterns ? ` ${state.lanterns === 1 ? 'One lantern glows' : `${state.lanterns} lanterns glow`} in Kachhua’s corner.` : ''}${state.toran ? ` ${state.toran === 1 ? 'One marigold hangs' : `${state.toran} marigolds hang`} over the door.` : ''}`;
+  const title = `${PHASE_WORD[phase]} in the courtyard. ${courtyardLine(state, phase)}${state.lanterns ? ` ${lanternLine(state.lanterns)}` : ''}${state.toran ? ` ${state.toran === 1 ? 'One marigold hangs' : `${state.toran} marigolds hang`} over the door.` : ''}`;
   return <div className={`courtyard courtyard-${phase}`} style={{ aspectRatio: `${SCENE_W} / ${SCENE_H}` }}>
     <CourtyardScene phase={phase} stages={stagesOf(state)} treeStage={state.treeStage} title={title} lanterns={state.lanterns} toran={state.toran} />
     {state.areas.map(area => {

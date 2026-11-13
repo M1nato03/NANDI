@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { STAR_COLOURS, STRETCHES_PER_LEG, type Constellation, type Trek } from '../../core/yatra/trek';
 import { RAIN_LINE, type Weather } from '../../core/yatra/weather';
-import { Cast, type CastName } from '../cast/Cast';
+import { Cast, type CastName, type Pose } from '../cast/Cast';
+import type { MorBeat, MorMoment } from '../tasks/MorList';
 import { hash } from './hash';
 import { Kit, kitPiece, Landmark, RIDGE_W, RidgeTile, scatterLeg, TALL_KIT, type Scattered } from './trekKit';
 /** The camp's width: the five friends stand from this far left of the place's point. */
@@ -58,6 +59,8 @@ export const CAMP: readonly CampFriend[] = [
   { friend: 'Kapi', say: 'Kapi in the branches', area: 'Play', route: 'yatra/mind', left: -98, bottom: 86, size: 50 },
   { friend: 'Kachhua', say: 'Kachhua by the fire', area: 'Calm', route: 'yatra/calm', left: -62, bottom: 0, size: 58 },
 ];
+/** J3: Mor's poses for Plan's beats (spec 27 table, as on the old heading). */
+const MOR_POSE: Record<MorMoment, Pose> = { open: 'idle', add: 'idle', done: 'cheer', move: 'idle', start: 'think', timed: 'cheer', rest: 'rest' };
 /** The fire sits just right of Kachhua. */
 const FIRE_AT = 2;
 /** A tap's reaction plays this long before the area opens (the reaction itself is 450 ms). */
@@ -217,7 +220,10 @@ function Ground({ width, lift, spans }: { width: number; lift: (x: number) => nu
 const WATER = new Set(['river', 'stream', 'ford', 'lake']);
 const ZONE_FRONT: Record<Zone, string> = { 'kullu-forest': '#4c7059', 'valley-meadow': '#7aa267', 'alpine-scree': '#857f70', 'pass-snow': '#cfd8dc', 'lahaul-dry': '#a07a56', 'lake-basin': '#719574', 'rhodo-forest': '#4b6650', 'ridge-meadow': '#86a06d' };
 
-export function TrekScene({ trek, night, dusk = false, weather = 'clear', brighten = 0, breath, onRename, onFriend }: { trek: Trek; night: boolean; dusk?: boolean; weather?: Weather; brighten?: number; breath?: { phase: 'in' | 'out'; in: number; out: number }; onRename: (constellation: Constellation) => void; onFriend?: (spot: CampFriend) => void }) {
+export function TrekScene({ trek, night, dusk = false, weather = 'clear', brighten = 0, breath, onRename, onFriend, morBeat }: { trek: Trek; night: boolean; dusk?: boolean; weather?: Weather; brighten?: number; breath?: { phase: 'in' | 'out'; in: number; out: number }; onRename: (constellation: Constellation) => void; onFriend?: (spot: CampFriend) => void; morBeat?: MorBeat }) {
+  // J3: the beat count when the scene first painted; only beats after it play (an early one is skipped, not queued).
+  const [beatFloor] = useState(() => morBeat?.at ?? 0);
+  const beat = morBeat && morBeat.at > beatFloor && morBeat.kind !== 'open' && morBeat.kind !== 'rest' ? morBeat : undefined;
   const legs = trek.trail.legs.length;
   const width = PAD + legs * LEG_W + PAD_END;
   const walked = walkedOf(trek);
@@ -346,7 +352,9 @@ export function TrekScene({ trek, night, dusk = false, weather = 'clear', bright
             const style = { left: spot.left, bottom: spot.bottom, '--lift': `${spot.bottom}px`, ...(spot.friend === 'Kachhua' ? { '--calm-in': `${breath?.in ?? 4}s`, '--calm-out': `${breath?.out ?? 6}s` } : {}) } as CSSProperties;
             const kind = `trek-actor ${spot.friend.toLowerCase()}`;
             const phase = spot.friend === 'Kachhua' ? breath?.phase : undefined;
-            const cast = <Cast name={spot.friend} pose={pose} size={spot.size} {...(taps[spot.friend] ? { moment: 'tap' as const, at: taps[spot.friend] } : {})} />;
+            const plain = <Cast name={spot.friend} pose={beat && spot.friend === 'Mor' ? MOR_POSE[beat.kind] : pose} size={spot.size} {...(taps[spot.friend] ? { moment: 'tap' as const, at: taps[spot.friend] } : {})} />;
+            // J3: Mor wears Plan's reaction classes (tasks.css), keyed per beat so each action plays once.
+            const cast = spot.friend === 'Mor' ? <span className={`mor-friend${beat ? ` mor-${beat.kind}` : ''}`} key={beat ? `beat-${beat.at}` : 'still'} data-moment={beat?.kind ?? ''}>{plain}</span> : plain;
             return home
               ? <button type="button" key={spot.friend} className={`${kind} camp-friend`} style={style} data-phase={phase} aria-label={`${spot.area}, ${spot.say}`} onClick={() => tap(spot)}>{cast}<span className="camp-label" aria-hidden="true">{spot.area}</span></button>
               : <span key={spot.friend} className={kind} style={style} data-phase={phase}>{cast}</span>;
