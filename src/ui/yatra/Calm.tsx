@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
+import { settlePending } from '../../core/calm/pending';
 import { BREATH_IN, BREATH_OUT, calmKeys, readBreath, readCalmPrefs, saveCalmDone, saveCalmSettings, type Breath, type CalmPattern, type CalmPrefs } from '../../data/repos/calm';
 import { breathKeys, readBreathSettings, saveHolds } from '../../data/repos/notebookBreath';
 import { SquareBreath } from './SquareBreath';
@@ -51,6 +52,15 @@ export function Calm() {
   // K3 (Sat): a tap counts at once and the saved row catches up, so Start right after a tap uses the tapped choice, not
   // the one still being written (calm.spec:112 at 4x CPU: Scan, then Start, sat paced). A failed save takes it back.
   const [pending, setPending] = useState<Partial<CalmPrefs>>({});
+  // Once the saved row holds a tapped choice, the tap is done; a later change from elsewhere then shows through (set
+  // while rendering when the saved row changes, React's pattern for state that follows a prop).
+  const storedKey = JSON.stringify(stored);
+  const [seenStored, setSeenStored] = useState(storedKey);
+  if (seenStored !== storedKey) {
+    setSeenStored(storedKey);
+    const settled = settlePending(pending, stored);
+    if (settled !== pending) setPending(settled);
+  }
   const prefs: CalmPrefs = { ...stored, ...pending };
   // Spec 45a: the square's holds are shared with the opening breath.
   const holds = readBreathSettings(settings).holds;
