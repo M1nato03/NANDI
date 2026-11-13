@@ -283,29 +283,57 @@ export function lanternLine(count: number): string {
   return count === 1 ? 'One lantern hangs on Kachhua’s string.' : `${count} lanterns hang on Kachhua’s string.`;
 }
 
-/** A lantern's place in the string's box: its centre x, the top of its body, the string it hangs from, its width. */
+/** A lantern's place in the string's box: its centre x, the top of its body, where its hanger meets the string, its width. */
 export type LanternSpot = { x: number; top: number; string: number; width: number };
+/** A lantern's body is this tall in the string's box (cap, body and the small knob under it). */
+export const LANTERN_H = 11;
 /**
- * Where each lantern hangs. The classic scene: one string of up to 12, 9 apart. Layout B (a9 13 Nov, option a): two
- * strings of up to six, the second 15 above the first (its lanterns end above the first string), both lifted so every lantern is whole above the cot's bedroll
- * and the last one ends left of Kachhua (one string of 12 ran over Kachhua's spot). Kachhua's nudged spot starts at
- * canvas x 80, so a row is 7.6 apart from x 13 with slimmer lanterns (6.4 wide); lanternSpots.test measures it.
+ * Layout B's lantern stand (b2 + a9 13 Nov: nothing floats; no room for a second post between the cot and Kachhua): one
+ * slim post whose foot is on the floor beside the stand lantern, a beam out from its top with a diagonal stay, and the
+ * lanterns on cords of two lengths, alternating, so they stagger in two tiers. In the string's box units (canvas CSS =
+ * 7.25 + x * 1.296, 305.21 + y * 1.296); lanternSpots.test checks it against Kachhua, the stand lantern, the cot and
+ * the birdbath.
+ */
+export const LANTERN_FRAME = { postX: 4.62, postW: 1.16, top: 66.97, foot: 140.27, beamY: 76.23, beamH: 1, beamEnd: 56.9, tiers: [100, 115] } as const;
+/**
+ * Where each lantern hangs. The classic scene: one string of up to 12, 9 apart. Layout B: from left to right along the
+ * beam, 3.6 apart, short and long cords in turn (the upper tier at 100, the lower at 115), so neighbours in a tier are
+ * 7.2 apart and every lantern is whole above the cot's bedroll and left of Kachhua's nudged spot.
  */
 export function lanternSpots(count: number, rows: 'one' | 'two' = 'one'): LanternSpot[] {
   const shown = Math.min(Math.max(0, count), LANTERNS_DRAWN);
   return Array.from({ length: shown }, (_, index) => rows === 'one' ? { x: 16 + index * 9, top: 140, string: 137, width: 7.2 }
-    : { x: 13 + (index % 6) * 7.6, top: index < 6 ? 115 : 100, string: index < 6 ? 112 : 97, width: 6.4 });
+    : { x: 12.5 + index * 3.6, top: LANTERN_FRAME.tiers[index % 2]!, string: LANTERN_FRAME.beamY + LANTERN_FRAME.beamH / 2, width: 6.4 });
 }
 
 /** Spec 15: one lantern on Kachhua's string for each soft day (up to 12 drawn); they never go away. */
 export function Lanterns({ count, glowLayer, rows = 'one' }: { count: number; glowLayer?: boolean; rows?: 'one' | 'two' }) {
   const spots = lanternSpots(count, rows);
   if (!spots.length) return null;
-  if (glowLayer) return <g className="courtyard-flicker">{spots.map(spot => <circle key={`${spot.x}-${spot.top}`} cx={spot.x} cy={spot.top + (rows === 'one' ? 7 : 5)} r={rows === 'one' ? 7 : 4.5} fill={C.glow} opacity=".35" />)}</g>;
-  const strings = [...new Set(spots.map(spot => spot.string))].map(y => ({ y, end: Math.max(...spots.filter(spot => spot.string === y).map(spot => spot.x)) + 6 }));
-  const start = Math.min(...spots.map(spot => spot.x)) - 6;
-  return <g className="courtyard-lanterns" data-lanterns={count}>{strings.map(row => <path key={row.y} d={`M${start} ${row.y}H${row.end}`} stroke="#6b4a2c" strokeWidth="1" />)}
-    {spots.map(spot => <g key={`${spot.x}-${spot.top}`}><path d={`M${spot.x} ${spot.string}v3`} stroke="#6b4a2c" strokeWidth=".8" /><rect x={spot.x - spot.width / 2} y={spot.top} width={spot.width} height="10" rx="2.4" fill="#f6a640" /><rect x={spot.x - spot.width / 2 + 1.4} y={spot.top + 2} width={spot.width - 2.8} height="6" rx="1.4" fill="#ffd98a" /></g>)}</g>;
+  if (rows === 'one') {
+    if (glowLayer) return <g className="courtyard-flicker">{spots.map(spot => <circle key={spot.x} cx={spot.x} cy="147" r="7" fill={C.glow} opacity=".35" />)}</g>;
+    return <g className="courtyard-lanterns" data-lanterns={count}><path d={`M10 137H${spots.at(-1)!.x + 6}`} stroke="#6b4a2c" strokeWidth="1" />
+      {spots.map(spot => <g key={spot.x}><path d={`M${spot.x} 137v3`} stroke="#6b4a2c" strokeWidth=".8" /><rect x={spot.x - 3.6} y="140" width="7.2" height="10" rx="2.4" fill="#f6a640" /><rect x={spot.x - 2.2} y="142" width="4.4" height="6" rx="1.4" fill="#ffd98a" /></g>)}</g>;
+  }
+  const f = LANTERN_FRAME;
+  // b2 13 Nov: at night each lantern reads as its own light; the upper tier's glow is fainter, so the tiers don't merge.
+  if (glowLayer) return <g className="courtyard-flicker">{spots.map(spot => <circle key={spot.x} cx={spot.x} cy={spot.top + 5.5} r="4.5" fill={C.glow} opacity={spot.top === f.tiers[0] ? '.25' : '.35'} />)}</g>;
+  const postRight = f.postX + f.postW / 2;
+  return <g className="courtyard-lanterns" data-lanterns={count}>
+    {/* The stand: the post on its foot, the beam out from its top and the stay that holds the beam. */}
+    <rect x={f.postX - f.postW / 2} y={f.top} width={f.postW} height={f.foot - f.top} rx=".4" fill="#7a5434" />
+    <rect x={f.postX - 2.2} y={f.foot - 1.2} width="4.4" height="1.6" rx=".6" fill="#5e3f26" />
+    <rect x={postRight - 0.2} y={f.beamY - f.beamH / 2} width={f.beamEnd - postRight + 0.2} height={f.beamH} rx=".4" fill="#7a5434" />
+    <path d={`M${postRight} ${f.top + 1.5}L${f.beamEnd - 1} ${f.beamY - f.beamH / 2}`} stroke="#7a5434" strokeWidth=".7" />
+    <circle cx={f.postX} cy={f.top} r="1" fill="#5e3f26" />
+    {spots.map(spot => { const left = spot.x - spot.width / 2; return <g key={spot.x}>
+      <path d={`M${spot.x} ${spot.string}V${spot.top}`} stroke="#6b4a2c" strokeWidth=".5" />
+      <rect x={left + 1} y={spot.top} width={spot.width - 2} height="1.4" rx=".5" fill="#9a5b22" />
+      <rect x={left} y={spot.top + 1.2} width={spot.width} height="8.4" rx="2.6" fill="#f6a640" />
+      <rect x={left + 1.4} y={spot.top + 2.8} width={spot.width - 2.8} height="5" rx="1.4" fill="#ffd98a" />
+      <rect x={left + 1} y={spot.top + 9.4} width={spot.width - 2} height="1.2" rx=".5" fill="#9a5b22" />
+      <path d={`M${spot.x} ${spot.top + 10.6}v.4`} stroke="#9a5b22" strokeWidth=".8" /></g>; })}
+  </g>;
 }
 
 /** Spec 24 #1: a marigold toran over the door, one flower per day with a kept Phone ki chhutti (up to 15 drawn). */
