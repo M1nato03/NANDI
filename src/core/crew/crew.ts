@@ -76,10 +76,10 @@ export function crewTotal(crew: Crew, mine: number): number {
 }
 export const crewFilled = (crew: Crew, mine: number) => crewTotal(crew, mine) >= crew.size * 60;
 
-/** "as of Riya today, Dev yesterday", in day words from the link dates; no clock times. */
+/** "Updated by Riya today, Dev yesterday", in day words from the link dates; no clock times. */
 export function asOfLine(crew: Crew, today: string): string | null {
   if (!crew.members.length) return null;
-  return `as of ${crew.members.map(member => `${member.first} ${dayWord(member.date, today)}`).join(', ')}`;
+  return `Updated by ${crew.members.map(member => `${member.first} ${dayWord(member.date, today)}`).join(', ')}`;
 }
 
 const SOURCE: Record<JarKind, CrewSource> = { train: 'workout', mind: 'puzzle', calm: 'Calm', focus: 'focus', read: 'chapter', lesson: 'lesson', lightsout: 'lights out', quest: 'quest' };

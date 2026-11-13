@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import pack from '../../../content/quests660/board.json';
 import type { NextMove } from '../nextMove';
-import type { BoardPack } from './quests';
+import type { BoardPack, BoardQuest } from './quests';
 import { cardRow, moveIsDue, questMeta, questRowLine } from './row';
 
 const NOW = new Date('2026-11-13T12:00:00').getTime();
@@ -33,5 +33,20 @@ describe('spec 660 §2.1: the collapsed row (b2 ruling a)', () => {
     expect(questRowLine({ friend: 'Chiku', minutes: 5 })).toEqual({ line: 'Chiku has a quest', meta: '5\u00a0min' });
     expect(questMeta({ minutes: 15, where: ['home', 'travel', 'outside'] })).toBe('15\u00a0min · home, on the way or outside');
     expect(questMeta({ minutes: 30, where: ['outside'] })).toBe('30\u00a0min · outside');
+  });
+});
+
+describe('Sun walkthrough: the row prefers a quest from a picked friend (660 §2.3 in part)', () => {
+  const quest = (id: string, friend: BoardQuest['friend']) => ({ id, friend, minutes: 5 }) as unknown as BoardQuest;
+  const board = [quest('k', 'Kapi'), quest('c', 'Kachhua'), quest('h', 'Chiku')];
+  it("picks Sleep + Get things done: Kachhua's quest, not the board's first", () => {
+    expect(cardRow({ resting: false, now: 0, board, doneToday: new Set(), picked: ['sleep', 'plan'] })).toEqual({ kind: 'quest', quest: board[1] });
+  });
+  it('no picked friend on the board, or no picks: the first quest, as before', () => {
+    expect(cardRow({ resting: false, now: 0, board, doneToday: new Set(), picked: ['train', 'plan'] })).toEqual({ kind: 'quest', quest: board[0] });
+    expect(cardRow({ resting: false, now: 0, board, doneToday: new Set() })).toEqual({ kind: 'quest', quest: board[0] });
+  });
+  it("a picked friend's quest done today gives way to the next open one", () => {
+    expect(cardRow({ resting: false, now: 0, board, doneToday: new Set(['c']), picked: ['sleep'] })).toEqual({ kind: 'quest', quest: board[0] });
   });
 });

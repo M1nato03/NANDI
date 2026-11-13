@@ -84,6 +84,8 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
   .deck-card .night-plan-setting h2 { font-size: clamp(1.75rem, 7vw, 2.25rem); margin: 0; }
   .night-first-step { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin: 0 0 20px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 14px; }
   .night-first-step .secondary { min-height: 44px; }
+  /* b2 14 Nov: the kolam button keeps a gap before the FIRST NIGHT chip under it. */
+  .night-kolam { margin-bottom: 16px; }
   .night-plan-setting h2, .night-plan-setting p { margin: 0; }
   .night-plan-setting label { font-weight: 700; }
   .night-plan-setting input, .night-plan-setting select { width: 100%; min-height: 48px; padding: 10px 12px; border-radius: 12px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); }

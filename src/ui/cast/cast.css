@@ -27,7 +27,10 @@
 .cast-unit-card button { margin: 4px; }
 @media (prefers-reduced-motion: reduce) { .cast-unit-scene { display: none; } }
 :root[data-motion='reduce'] .cast-unit-scene { display: none; }
-body:has(.economy-toast) .screen .cast-svg, body:has(.economy-reveal) .screen .cast-svg, body:has(.cast-unit-scene) .screen .cast-svg { visibility: hidden; opacity: 0; }
+/* One friend on screen while a toast or reveal speaks. Over a scene of friends (the trek strip, the courtyard) the toast
+   drops its own friend instead and the scene stays whole (b2 14 Nov, w02: the camp went empty under its labels). */
+body:has(.economy-toast):not(:has(.trek-strip, .courtyard-b)) .screen .cast-svg, body:has(.economy-reveal) .screen .cast-svg, body:has(.cast-unit-scene) .screen .cast-svg { visibility: hidden; opacity: 0; }
+body:has(.trek-strip, .courtyard-b) .economy-toast > .cast-svg { display: none; }
 .cast-unit-scene .cast-svg { visibility: visible !important; opacity: 1 !important; }
 /* Spec 31, living friends: short moments on the existing drawing. Transform and opacity only; at most 1.2 s, except
    the breathe loop on a rest pose. Moments never take taps (the friend is never the button). */

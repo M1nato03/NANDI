@@ -176,7 +176,7 @@ test('the move follows the order: focus, then Book check, then Train day, then a
   await put(page, 'focus', [{ id: 'f1', taskId: 't1', startedAt: WED.getTime() - 5 * 60_000, ...meta }]);
   await home(page);
   await page.reload();
-  await expect(move(page)).toContainText('Working on \'Call the bank\'');
+  await expect(move(page)).toContainText('Working on “Call the bank”');
   await expect(move(page)).toHaveCount(1);
   // A running focus is due now: the move has the row.
   await expect(row(page).locator('.next-move-go')).toBeVisible();

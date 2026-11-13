@@ -1,5 +1,6 @@
 import type { NextMove } from '../nextMove';
-import type { BoardQuest } from './quests';
+import type { Goal } from '../welcome';
+import type { BoardQuest, QuestFriend } from './quests';
 
 /** b2 12 Nov (ruling a): a task timed this close, or already past, is due now. */
 export const DUE_SOON_MS = 30 * 60_000;
@@ -22,10 +23,17 @@ export type CardRowChoice = { kind: 'move' } | { kind: 'quest'; quest: BoardQues
  * board not yet done; if every quest is done, swapped away or filtered out, the row falls back to the next move, so it is
  * never empty and never a dead "no quest" line.
  */
-export function cardRow(input: { resting: boolean; move?: NextMove; now: number; board: readonly BoardQuest[]; doneToday: ReadonlySet<string> }): CardRowChoice {
+/** The friend who looks after each pick (spec 52's goals); Moti's Remember is no pick of its own. */
+export const GOAL_FRIEND: Record<Goal, QuestFriend> = { sleep: 'Kachhua', learn: 'Chiku', train: 'Nandi', mind: 'Kapi', plan: 'Mor' };
+
+export function cardRow(input: { resting: boolean; move?: NextMove; now: number; board: readonly BoardQuest[]; doneToday: ReadonlySet<string>; picked?: readonly Goal[] }): CardRowChoice {
   if (input.resting) return { kind: 'rest' };
   if (input.move && moveIsDue(input.move, input.now)) return { kind: 'move' };
-  const quest = input.board.find(row => !input.doneToday.has(row.id));
+  const open = input.board.filter(row => !input.doneToday.has(row.id));
+  // Sun walkthrough (b2/a9 14 Nov, 660 §2.3 in part): the first open quest from a friend the person picked, if any;
+  // otherwise the first open quest as before. (The full §2.3 weighting is post-16, a9 P19.)
+  const friends = new Set((input.picked ?? []).map(goal => GOAL_FRIEND[goal]));
+  const quest = open.find(row => friends.has(row.friend)) ?? open[0];
   return quest ? { kind: 'quest', quest } : { kind: 'move' };
 }
 

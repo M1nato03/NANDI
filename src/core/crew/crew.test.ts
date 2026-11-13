@@ -84,7 +84,7 @@ describe('spec 55: a crew on one phone', () => {
   });
   it('says "as of" in day words only', () => {
     const crew = applyLink(applyLink(withDev, joined('cccccc3', 'Asha', '2026-11-05'), '2026-11-05'), add('bbbbbb2', 'Dev', 10, '2026-11-06'), '2026-11-06');
-    expect(asOfLine(crew, '2026-11-06')).toBe('as of Dev today, Asha yesterday');
+    expect(asOfLine(crew, '2026-11-06')).toBe('Updated by Dev today, Asha yesterday');
   });
 });
 

@@ -228,7 +228,7 @@ export function useCardChoice(phase?: Phase) {
   // so a move becomes due at its time) or with what the person does (a quest done). data-ready means "settled at
   // load", never "this row will not change".
   const choice = phase === undefined ? null : resting ? { kind: 'rest' as const }
-    : rows && quests ? cardRow({ resting, move: rows.move, now: Date.now(), board: quests.board, doneToday: quests.doneToday }) : null; // eslint-disable-line react-hooks/purity
+    : rows && quests ? cardRow({ resting, move: rows.move, now: Date.now(), board: quests.board, doneToday: quests.doneToday, picked: quests.picks.size === 'all' ? undefined : quests.picks.goals }) : null; // eslint-disable-line react-hooks/purity
   return { rows, quests, resting, choice };
 }
 

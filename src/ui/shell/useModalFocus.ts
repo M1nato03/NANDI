@@ -16,7 +16,8 @@ export function useModalFocus<T extends HTMLElement>(onEscape?: () => void): (no
     if (!node) return;
     const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const items = () => [...node.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(item => item.getClientRects().length > 0);
-    if (!node.contains(document.activeElement)) (items()[0] ?? node).focus({ preventScroll: true });
+    // A dialog can name where focus starts (data-autofocus, e.g. its heading), so no link opens wearing a focus ring.
+    if (!node.contains(document.activeElement)) (node.querySelector<HTMLElement>('[data-autofocus]') ?? items()[0] ?? node).focus({ preventScroll: true });
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && escape.current) { event.preventDefault(); escape.current(); return; }
       if (event.key !== 'Tab') return;

@@ -1,3 +1,4 @@
+import { readPicks } from '../../core/welcome';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import pack from '../../../content/quests660/board.json';
@@ -42,7 +43,7 @@ export function useQuestBoard(filter: BoardFilter = {}) {
     const board = boardFor({ day: today, quests: PACK.quests, safety, soft, swapped: swappedOn(live, today), filter });
     const doneToday = new Set(live.filter(row => row.kind === QUEST_KIND.done && row.dayKey === today).map(row => row.refId));
     const asked = settings.some(row => row.key === SAFETY_ASKED_KEY && !row.deleted && row.value === true);
-    return { today, facts: live, safety, soft, board, doneToday, asked, own: ownQuests(live), stones: questStones(live), check: realityCheck(live) };
+    return { today, facts: live, safety, soft, board, doneToday, asked, own: ownQuests(live), stones: questStones(live), check: realityCheck(live), picks: readPicks(settings) };
   }, [source, filter.minutes, filter.where]); // eslint-disable-line react-hooks/exhaustive-deps
 }
 

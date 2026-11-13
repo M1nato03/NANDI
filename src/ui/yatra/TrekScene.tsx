@@ -74,7 +74,8 @@ export function campLine(trek: Trek, night: boolean): string {
   if (night) return atPlace ? `At ${place.name}` : 'By a trailside fire';
   if (trek.complete) return 'Trail complete';
   if (trek.today.campDay) return atPlace ? `Camp at ${place.name}` : 'A day on the trail';
-  return atPlace ? `${place.name} camp` : `On the way to ${next?.name ?? place.name}`;
+  // b2 14 Nov: one name for a camp, the same before and after a walk today.
+  return atPlace ? `Camp at ${place.name}` : `On the way to ${next?.name ?? place.name}`;
 }
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce';
 function readSeen(): number | null { try { const value = Number(localStorage.getItem(SEEN_KEY)); return Number.isFinite(value) && localStorage.getItem(SEEN_KEY) !== null ? value : null; } catch { return null; } }

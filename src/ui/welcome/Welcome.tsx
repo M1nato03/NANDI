@@ -98,11 +98,11 @@ export function Welcome({ onDone }: { onDone: () => void }) {
       <p className="welcome-steps" role="img" aria-label={`Step ${step + 1} of 3`}>{[0, 1, 2].map(index => <span key={index} className={index <= step ? 'on' : ''} />)}</p>
       {step === 0 && <>
         <Cast name="Nandi" pose="cheer" size={120} title="Nandi saying hello" moment="wave" at={1} />
-        <h1>Hi, I’m Nandi.</h1>
+        <h1 tabIndex={-1} data-autofocus>Hi, I’m Nandi.</h1>
         <p>Swap a little scrolling for things you’ll be glad you did.</p>
         <p className="small">Your activity is saved on this phone. It leaves only when you back it up or share it.</p>
         {/* A one-page placeholder notice; Jenil and a lawyer finalise it before 13 May 2027. */}
-        <p className="small welcome-privacy"><a href="privacy.html">Privacy notice</a></p>
+        <p className="small welcome-privacy"><a className="ink-link" href="privacy.html">Privacy notice</a></p>
         <label className="welcome-adult"><input type="checkbox" checked={adult} onChange={event => setAdult(event.target.checked)} /> I’m 18 or older.</label>
         <button type="button" disabled={!adult} onClick={() => setStep(1)}>Let’s start</button>
         <button type="button" className="text-button" onClick={restore}>I have a backup to restore</button>
