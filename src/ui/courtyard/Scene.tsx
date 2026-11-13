@@ -289,12 +289,13 @@ export type LanternSpot = { x: number; top: number; string: number; width: numbe
 export const LANTERN_H = 11;
 /**
  * Layout B's lantern stand (b2 + a9 13 Nov: nothing floats; no room for a second post between the cot and Kachhua): one
- * slim post whose foot is on the floor beside the stand lantern, a beam out from its top with a diagonal stay, and the
+ * slim post whose foot is on the floor beside the stand lantern, a beam out from its top on a short knee brace (below
+ * Mor's birdbath, b2 14 Nov: the beam used to end at the bowl's rim), and the
  * lanterns on cords of two lengths, alternating, so they stagger in two tiers. In the string's box units (canvas CSS =
  * 7.25 + x * 1.296, 305.21 + y * 1.296); lanternSpots.test checks it against Kachhua, the stand lantern, the cot and
  * the birdbath.
  */
-export const LANTERN_FRAME = { postX: 4.62, postW: 1.16, top: 66.97, foot: 140.27, beamY: 76.23, beamH: 1, beamEnd: 56.9, tiers: [100, 115] } as const;
+export const LANTERN_FRAME = { postX: 4.62, postW: 1.16, top: 85, foot: 140.27, beamY: 89.5, beamH: 1, beamEnd: 56.9, brace: { drop: 7.6, run: 5.4 }, tiers: [100, 115] } as const;
 /**
  * Where each lantern hangs. The classic scene: one string of up to 12, 9 apart. Layout B: from left to right along the
  * beam, 3.6 apart, short and long cords in turn (the upper tier at 100, the lower at 115), so neighbours in a tier are
@@ -317,14 +318,14 @@ export function Lanterns({ count, glowLayer, rows = 'one' }: { count: number; gl
   }
   const f = LANTERN_FRAME;
   // b2 13 Nov: at night each lantern reads as its own light; the upper tier's glow is fainter, so the tiers don't merge.
-  if (glowLayer) return <g className="courtyard-flicker">{spots.map(spot => <circle key={spot.x} cx={spot.x} cy={spot.top + 5.5} r="4.5" fill={C.glow} opacity={spot.top === f.tiers[0] ? '.25' : '.35'} />)}</g>;
+  if (glowLayer) return <g className="courtyard-flicker">{spots.map(spot => <circle key={spot.x} cx={spot.x} cy={spot.top + 5.5} r="3.5" fill={C.glow} opacity={spot.top === f.tiers[0] ? '.25' : '.35'} />)}</g>;
   const postRight = f.postX + f.postW / 2;
   return <g className="courtyard-lanterns" data-lanterns={count}>
-    {/* The stand: the post on its foot, the beam out from its top and the stay that holds the beam. */}
+    {/* The stand: the post on its foot, the beam out from its top and the knee brace under the beam. */}
     <rect x={f.postX - f.postW / 2} y={f.top} width={f.postW} height={f.foot - f.top} rx=".4" fill="#7a5434" />
     <rect x={f.postX - 2.2} y={f.foot - 1.2} width="4.4" height="1.6" rx=".6" fill="#5e3f26" />
     <rect x={postRight - 0.2} y={f.beamY - f.beamH / 2} width={f.beamEnd - postRight + 0.2} height={f.beamH} rx=".4" fill="#7a5434" />
-    <path d={`M${postRight} ${f.top + 1.5}L${f.beamEnd - 1} ${f.beamY - f.beamH / 2}`} stroke="#7a5434" strokeWidth=".7" />
+    <path d={`M${postRight} ${f.beamY + f.brace.drop}L${postRight + f.brace.run} ${f.beamY + f.beamH / 2}`} stroke="#7a5434" strokeWidth=".8" />
     <circle cx={f.postX} cy={f.top} r="1" fill="#5e3f26" />
     {spots.map(spot => { const left = spot.x - spot.width / 2; return <g key={spot.x}>
       <path d={`M${spot.x} ${spot.string}V${spot.top}`} stroke="#6b4a2c" strokeWidth=".5" />

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import raw from './anchors.json';
 import { containFit, parseAnchors, type Rect } from '../../core/courtyard/anchors';
 import { nudgeAnchors } from '../../core/courtyard/nudges';
-import { LANTERN_FRAME, LANTERN_H, LANTERNS_DRAWN, lanternSpots } from './Scene';
+import { LANTERN_FRAME, LANTERN_H, LANTERNS_DRAWN, lanternSpots, PARTS } from './Scene';
 import { LANTERNS_BOX } from './LayoutBScene';
 
 // a9 13 Nov (option a, then stand A) + b2 (nothing floats): layout B's soft-day lanterns hang from one post's beam,
@@ -15,17 +15,19 @@ const overlaps = (a: Rect, b: Rect) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] 
 const kachhua = css(anchors.friends.kachhua.tap);
 const standLantern = css(anchors.props['kachhua-standing-lantern']!);
 const cot = css(anchors.props['kachhua-charpai']!);
-/** a9's measure of Mor's birdbath in the shot (canvas CSS). */
-const birdbath: Rect = [62, 383, 22.5, 11.5];
+/** Mor's birdbath as drawn (b2 14 Nov: not a guess): its part box fitted into its nudged anchor, as LayoutBScene draws it. */
+const bowlBox = PARTS.waterBowl.box;
+const bowlFit = containFit(bowlBox, css(anchors.props['mor-birdbath-water']!));
+const birdbath: Rect = [bowlFit.x + bowlBox[0] * bowlFit.k, bowlFit.y + bowlBox[1] * bowlFit.k, bowlBox[2] * bowlFit.k, bowlBox[3] * bowlFit.k];
+/** A rect grown by `by` CSS on every side. */
+const grow = (rect: Rect, by: number): Rect => [rect[0] - by, rect[1] - by, rect[2] + 2 * by, rect[3] + 2 * by];
 /** The bedroll's top in the shot: the rolled mat sits about 14 CSS above the blanket rect (484.4), so ~470. */
 const BEDROLL_TOP = 470;
 const f = LANTERN_FRAME;
 const post = onScreen(f.postX - 2.2, f.top - 1, 4.4, f.foot + 0.4 - (f.top - 1));
 const beam = onScreen(f.postX, f.beamY - f.beamH / 2, f.beamEnd - f.postX, f.beamH);
-/** The stay runs from the post top to the beam's end: its height at a canvas x. */
-const stayTop = onScreen(f.postX, f.top, 0, 0);
-const stayEnd = onScreen(f.beamEnd, f.beamY, 0, 0);
-const stayAt = (x: number) => stayTop[1] + (x - stayTop[0]) / (stayEnd[0] - stayTop[0]) * (stayEnd[1] - stayTop[1]);
+/** The knee brace under the beam, as the box around it. */
+const brace = onScreen(f.postX + f.postW / 2, f.beamY + f.beamH / 2, f.brace.run, f.brace.drop - f.beamH / 2);
 
 describe('layout B soft-day lanterns (a9 13 Nov; b2: nothing floats)', () => {
   it('for 1 to 12 lanterns: each misses Kachhua, the stand lantern and the cot, and is whole above the bedroll', () => {
@@ -49,16 +51,31 @@ describe('layout B soft-day lanterns (a9 13 Nov; b2: nothing floats)', () => {
   });
 
   it('the beam and its stay miss the birdbath and Kachhua; every lantern hangs under the beam', () => {
-    expect(overlaps(beam, birdbath)).toBe(false);
+    // b2 14 Nov: the beam, the brace and every cord keep at least 2 CSS from the bowl as drawn.
+    // a9 14 Nov: the beam's top at least 6 CSS under the bowl's drawn bottom; the post's top under it too.
+    expect(beam[1] - (birdbath[1] + birdbath[3])).toBeGreaterThanOrEqual(6);
+    expect(overlaps(post, grow(birdbath, 2))).toBe(false);
+    const near = grow(birdbath, 2);
+    expect(overlaps(beam, near), `beam ${beam.map(v => v.toFixed(1))} vs bowl ${birdbath.map(v => v.toFixed(1))}`).toBe(false);
+    expect(overlaps(brace, near)).toBe(false);
+    for (const spot of lanternSpots(LANTERNS_DRAWN, 'two')) expect(overlaps(onScreen(spot.x - 0.3, spot.string, 0.6, spot.top - spot.string), near)).toBe(false);
     expect(overlaps(beam, kachhua)).toBe(false);
-    // Over the birdbath's width the stay runs below its bottom; it ends at the beam, far above Kachhua.
-    for (let x = birdbath[0]; x <= Math.min(birdbath[0] + birdbath[2], stayEnd[0]); x += 0.5) expect(stayAt(x)).toBeGreaterThan(birdbath[1] + birdbath[3]);
-    expect(stayEnd[1]).toBeLessThan(kachhua[1]);
+    expect(overlaps(brace, kachhua)).toBe(false);
     for (const spot of lanternSpots(LANTERNS_DRAWN, 'two')) {
       expect(spot.x).toBeGreaterThan(f.postX + f.postW);
       expect(spot.x).toBeLessThan(f.beamEnd);
       expect(spot.top).toBeGreaterThan(f.beamY);
     }
+  });
+
+  it('the knee brace ends before the first cord and above the first lantern', () => {
+    const first = lanternSpots(1, 'two')[0]!;
+    expect(brace[0] + brace[2]).toBeLessThan(onScreen(first.x, 0, 0, 0)[0]);
+    expect(brace[1] + brace[3]).toBeLessThan(onScreen(0, first.top, 0, 0)[1]);
+  });
+
+  it('the knee brace passes no lantern', () => {
+    for (const spot of lanternSpots(LANTERNS_DRAWN, 'two')) expect(overlaps(brace, onScreen(spot.x - spot.width / 2, spot.top, spot.width, LANTERN_H))).toBe(false);
   });
 
   it('cords alternate short and long, so the tiers stagger; neighbours in a tier never touch', () => {
