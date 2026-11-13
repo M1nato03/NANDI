@@ -23,7 +23,7 @@ export type Support = 'floor' | 'coping' | 'wall' | 'air' | { on: string } | { h
 export const SUPPORT: Readonly<Record<string, Support>> = {
   'mor-planter-shelf': 'wall', 'mor-pot-1': { on: 'mor-planter-shelf' }, 'mor-pot-2': { on: 'mor-planter-shelf' },
   'mor-marigold-bed': { on: 'mor-planter-shelf' }, 'mor-trellis-creeper': { on: 'mor-planter-shelf' }, 'mor-birdbath-water': 'floor',
-  'moti-chest': 'floor', 'moti-picture-frame': 'floor', 'moti-shelf-three-jars': 'wall', 'moti-brass-trunk': 'floor', 'moti-bulbs-small-photos': 'wall',
+  'moti-chest': 'floor', 'moti-picture-frame': 'wall', 'moti-shelf-three-jars': 'wall', 'moti-brass-trunk': 'floor', 'moti-bulbs-small-photos': 'wall',
   'kapi-wall-puzzle': 'coping', 'kapi-flat-board-game': 'coping', 'kapi-kite': 'air', 'kapi-telescope': 'coping', 'kapi-slate': 'coping',
   'nandi-mat': 'floor', 'nandi-clubs': 'floor', 'nandi-dumbbells': 'floor', 'nandi-wooden-gym-frame': 'floor', 'nandi-medals': { hangs: 'nandi-wooden-gym-frame' },
   'kachhua-sleeping-mat': 'floor', 'kachhua-pillow': 'floor', 'kachhua-charpai': 'floor', 'kachhua-standing-lantern': 'floor', 'kachhua-blanket': 'floor',
@@ -79,6 +79,9 @@ export function placeAt(prop: string, props: Readonly<Record<string, Rect>>, sta
     return { rect: [stack[0] + (stack[2] - w) / 2, stack[1] - h, w, h], support: { on: 'chiku-book-stack' } };
   }
   if (prop === 'chiku-book-stack' && learn === 2) return { rect: CHIKU_EARLY.stack, support: { on: 'chiku-reading-mat' } };
+  // J1/J2 (a9 13 Nov): the picture frame hangs 22 px up the wall face; the jar shelf sits 6 px higher on it.
+  if (prop === 'moti-picture-frame') return { rect: [rect[0], rect[1] - 22, rect[2], rect[3]], support };
+  if (prop === 'moti-shelf-three-jars') return { rect: [rect[0], rect[1] - 6, rect[2], rect[3]], support };
   if (prop === 'kapi-wall-puzzle' && stage('mind') <= 2) return { rect: KAPI_EARLY.cube, support };
   if (prop === 'kapi-flat-board-game' && stage('mind') <= 2) return { rect: KAPI_EARLY.board, support };
   return { rect, support };

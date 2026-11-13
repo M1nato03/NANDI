@@ -358,7 +358,8 @@ const CubeSolid = () => <g>
   })}
 </g>;
 /** Moti's frame standing at the wall foot, leaning on the wall, with a contact shadow (9q's spot). */
-const StandingFrame = () => <g><FloorShadow cx={336} cy={120} rx={13} /><PhotoFrame /></g>;
+/** J1 (a9 13 Nov): Moti's picture frame hangs on the wall face on a cord from a nail: no floor shadow (it doesn't stand). */
+const HungFrame = () => <g><path d="M329 100.5L336 95.5L343 100.5" fill="none" stroke={C.woodDark} strokeWidth=".8" /><circle cx="336" cy="95.5" r="1" fill={C.woodDark} /><PhotoFrame /></g>;
 /** Mor's planter shelf: a stone ledge fixed to the wall face on two brackets; the pots and the bed stand on it (72 × 9 box). */
 const PlanterShelf = () => <g>
   <path d="M3 3L3 9L8 3ZM69 3L69 9L64 3Z" fill="#b9ab93" />
@@ -387,7 +388,7 @@ export const PARTS = {
   trellis: { box: [8, 77, 82, 49], draw: () => <Trellis /> },
   waterBowl: { box: [77, 139, 22, 11], draw: () => <WaterBowl /> },
   keepsakeBox: { box: [275, 131, 18, 13], draw: () => <KeepsakeBox /> },
-  photoFrame: { box: [324, 100, 24, 20], draw: () => <StandingFrame /> },
+  photoFrame: { box: [324, 100, 24, 20], draw: () => <HungFrame /> },
   planterShelf: { box: [0, 0, 72, 9], draw: () => <PlanterShelf /> },
   jarShelf: { box: [278, 98, 36, 19], draw: () => <JarShelf /> },
   trunk: { box: [338, 126, 22, 20], draw: () => <Trunk /> },
