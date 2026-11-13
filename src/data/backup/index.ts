@@ -30,6 +30,7 @@ const PHONE_USAGE_TABLE = 'phoneUsageMinutes';
 export const QUEST_PHOTO_TABLE = 'questPhotos';
 /** The line on the Backup screen and the Reality Check share. */
 export { QUEST_PHOTOS_LINE } from './questPhotosLine';
+export { OTHER_LABEL, RESTORE_HIDDEN, RESTORE_LABELS, RESTORE_OTHER, restoreRows } from './restoreRows';
 /** Spec 43: practice runs and the private notebook. Unlike the minutes record, they travel in a backup. */
 const SKILL_TABLES = [['skillAttempts', 'id, trackId, lessonId, dayKey, status, retryDue'], ['notebookPages', 'id, trackId, createdAt'], ['notebookVersions', 'id, pageId, createdAt']] as const;
 export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.1.0';
@@ -248,6 +249,8 @@ export async function exportBackup(db: NandiDb, now: Date | number): Promise<Bac
 
 export interface BackupPreview {
   counts: Record<string, number>;
+  /** Sat Q1: rows that are not deleted, per table (what the restore review counts). */
+  live: Record<string, number>;
   earliestDayKey: string | null;
   latestDayKey: string | null;
   retired: number;
@@ -261,12 +264,14 @@ export function isPreviewDay(value: unknown): value is string {
 }
 export function previewBackup(envelope: BackupEnvelope): BackupPreview {
   const counts: Record<string, number> = {};
+  const live: Record<string, number> = {};
   let earliestDayKey: string | null = null;
   let latestDayKey: string | null = null;
   let retired = 0;
   let privatePages = 0;
   for (const table of envelope.dexie.data.data) {
     counts[table.tableName] = table.rows.length;
+    live[table.tableName] = table.rows.filter(row => row.deleted !== 1).length;
     for (const row of table.rows) {
       if (table.tableName === 'deckProg' && row.b === 99) retired++;
       if (table.tableName === 'notebookPages' && row.deleted !== 1) privatePages++;
@@ -279,7 +284,7 @@ export function previewBackup(envelope: BackupEnvelope): BackupPreview {
       }
     }
   }
-  return { counts, earliestDayKey, latestDayKey, retired, privatePages };
+  return { counts, live, earliestDayKey, latestDayKey, retired, privatePages };
 }
 
 /**

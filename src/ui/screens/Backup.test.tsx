@@ -29,7 +29,7 @@ afterEach(() => cleanup());
 
 async function startExport(): Promise<void> {
   render(<Backup onRestored={async () => {}} />);
-  await screen.findByText(/Current rows:/);
+  await screen.findByText(/No backup made on this phone yet|Last backup:/);
   fireEvent.click(screen.getByRole('button', { name: 'Save a backup' }));
 }
 
@@ -83,7 +83,7 @@ async function chooseBackup(version?: number): Promise<void> {
   }
   vi.mocked(pickFile).mockResolvedValue(new File([JSON.stringify(envelope)], 'nandi.json', { type: 'application/json' }));
   render(<Backup onRestored={async () => {}} />);
-  await screen.findByText(/Current rows:/);
+  await screen.findByText(/No backup made on this phone yet|Last backup:/);
   fireEvent.click(screen.getByRole('button', { name: 'Choose restore file' }));
   await screen.findByRole('button', { name: 'Confirm restore' });
 }

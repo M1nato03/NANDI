@@ -36,7 +36,7 @@ test('restore preview keeps its first row clear on phone widths', async ({ page 
     await expect(card).toContainText('1 retired');
     const subtitle = card.locator('p').first();
     const firstRow = card.locator('.count-list li').first();
-    await expect(firstRow).toHaveText('cards40');
+    await expect(firstRow).toHaveText('Remember cards40');
     const [cardBox, subtitleBox, rowBox] = await Promise.all([card.boundingBox(), subtitle.boundingBox(), firstRow.boundingBox()]);
     expect(cardBox).not.toBeNull();
     expect(subtitleBox).not.toBeNull();

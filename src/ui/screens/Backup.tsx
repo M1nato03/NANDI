@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { db } from '../../data/db';
-import { backupFileName, detectRestoreKind, exportBackup, importBackup, isPreviewDay, previewBackup, QUEST_PHOTOS_LINE, RestoreRolledBack, validateBackup, type BackupEnvelope } from '../../data/backup';
+import { backupFileName, detectRestoreKind, exportBackup, importBackup, isPreviewDay, previewBackup, QUEST_PHOTOS_LINE, RestoreRolledBack, restoreRows, validateBackup, type BackupEnvelope } from '../../data/backup';
 import { getOrCreateDeviceId } from '../../data/device';
 import { importLegacy, mapLegacy, validateLegacy, type LegacyExport } from '../../data/legacy-import';
 import { pickFile, shareOrDownload } from '../../platform/files';
@@ -47,7 +47,6 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
   const [persisted, setPersisted] = useState<boolean | null>(null);
   const [keepNote, setKeepNote] = useState('');
   const [usage, setUsage] = useState<StorageEstimate | null>(null);
-  const [counts, setCounts] = useState<Record<string, number> | null>(null);
   const [auto, setAuto] = useState<AutoBackupState | null>(null);
   const [autoKept, setAutoKept] = useState(0);
 
@@ -55,7 +54,6 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     const [row, storage, state] = await Promise.all([db.settings.get('lastBackupAt'), estimate(), navigator.storage?.persisted?.()]);
     setLastBackup(typeof row?.value === 'number' ? row.value : null);
     setUsage(storage); setPersisted(state ?? null);
-    setCounts(Object.fromEntries(await Promise.all(db.tables.map(async table => [table.name, await table.count()]))));
     if (Capacitor.isNativePlatform()) {
       const [state, files] = await Promise.all([readAutoBackupState(), listAutoBackups()]);
       setAuto(state); setAutoKept(files.length);
@@ -90,7 +88,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
         const checked = validateBackup(parsed);
         if (!checked.success || !checked.envelope) throw new Error(checked.errors.join('; '));
         const preview = previewBackup(checked.envelope);
-        setChoice({ kind, data: checked.envelope, counts: preview.counts, first: preview.earliestDayKey, last: preview.latestDayKey,
+        setChoice({ kind, data: checked.envelope, counts: preview.live, first: preview.earliestDayKey, last: preview.latestDayKey,
           retired: preview.retired, skipped: [], privatePages: preview.privatePages,
           // w14 H6: a backup from before the book game (database version 7) brings no Read game with it.
           freshGame: ((parsed as { dexie?: { data?: { databaseVersion?: number } } }).dexie?.data?.databaseVersion ?? 7) < 7 });
@@ -151,7 +149,8 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     {choice && <div className="card preview" aria-label="Restore preview">
       <h2>Review restore</h2><p>{choice.kind === 'backup' ? 'NANDI backup' : 'Older export'} · {choice.first && choice.last ? `${formatDayKey(choice.first)} to ${formatDayKey(choice.last)}` : 'Nothing dated in this file'}</p>
       {choice.retired > 0 && <p>{choice.retired} retired</p>}
-      <ul className="count-list">{Object.entries(choice.counts).map(([name, count]) => <li key={name}><span>{name}</span><strong>{count}</strong></li>)}</ul>
+      {/* Sat Q1: plain words, live rows only, no zeros; the rest of the app's data is one "Other" row. */}
+      <ul className="count-list">{restoreRows(choice.counts).map(row => <li key={row.label}><span>{row.label}</span><strong>{row.count}</strong></li>)}</ul>
       {choice.skipped.length > 0 && <p>Skipped keys: {choice.skipped.join(', ')}</p>}
       {/* Spec 43: practice answers are the learner's own words; say plainly that the file carries them. */}
       {choice.kind === 'backup' && !!choice.privatePages && <p className="restore-private">It holds {choice.privatePages} saved {choice.privatePages === 1 ? 'answer' : 'answers'} in your own words. Keep the file somewhere only you can open.</p>}
@@ -167,7 +166,6 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       <p>Used: {usage?.usage === undefined ? 'Unavailable' : `${(usage.usage / 1048576).toFixed(1)} MB`} · Quota: {usage?.quota === undefined ? 'Unavailable' : `${(usage.quota / 1048576).toFixed(1)} MB`}</p>
       <button className="secondary" onClick={() => void requestPersist().then(kept => { setKeepNote(kept ? 'This device will keep NANDI’s data.' : 'This device didn’t agree to keep it. Save a backup now and then, so you always have a copy.'); return refresh(); }).catch(() => setKeepNote('Couldn’t ask just now. Save a backup to keep a copy.'))}>Ask to keep data on this device</button>
       {keepNote && <p className="small" role="status">{keepNote}</p>}</div>
-    {counts && <p className="small">Current rows: {Object.values(counts).reduce((a, b) => a + b, 0)}</p>}
     {message && <p role="status">{message}</p>}
   </section>;
 }
