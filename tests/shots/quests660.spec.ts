@@ -220,7 +220,7 @@ for (const theme of ['light', 'dark'] as const) {
       done('courage-tell-them', '2026-11-11', { prediction: 'ignore', outcome: 'happened', fear: 4, felt: 3, learned: 'still-glad' }),
       done('speak-spin-60', '2026-11-12', { prediction: 'freeze', outcome: 'better', fear: 5, felt: 1 }),
     ] }];
-    await open('09-reality-check', 'you/quests', '[data-testid="reality-check"]', reality);
+    await open('09-reality-check', 'you/quests', '[data-testid="reality-check"]', reality, true, undefined, '[data-testid="reality-check"]');
     await open('12-small-steps', 'you', '[aria-label="Small steps today"]', [...settled, { store: 'ledger', rows: corners(3) }], false, undefined, '[aria-label="Small steps today"]');
     // §8 14: Plan with its weekly side quests unchanged, and the quests' two links (one quest taken on today).
     await open('14-plan-side-quests', 'plan', '.plan-screen', [...settled, { store: 'ledger', rows: [{ id: 'quest660-accept:kapi-five-red:2026-11-13', dayKey: DAY, mode: 'quests660', kind: 'quest-accept', refId: 'kapi-five-red', inputs: { from: 'board' }, updatedAt: NOON.getTime(), deleted: 0, deviceId: 'q660' }] }], false, async page => {

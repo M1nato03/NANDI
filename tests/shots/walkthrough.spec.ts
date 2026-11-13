@@ -82,7 +82,7 @@ test('w02 day one: plan a task, focus 6 minutes, finish', async ({ browser }) =>
 });
 
 // w03 (b2 14 Nov): s4 and s5 with 2 soft days, by day, at dusk and at night (the lamp stand and the lit windows).
-for (const stage of [4, 5]) for (const [when, time] of [['day', '2026-11-10T12:00:00'], ['dusk', '2026-11-10T18:45:00'], ['night', '2026-11-11T01:45:00']] as const) {
+for (const stage of [4, 5]) for (const [when, time] of [['day', '2026-11-10T12:00:00'], ['dusk', '2026-11-10T23:30:00'], ['night', '2026-11-11T01:45:00']] as const) {
   test(`w03 courtyard s${stage} with 2 soft days, ${when}`, async ({ browser }) => {
     for (const theme of ['light', 'dark'] as const) {
       const page = await phone(browser, theme, new Date(time));
@@ -166,6 +166,20 @@ for (const [theme, size] of variants) {
     await expect(page.locator('.courtyard-b')).toBeVisible({ timeout: 15_000 });
     await page.waitForTimeout(500);
     await snap(page, `w01-fresh-04-courtyard${tag(theme, size)}`);
+    await page.context().close();
+  });
+}
+
+// a9 14 Nov: a friend's card from the Courtyard (Kachhua's at s4 with 2 soft days, and Mor's): the next-object line and
+// "Days off never take anything away."
+for (const theme of ['light', 'dark'] as const) {
+  test(`w03 friend cards, ${theme}`, async ({ browser }) => {
+    const page = await phone(browser, theme, NOON);
+    await put(page, 'ledger', [...corners(4), ...daysBefore(DAY, 2).map(day => fact(day, 'soft', 'soft', {}))]);
+    for (const [area, name] of [['sleep', 'kachhua'], ['plan', 'mor']] as const) {
+      await open(page, `courtyard/view/${area}`, 'main h1, main h2, [role="dialog"]');
+      await snap(page, `w03-card-${name}-s4${theme === 'dark' ? '-dark' : ''}`, true);
+    }
     await page.context().close();
   });
 }
