@@ -47,7 +47,8 @@ export const ZONE_ART: Record<Zone, ZoneArt> = {
   'lahaul-dry': { far: { shape: { base: 120, amp: 30, waves: [[6, 0.6, 0.2], [13, 0.3, 0.6]], flatTop: 104 }, fill: '#c9a98a', caps: 106 }, mid: { shape: { base: 182, amp: 22, waves: [[5, 0.6, 0.4], [12, 0.3, 0.1]], flatTop: 166 }, fill: '#b88f66', band: '#a98058' }, front: ['#9a7350', '#876345'], extra: 'striations' },
   'lake-basin': { far: { shape: { base: 120, amp: 36, waves: [[1, 0.55, 0.5], [9, 0.3, 0.2], [17, 0.12, 0.6]], jag: true }, fill: '#a9bcc4', caps: 110 }, mid: { shape: { base: 194, amp: 22, waves: [[1, 0.8, 0.5], [6, 0.2, 0.1]] }, fill: '#87a98a', band: '#789b7b' }, front: ['#6b8f6e', '#5c7f60'] },
   'rhodo-forest': { far: { shape: { base: 126, amp: 40, waves: [[6, 0.65, 0.25], [14, 0.3, 0.5]] }, fill: '#9fb2a6' }, mid: { shape: { base: 172, amp: 32, waves: [[8, 0.7, 0.1], [3, 0.3, 0.45]] }, fill: '#5c7d5c', band: '#4f6f50' }, front: ['#45604a', '#3a5340'] },
-  'ridge-meadow': { far: { shape: { base: 150, amp: 8, waves: [[2, 0.6, 0.2], [7, 0.4, 0.5]] }, fill: '#9fb3c4' }, mid: { shape: { base: 192, amp: 10, waves: [[3, 0.6, 0.3], [8, 0.4, 0.1]] }, fill: '#a3b886', band: '#94a978' }, front: ['#7f9a68', '#6e8a5a'], extra: 'wall' },
+  // a9 review 2: a muted grey-green far ridge with real relief under the white wall (the flat blue read as water).
+  'ridge-meadow': { far: { shape: { base: 140, amp: 26, waves: [[5, 0.5, 0.2], [11, 0.3, 0.45], [2, 0.3, 0.7]] }, fill: '#9eab9c' }, mid: { shape: { base: 192, amp: 10, waves: [[3, 0.6, 0.3], [8, 0.4, 0.1]] }, fill: '#a3b886', band: '#94a978' }, front: ['#7f9a68', '#6e8a5a'], extra: 'wall' },
 };
 /** The distant high white wall of ridge-meadow (no label, no peak names: §1c). */
 const WALL: Shape = { base: 96, amp: 34, waves: [[10, 0.5, 0.3], [23, 0.3, 0.1], [4, 0.2, 0.6]], jag: true, step: 10 };
@@ -141,7 +142,8 @@ export function scatterLeg(leg: Leg, from: number, width: number, keepClear: rea
     for (let k = 0; k < count; k++) {
       const at = x + k * (10 + hash(`${id}:${n}:${k}:dx`) * 22);
       const half = width / 2;
-      const kind = (leg.terrain?.toZone && at > from + half ? ZONE_KIT[leg.terrain.toZone] : kit)[Math.floor(hash(`${id}:${n}:${k}:kind`) * kit.length) % kit.length]!;
+      const pool = leg.terrain?.toZone && at > from + half ? ZONE_KIT[leg.terrain.toZone] : kit;
+      const kind = pool[Math.floor(hash(`${id}:${n}:${k}:kind`) * pool.length) % pool.length]!;
       if (at < from + width && !keepClear.some(([a, b]) => at > a && at < b)) out.push({ x: at, kind, scale: [0.7, 0.9, 1.15][Math.floor(hash(`${id}:${n}:${k}:size`) * 3)]!, seed: `${id}:${n}:${k}` });
     }
     // Gaps between clusters run from a quarter to 1.75x the mean, so no two stretches look spaced alike.

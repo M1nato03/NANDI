@@ -14,8 +14,8 @@ const walk = (legs: number, today: 'train' | 'mind' | null) => [
   ...Array.from({ length: legs * 3 }, (_, i) => row(i % 3 === 0 ? 'mind' : 'train', i, dayOf(Math.floor(i / 3)))),
   ...(today ? [row(today, 999, dayOf(legs))] : []),
 ];
-async function seed(page: Page, facts: ReturnType<typeof row>[], rainAt?: number) {
-  await page.evaluate(async ({ facts, rainAt }) => {
+async function seed(page: Page, facts: ReturnType<typeof row>[], rainAt?: number, theme: 'light' | 'dark' = 'light') {
+  await page.evaluate(async ({ facts, rainAt, theme }) => {
     const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
     await new Promise<void>((resolve, reject) => {
       const transaction = database.transaction(['ledger', 'settings', 'focus'], 'readwrite');
@@ -25,21 +25,31 @@ async function seed(page: Page, facts: ReturnType<typeof row>[], rainAt?: number
       if (rainAt) transaction.objectStore('focus').put({ id: 's575-rain', taskId: 't', startedAt: rainAt - 20 * 60_000, pauses: [{ at: rainAt - 60_000, reason: 'guard' }], updatedAt: 1, deleted: 0, deviceId: 's575' });
       for (const fact of facts) transaction.objectStore('ledger').put(fact);
       transaction.objectStore('settings').put({ key: 'yatra.startDay', value: '2026-10-01', updatedAt: 1, deleted: 0, deviceId: 's575' });
+      // a9 review 2: the app's own theme setting (emulateMedia alone left the dark shots identical to light).
+      transaction.objectStore('settings').put({ key: 'theme', value: theme, updatedAt: 1, deleted: 0, deviceId: 's575' });
       transaction.oncomplete = () => resolve(); transaction.onerror = () => reject(transaction.error);
     });
     database.close();
-  }, { facts, rainAt });
+  }, { facts, rainAt, theme });
 }
-async function shot(page: Page, name: string, legs: number, today: 'train' | 'mind' | null, hour = 12, options: { rain?: boolean; route?: string; target?: string } = {}) {
+async function shot(page: Page, name: string, legs: number, today: 'train' | 'mind' | null, hour = 12, options: { rain?: boolean; route?: string; target?: string; theme?: 'light' | 'dark'; landmark?: number } = {}) {
   const at = new Date(`${dayOf(legs)}T${String(hour).padStart(2, '0')}:00:00`);
   await page.clock.setFixedTime(at);
-  await seed(page, walk(legs, today), options.rain ? at.getTime() : undefined);
+  await seed(page, walk(legs, today), options.rain ? at.getTime() : undefined, options.theme);
   await page.goto(`/?e2e#${options.route ?? 'yatra'}`);
   await page.reload();
   const scene = page.locator(options.target ?? '.trek-strip .trek-scene');
   await expect(scene).toBeVisible({ timeout: 15_000 });
   const close = page.getByRole('button', { name: 'Keep in the journal' });
   if (await close.isVisible({ timeout: 1500 }).catch(() => false)) await close.click();
+  if (options.landmark !== undefined) {
+    // a9 review 2: frame the leg's landmark (ahead of the group), so its before/after state is in the picture.
+    await page.evaluate(index => {
+      const scroller = document.querySelector<HTMLElement>('.trek-strip .trek-scroll')!;
+      const mark = document.querySelectorAll<HTMLElement>('.trek-strip .trek-landmark')[index]!;
+      scroller.scrollLeft = mark.offsetLeft + mark.offsetWidth / 2 - scroller.clientWidth / 2;
+    }, options.landmark);
+  }
   await page.waitForTimeout(400);
   await scene.screenshot({ path: `${OUT}/${name}.png` });
 }
@@ -53,10 +63,16 @@ for (const theme of ['light', 'dark'] as const) {
     let offset = 0;
     for (const [trail, legs] of TRAILS) {
       for (let leg = 0; leg < legs; leg++) {
-        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-before`, offset + leg, 'train');
-        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-after`, offset + leg, 'mind');
+        // The group mid-leg (where the zone reads), then the landmark framed shut and open.
+        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-group`, offset + leg, 'train', 12, { theme });
+        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-landmark-before`, offset + leg, 'train', 12, { theme, landmark: leg });
+        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-landmark-after`, offset + leg, 'mind', 12, { theme, landmark: leg });
       }
       offset += legs;
+    }
+    // The Home strip (the Yatra tab's scene) in three zones, the whole strip with its notes.
+    for (const [name, legs] of [['kullu-forest', 0], ['lake-basin', 8], ['ridge-meadow', 14]] as const) {
+      await shot(page, `575-${theme}-home-strip-${name}`, legs, 'train', 12, { theme, target: '.trek-strip' });
     }
   });
 }
@@ -70,6 +86,15 @@ test('575 the highest points at night, clear of the stars; the switch; a caption
   await shot(page, '575-night-sandakphu', 17, 'train', 23);
   await shot(page, '575-switch-next-tarsar', 5, null);
   await shot(page, '575-pass-leg-close', 3, 'mind');
+  // The camp tree crop (its code is unchanged; the crop is for the side-by-side with main).
+  await page.locator('.trek-strip .trek-group .trek-prop.tree').screenshot({ path: `${OUT}/575-camp-tree-crop.png` });
+  // A caption at 200%: whole, not cut, not broken mid-word.
+  await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+  await page.getByRole('button', { name: 'Hampta Glacier' }).click();
+  await expect(page.locator('.trek-landmark-caption')).toBeVisible();
+  await page.locator('.trek-landmark-caption').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${OUT}/575-caption-200.png` });
+  await page.addStyleTag({ content: 'html { font-size: 100% !important; }' });
   // b2 ruling b: rain looks the same in every zone (one shot in three zones).
   await shot(page, '575-rain-kullu-forest', 0, 'train', 12, { rain: true });
   await shot(page, '575-rain-lake-basin', 8, 'train', 12, { rain: true });
@@ -78,8 +103,21 @@ test('575 the highest points at night, clear of the stars; the switch; a caption
   await shot(page, '575-night-calm', 8, 'train', 23, { route: 'grow/calm', target: '.trek-scene' });
   // Must 3: past 12 tags the neem's peg-board holds the overflow (17 camps reached).
   await shot(page, '575-neem-pegboard', 17, null, 12, { route: 'courtyard', target: '.courtyard-b-home' });
-  await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
-  await page.getByRole('button', { name: 'Hampta Glacier' }).click();
-  await expect(page.locator('.trek-landmark-caption')).toBeVisible();
-  await page.locator('.trek-strip').screenshot({ path: `${OUT}/575-caption-200.png` });
+});
+
+test('575 swipe across a zone boundary (frames and a video)', async ({ browser }, testInfo) => {
+  test.setTimeout(120_000);
+  const context = await browser.newContext({ baseURL: testInfo.project.use.baseURL, viewport: { width: 360, height: 800 }, reducedMotion: 'reduce', recordVideo: { dir: `${OUT}/video`, size: { width: 360, height: 800 } } });
+  const page = await context.newPage();
+  await page.goto('/?e2e#plan');
+  // Hampta leg 4 (pass-snow) runs into lahaul-dry: stand at Hampta Pass and swipe right across the change.
+  await shot(page, '575-swipe-start', 3, 'train');
+  const scroller = page.locator('.trek-strip .trek-scroll');
+  const from = await scroller.evaluate(node => node.scrollLeft);
+  for (let step = 0; step <= 10; step++) {
+    await scroller.evaluate((node, left) => { node.scrollLeft = left; }, from + step * 90);
+    await page.waitForTimeout(150);
+    if (step % 2 === 0) await page.locator('.trek-strip .trek-scene').screenshot({ path: `${OUT}/575-swipe-frame-${String(step).padStart(2, '0')}.png` });
+  }
+  await context.close();
 });

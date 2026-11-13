@@ -108,14 +108,16 @@ const Fire = () => <svg viewBox="0 0 30 40" aria-hidden="true"><path d="M2 34L27
  * reduced motion sees the same picture with no crossfade, M3).
  */
 const VIEW = 360, BLEND = 120;
+/** a9 review 2: a zone starts this far into its leg, past the camp's shelf (SHELF_PX) and its blend, never under a camp. */
+export const ZONE_SHIFT = 0.3 * LEG_W;
 type ZoneSpan = { zone: Zone; from: number; to: number };
 export function zoneSpans(trail: Trail, worldWidth: number): ZoneSpan[] {
   const spans: ZoneSpan[] = [];
   const push = (zone: Zone, from: number, to: number) => { const last = spans.at(-1); if (last && last.zone === zone) last.to = to; else spans.push({ zone, from, to }); };
   trail.legs.forEach((leg, i) => {
     const zone = leg.terrain?.zone ?? 'kullu-forest';
-    const from = i === 0 ? 0 : placeX(i), to = i === trail.legs.length - 1 ? worldWidth : placeX(i + 1);
-    if (leg.terrain?.toZone) { const mid = placeX(i) + LEG_W / 2; push(zone, from, mid); push(leg.terrain.toZone, mid, to); } else push(zone, from, to);
+    const from = i === 0 ? 0 : placeX(i) + ZONE_SHIFT, to = i === trail.legs.length - 1 ? worldWidth : placeX(i + 1) + ZONE_SHIFT;
+    if (leg.terrain?.toZone) { const mid = placeX(i) + ZONE_SHIFT + LEG_W / 2; push(zone, from, mid); push(leg.terrain.toZone, mid, to); } else push(zone, from, to);
   });
   return spans;
 }
@@ -124,8 +126,9 @@ function ZoneLayer({ spans, kind, factor, width }: { spans: readonly ZoneSpan[];
   return <div className={`trek-ridge trek-ridge-${kind}`} aria-hidden="true">{spans.map((span, i) => {
     const left = i === 0 ? 0 : toLayer(span.from, factor) - BLEND / 2;
     const right = i === spans.length - 1 ? width : toLayer(span.to, factor) + BLEND / 2;
-    const fadeIn = i === 0 ? 0 : BLEND, fadeOut = i === spans.length - 1 ? 0 : BLEND;
-    const mask = `linear-gradient(90deg, transparent 0, #000 ${fadeIn}px, #000 calc(100% - ${fadeOut}px), transparent 100%)`;
+    // a9 review 2: the next span (drawn later, so on top) fades in over this one, which stays opaque underneath.
+    const fadeIn = i === 0 ? 0 : BLEND;
+    const mask = `linear-gradient(90deg, transparent 0, #000 ${fadeIn}px, #000 100%)`;
     const first = Math.floor(left / RIDGE_W), last = Math.ceil(right / RIDGE_W);
     return <div key={`${span.zone}-${i}`} className="trek-zone" data-zone={span.zone} style={{ left, width: right - left, WebkitMaskImage: mask, maskImage: mask }}>
       {Array.from({ length: last - first + 1 }, (_, k) => <svg key={k} viewBox="0 0 1110 294" preserveAspectRatio="none" style={{ left: (first + k) * RIDGE_W - left }}><RidgeTile zone={span.zone} kind={kind} /></svg>)}
@@ -138,14 +141,27 @@ function Ground({ width, lift, spans }: { width: number; lift: (x: number) => nu
   const y = (x: number, base: number, wobble: number) => 276 - (base + lift(x) + wobble * (hash(`road:${Math.round(x / 64)}`) - 0.5));
   const edge = (base: number, wobble: number) => xs.map(x => `${x} ${y(x, base, wobble).toFixed(1)}`).join('L');
   const back = xs.slice().reverse();
-  const hillTop = edge(28, 0);
+  // a9 review 2: one ground, its colour blended across each zone change (as the ridges blend), never a cut.
+  const stops = spans.flatMap((span, i) => [
+    { at: i === 0 ? 0 : (span.from + BLEND / 2) / width, colour: ZONE_FRONT[span.zone] },
+    { at: i === spans.length - 1 ? 1 : (span.to - BLEND / 2) / width, colour: ZONE_FRONT[span.zone] },
+  ]);
+  const top = (x: number) => y(x, 28, 3);
   return <svg className="trek-ground" width={width} height="276" aria-hidden="true">
-    {spans.map((span, i) => <path key={i} d={`M${span.from} 276L${xs.filter(x => x >= span.from && x <= span.to).map(x => `${x} ${y(x, 28, 0).toFixed(1)}`).join('L')}L${span.to} 276Z`} fill={ZONE_FRONT[span.zone]} />)}
+    <defs><linearGradient id="trek-ground-zones" gradientUnits="userSpaceOnUse" x1="0" x2={width} y1="0" y2="0">
+      {stops.map((stop, i) => <stop key={i} offset={Math.min(1, Math.max(0, stop.at))} stopColor={stop.colour} />)}
+    </linearGradient></defs>
+    <path d={`M0 276L${xs.map(x => `${x} ${top(x).toFixed(1)}`).join('L')}L${width} 276Z`} fill="url(#trek-ground-zones)" />
+    {/* Texture, so it reads as ground and not a slab: a darker lip along the top and loose tufts of shade below it. */}
+    <path d={`M${xs.map(x => `${x} ${top(x).toFixed(1)}`).join('L')}`} fill="none" stroke="#1f2a1c" strokeOpacity=".22" strokeWidth="5" />
+    <path d={`M${xs.map(x => `${x} ${(top(x) + 9).toFixed(1)}`).join('L')}`} fill="none" stroke="#1f2a1c" strokeOpacity=".14" strokeWidth="3" strokeDasharray="3 11 6 17" strokeLinecap="round" />
+    <path d={`M${xs.map(x => `${x} ${(top(x) + 17).toFixed(1)}`).join('L')}`} fill="none" stroke="#ffffff" strokeOpacity=".08" strokeWidth="2" strokeDasharray="9 23 4 14" strokeLinecap="round" />
     <path className="trek-ground-grass" d={`M${edge(64, 6)}L${back.map(x => `${x} ${y(x, 37, 0).toFixed(1)}`).join('L')}Z`} />
     <path className="trek-road" d={`M${edge(54, 10)}L${back.map(x => `${x} ${y(x, 30, 8).toFixed(1)}`).join('L')}Z`} />
-    <path d={`M${hillTop}`} fill="none" stroke="#00000014" strokeWidth="1" />
   </svg>;
 }
+/** a9 review 2: water runs along the bottom only on a leg that has a river, a stream, a ford or a lake. */
+const WATER = new Set(['river', 'stream', 'ford', 'lake']);
 const ZONE_FRONT: Record<Zone, string> = { 'kullu-forest': '#4c7059', 'valley-meadow': '#7aa267', 'alpine-scree': '#857f70', 'pass-snow': '#cfd8dc', 'lahaul-dry': '#a07a56', 'lake-basin': '#719574', 'rhodo-forest': '#4b6650', 'ridge-meadow': '#86a06d' };
 
 export function TrekScene({ trek, night, dusk = false, weather = 'clear', brighten = 0, breath, onRename, onFriend }: { trek: Trek; night: boolean; dusk?: boolean; weather?: Weather; brighten?: number; breath?: { phase: 'in' | 'out'; in: number; out: number }; onRename: (constellation: Constellation) => void; onFriend?: (spot: CampFriend) => void }) {
@@ -225,9 +241,11 @@ export function TrekScene({ trek, night, dusk = false, weather = 'clear', bright
         <div ref={mid} className="trek-layer"><ZoneLayer spans={spans} kind="mid" factor={0.12} width={width} /></div>
         <ZoneLayer spans={spans} kind="front" factor={0} width={width} />
         <Ground width={width} lift={lift} spans={spans} />
-        <div className="trek-stream" />
+        {trek.trail.legs.map((leg, i) => WATER.has(leg.landmark.kind) || leg.terrain?.features.some(feature => WATER.has(feature.kind) || feature.kind === 'log-bridge')
+          ? <div key={leg.landmark.id} className="trek-stream" style={{ left: placeX(i) + 40, width: LEG_W - 80 }} /> : null)}
         {/* §5'.3: each leg's kit, clustered and seeded per leg, kept off the camps' shelves and the landmark's spot. */}
         <div className="trek-kit" aria-hidden="true">{trek.trail.legs.flatMap((leg, i) => scatterLeg(leg, placeX(i), LEG_W, [[placeX(i) - 70, placeX(i) + 110], [placeX(i) + GATE_AT * LEG_W - 60, placeX(i) + GATE_AT * LEG_W + 60], [placeX(i + 1) - 70, placeX(i + 1) + 110]]))
+          .filter(piece => piece.x < gx - 330 || piece.x > gx + 50)
           .map(piece => <span key={piece.seed} style={{ left: piece.x, bottom: 60 + lift(piece.x) }}><Kit kind={piece.kind} seed={piece.seed} scale={piece.scale} /></span>)}</div>
         <div className="trek-overlay" /><div className="trek-pinpricks" aria-hidden="true">{pinpricks.map((dot, i) => <span key={i} style={{ left: dot.x, top: dot.y, opacity: dot.o }} />)}</div>
         {/* The sky over each leg: its constellation, joined and named, stays above that part of the trail. */}
