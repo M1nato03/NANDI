@@ -14,6 +14,9 @@
 .trek-kit { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
 .trek-kit span { position: absolute; display: block; line-height: 0; transform: translateX(-50%); }
 .trek-kit svg { display: block; overflow: visible; }
+.trek-kit .tall { z-index: -1; opacity: .9; }
+/* At night the back-row trees stay dim shapes, never a black scaffold behind the friends. */
+.trek-scene.is-night .trek-kit .tall { opacity: .45; }
 .trek-layer:nth-of-type(1), .trek-ridge-far { z-index: 1; }
 .trek-layer:nth-of-type(2), .trek-ridge-mid { z-index: 2; }
 .trek-ridge-front { z-index: 5; }

@@ -3,7 +3,9 @@ import { STAR_COLOURS, STRETCHES_PER_LEG, type Constellation, type Trek } from '
 import { RAIN_LINE, type Weather } from '../../core/yatra/weather';
 import { Cast, type CastName } from '../cast/Cast';
 import { hash } from './hash';
-import { Kit, Landmark, RIDGE_W, RidgeTile, scatterLeg } from './trekKit';
+import { Kit, Landmark, RIDGE_W, RidgeTile, scatterLeg, TALL_KIT } from './trekKit';
+/** The camp's width: the five friends stand from this far left of the place's point. */
+const CAMP_CLEAR = 320;
 import { liftAt, placeLifts } from '../../core/yatra/path';
 import type { Trail, Zone } from '../../core/yatra/trail';
 
@@ -244,9 +246,11 @@ export function TrekScene({ trek, night, dusk = false, weather = 'clear', bright
         {trek.trail.legs.map((leg, i) => WATER.has(leg.landmark.kind) || leg.terrain?.features.some(feature => WATER.has(feature.kind) || feature.kind === 'log-bridge')
           ? <div key={leg.landmark.id} className="trek-stream" style={{ left: placeX(i) + 40, width: LEG_W - 80 }} /> : null)}
         {/* §5'.3: each leg's kit, clustered and seeded per leg, kept off the camps' shelves and the landmark's spot. */}
-        <div className="trek-kit" aria-hidden="true">{trek.trail.legs.flatMap((leg, i) => scatterLeg(leg, placeX(i), LEG_W, [[placeX(i) - 70, placeX(i) + 110], [placeX(i) + GATE_AT * LEG_W - 60, placeX(i) + GATE_AT * LEG_W + 60], [placeX(i + 1) - 70, placeX(i + 1) + 110]]))
-          .filter(piece => piece.x < gx - 330 || piece.x > gx + 50)
-          .map(piece => <span key={piece.seed} style={{ left: piece.x, bottom: 60 + lift(piece.x) }}><Kit kind={piece.kind} seed={piece.seed} scale={piece.scale} /></span>)}</div>
+        {/* b2 13 Nov (A+B): nothing stands in a camp, where the five friends stand (from 320 px left of the place to just
+            past it), so nothing pops in or out as the group walks; tall pieces stand in a back row, smaller, so mid-leg
+            they read as trees behind the trail. */}
+        <div className="trek-kit" aria-hidden="true">{trek.trail.legs.flatMap((leg, i) => scatterLeg(leg, placeX(i), LEG_W, [[placeX(i) - CAMP_CLEAR, placeX(i) + 40], [placeX(i) + GATE_AT * LEG_W - 60, placeX(i) + GATE_AT * LEG_W + 60], [placeX(i + 1) - CAMP_CLEAR, placeX(i + 1) + 40]]))
+          .map(piece => { const tall = TALL_KIT.has(piece.kind); return <span key={piece.seed} className={tall ? 'tall' : undefined} style={{ left: piece.x, bottom: (tall ? 90 : 60) + lift(piece.x) }}><Kit kind={piece.kind} seed={piece.seed} scale={tall ? piece.scale * 0.6 : piece.scale} /></span>; })}</div>
         <div className="trek-overlay" /><div className="trek-pinpricks" aria-hidden="true">{pinpricks.map((dot, i) => <span key={i} style={{ left: dot.x, top: dot.y, opacity: dot.o }} />)}</div>
         {/* The sky over each leg: its constellation, joined and named, stays above that part of the trail. */}
         <svg className="trek-sky" width={width} height="276" aria-hidden="true">{trek.constellations.map(row => {

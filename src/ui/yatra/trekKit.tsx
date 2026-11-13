@@ -112,6 +112,8 @@ export function kitPiece(kind: KitKind, seed: string): Piece {
   }
   return { w: 30, h: 60, draw: <><path d="M0 60V8C8 2 22 2 30 8V60Z" fill="#7d786a" /><path d="M11 6V60M16 4V60M20 6V60" stroke="#e8f3f5" strokeWidth="2.4" opacity=".85" /><ellipse cx="15" cy="58" rx="14" ry="3" fill="#a9d4e0" /></> };
 }
+/** Pieces that stand above a friend's head: drawn in the back row (b2 13 Nov, option B). */
+export const TALL_KIT: ReadonlySet<KitKind> = new Set(['pine', 'deodar', 'fir', 'maple', 'birch', 'rhodo', 'bamboo', 'waterfall']);
 export const Kit = ({ kind, seed, scale }: { kind: KitKind; seed: string; scale: number }) => svg(kitPiece(kind, seed), scale);
 
 /** What stands along each zone (its signature kit), in no fixed order; the scatter picks from it. */

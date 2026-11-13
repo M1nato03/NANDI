@@ -85,6 +85,11 @@ test('575 the highest points at night, clear of the stars; the switch; a caption
   await shot(page, '575-night-hampta-pass', 3, 'train', 23);
   await shot(page, '575-night-sandakphu', 17, 'train', 23);
   await shot(page, '575-switch-next-tarsar', 5, null);
+  // b2 13 Nov (A+B): a camp by day and by night (nothing in the camp), and mid-leg with a back-row tree behind a friend.
+  await shot(page, '575-camp-day-chika', 1, null);
+  await shot(page, '575-camp-night-chika', 1, null, 23);
+  await shot(page, '575-midleg-backrow-kullu-forest', 0, 'train');
+  await shot(page, '575-midleg-backrow-rhodo-forest', 11, 'train');
   await shot(page, '575-pass-leg-close', 3, 'mind');
   // The camp tree crop (its code is unchanged; the crop is for the side-by-side with main).
   await page.locator('.trek-strip .trek-group .trek-prop.tree').screenshot({ path: `${OUT}/575-camp-tree-crop.png` });
