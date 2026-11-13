@@ -149,8 +149,9 @@ function ZoneLayer({ spans, kind, factor, width }: { spans: readonly ZoneSpan[];
     const fadeIn = i === 0 ? 0 : BLEND, fadeOut = end ? 0 : BLEND;
     const mask = `linear-gradient(90deg, transparent 0, #000 ${fadeIn}px, #000 calc(100% - ${fadeOut}px), transparent 100%)`;
     const first = Math.floor(left / RIDGE_W), last = Math.ceil(right / RIDGE_W);
-    return <div key={`${span.zone}-${i}`} className="trek-zone" data-zone={span.zone} style={{ left, width: right - left, WebkitMaskImage: mask, maskImage: mask }}>
-      {Array.from({ length: last - first + 1 }, (_, k) => <svg key={k} viewBox="0 0 1110 294" preserveAspectRatio="none" style={{ left: (first + k) * RIDGE_W - left }}><RidgeTile zone={span.zone} kind={kind} /></svg>)}
+    // a9 review 4: whole pixels, so a span's tiles never land on a half pixel (a light seam).
+    return <div key={`${span.zone}-${i}`} className="trek-zone" data-zone={span.zone} style={{ left: Math.round(left), width: Math.round(right - left), WebkitMaskImage: mask, maskImage: mask }}>
+      {Array.from({ length: last - first + 1 }, (_, k) => <svg key={k} viewBox="0 0 1110 294" preserveAspectRatio="none" style={{ left: (first + k) * RIDGE_W - Math.round(left) }}><RidgeTile zone={span.zone} kind={kind} /></svg>)}
     </div>;
   })}</div>;
 }

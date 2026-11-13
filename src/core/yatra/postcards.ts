@@ -1,12 +1,12 @@
 /**
- * Spec 575 review 3 (b2 + a9, 13 Nov): a gate's postcard is offered once, only on a real arrival. A gate whose leg was
- * done today or yesterday (a just-before-midnight arrival, or the app closed inside the short wait) may offer it; an
+ * Spec 575 review 3 (b2 + a9, 13 Nov): a gate's postcard is offered once, only on a real arrival. A gate opened today
+ * or yesterday (review 4: the gate's own day, gateOn; its leg may close later) (a just-before-midnight arrival, or the app closed inside the short wait) may offer it; an
  * older open gate (after a restore, a reinstall or cleared storage) goes to the Journal silently and counts as kept.
  */
 export interface GateLeg { id: string; gateOn?: string; doneOn?: string }
 export function postcardPlan(legs: readonly GateLeg[], kept: readonly string[], today: string, yesterday: string): { offer: number | null; silent: string[] } {
   const open = legs.map((leg, index) => ({ ...leg, index })).filter(leg => leg.gateOn && !kept.includes(leg.id));
-  const recent = (leg: GateLeg) => leg.doneOn === today || leg.doneOn === yesterday;
+  const recent = (leg: GateLeg) => leg.gateOn === today || leg.gateOn === yesterday;
   return { offer: open.find(recent)?.index ?? null, silent: open.filter(leg => !recent(leg)).map(leg => leg.id) };
 }
 

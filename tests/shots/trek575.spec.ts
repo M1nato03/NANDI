@@ -34,6 +34,8 @@ async function seed(page: Page, facts: ReturnType<typeof row>[], rainAt?: number
   }, { facts, rainAt, theme, kept: KEPT });
 }
 async function shot(page: Page, name: string, legs: number, today: 'train' | 'mind' | null, hour = 12, options: { rain?: boolean; route?: string; target?: string; theme?: 'light' | 'dark'; landmark?: number } = {}) {
+  // SHOTS575_ONLY: retake just the named shots (a review asks for a few); the rest are skipped.
+  if (ONLY && !ONLY.test(name)) return;
   const at = new Date(`${dayOf(legs)}T${String(hour).padStart(2, '0')}:00:00`);
   await page.clock.setFixedTime(at);
   await seed(page, walk(legs, today), options.rain ? at.getTime() : undefined, options.theme);
@@ -60,6 +62,7 @@ async function shot(page: Page, name: string, legs: number, today: 'train' | 'mi
   await scene.screenshot({ path: `${OUT}/${name}.png` });
 }
 const TRAILS = [['hampta', 5], ['tarsar', 6], ['sandakphu', 8]] as const;
+const ONLY = process.env.SHOTS575_ONLY ? new RegExp(process.env.SHOTS575_ONLY) : null;
 /** a9 review 3 (5): every landmark's postcard counts as kept, so no "Keep in the journal" sheet opens over a shot. */
 const KEPT = readdirSync('content/yatra').filter(name => name.endsWith('.json'))
   .flatMap(name => (JSON.parse(readFileSync(`content/yatra/${name}`, 'utf8')) as { legs?: { landmark: { id: string } }[] }).legs?.map(leg => leg.landmark.id) ?? []);

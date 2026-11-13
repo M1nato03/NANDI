@@ -6,7 +6,8 @@
 .trek-world { position: relative; height: 100%; overflow: hidden; }
 .trek-world::before { content: ''; position: absolute; inset: 0; z-index: 0; background: linear-gradient(#c3dcd4 0%, #e5e8d3 51%, #e4cfab 100%); }
 .trek-layer, .trek-ridge { position: absolute; inset: 0; pointer-events: none; }
-.trek-ridge svg, .trek-zone svg { position: absolute; top: 0; width: 1110px; height: 100%; }
+/* a9 review 4: tiles overlap by 1 px, so no light hairline shows at a seam. */
+.trek-ridge svg, .trek-zone svg { position: absolute; top: 0; width: 1111px; height: 100%; }
 /* Spec 575: a zone's stretch of a layer, blended into the next by a fixed mask. */
 .trek-zone { position: absolute; top: 0; bottom: 0; overflow: hidden; }
 .trek-ground { position: absolute; left: 0; top: 0; z-index: 6; pointer-events: none; }
@@ -41,7 +42,7 @@
 .trek-landmark { position: absolute; z-index: 12; width: 64px; min-width: 44px; height: 44px; min-height: 44px; padding: 0; border: 0; background: transparent; box-shadow: none; filter: saturate(.3) brightness(1.12) opacity(.72); transition: filter .9s ease; }
 .trek-landmark.open { filter: none; }
 .trek-landmark svg { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; overflow: visible; }
-.trek-landmark-caption { position: relative; margin: 6px 0 0; color: var(--ink, #22221c); font: italic 1rem/1.25 Georgia, serif; overflow-wrap: break-word; }
+.trek-landmark-caption { position: relative; margin: 6px 0 0; padding: 0 16px; color: var(--ink, #22221c); font: italic 1rem/1.25 Georgia, serif; overflow-wrap: break-word; }
 .trek-marks { position: absolute; inset: 0; z-index: 12; pointer-events: none; }
 .trek-footprint { position: absolute; width: 7px; height: 11px; border-radius: 55% 55% 43% 43%; background: #9a7252aa; transform: rotate(52deg); animation: trek-fade .3s ease both; }
 .trek-rest { position: absolute; bottom: 42px; width: 18px; height: 9px; border-radius: 50% 50% 40% 40%; background: #8d8a7c; animation: trek-fade .4s ease both; }
