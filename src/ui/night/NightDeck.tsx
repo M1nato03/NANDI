@@ -141,7 +141,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
 
   const checkIn = async () => {
     if (log?.lightsOutAt) return;
-    const ok = await board.act((repos, at) => repos.recordLightsOut(at), 'Night back on plan.');
+    const ok = await board.act((repos, at) => repos.recordLightsOut(at), 'Lights-out noted. Sleep well.');
     if (!ok) setMessage('Could not save the check-in. Try again.');
   };
   const chooseMove = () => {
@@ -165,7 +165,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
       {card.id === 'puzzle' && (puzzleRuns === undefined ? <DelayedCardSkeleton insideCard /> : <NightPuzzle today={today} dailySolved={dailySolved} type={featured.type} diff={featured.diff} />)}
       {card.id === 'words' && <><span className="pill">Today, in words</span><h2>What today held</h2>{summary.length ? <ul className="night-summary">{summary.map(line => <li key={line}>{line}</li>)}</ul> : <p>You made it to this moment. That is enough for tonight.</p>}<ParkTomorrow tomorrow={tomorrow} board={board} /></>}
       {card.id === 'phone' && <><span className="pill">Phone-down move</span><h2>Take this offline.</h2><p>{suggestion.text}</p><p className="deck-meta">One small move is enough. Leave the phone here.</p><div className="deck-actions"><button type="button" onClick={chooseMove} disabled={phoneMove.done}>{phoneMove.done ? 'Set for tonight' : "I’ll do it"}</button></div>{!phoneMove.done && phoneMove.swaps < 3 && <button type="button" className="text-button" onClick={anotherIdea}>Another idea</button>}</>}
-      {card.id === 'stop' && <><span className="pill">The stopping point</span><h2>That’s tonight. Phone down.</h2><p>Lights-out time: {bedtime}</p>{log?.lightsOutAt && <p className="deck-meta">Check-in saved. Rest when you are ready.</p>}<div className="deck-actions">{!log?.lightsOutAt && <button type="button" onClick={() => void checkIn()}>Lights-out check-in</button>}<button type="button" className="secondary" onClick={() => go('plan')}>Close</button></div></>}
+      {card.id === 'stop' && <><span className="pill">The stopping point</span><h2>That’s enough for tonight. Phone down.</h2><p>Lights-out time: {bedtime}</p>{log?.lightsOutAt && <p className="deck-meta">Check-in saved. Rest when you are ready.</p>}<div className="deck-actions">{!log?.lightsOutAt && <button type="button" onClick={() => void checkIn()}>Lights-out check-in</button>}<button type="button" className="secondary" onClick={() => go('plan')}>Close</button></div></>}
     </article>
     {card.id !== 'stop' && card.id !== 'learn' && <button type="button" className="secondary deck-next" onClick={next}>Next</button>}
     {card.id !== 'stop' && (board.message || message) && <p role="status">{board.message || message}</p>}

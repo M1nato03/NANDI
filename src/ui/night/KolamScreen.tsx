@@ -72,7 +72,7 @@ export function KolamScreen() {
       {!done && <span className={`kolam-kachhua kachhua-${moment}`} data-moment={moment} style={{ left: `${head.x / size * 100}%`, top: `${head.y / size * 100}%` }} aria-hidden="true"><Kachhua pose={current.tooFast ? 'rest' : 'idle'} size={34} /></span>}
     </div>
     {done ? <div className="kolam-end" role="status"><span className="kolam-friend kachhua-rest" data-moment="rest"><Kachhua pose="rest" size={64} title="Kachhua" /></span>
-      {/* Spec 26 B3: after bedtime the end screen is exactly these two lines. */}<p>The line is complete.</p>{endLate === true && <p>That's enough for tonight. Put the phone down.</p>}{endLate === false && <p>Kachhua curls up beside it. A new one comes tomorrow night.</p>}
+      {/* Spec 26 B3: after bedtime the end screen is exactly these two lines. */}<p>The line is complete.</p>{endLate === true && <p>That’s enough for tonight. Phone down.</p>}{endLate === false && <p>Kachhua curls up beside it. A new one comes tomorrow night.</p>}
       <button type="button" className="secondary" onClick={() => go('plan')}>Close</button></div>
       : <>{current.tooFast && <p className="small" role="status">Kachhua tucked in. Slow down and the line waits for you.</p>}
         <button type="button" className="secondary" disabled={auto} onClick={() => { setAuto(true); if (matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce') setTrace(state => { const base = state ?? startTrace(path); return { ...base, progress: base.total, tooFast: false }; }); }}>Draw it for me</button></>}

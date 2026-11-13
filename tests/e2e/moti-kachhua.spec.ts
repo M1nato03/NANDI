@@ -89,7 +89,7 @@ test("Kachhua's kolam: the size follows the clock, Draw it for me completes it, 
   await kolam.getByRole('button', { name: 'Draw it for me' }).click();
   await page.clock.runFor(13_000);
   await expect(kolam).toHaveAttribute('data-done', 'yes');
-  await expect(kolam.locator('.kolam-end p')).toHaveText(['The line is complete.', "That's enough for tonight. Put the phone down."]);
+  await expect(kolam.locator('.kolam-end p')).toHaveText(['The line is complete.', 'That’s enough for tonight. Phone down.']);
   const facts = await readLedger(page);
   expect(facts.filter(row => row.kind === 'kolam')).toHaveLength(1);
 });

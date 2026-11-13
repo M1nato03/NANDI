@@ -6,5 +6,5 @@ export function economyVisible(settings: SettingRow[], today: string): boolean {
 }
 
 export function nightMindNote(visible: boolean): string {
-  return visible ? 'After bedtime, Mind earns 0\u00a0XP.' : 'Mind is resting for the night.';
+  return visible ? 'After bedtime, puzzles are just for fun. XP comes back in the morning.' : 'Mind is resting for the night.';
 }

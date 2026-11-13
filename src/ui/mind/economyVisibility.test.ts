@@ -6,5 +6,5 @@ it('shows the economy by default and respects an explicit future visibility date
   const row = { key: 'economyVisibleFrom', value: '2026-10-12', updatedAt: 1, deleted: 0 as const, deviceId: 'test' };
   expect(economyVisible([row], '2026-10-11')).toBe(false);
   expect(economyVisible([row], '2026-10-12')).toBe(true);
-  expect(nightMindNote(true)).toBe('After bedtime, Mind earns 0\u00a0XP.');
+  expect(nightMindNote(true)).toBe('After bedtime, puzzles are just for fun. XP comes back in the morning.');
 });

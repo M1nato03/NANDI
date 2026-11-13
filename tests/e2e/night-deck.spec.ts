@@ -89,7 +89,7 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   await page.getByRole('button', { name: 'I’ll do it' }).click();
   await deck.getByRole('button', { name: 'Next', exact: true }).click();
   const stop = page.getByRole('article', { name: 'That’s tonight card' });
-  await expect(stop).toContainText('That’s tonight. Phone down.');
+  await expect(stop).toContainText('That’s enough for tonight. Phone down.');
   await expect(stop).toContainText('01:30');
   await shot(6);
   await expect(deck.getByRole('button', { name: 'Next', exact: true })).toHaveCount(0);
