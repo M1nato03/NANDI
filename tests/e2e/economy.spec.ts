@@ -67,7 +67,7 @@ test('seeded week shows the level and the useful week (no rank, spec 660 §3.2);
   await expect(season).not.toContainText(/of 500/);
   // Spec 47b: Mon 2 to Sun 8 Nov, six useful days (not Sat 7).
   await expect(season.getByRole('region', { name: 'This week' }).getByRole('heading')).toHaveText('6 of your 4');
-  await expect(season).toContainText('Useful days: 6 of your 4');
+  await expect(season).toContainText('Useful days this season: 6');
   await expect(season).not.toContainText(/day streak|Hat-tricks|Stamina/);
   // Spec 660 §3.1: no Shards card on You any more; the balance is read-only in You › history.
   await expect(season).not.toContainText('Shards');

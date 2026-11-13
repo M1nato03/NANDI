@@ -28,7 +28,7 @@ export function HexagonCard({ now }: { now: number }) {
       <polygon points={result.stats.map((stat, index) => corner(index, (stat.value ?? 0) / 100).join(',')).join(' ')} className="hex-shape" />
       {result.stats.map((stat, index) => {
         const [x, y] = corner(index, 1.32);
-        return <text key={stat.key} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="hex-label"><tspan x={x} dy="-0.5em">{stat.label}</tspan><tspan x={x} dy="1.2em" className="hex-value">{stat.value ?? '–'}</tspan></text>;
+        return <text key={stat.key} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="hex-label"><tspan x={x} dy="-0.5em">{stat.label}</tspan><tspan x={x} dy="1.2em" className="hex-value">{stat.value ?? 'not yet'}</tspan></text>;
       })}
     </svg>
     <ul className="hex-list">{result.stats.map((stat: HexStat) => <li key={stat.key}><strong>{stat.label} · {stat.value ?? 'not yet'}</strong><span>{stat.about}</span></li>)}</ul>

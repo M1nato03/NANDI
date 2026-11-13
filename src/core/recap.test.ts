@@ -128,7 +128,7 @@ describe("You's week in words", () => {
     expect(youWeekNumbers({ ...base, tasks: 2, workouts: 3, nights: 1 }).map(item => `${item.value} ${item.label}`)).toEqual(['2 tasks done', '3 workouts', '1 night back on plan']);
     // Item 554: focus in h m like Home, and the receipt's words for each number.
     expect(youWeekNumbers({ ...base, focusMinutes: 50 }).map(item => `${item.value} ${item.label}`)).toEqual(['50 m focus']);
-    expect(youWeekNumbers({ ...base, focusMinutes: 130, sideQuests: 1 }).map(item => `${item.value} ${item.label}`)).toEqual(['2 h 10 m focus', '1 side quest']);
+    expect(youWeekNumbers({ ...base, focusMinutes: 130, sideQuests: 1 }).map(item => `${item.value} ${item.label}`)).toEqual(['2 h 10 m focus', '1 side quest done']);
     expect(receiptContent({ ...base, focusMinutes: 130, longestFocusMinutes: 75 }).highlight).toBe('Longest focus: 1 h 15 m');
   });
 });

@@ -365,7 +365,8 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .you-week-number { min-width: 0; display: grid; gap: 2px; padding: 12px 14px; border-radius: var(--radius-row); background: var(--surface-2); }
 .you-week-number strong { color: var(--ink); font: 800 2.125rem/2.25rem 'Bricolage Grotesque', sans-serif; }
 .you-hexagon h2 { margin-bottom: 0; }
-.hex-chart { display: block; width: 100%; max-width: 300px; margin: 0 auto; overflow: visible; }
+/* w12 B8: the labels sit inside the card (inset), and a line of room under the chart keeps its lowest value clear of the list. */
+.hex-chart { display: block; box-sizing: border-box; width: 100%; max-width: 300px; margin: 0 auto 1.25em; padding: 0 1.75em; overflow: visible; }
 .hex-ring { fill: none; stroke: var(--line); stroke-width: 1; }
 .hex-spoke { stroke: var(--line); stroke-width: 1; }
 .hex-shape { fill: color-mix(in srgb, var(--accent) 28%, transparent); stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; }

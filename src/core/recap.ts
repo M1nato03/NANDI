@@ -141,7 +141,8 @@ export function youWeekNumbers(recap: WeeklyRecapData): { value: string; label: 
     [recap.concepts, String(recap.concepts), recap.concepts === 1 ? 'idea learned' : 'ideas learned'],
     [recap.focusMinutes, receiptDuration(recap.focusMinutes), 'focus'],
     [recap.nights, String(recap.nights), recap.nights === 1 ? 'night back on plan' : 'nights back on plan'],
-    [recap.quests, String(recap.quests), recap.quests === 1 ? 'quest' : 'quests'],
-    [recap.sideQuests, String(recap.sideQuests), recap.sideQuests === 1 ? 'side quest' : 'side quests'],
+    // w12 B6: parallel with "tasks done".
+    [recap.quests, String(recap.quests), recap.quests === 1 ? 'quest done' : 'quests done'],
+    [recap.sideQuests, String(recap.sideQuests), recap.sideQuests === 1 ? 'side quest done' : 'side quests done'],
   ] as const).filter(([count]) => count > 0).slice(0, 4).map(([, value, label]) => ({ value, label }));
 }

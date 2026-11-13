@@ -363,9 +363,9 @@ export function UsefulDays() {
     <dl className="useful-days-facts">
       {span === 'week' && <div><dt>This week</dt><dd>{count ? `${count} useful ${count === 1 ? 'day' : 'days'}` : 'A fresh week'}</dd></div>}
       <div><dt>Longest run</dt><dd>{days(longest)}</dd></div>
-      <div><dt>Clean weeks</dt><dd>{clean}</dd></div>
+      <div><dt>Clean Weeks</dt><dd>{clean}</dd></div>
     </dl>
-    <p className="small useful-days-help">Your longest run counts rest days the way they counted then. A Clean week is four Hat-trick days in one week.</p>
+    <p className="small useful-days-help">Your longest run counts rest days the way they counted then. A Clean Week is four Hat-trick days in one week.</p>
     {finishedSeasons(today).length > 0 && <button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/history')}><strong>Past seasons</strong><span>Each season, in Your history</span></button>}
     <p className="useful-days-note">A day counts when a planned task is done, a workout or rest walk, a puzzle, read or review, or a soft day’s gentle thing.</p>
     {record.length > 0 && <ol className="useful-days-list">{record.map(row => <li key={row.dayKey} className="card">

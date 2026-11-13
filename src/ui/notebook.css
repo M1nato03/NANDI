@@ -121,7 +121,8 @@
 .calm-screen .notebook-title h1 { font-size: 1.75rem; }
 /* Spec 45c: You's level in the notebook's hand: a sheet, and the level as the same small page mark as the level page. */
 /* Stage 3 (a9): the progress card matches the other cards (it had a square corner and an offset edge). */
-.economy-level .economy-jersey { width: 64px; height: 72px; flex: 0 0 64px; color: var(--ink); background: none; border: 2px solid var(--ink-3); border-radius: 4px; font-size: 2.25rem; transform: rotate(-3deg); }
+/* w12 B1: the mark grows with its number and the text size ("10" at 200%), never clipped. */
+.economy-level .economy-jersey { width: auto; min-width: 1.8em; height: auto; min-height: 2em; flex: 0 0 auto; padding: 0 .12em; color: var(--ink); background: none; border: 2px solid var(--ink-3); border-radius: 4px; font-size: 2.25rem; transform: rotate(-3deg); }
 
 /* A heading that takes focus after a page change (so a screen reader starts there) is not a control: no focus ring. */
 #main h1[tabindex="-1"]:focus, [tabindex="-1"]:focus:not(:focus-visible) { outline: none; }

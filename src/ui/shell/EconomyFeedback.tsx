@@ -37,6 +37,12 @@ const store = {
 type Source = { facts: LedgerRow[]; settings: SettingRow[]; tasks: TaskRow[]; sessions: SessionRow[]; runs: PuzzleRunRow[]; drop?: LearnDropRow; log?: DailyLogRow; focus: FocusRow[] };
 // Spec 33: the day's two areas are Plan and Read (Night comes after the day closes; Train is parked).
 const complete = (source: Source, now: number) => { const status = todayDotStatus(now, { tasks: source.tasks, ledger: source.facts, runs: source.runs, drop: source.drop, log: source.log }); return status.plan && status.read; };
+/** 660 §3.2 (a9/b2 13 Nov, B6): rank and tier are gone, so only a real level rise is a big moment. Season points
+ * crossing a tier line raise nothing. */
+export function macroKindOf(view: { level: number }, oldView: { level: number }): string {
+  return view.level > oldView.level ? `Level ${view.level}` : '';
+}
+
 export function EconomyFeedback() {
   const source = useLiveQuery(async () => { const now = Date.now(); await db.learnConcepts.toArray(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)), focus: await db.focus.where('startedAt').above(now - 36 * 3_600_000).toArray() }; }, []);
   const prior = useRef<Source | null>(null);
@@ -126,7 +132,7 @@ export function EconomyFeedback() {
     // A jar row can arrive after the finish event. It waits for that visible line to close.
     if (jar && !achievement && !dropFinished) showNotice({ text: jar, jar, macro: false, activity: queueRef.current.current?.activity });
     const realWorld = achievement?.mode === 'tasks' || achievement?.mode === 'train';
-    const macroKind = view.level > oldView.level ? `Level ${view.level}` : view.season.rank < oldView.season.rank && view.season.tier !== oldView.season.tier ? `${view.season.tier} tier` : '';
+    const macroKind = macroKindOf(view, oldView);
     const key = `economy.macro:${today}`;
     const count = Number(store.get(sessionStorage, key) ?? 0);
     const justCompleted = shouldShowDoneForToday({ wasComplete: complete(previous, now), isComplete: complete(source, now), seen: !!store.get(localStorage, `finish.done:${today}`), afterBedtime: isAfterBedtime(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime), macroCount: count });
@@ -154,8 +160,8 @@ export function EconomyFeedback() {
     lastLine.current = line;
     store.set(sessionStorage, 'finish.lastLine', line);
     showNotice({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()}\u00a0XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Nandi' : undefined,
-      // Spec 45c: a real level rise opens the level page in place of the reveal; a tier change keeps the reveal.
-      level: macro && view.level > oldView.level ? view.level : undefined, totalXp: view.totalXp, jar });
+      // Spec 45c: a real level rise opens the level page in place of the reveal.
+      level: macro ? view.level : undefined, totalXp: view.totalXp, jar });
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;
@@ -205,7 +211,8 @@ export function EconomyFeedback() {
     requestAnimationFrame(toHeading);
     window.setTimeout(toHeading, 500);
   }} />;
-  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Nandi" pose="cheer" size={80} moment="hop" at={1} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p><button type="button" onClick={dismissNotice}>Continue</button><button type="button" className="secondary" onClick={dismissNotice}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} jar={notice.jar} />;
+  // B6 (660 §3.2): a macro always comes with a level (the level page above); the season reveal is gone.
+  return <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} jar={notice.jar} />;
 }
 
 const ARRIVING = ['Mor', 'Chiku', 'Nandi', 'Kapi', 'Kachhua'] as const;

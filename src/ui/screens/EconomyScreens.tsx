@@ -114,24 +114,25 @@ export function YourSeason() {
   const cardBack = String(activeSetting(settings, 'economy.cardBack') ?? '');
   const arc = currentArcTitle(dayKey(Date.now())); // eslint-disable-line react-hooks/purity
   const showDate = (key: string) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${key}T12:00:00Z`));
-  const seasonDates = `${showDate(view.season.start)}–${showDate(view.season.end)} ${view.season.end.slice(0, 4)}`;
+  // w12 B7: a date never splits across lines ("7\u00a0Dec", "3\u00a0Jan\u00a02027").
+  const seasonDates = `${showDate(view.season.start).replace(' ', '\u00a0')}–${showDate(view.season.end).replace(' ', '\u00a0')}\u00a0${view.season.end.slice(0, 4)}`;
   const base = RULES.level.stepBase * view.level * (view.level - 1) / 2;
   const show = revealMeters(economy.facts, economy.today, view.season, view.shards);
   // Spec 47b: one selector for useful days; the week card and the season card read the same dates.
   const weekDates = usefulDates(view.days, settings, weekStart(economy.today), economy.today);
-  const weekTarget = targetFor(readTargets(activeSetting(settings, TARGET_KEY)), economy.today);
   return <section className="your-season" aria-label="Your season">
     <div className="card economy-level"><span className="economy-jersey" aria-label={`Level ${view.level}`}>{view.level}</span><div><span className="eyebrow">Your progress</span><h2>Level {view.level}</h2><p>{view.totalXp.toLocaleString()}&nbsp;XP in all</p><progress max={view.nextLevelXp - base} value={view.totalXp - base} aria-label="XP to next level" /><span className="small">{Math.max(0, view.nextLevelXp - view.totalXp)}&nbsp;XP to level {view.level + 1}</span></div></div>
     {show.season && <div className={`card economy-season-card ${banner.replace(':', '-')} ${cardBack.replace(':', '-')}`}>
       <span className="eyebrow">Season {view.season.index + 1} · {seasonDates}</span>
       {/* Spec 660 §3.2: the ladder went (no rank, tier, places or pace-setters); the season stays as a month's frame. */}
       {view.season.active ? <><h2>Season {view.season.index + 1}</h2>
-        <p>Useful days: {weekDates.length} of your {weekTarget}</p></>
+        {/* w12 B2: the season's own useful days (the week card above counts the week). */}
+        <p>Useful days this season: {usefulDates(view.days, settings, view.season.start, economy.today).length}</p></>
         : <><h2>Season 1 starts Monday 2 Nov</h2><p>Your XP already counts toward your level.</p></>}
       {arc && <p className="small">Story: {arc}</p>}
     </div>}
     <ThisWeek settings={settings} today={economy.today} dates={weekDates} bank={view.streak.restDays} />
-    <button type="button" className="card you-link you-courtyard-link useful-record-link" data-testid="useful-days-link" onClick={() => go('you/days')}><strong>Your record</strong><span>Every useful day, your longest run and Clean weeks</span></button>
+    <button type="button" className="card you-link you-courtyard-link useful-record-link" data-testid="useful-days-link" onClick={() => go('you/days')}><strong>Your record</strong><span>Every useful day, your longest run and Clean Weeks</span></button>
   </section>;
 }
 
@@ -178,14 +179,14 @@ export function YouHistory() {
     {shardsCard && <section className="card" aria-labelledby="history-shards"><h2 id="history-shards">Shards kept: {view.shards.toLocaleString()}</h2>
       <p>The shop has closed. What you own stays yours{owned.length ? ':' : '.'}</p>
       {owned.length > 0 && <ul className="history-list">{owned.map(name => <li key={name}>{name}</li>)}</ul>}
-      <p className="small">Rest days held: {view.streak.restDays}. More arrive on the 1st.</p>
+      <p className="small">Rest days held: {view.streak.restDays}. A rest day keeps your run going on a day off. More arrive on the 1st.</p>
     </section>}
     <section className="card" aria-labelledby="history-seasons"><h2 id="history-seasons">Past seasons</h2>
       {seasons.length ? <ul className="history-list">{seasons.map(season => <li key={season.start}>{seasonLine(season)} · {season.usefulDays === 1 ? '1 useful day' : `${season.usefulDays} useful days`}</li>)}</ul> : <p>No season has finished yet.</p>}
     </section>
     <PastWeeks weeks={weeks} />
     <section className="card" aria-labelledby="history-badges"><h2 id="history-badges">Badges you earned</h2>
-      {earned.length ? <ul className="history-list">{earned.map(badge => <li key={badge.title}>{badge.title} · {badge.tier}</li>)}</ul> : <p>None were earned before badges ended.</p>}
+      {earned.length ? <ul className="history-list">{earned.map(badge => <li key={badge.title}>{badge.title} · {badge.tier}</li>)}</ul> : <p>Badges have ended. None were earned before then.</p>}
     </section>
     <button type="button" className="secondary" onClick={() => go('you')}>Back to You</button>
   </section>;

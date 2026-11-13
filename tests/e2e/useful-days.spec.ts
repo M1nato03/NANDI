@@ -40,7 +40,7 @@ test('Home, You and the record count the same useful days, each date once, and t
   // Two tasks on Monday are one useful day; Wednesday is another.
   await seed(page, [done('2026-11-02'), done('2026-11-02'), done('2026-11-04')]);
   await expect(week(page).getByRole('heading')).toHaveText('2 of your 4');
-  await expect(season(page)).toContainText('Useful days: 2 of your 4');
+  await expect(season(page)).toContainText('Useful days this season: 2');
   const dots = week(page).getByRole('listitem');
   await expect(dots).toHaveCount(7);
   await expect(dots.nth(0)).toHaveAttribute('aria-label', 'Monday, useful day');
@@ -50,11 +50,11 @@ test('Home, You and the record count the same useful days, each date once, and t
   await expect(season(page)).not.toContainText(/streak|missed|lose|broken|save your/i);
   await expect(week(page)).toContainText('Your weekly target: 4 days');
   expect(await fits(page)).toBe(true);
-  // The record: the same count, the longest run and Clean weeks, and each day with what was finished.
+  // The record: the same count, the longest run and Clean Weeks, and each day with what was finished.
   await season(page).getByRole('button', { name: /^Your record/ }).click();
   await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toHaveText('2 useful days this season');
   await expect(page.locator('.useful-days-facts')).toContainText('Longest run');
-  await expect(page.locator('.useful-days-facts')).toContainText('Clean weeks');
+  await expect(page.locator('.useful-days-facts')).toContainText('Clean Weeks');
   await expect(page.locator('.useful-days-list > li')).toHaveCount(2);
   await page.goto('/?e2e#courtyard');
   await expect(page.locator('button.home-week')).toHaveText(/^2 useful days\s*this season/);
@@ -108,7 +108,7 @@ test('spec 660 §3.2: the season card is a month\'s frame only (no rank, tier, p
   await page.clock.install({ time: WED });
   await page.goto('/?e2e#you');
   await seed(page, [done('2026-11-02'), done('2026-11-03'), done('2026-11-04')]);
-  await expect(season(page)).toContainText('Useful days: 3 of your 4');
+  await expect(season(page)).toContainText('Useful days this season: 3');
   await expect(season(page)).not.toContainText(/of 500|places this week|pace-setter|Bench|Challenger|Contender|Elite|Ace|Apex/);
   await expect(season(page).getByRole('button', { name: /ladder/ })).toHaveCount(0);
   await page.goto('/?e2e#you/season');

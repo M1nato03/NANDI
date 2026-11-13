@@ -39,7 +39,7 @@ describe('spec 660: what a finished quest pays (pinned)', () => {
   it('shows on the receipt\'s Quests line, You\'s week, the useful-day record and the Reality Check', () => {
     expect(receiptContent(recapOf(withQuests)).lines).toContainEqual({ label: 'Quests', value: '3' });
     expect(receiptContent(recapOf(base)).lines.some(line => line.label === 'Quests')).toBe(false);
-    expect(youWeekNumbers(recapOf(withQuests))).toContainEqual({ value: '3', label: 'quests' });
+    expect(youWeekNumbers(recapOf(withQuests))).toContainEqual({ value: '3', label: 'quests done' });
     expect(usefulRecord([DAY], withQuests)[0]!.items).toContain('3 quests');
     expect(realityCheck(withQuests)?.quests).toBe(3);
     expect(recapOf(withQuests).realMs).toBe(recapOf(base).realMs);
