@@ -134,7 +134,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: /Settings/ }).click();
     await page.getByRole('button', { name: /Backup and restore/ }).click();
     const downloadPromise = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'Export backup' }).click();
+    await page.getByRole('button', { name: 'Save a backup' }).click();
     const saved = await (await downloadPromise).path();
     expect(saved).not.toBeNull();
     await page.evaluate(() => (globalThis as unknown as { __nandiTest: { wipeData: () => Promise<void> } }).__nandiTest.wipeData());

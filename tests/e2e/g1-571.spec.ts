@@ -433,7 +433,7 @@ test('G1 group 12: You Settings and widget', async ({ page }) => {
   await page.getByRole('button', { name: 'Settings' }).click();
   // row 177: Backup export
   await page.getByRole('button', { name: 'Backup and restore' }).click();
-  await expect(page.getByRole('button', { name: 'Export backup' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Save a backup' })).toBeVisible();
   // row 180: Persistent storage request
   await expect(page.getByRole('button', { name: 'Ask to keep data on this device' })).toBeVisible();
 });

@@ -1247,7 +1247,7 @@ for (const theme of themes) test.describe(theme, () => {
     await page.goto('/?e2e#you/backup');
     await shot(page, 'hunt-2-backup-none', false);
     const download = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'Export backup' }).click();
+    await page.getByRole('button', { name: 'Save a backup' }).click();
     const path = await (await download).path();
     await page.evaluate(() => new Promise(resolve => { const request = indexedDB.deleteDatabase('nandi'); request.onsuccess = request.onerror = request.onblocked = () => resolve(null); }));
     await page.goto('/?e2e#you/backup');

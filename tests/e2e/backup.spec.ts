@@ -54,7 +54,7 @@ test('a restore says which backup came back, and "Last backup" stays this phone\
   await page.goto('/?e2e#you/backup');
   await expect(page.getByText('No backup made on this phone yet.')).toBeVisible();
   const download = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Export backup' }).click();
+  await page.getByRole('button', { name: 'Save a backup' }).click();
   const path = await (await download).path();
   await expect(page.getByText(/^Last backup: /)).toBeVisible();
   await page.evaluate(() => new Promise(resolve => { const request = indexedDB.deleteDatabase('nandi'); request.onsuccess = request.onerror = request.onblocked = () => resolve(null); }));

@@ -96,5 +96,5 @@ test('C5: a full phone says so and leads to a backup; asking to keep data says w
   await page.getByRole('button', { name: /out of room for NANDI’s data/ }).click();
   await expect(page).toHaveURL(/#you\/backup$/);
   await page.getByRole('button', { name: 'Ask to keep data on this device' }).click();
-  await expect(page.getByRole('status').filter({ hasText: /keep NANDI’s data|did not agree|Could not ask/ })).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: /keep NANDI’s data|didn’t agree|Couldn’t ask/ })).toBeVisible();
 });

@@ -79,13 +79,13 @@ test('backup downloads, previews, and restores only after confirmation', async (
   await page.getByRole('button', { name: /Settings/ }).click();
   await page.getByRole('button', { name: /Backup and restore/ }).click();
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Export backup' }).click();
+  await page.getByRole('button', { name: 'Save a backup' }).click();
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toMatch(/^nandi-backup-\d{4}-\d{2}-\d{2}\.json$/);
   const path = await download.path();
   expect(path).not.toBeNull();
   // lastBackupAt is written after the download starts; wait for the confirmation before counting rows.
-  await expect(page.getByRole('main').getByRole('status')).toContainText('Saved to Downloads');
+  await expect(page.getByRole('main').getByRole('status')).toContainText('Saved in Downloads');
   const before = await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts());
   await page.evaluate(() => (globalThis as unknown as { __nandiTest: { removeShellTask: () => Promise<void> } }).__nandiTest.removeShellTask());
   expect((await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts())).tasks).toBe(0);

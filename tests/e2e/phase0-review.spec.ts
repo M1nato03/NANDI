@@ -49,7 +49,7 @@ test('legacy fixture previews and imports through the restore picker', async ({ 
   await page.getByRole('button', { name: 'Choose restore file' }).click();
   await (await chooserPromise).setFiles('legacy/data/fixture-legacy-export.json');
   const preview = page.getByLabel('Restore preview');
-  await expect(preview).toContainText('Legacy export');
+  await expect(preview).toContainText('Older export');
   for (const [name, count] of Object.entries({ cards: 3, ratings: 2, deckProg: 3, puzzleRuns: 2, flags: 1, settings: 8 })) {
     await expect(preview.locator('.count-list li').filter({ has: page.locator('span', { hasText: new RegExp(`^${name}$`) }) }).locator('strong')).toHaveText(String(count));
   }
@@ -69,7 +69,7 @@ test('theme survives backup, wipe, and picker restore', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.getByRole('button', { name: /Backup and restore/ }).click();
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Export backup' }).click();
+  await page.getByRole('button', { name: 'Save a backup' }).click();
   const download = await downloadPromise;
   const file = await download.path();
   expect(file).not.toBeNull();

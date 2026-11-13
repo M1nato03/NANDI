@@ -19,7 +19,7 @@ afterEach(() => cleanup());
 async function startExport(): Promise<void> {
   render(<Backup onRestored={async () => {}} />);
   await screen.findByText(/Current rows:/);
-  fireEvent.click(screen.getByRole('button', { name: 'Export backup' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Save a backup' }));
 }
 
 describe('Backup export status', () => {
@@ -30,7 +30,7 @@ describe('Backup export status', () => {
     const status = await screen.findByRole('status');
     const file = vi.mocked(shareOrDownload).mock.calls[0]?.[0];
     expect(file).toBeDefined();
-    expect(status.textContent).toBe(`Saved to Downloads as ${file!.name}.`);
+    expect(status.textContent).toBe(`Saved in Downloads as ${file!.name}.`);
     expect((await db.settings.get('lastBackupAt'))?.value).toEqual(expect.any(Number));
   });
 
@@ -46,7 +46,7 @@ describe('Backup export status', () => {
     vi.mocked(shareOrDownload).mockResolvedValue('cancelled');
     await startExport();
 
-    expect((await screen.findByRole('status')).textContent).toBe('Export cancelled.');
+    expect((await screen.findByRole('status')).textContent).toBe('No backup saved.');
     expect(await db.settings.get('lastBackupAt')).toBeUndefined();
   });
 

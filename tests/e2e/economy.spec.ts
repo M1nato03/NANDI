@@ -89,14 +89,15 @@ test('seeded week shows the level and the useful week (no rank, spec 660 §3.2);
   await page.goto('/#you/settings');
   await page.getByRole('button', { name: 'Backup and restore' }).click();
   const download = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Export backup' }).click();
+  await page.getByRole('button', { name: 'Save a backup' }).click();
   const saved = await (await download).path();
   expect(saved).not.toBeNull();
   const chooser = page.waitForEvent('filechooser');
   await page.getByRole('button', { name: 'Choose restore file' }).click();
   await (await chooser).setFiles(saved!);
   // Jenil 24 Oct: a restore replaces today too, and the preview says so first (cj3 clock fuzz C1).
-  await expect(page.getByLabel('Restore preview')).toContainText("Today’s activity, purchases, owned items, Shards and courtyard growth will be replaced by the backup’s.");
+  await expect(page.getByLabel('Restore preview')).toContainText('Everything on this phone, today included, will be replaced by what’s in the backup.');
+  await expect(page.getByLabel('Restore preview')).toContainText('Your level and useful days never go down: the higher of the two is kept.');
   await page.getByRole('button', { name: 'Confirm restore' }).click();
   await expect(page.getByRole('main').getByRole('status')).toContainText('Your data is ready.');
   await page.goto('/#you');

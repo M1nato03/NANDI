@@ -14,8 +14,15 @@ import { readAutoBackupState, runAutoBackup, setAutoBackupEnabled, type AutoBack
 import { listAutoBackups } from '../../platform/files';
 import { ExportWeekButton } from '../tasks/weekReview';
 
-type RestoreChoice = { kind: 'backup'; data: BackupEnvelope; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[]; privatePages?: number }
+type RestoreChoice = { kind: 'backup'; data: BackupEnvelope; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[]; privatePages?: number; freshGame?: boolean }
   | { kind: 'legacy'; data: LegacyExport; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[] };
+
+/** w14 H2: a file that can't be restored says so plainly; the raw reason goes to the error ring, not the screen. */
+function readFailLine(error: unknown): string {
+  return /Future backup format version/.test(String((error as Error)?.message ?? error))
+    ? 'This backup is from a newer NANDI. Update the app, then restore it.'
+    : 'This file couldn’t be read as a NANDI backup. Nothing was changed.';
+}
 
 function legacyPreview(data: LegacyExport): RestoreChoice {
   const rows = mapLegacy(data, { deviceId: 'preview', now: Date.now() });
@@ -67,9 +74,9 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       const envelope = await exportBackup(db, now);
       const name = backupFileName(now);
       const result = await shareOrDownload(new File([JSON.stringify(envelope)], name, { type: 'application/json' }));
-      if (result === 'cancelled') { setMessage('Export cancelled.'); return; }
+      if (result === 'cancelled') { setMessage('No backup saved.'); return; }
       await db.settings.put({ key: 'lastBackupAt', value: now, updatedAt: now, deleted: 0, deviceId: envelope.deviceId });
-      await refresh(); setMessage(result === 'shared' ? 'Shared.' : `Saved to Downloads as ${name}.`);
+      await refresh(); setMessage(result === 'shared' ? 'Shared.' : `Saved in Downloads as ${name}.`);
     } catch (error) { recordError('promise', error); setMessage(errorMessage(error)); }
     finally { setBusy(false); }
   }
@@ -85,12 +92,14 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
         if (!checked.success || !checked.envelope) throw new Error(checked.errors.join('; '));
         const preview = previewBackup(checked.envelope);
         setChoice({ kind, data: checked.envelope, counts: preview.counts, first: preview.earliestDayKey, last: preview.latestDayKey,
-          retired: preview.retired, skipped: [], privatePages: preview.privatePages });
+          retired: preview.retired, skipped: [], privatePages: preview.privatePages,
+          // w14 H6: a backup from before the book game (database version 7) brings no Read game with it.
+          freshGame: ((parsed as { dexie?: { data?: { databaseVersion?: number } } }).dexie?.data?.databaseVersion ?? 7) < 7 });
       } else if (kind === 'legacy') {
         const checked = validateLegacy(parsed); if (!checked.success) throw new Error(checked.errors.join('; '));
         setChoice(legacyPreview(checked.data));
       } else throw new Error('This file is not a NANDI or legacy backup.');
-    } catch (error) { setMessage(`Could not read that file: ${errorMessage(error)}`); }
+    } catch (error) { recordError('promise', error); setMessage(readFailLine(error)); }
   }
 
   async function toggleAuto(enabled: boolean): Promise<void> {
@@ -118,7 +127,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       // Bug hunt 30 Oct: say which backup came back. "Last backup" stays this phone's own last backup.
       const from = choice.kind === 'backup' ? formatDayKey(dayKey(choice.data.exportedAt)) : null;
       setChoice(null); await onRestored(); await refresh(); setRestored(from ? `Restored · backup from ${from}. Your data is ready.` : 'Restore complete. Your data is ready.');
-    } catch (error) { recordError('promise', error); setMessage(`Restore could not finish: ${errorMessage(error)}`); }
+    } catch (error) { recordError('promise', error); setMessage(/Future backup format version/.test(String((error as Error)?.message ?? error)) ? readFailLine(error) : 'The restore didn’t finish. Try again.'); }
     finally { setBusy(false); }
   }
 
@@ -127,7 +136,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     <p>Save a copy you control. The file is plain text and contains your personal data.</p>
     <p className="small">Your own Calm sounds stay on this phone and are not in backups.</p>
     <p className="small">{QUEST_PHOTOS_LINE}</p>
-    <div className="card"><h2>Save a copy</h2><p>{lastBackup === null ? 'No backup made on this phone yet.' : `Last backup: ${formatDayKey(dayKey(lastBackup))}`}</p><button disabled={busy} onClick={() => void exportFile()}>Export backup</button>
+    <div className="card"><h2>Save a backup</h2><p>{lastBackup === null ? 'No backup made on this phone yet.' : `Last backup: ${formatDayKey(dayKey(lastBackup))}`}</p><button disabled={busy} onClick={() => void exportFile()}>Save a backup</button>
       {/* Spec 660 §3.3: the week's summary file, moved here from the weekly review. */}
       <ExportWeekButton /></div>
     {Capacitor.isNativePlatform() && <div className="card"><h2>Automatic backup</h2>
@@ -135,22 +144,25 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       <label><input type="checkbox" role="switch" checked={auto?.enabled !== false} onChange={event => void toggleAuto(event.target.checked)} /> Automatic backup</label>
       <button type="button" className="secondary" disabled={busy} onClick={() => void backUpNow()}>Back up now</button>
     </div>}
-    <div className="card"><h2>Bring a copy back</h2><p>Choose a NANDI backup or a legacy export. You will see what is inside before restoring.</p><button className="secondary" disabled={busy} onClick={() => void chooseFile()}>Choose restore file</button>{restored && <p role="status" className="backup-restored">{restored}</p>}</div>
+    <div className="card"><h2>Bring a copy back</h2><p>Choose a NANDI backup or an older export. You will see what is inside before restoring.</p><button className="secondary" disabled={busy} onClick={() => void chooseFile()}>Choose restore file</button>{restored && <p role="status" className="backup-restored">{restored}</p>}</div>
     {choice && <div className="card preview" aria-label="Restore preview">
-      <h2>Review restore</h2><p>{choice.kind === 'backup' ? 'NANDI backup' : 'Legacy export'} · {choice.first && choice.last ? `${formatDayKey(choice.first)} to ${formatDayKey(choice.last)}` : 'No dated rows'}</p>
+      <h2>Review restore</h2><p>{choice.kind === 'backup' ? 'NANDI backup' : 'Older export'} · {choice.first && choice.last ? `${formatDayKey(choice.first)} to ${formatDayKey(choice.last)}` : 'Nothing dated in this file'}</p>
       {choice.retired > 0 && <p>{choice.retired} retired</p>}
       <ul className="count-list">{Object.entries(choice.counts).map(([name, count]) => <li key={name}><span>{name}</span><strong>{count}</strong></li>)}</ul>
       {choice.skipped.length > 0 && <p>Skipped keys: {choice.skipped.join(', ')}</p>}
       {/* Spec 43: practice answers are the learner's own words; say plainly that the file carries them. */}
       {choice.kind === 'backup' && !!choice.privatePages && <p className="restore-private">It holds {choice.privatePages} saved {choice.privatePages === 1 ? 'answer' : 'answers'} in your own words. Keep the file somewhere only you can open.</p>}
-      <p>{choice.kind === 'backup' ? 'This replaces current app data.' : 'This adds legacy data to this device.'}</p>
-      {/* Jenil 24 Oct: a restore replaces today too (cj3 clock fuzz C1), so say so before it happens. */}
-      {choice.kind === 'backup' && <p className="restore-today">Today’s activity, purchases, owned items, Shards and courtyard growth will be replaced by the backup’s.</p>}
+      {/* Jenil 24 Oct: a restore replaces today too (cj3 clock fuzz C1), so say so before it happens. H1 (b2 13 Nov): the
+          level and useful days keep the higher of the two (data/backup peak + useful/longest max). */}
+      {choice.kind === 'backup'
+        ? <><p>Everything on this phone, today included, will be replaced by what’s in the backup.</p><p className="restore-today">Your level and useful days never go down: the higher of the two is kept.</p></>
+        : <p>This adds legacy data to this device.</p>}
+      {choice.kind === 'backup' && choice.freshGame && <p>Your Read game starts fresh.</p>}
       <div className="actions"><button disabled={busy} onClick={() => void confirmRestore()}>Confirm restore</button><button className="secondary" onClick={() => setChoice(null)}>Cancel</button></div>
     </div>}
     <div className="card"><h2>Device storage</h2><p>Persistent storage: {persisted === null ? 'Unavailable' : persisted ? 'On' : 'Off'}</p>
       <p>Used: {usage?.usage === undefined ? 'Unavailable' : `${(usage.usage / 1048576).toFixed(1)} MB`} · Quota: {usage?.quota === undefined ? 'Unavailable' : `${(usage.quota / 1048576).toFixed(1)} MB`}</p>
-      <button className="secondary" onClick={() => void requestPersist().then(kept => { setKeepNote(kept ? 'This device will keep NANDI’s data.' : 'This browser did not agree to keep it. Export a backup now and then, so you always have a copy.'); return refresh(); }).catch(() => setKeepNote('Could not ask just now. Export a backup to keep a copy.'))}>Ask to keep data on this device</button>
+      <button className="secondary" onClick={() => void requestPersist().then(kept => { setKeepNote(kept ? 'This device will keep NANDI’s data.' : 'This device didn’t agree to keep it. Save a backup now and then, so you always have a copy.'); return refresh(); }).catch(() => setKeepNote('Couldn’t ask just now. Save a backup to keep a copy.'))}>Ask to keep data on this device</button>
       {keepNote && <p className="small" role="status">{keepNote}</p>}</div>
     {counts && <p className="small">Current rows: {Object.values(counts).reduce((a, b) => a + b, 0)}</p>}
     {message && <p role="status">{message}</p>}
