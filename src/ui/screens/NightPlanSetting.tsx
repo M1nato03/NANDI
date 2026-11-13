@@ -56,6 +56,6 @@ export function NightPlanSetting({ firstRun = false }: { firstRun?: boolean }) {
     <button type="button" onClick={() => void save()}>Save night plan</button>
     </>}
     {message && <p role="status">{message}</p>}
-    <p className="small">Tip: set your phone's Bedtime mode to start at {bedtime} too.</p>
+    <p className="small">Tip: set your phone’s Bedtime mode to start at {bedtime} too.</p>
   </section>;
 }

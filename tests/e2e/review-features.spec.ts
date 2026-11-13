@@ -8,7 +8,7 @@ test('spec 660 §3.3: the weekly review became the receipt; its export is in Set
   await expect(page).toHaveURL(/#you$/);
   await page.goto('/#you/backup');
   const download = page.waitForEvent('download');
-  await page.getByRole('button', { name: "Export this week's summary" }).click();
+  await page.getByRole('button', { name: "Export this week’s summary" }).click();
   expect((await download).suggestedFilename()).toMatch(/^nandi-week-2026-W\d{2}\.json$/);
   await page.goto('/#you/history');
   await expect(page.getByRole('region', { name: 'Past weeks' })).toBeVisible();

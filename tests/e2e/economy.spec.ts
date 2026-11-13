@@ -96,7 +96,7 @@ test('seeded week shows the level and the useful week (no rank, spec 660 §3.2);
   await page.getByRole('button', { name: 'Choose restore file' }).click();
   await (await chooser).setFiles(saved!);
   // Jenil 24 Oct: a restore replaces today too, and the preview says so first (cj3 clock fuzz C1).
-  await expect(page.getByLabel('Restore preview')).toContainText("Today's activity, purchases, owned items, Shards and courtyard growth will be replaced by the backup's.");
+  await expect(page.getByLabel('Restore preview')).toContainText("Today’s activity, purchases, owned items, Shards and courtyard growth will be replaced by the backup’s.");
   await page.getByRole('button', { name: 'Confirm restore' }).click();
   await expect(page.getByRole('main').getByRole('status')).toContainText('Your data is ready.');
   await page.goto('/#you');

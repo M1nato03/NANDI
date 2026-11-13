@@ -56,7 +56,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Turn on the deck' }).click();
     await expect(page.getByText('5 for today')).toBeVisible();
     await page.getByRole('button', { name: 'Review cards' }).click();
-    const finished = page.getByRole('heading', { name: "That's enough for today" });
+    const finished = page.getByRole('heading', { name: "That’s enough for today" });
     for (let i = 0; i < 20; i++) {
       const card = page.getByLabel('Review card');
       const reveal = card.getByRole('button', { name: 'Reveal answer' });
@@ -76,7 +76,7 @@ for (const scheme of ['light', 'dark'] as const) {
         await card.getByRole('button', { name: 'Continue' }).click();
       }
     }
-    await expect(page.getByRole('heading', { name: "That's enough for today" })).toBeVisible();
+    await expect(page.getByRole('heading', { name: "That’s enough for today" })).toBeVisible();
     await page.getByRole('button', { name: 'Finish reviews' }).click();
     await openGames(page);
     await todaysBoard(page).click();

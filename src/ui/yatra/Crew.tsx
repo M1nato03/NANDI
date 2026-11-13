@@ -67,7 +67,7 @@ export function CrewBar() {
       <Dots crew={crew} />
       <span><strong>{jarDuration(Math.min(total, crew.size * 60))} of {crew.size} h</strong> for {crew.plan}</span>
     </button>
-    {offer && <p className="crew-send">{send.onlyToday ? `Send today's ${jarDuration(send.minutes)}` : `Send your ${jarDuration(send.minutes)}`} to the {crew.plan} crew?
+    {offer && <p className="crew-send">{send.onlyToday ? `Send today’s ${jarDuration(send.minutes)}` : `Send your ${jarDuration(send.minutes)}`} to the {crew.plan} crew?
       <span className="crew-send-actions">
         <button type="button" className="text-button" onClick={() => void sendAdd(crew, entries, today).then(setMessage)}>Send</button>
         <button type="button" className="text-button" onClick={() => void saveCrew(db, { ...crew, me: { ...crew.me, skipDay: today } }, Date.now())}>Not today</button>
@@ -150,7 +150,7 @@ function NameEdit({ crew }: { crew: Crew }) {
     if (first && first !== crew.me.first) void saveCrew(db, { ...crew, me: { ...crew.me, first } }, Date.now());
     setEditing(false);
   };
-  if (!editing) return <p className="crew-name">You're {crew.me.first} · <button type="button" className="text-button" onClick={() => setEditing(true)}>Change</button></p>;
+  if (!editing) return <p className="crew-name">You’re {crew.me.first} · <button type="button" className="text-button" onClick={() => setEditing(true)}>Change</button></p>;
   return <div className="crew-name-edit"><label>Your first name<input autoFocus value={name} maxLength={NAME_MAX} onChange={event => setName(event.target.value)} /></label><button type="button" className="secondary" onClick={save}>Save</button></div>;
 }
 
@@ -225,7 +225,7 @@ export function CrewLinkScreen({ route }: { route: string }) {
   if (crew) return <section className="screen crew-screen"><h1>Join the {link.p} crew?</h1><p>You are already in the {crew.plan} crew. One crew at a time: leave it first in Yatra → your crew.</p></section>;
   return <section className="screen crew-screen">
     <h1>Join the {link.p} crew?</h1>
-    <p>{link.n} made it: when you fill {link.s} h together, it's {link.p}.</p>
+    <p>{link.n} made it: when you fill {link.s} h together, it’s {link.p}.</p>
     <p className="small">Crews hold up to {CREW_MAX}.</p>
     <label>Your first name<input value={first} maxLength={NAME_MAX} onChange={event => setFirst(event.target.value)} /></label>
     <button type="button" disabled={!cleanText(first, NAME_MAX)} onClick={() => void acceptJoin(db, route, { first: cleanText(first, NAME_MAX), colour: joinerColour(link.k) }, Date.now()).then(() => setDone('joined'))}>Join</button>

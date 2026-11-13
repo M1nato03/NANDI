@@ -67,7 +67,7 @@ export function TodayRings({ now }: { now: number }) {
   const night = !!data && inNightWindow(now, data.bedtime);
   const shown = data && rings ? ringsShown(data.picks) : [];
   return <div className="today-rings-slot" ref={slot}>
-    {rings && shown.length > 0 && <nav className="today-rings" aria-label="Today's rings">
+    {rings && shown.length > 0 && <nav className="today-rings" aria-label="Today’s rings">
       {shown.map(name => {
         const line = ringLine(name, rings, night, data?.promise);
         return <button key={name} type="button" className="today-ring" aria-label={line} aria-expanded={open === name} onClick={() => setOpen(current => current === name ? null : name)}>

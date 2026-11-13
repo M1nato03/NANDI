@@ -15,7 +15,7 @@ export function SleepDoor() {
       <button type="button" data-testid="calm-link" onClick={() => go('grow/calm')}>Calm</button>
       {/* Spec 571 stage 2 (ii): with the Today dots gone, Night's one entry is here (#night from the widget still wins). */}
       <button type="button" className="secondary" data-testid="night-link" onClick={() => go('night')}>Tonight</button>
-      <button type="button" className="secondary" data-testid="kolam-link" onClick={() => go('kolam')}>Trace tonight's kolam</button>
+      <button type="button" className="secondary" data-testid="kolam-link" onClick={() => go('kolam')}>Trace tonight’s kolam</button>
       {nightPauseAvailable() && <button type="button" className="secondary" data-testid="night-pause-link" onClick={() => go('you/night')}>App pause</button>}
     </div>
     <BedtimeSettings />

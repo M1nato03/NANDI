@@ -124,7 +124,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
         <p className="eyebrow">Your 2&nbsp;minutes</p>
         <h1 className="pause-line">{stage.act[0]!.toUpperCase() + stage.act.slice(1)}</h1>
         <p className="pause-clock" role="timer" aria-live="off">{clock}</p>
-        <p className="small">About 2&nbsp;minutes. Tap when it's done, however long it took.</p>
+        <p className="small">About 2&nbsp;minutes. Tap when it’s done, however long it took.</p>
         <button type="button" className="pause-do" onClick={() => void finish()}>I did it</button>
         <div className="pause-exits">
           <button type="button" className="text-button" onClick={() => void notNow()}>Not now</button>

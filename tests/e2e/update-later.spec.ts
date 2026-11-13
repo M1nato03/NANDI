@@ -44,7 +44,7 @@ test('up to date: Settings says so and offers no update', async ({ page }) => {
   await page.goto('/#you/settings');
   await expect(page.getByText('Current version: 0.1.0 (124)')).toBeVisible();
   await page.getByRole('button', { name: 'Check for updates' }).click();
-  await expect(page.getByText("You're up to date.")).toBeVisible();
+  await expect(page.getByText("You’re up to date.")).toBeVisible();
   await expect(page.getByRole('button', { name: /^Update to/ })).toHaveCount(0);
   await expect(page.getByRole('region', { name: 'Android update' })).toHaveCount(0);
 });

@@ -45,7 +45,7 @@ export function Today() {
     }, 'Task done.');
     if (ok) setJustFinished({ planned: current.estimateMin ?? 0, actual: Math.round(actual / 60_000) });
   }
-  return <section className="screen focus-screen"><p className="eyebrow">One step at a time</p><h1>Focus</h1>{awayToday && <p>You're away. Rest well.</p>}
+  return <section className="screen focus-screen"><p className="eyebrow">One step at a time</p><h1>Focus</h1>{awayToday && <p>You’re away. Rest well.</p>}
     {board.message && <p role="status">{board.message}</p>}
     {taskFocus && <RemindersOff focus />}
     {justFinished && <p className="task-result" role="status">Planned {justFinished.planned}&nbsp;min · Took {justFinished.actual}&nbsp;min ({justFinished.planned ? (justFinished.actual / justFinished.planned).toFixed(1) : '0.0'}x)</p>}

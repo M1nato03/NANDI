@@ -17,7 +17,7 @@ const seedLedger = (page: Page, rows: Record<string, unknown>[]) => page.evaluat
 test("Moti's haveli: a decoy shows its fix and costs nothing, the pieces in order light the diya, and the cap makes it quiet", async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
   await page.goto('/?e2e&cap=1#grow/read/haveli-demo');
-  const haveli = page.getByRole('region', { name: "Moti's haveli" });
+  const haveli = page.getByRole('region', { name: "Moti’s haveli" });
   await expect(haveli.getByRole('region', { name: 'Psychology room' })).toBeVisible();
   await haveli.getByRole('button', { name: 'Habits' }).click();
   await haveli.getByRole('button', { name: 'Give it exactly 21 days, and' }).click();
@@ -33,7 +33,7 @@ test("Moti's haveli: a decoy shows its fix and costs nothing, the pieces in orde
   // Nothing dims: the next day the diya is still lit, with a separate "Ready for a visit" mark.
   await page.clock.setFixedTime(new Date('2026-11-04T12:00:00'));
   await page.reload();
-  const again = page.getByRole('region', { name: "Moti's haveli" }).getByRole('button', { name: 'Habits: lit, ready for a visit' });
+  const again = page.getByRole('region', { name: "Moti’s haveli" }).getByRole('button', { name: 'Habits: lit, ready for a visit' });
   await expect(again).toBeEnabled();
   await expect(again.locator('.haveli-flame')).toHaveCount(1);
   await expect(again).toContainText('Ready for a visit');
@@ -48,11 +48,11 @@ test("Moti's matka: on Sunday three sealed first guesses from 5-21 days ago, the
   // Spec 571: Moti's matka is in Remember.
   await page.goto('/?e2e#grow/remember');
   await page.reload();
-  await expect(page.getByRole('button', { name: /^Moti's matka/ })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /^Moti’s matka/ })).toHaveCount(0);
   await page.clock.setFixedTime(new Date('2026-11-08T12:00:00')); // Sunday
   await page.reload();
   await page.getByRole('button', { name: "Matka · 3 sealed guesses" }).click();
-  const matka = page.getByRole('region', { name: "Moti's matka" });
+  const matka = page.getByRole('region', { name: "Moti’s matka" });
   for (let i = 0; i < 3; i++) {
     await expect(matka).toContainText('Moti sealed this in the matka before your lesson.');
     await matka.getByRole('button', { name: 'Not sure' }).click();
@@ -71,19 +71,19 @@ test("Moti's matka: on Sunday three sealed first guesses from 5-21 days ago, the
 test("Kachhua's kolam: the size follows the clock, Draw it for me completes it, and after bedtime the end is two exact lines", async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-03T12:00:00') });
   await page.goto('/?e2e#kolam');
-  await expect(page.getByRole('region', { name: "Tonight's kolam" })).toHaveAttribute('data-size', '5');
+  await expect(page.getByRole('region', { name: "Tonight’s kolam" })).toHaveAttribute('data-size', '5');
   await page.goto('/?e2e#plan');
   await openMore(page);
-  await expect(page.getByRole('region', { name: "Tonight's kolam" })).toHaveCount(0);
+  await expect(page.getByRole('region', { name: "Tonight’s kolam" })).toHaveCount(0);
   // From 20:00 Plan offers it; at night an open lands on the night deck, which offers it too.
   await page.clock.setSystemTime(new Date('2026-11-03T21:00:00'));
   await page.reload();
   await openMore(page);
-  await expect(page.getByRole('region', { name: "Tonight's kolam" }).getByRole('button', { name: 'Trace it' })).toBeVisible();
+  await expect(page.getByRole('region', { name: "Tonight’s kolam" }).getByRole('button', { name: 'Trace it' })).toBeVisible();
   await page.clock.setSystemTime(new Date('2026-11-04T02:30:00')); // the night of 3 Nov, after the 01:30 bedtime
   await page.reload();
-  await page.getByRole('region', { name: 'Now deck' }).getByRole('button', { name: "Trace tonight's kolam" }).click();
-  const kolam = page.getByRole('region', { name: "Tonight's kolam" });
+  await page.getByRole('region', { name: 'Now deck' }).getByRole('button', { name: "Trace tonight’s kolam" }).click();
+  const kolam = page.getByRole('region', { name: "Tonight’s kolam" });
   // The night's kolam was picked at noon and stays the same size all night.
   await expect(kolam).toHaveAttribute('data-size', '5');
   await kolam.getByRole('button', { name: 'Draw it for me' }).click();
@@ -97,8 +97,8 @@ test("Kachhua's kolam: the size follows the clock, Draw it for me completes it, 
 test('a late first open draws a 3 by 3 kolam; a fast finger only tucks Kachhua in and adds nothing', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-05T23:30:00') });
   await page.goto('/?e2e#kolam');
-  await page.getByRole('region', { name: 'Now deck' }).getByRole('button', { name: "Trace tonight's kolam" }).click();
-  const kolam = page.getByRole('region', { name: "Tonight's kolam" });
+  await page.getByRole('region', { name: 'Now deck' }).getByRole('button', { name: "Trace tonight’s kolam" }).click();
+  const kolam = page.getByRole('region', { name: "Tonight’s kolam" });
   await expect(kolam).toHaveAttribute('data-size', '3');
   const board = kolam.locator('.kolam-board');
   const box = (await board.boundingBox())!;
@@ -118,7 +118,7 @@ test('under reduced motion Draw it for me draws the whole line at once, and noth
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.clock.install({ time: new Date('2026-11-03T12:00:00') });
   await page.goto('/?e2e#kolam');
-  const kolam = page.getByRole('region', { name: "Tonight's kolam" });
+  const kolam = page.getByRole('region', { name: "Tonight’s kolam" });
   await kolam.getByRole('button', { name: 'Draw it for me' }).click();
   await expect(kolam).toHaveAttribute('data-done', 'yes');
   await expect(kolam.locator('.kolam-friend')).toHaveCSS('animation-name', 'none');

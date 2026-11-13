@@ -37,7 +37,7 @@ export async function exportWeekSummary(now = Date.now()): Promise<string> {
 export function ExportWeekButton() {
   const [message, setMessage] = useState('');
   return <div className="export-week">
-    <button type="button" className="secondary" onClick={() => void exportWeekSummary().then(setMessage).catch(() => setMessage('Could not export the weekly summary.'))}>Export this week's summary</button>
+    <button type="button" className="secondary" onClick={() => void exportWeekSummary().then(setMessage).catch(() => setMessage('Could not export the weekly summary.'))}>Export this week’s summary</button>
     {message && <p role="status" className="small">{message}</p>}
   </div>;
 }

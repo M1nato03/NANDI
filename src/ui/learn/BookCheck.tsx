@@ -31,7 +31,7 @@ export function BookCheck({ topicId, moduleId }: { topicId: string; moduleId: st
   </div></section>;
   if (stage === 'tried') return <section className="screen learn-screen">{head}<div className="card book-check-tried">
     <h2>Did you try it?</h2>
-    <p className="small">The plan from this chapter's ideas, in your own day.</p>
+    <p className="small">The plan from this chapter’s ideas, in your own day.</p>
     <div className="book-check-answers" role="group" aria-label="Did you try it?">
       <button type="button" className="secondary" onClick={() => answer('yes')}>Yes</button>
       <button type="button" className="secondary" onClick={() => answer('partly')}>Partly</button>

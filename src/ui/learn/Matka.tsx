@@ -22,16 +22,16 @@ export function Matka({ items, answered, context, onAnswer, onLeave }: { items: 
     setReveal({ item: current, lines: matkaReveal(current, recalled, { value: ctx.format ?? String, option: id => ctx.options?.find(option => option.id === id)?.text ?? id }) });
     setValue(null);
   };
-  if (reveal) return <section className="screen matka" aria-label="Moti's matka"><AreaScope area="review" />
+  if (reveal) return <section className="screen matka" aria-label="Moti’s matka"><AreaScope area="review" />
     <div className="matka-crack" data-moment="crack"><Moti pose="cheer" size={64} title="Moti" /><span className="matka-pot" aria-hidden="true"><span /><span /></span></div>
     <div className="matka-reveal" role="status">{reveal.lines.map(line => <p key={line}>{line}</p>)}</div>
     {!footerShown && <p className="small matka-footer">{MATKA_FOOTER}</p>}
     <button type="button" onClick={() => { setReveal(null); setFooterShown(true); }}>{open.length ? 'Next' : 'Done'}</button>
   </section>;
-  if (!item) return <section className="screen matka" aria-label="Moti's matka"><AreaScope area="review" /><Moti pose="rest" size={64} title="Moti" /><p role="status">{MATKA_STOP}</p><button type="button" className="secondary" onClick={onLeave}>Close</button></section>;
+  if (!item) return <section className="screen matka" aria-label="Moti’s matka"><AreaScope area="review" /><Moti pose="rest" size={64} title="Moti" /><p role="status">{MATKA_STOP}</p><button type="button" className="secondary" onClick={onLeave}>Close</button></section>;
   const ctx = context(item);
   const scale = ctx.scale;
-  return <section className="screen matka" aria-label="Moti's matka"><AreaScope area="review" />
+  return <section className="screen matka" aria-label="Moti’s matka"><AreaScope area="review" />
     <div className="matka-head"><Moti pose="think" size={56} title="Moti" /><span className="matka-pot whole" aria-hidden="true" /></div>
     <p className="eyebrow">{ctx.title}</p>
     {MATKA_ASK.map(line => <p key={line} className="matka-ask">{line}</p>)}

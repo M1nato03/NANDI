@@ -33,9 +33,9 @@ export function RemindersOff({ focus = false }: { focus?: boolean }) {
   const phone = Capacitor.isNativePlatform();
   return <aside className="card reminders-off" aria-label="Reminders are off">
     <h2>Reminders are off</h2>
-    <p>{focus ? "Notifications are off for NANDI, so focus notices can't reach you outside the app." : "Notifications are off for NANDI, so your timed tasks won't ring."}</p>
+    <p>{focus ? "Notifications are off for NANDI, so focus notices can’t reach you outside the app." : "Notifications are off for NANDI, so your timed tasks won’t ring."}</p>
     {phone ? <button type="button" className="secondary" onClick={() => void openNightPauseAppInfo()}>Open phone settings</button>
-      : <p className="small">Turn them on in your browser's site settings for NANDI.</p>}
+      : <p className="small">Turn them on in your browser’s site settings for NANDI.</p>}
     {phone && <p className="small">There: Notifications, then allow them for NANDI.</p>}
   </aside>;
 }

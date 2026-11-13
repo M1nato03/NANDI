@@ -310,7 +310,7 @@ for (const theme of ['light', 'dark'] as const) {
 // "Shards" may appear only in You › history and the Backup restore line: every other screen here is checked for it.
 /** The receipt's move-budget line sits fully in view, above the pinned moves (b2 12 Nov), as the sheet shows it. */
 async function budgetLineInView(page: Page, where: string) {
-  const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
+  const sheet = page.getByRole('dialog', { name: "Your week’s receipt" });
   await sheet.evaluate(node => { node.scrollTop = 0; });
   await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   const box = await sheet.evaluate(node => {
@@ -388,7 +388,7 @@ for (const theme of ['light', 'dark'] as const) {
     await page.goto('/?e2e#you');
     await page.reload();
     await page.getByRole('button', { name: 'Share my week' }).click();
-    const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
+    const sheet = page.getByRole('dialog', { name: "Your week’s receipt" });
     await expect(sheet.locator('.reality-check-line')).toBeVisible();
     await expect(sheet.getByRole('img')).toBeVisible({ timeout: 20_000 });
     await page.screenshot({ path: `${OUT}/660-${t}-17-receipt.png` });
@@ -464,7 +464,7 @@ for (const theme of ['light', 'dark'] as const) {
     // 22: Settings › Backup with the week's export.
     await page.goto('/?e2e#you/backup');
     await page.reload();
-    await expect(page.getByRole('button', { name: "Export this week's summary" })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('button', { name: "Export this week’s summary" })).toBeVisible({ timeout: 15_000 });
     await page.screenshot({ path: `${OUT}/660-${t}-22-backup.png`, fullPage: true });
     // 23: the old links, opened directly.
     const links: [string, RegExp, string][] = [['you/shop', /#you\/history$/, '[data-testid="you-history"]'], ['you/badges', /#you\/history$/, '[data-testid="you-history"]'], ['you/season', /#you$/, '[aria-label="Your season"] .economy-level'], ['plan/review', /#you$/, '[aria-label="Your season"] .economy-level']];

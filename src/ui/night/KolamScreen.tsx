@@ -49,7 +49,7 @@ export function KolamScreen() {
     saved.current = true;
     void saveKolamDone(db, kolam, Date.now()).then(setEndLate).catch(error => { setEndLate(false); recordError('window', error); });
   }, [done, kolam]);
-  if (!kolam || !current) return <section className="screen kolam-screen" role="status">Drawing tonight's dots…</section>;
+  if (!kolam || !current) return <section className="screen kolam-screen" role="status">Drawing tonight’s dots…</section>;
   const size = PAD * 2 + kolam.size * 2 * UNIT;
   const head = pointAt(path, current.progress);
   const local = (event: PointerEvent<SVGSVGElement>) => { const box = event.currentTarget.getBoundingClientRect(); const scale = size / box.width; return { x: (event.clientX - box.left) * scale, y: (event.clientY - box.top) * scale, t: event.timeStamp }; };
@@ -58,8 +58,8 @@ export function KolamScreen() {
   const dots = Array.from({ length: kolam.size * kolam.size }, (_, i) => ({ x: PAD + (2 * (i % kolam.size) + 1) * UNIT, y: PAD + (2 * Math.floor(i / kolam.size) + 1) * UNIT }));
   // The drawn part: the line up to the progress point, as a dash over the full path.
   const fullLength = current.total;
-  return <section className={`screen kolam-screen${kolam.lineColor === 'silver' ? ' kolam-full-moon' : ''}`} aria-label="Tonight's kolam" data-done={done ? 'yes' : 'no'} data-size={kolam.size} data-family={kolam.family}>
-    {!done && <><p className="eyebrow">Kachhua · Tonight's kolam</p><h1>One line around every dot</h1></>}
+  return <section className={`screen kolam-screen${kolam.lineColor === 'silver' ? ' kolam-full-moon' : ''}`} aria-label="Tonight’s kolam" data-done={done ? 'yes' : 'no'} data-size={kolam.size} data-family={kolam.family}>
+    {!done && <><p className="eyebrow">Kachhua · Tonight’s kolam</p><h1>One line around every dot</h1></>}
     {!done && <p className="small">Kolam is a living everyday art from Tamil Nadu and South India. Trace the line slowly with one finger.{kolam.grew ? ' Margazhi: one size bigger tonight.' : ''}</p>}
     <div className="kolam-stage">
       {kolam.lineColor === 'silver' && <span className="kolam-moon" aria-hidden="true" />}

@@ -13,12 +13,12 @@ const settingsOf = (page: Page, keys: string[]) => page.evaluate(async names => 
 
 async function hello(page: Page) {
   const welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
-  await expect(welcome.getByRole('heading', { name: "Hi, I'm Nandi." })).toBeVisible();
+  await expect(welcome.getByRole('heading', { name: "Hi, I’m Nandi." })).toBeVisible();
   await expect(welcome).toContainText('Your activity is saved on this phone. It leaves only when you back it up or share it.');
   // Spec 18: the 18+ tick is required before anything else.
-  await expect(welcome.getByRole('button', { name: "Let's start" })).toBeDisabled();
-  await welcome.getByLabel("I'm 18 or older.").check();
-  await welcome.getByRole('button', { name: "Let's start" }).click();
+  await expect(welcome.getByRole('button', { name: "Let’s start" })).toBeDisabled();
+  await welcome.getByLabel("I’m 18 or older.").check();
+  await welcome.getByRole('button', { name: "Let’s start" }).click();
   return welcome;
 }
 // Spec 52: the areas are toggles; Continue shows once one or two are picked.

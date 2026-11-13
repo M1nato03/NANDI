@@ -66,7 +66,7 @@ export function useNativeUpdater(): NativeUpdaterState {
       const newer = !!current && !!latest && isNewerVersion(latest.versionCode, current.versionCode);
       setUpdate(newer ? latest : null);
       // A found update is named on the Update button itself (b2: no second "New version ready." line under it).
-      if (force) setMessage(newer ? '' : "You're up to date.");
+      if (force) setMessage(newer ? '' : "You’re up to date.");
       else setMessage('');
       setError(false);
       // Jenil 10 Nov: after "Later" the update never came back. Asking by hand ends the Later, so the bar shows again.

@@ -39,7 +39,7 @@ async function openSheet(data: WeeklyRecapData) {
 
 it('draws the receipt: its title, the nonzero lines with their values, and no zero line', async () => {
   await openSheet(recap);
-  expect(screen.getByRole('dialog', { name: "Your week's receipt" })).toBeTruthy();
+  expect(screen.getByRole('dialog', { name: "Your week’s receipt" })).toBeTruthy();
   expect(drawn).toEqual(expect.arrayContaining(['NANDI · RECEIPT', 'Workouts', '3', 'Tasks done', '6', 'Paid in real life.']));
   // This week is still open on the test's clock, or closed: the subline says which.
   expect(drawn.some(line => line === 'week of 2–8 Nov' || line === 'week of 2–8 Nov · so far')).toBe(true);
@@ -83,5 +83,5 @@ it('hides the week card share after shutdown (spec 19)', () => {
   expect(screen.queryByRole('button', { name: 'Share my week' })).toBeNull();
   cleanup();
   render(<RecapShare recap={recap} link />);
-  expect(screen.queryByRole('button', { name: "Your week's receipt is ready" })).toBeNull();
+  expect(screen.queryByRole('button', { name: "Your week’s receipt is ready" })).toBeNull();
 });

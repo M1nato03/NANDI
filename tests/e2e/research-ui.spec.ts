@@ -14,7 +14,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await seedRecapWeek(page, '2026-10-15');
     const download = page.waitForEvent('download');
     await page.getByRole('region', { name: 'Your week' }).getByRole('button', { name: 'Share my week' }).click();
-    const preview = page.getByRole('dialog', { name: "Your week's receipt" });
+    const preview = page.getByRole('dialog', { name: "Your week’s receipt" });
     await expect(preview.getByRole('img')).toBeVisible({ timeout: 20_000 });
     await preview.getByRole('button', { name: 'Share' }).click();
     expect((await download).suggestedFilename()).toBe('nandi-receipt-2026-10-12.png');

@@ -82,7 +82,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByLabel('Place').fill('Library');
     await expect(page.getByRole('button', { name: 'Complete shutdown' })).toBeEnabled();
     if (scheme === 'light' && page.viewportSize()?.width === 390) {
-      await page.getByRole('region', { name: "Tomorrow's first step" }).evaluate((element) => element.scrollIntoView({ block: 'start' }));
+      await page.getByRole('region', { name: "Tomorrow’s first step" }).evaluate((element) => element.scrollIntoView({ block: 'start' }));
       await capture(page, 'shutdown-sample-390x844');
     }
     await page.getByRole('button', { name: 'Complete shutdown' }).click();
@@ -126,7 +126,7 @@ test('empty rituals show a gentle start and fit a phone', async ({ page }) => {
       await expect(page.getByRole('region', { name: 'Close today' })).toContainText('Nothing left open.');
       await expect(page.getByRole('button', { name: 'Complete shutdown' })).toBeDisabled();
       await capture(page, name);
-      await page.getByRole('button', { name: "Skip tomorrow's step" }).click();
+      await page.getByRole('button', { name: "Skip tomorrow’s step" }).click();
       await expect(page.getByRole('button', { name: 'Complete shutdown' })).toBeEnabled();
     }
     await expectLayout(page);

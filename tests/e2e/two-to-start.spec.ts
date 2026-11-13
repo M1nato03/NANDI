@@ -66,13 +66,13 @@ async function openCard(page: Page) {
   await expect(handle).toHaveAttribute('aria-expanded', 'true');
 }
 /** Spec 571 §0.20: the header rings' lines (each ring's aria-label), in order, once the rings are there. */
-const ringLines = (page: Page) => page.getByRole('navigation', { name: "Today's rings" }).getByRole('button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')));
+const ringLines = (page: Page) => page.getByRole('navigation', { name: "Today’s rings" }).getByRole('button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')));
 const ALL_RINGS = ['Yatra: keep one promise.', 'Body: one real move.', 'Mind: any two.'];
 
 async function hello(page: Page) {
   const welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
-  await welcome.getByLabel("I'm 18 or older.").check();
-  await welcome.getByRole('button', { name: "Let's start" }).click();
+  await welcome.getByLabel("I’m 18 or older.").check();
+  await welcome.getByRole('button', { name: "Let’s start" }).click();
   await expect(welcome.getByRole('heading', { name: 'Pick two to start' })).toBeVisible();
   return welcome;
 }
@@ -181,7 +181,7 @@ test('You: the same toggles; a change applies at once to the next move and the r
   await putSettings(page, [['profile.goals', ['sleep']]]);
   await page.reload();
   await expect(cardRow(page)).toBeVisible();
-  await expect(page.getByRole('navigation', { name: "Today's rings" })).toHaveCount(0);
+  await expect(page.getByRole('navigation', { name: "Today’s rings" })).toHaveCount(0);
   await expect(page.locator('.today-rings-slot')).toHaveCount(1);
 });
 

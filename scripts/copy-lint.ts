@@ -9,6 +9,29 @@ export const copyPhrases = ['addiction', 'fail', 'fails', 'failed', 'failing', '
   'brain training', 'train your brain', 'makes you smarter', 'boost your IQ', 'raise your IQ'] as const;
 const pattern = new RegExp(`\\b(?:${copyPhrases.join('|')})\\b`, 'gi');
 
+/**
+ * b2 13 Nov (A2): loss words in app copy (src/ui only; book and lesson text in content/ may use them). Each allowed use
+ * is named by file and text: none of them talks about the person's own days.
+ */
+export const uiLossWords = ['streak', 'missed'] as const;
+const lossPattern = new RegExp(`\\b(?:${uiLossWords.join('|')})\\b`, 'gi');
+export const lossAllowed: readonly { file: string; text: string; why: string }[] = [
+  { file: 'src/ui/learn/Matka.tsx', text: 'Missed', why: 'the matka answer (did the guess land), not the person' },
+  { file: 'src/ui/bookGame/BookGame.tsx', text: 'Growing missed ₹280', why: 'the book game’s money outcome' },
+  { file: 'src/ui/screens/OwnerPanel.tsx', text: 'soft vs missed', why: 'owner-only numbers' },
+  { file: 'src/ui/learn/HaveliDemo.tsx', text: 'one missed day.', why: 'an e2e-only fixture idea (route learn/haveli-demo)' },
+];
+export function findLossWords(text: string, file = ''): { line: number; phrase: string }[] {
+  const allowed = lossAllowed.filter(row => file.replace(/\\/g, '/').endsWith(row.file) && text.includes(row.text));
+  if (allowed.length) return [];
+  return text.split(/\r?\n/).flatMap((line, index) => [...line.matchAll(lossPattern)].map(match => ({ line: index + 1, phrase: `loss word: ${match[0]}` })));
+}
+
+/** a9 13 Nov (w10 #7): UI copy uses the curly apostrophe (’), never a straight one between letters. */
+export function findStraightApostrophes(text: string): { line: number; phrase: string }[] {
+  return text.split(/\r?\n/).flatMap((line, index) => [...line.matchAll(/[A-Za-z]+'[A-Za-z]+/g)].map(match => ({ line: index + 1, phrase: `straight apostrophe: ${match[0]}` })));
+}
+
 export function findCopyIssues(text: string): { line: number; phrase: string }[] {
   return text.split(/\r?\n/).flatMap((line, index) => [...line.matchAll(pattern)].map(match => ({ line: index + 1, phrase: match[0] })));
 }
@@ -17,10 +40,21 @@ function visibleFragments(path: string, source: string): { line: number; text: s
   if (path.endsWith('.json')) return source.split(/\r?\n/).map((text, index) => ({ line: index + 1, text }));
   const file = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, path.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
   const fragments: { line: number; text: string }[] = [];
+  // A className is never copy: its strings are skipped (b2 13 Nov, A2).
+  const inClassName = (node: ts.Node) => {
+    for (let at: ts.Node | undefined = node.parent; at; at = at.parent) if (ts.isJsxAttribute(at)) return at.name.getText(file) === 'className';
+    return false;
+  };
   function visit(node: ts.Node) {
+    if ((ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node) || ts.isTemplateExpression(node)) && inClassName(node)) return;
     if (ts.isJsxText(node)) fragments.push({ line: file.getLineAndCharacterOfPosition(node.getStart(file)).line + 1, text: node.getText(file) });
     if (ts.isStringLiteral(node) && (/\s|[.!?]/.test(node.text) || ts.isJsxAttribute(node.parent))) {
       fragments.push({ line: file.getLineAndCharacterOfPosition(node.getStart(file)).line + 1, text: node.text });
+    }
+    // Template copy is checked for apostrophes only (see scan).
+    if (ts.isNoSubstitutionTemplateLiteral(node) || ts.isTemplateExpression(node)) {
+      const text = ts.isNoSubstitutionTemplateLiteral(node) ? node.text : [node.head.text, ...node.templateSpans.map(span => span.literal.text)].join(' ');
+      fragments.push({ line: file.getLineAndCharacterOfPosition(node.getStart(file)).line + 1, text: `\u0000${text}` });
     }
     ts.forEachChild(node, visit);
   }
@@ -35,9 +69,15 @@ async function scan(path: string): Promise<number> {
     if (entry.isDirectory()) hits += await scan(child);
     else if (entry.isFile() && /\.(tsx?|json)$/.test(child) && !/\.test\./.test(child)) {
       const source = await readFile(child, 'utf8');
-      for (const fragment of visibleFragments(child, source)) for (const hit of findCopyIssues(fragment.text)) {
-        console.log(`${child}:${fragment.line + hit.line - 1}:${hit.phrase}`);
-        hits++;
+      const ui = !child.endsWith('.json');
+      for (const fragment of visibleFragments(child, source)) {
+        const template = fragment.text.startsWith('\u0000');
+        const text = template ? fragment.text.slice(1) : fragment.text;
+        const issues = [...(template ? [] : findCopyIssues(text)), ...(ui ? [...findStraightApostrophes(text), ...findLossWords(text, child)] : [])];
+        for (const hit of issues) {
+          console.log(`${child}:${fragment.line + hit.line - 1}:${hit.phrase}`);
+          hits++;
+        }
       }
     }
   }

@@ -42,7 +42,7 @@ export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; li
     setBusy(true);
     try {
       // One line plus the app's link travels with the image, so a friend has somewhere to go.
-      const result = await shareFileNow(file(), weekShareText(receiptShareLines(card)), { title: "My week's receipt", dialogTitle: 'Share my receipt' });
+      const result = await shareFileNow(file(), weekShareText(receiptShareLines(card)), { title: "My week’s receipt", dialogTitle: 'Share my receipt' });
       setOpen(false);
       setMessage(result === 'shared' ? 'Receipt shared.' : result === 'downloaded' ? 'Receipt image downloaded.' : shareNote(result));
     } catch { setMessage('Could not share the receipt.'); }
@@ -61,10 +61,10 @@ export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; li
   };
   return <>
     <div ref={logo} className="recap-logo-source" hidden aria-hidden="true"><Kachhua pose="cheer" size={170} /></div>
-    {day && <button type="button" className={link ? 'text-button recap-link' : 'secondary recap-trigger'} onClick={() => { setMessage(''); setOpen(true); }}>{link ? "Your week's receipt is ready" : 'Share my week'}</button>}
-    {open && day && <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => setOpen(false)}><section ref={dialog} tabIndex={-1} className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Your week's receipt" onClick={event => event.stopPropagation()}>
+    {day && <button type="button" className={link ? 'text-button recap-link' : 'secondary recap-trigger'} onClick={() => { setMessage(''); setOpen(true); }}>{link ? "Your week’s receipt is ready" : 'Share my week'}</button>}
+    {open && day && <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => setOpen(false)}><section ref={dialog} tabIndex={-1} className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Your week’s receipt" onClick={event => event.stopPropagation()}>
       <div className="ui-sheet-handle" aria-hidden="true" />
-      <h2>Your week's receipt</h2>
+      <h2>Your week’s receipt</h2>
       {/* Spec 660 §3.3: the weekly review's move-budget line, on the receipt (never on the image). b2 12 Nov: it sits
           right under the title, so the one thing to act on is in view as the sheet opens, at any text size. */}
       <MoveBudgetLine />

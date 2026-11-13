@@ -60,7 +60,7 @@ test('a new step is taught as hook, idea, show me and one guided try; its own qu
   await expect(page.getByRole('button', { name: 'Open Learn' })).toHaveCount(0);
   // A brand-new learner has nothing earlier to practise, so day 1 is the lesson alone.
   await walkStep(page, stepOne!, 'Done');
-  await expect(page.locator('.learn-stop')).toContainText("Today's idea · ");
+  await expect(page.locator('.learn-stop')).toContainText("Today’s idea · ");
   await expect(page.locator('.step-takeaway')).toHaveText(stepOne!.takeaway);
   await expect(page.locator('.learn-stop')).toContainText('1 new idea.');
   await expect(page.getByRole('navigation', { name: 'Main tabs' })).toBeVisible();

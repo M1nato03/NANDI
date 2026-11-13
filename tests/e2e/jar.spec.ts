@@ -42,7 +42,7 @@ test('a plan for a camp ahead fills from a finished idea: +5 on the finish line 
   await seed(page, [['yatra.startDay', TODAY], ['yatra.jarFrom', TODAY]]);
   await page.getByRole('button', { name: 'Add a plan to a camp ahead' }).click();
   const sheet = page.getByRole('dialog', { name: 'A plan for a camp ahead' });
-  await sheet.getByLabel("What it's for").fill('movie night with Dev');
+  await sheet.getByLabel("What it’s for").fill('movie night with Dev');
   await sheet.getByRole('button', { name: 'Save' }).click();
   const plan = page.getByRole('region', { name: 'Your plan on the trail' });
   await expect(plan).toContainText('movie night with Dev');

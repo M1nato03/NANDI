@@ -101,7 +101,7 @@ for (const theme of ['light', 'dark'] as const) {
     await put(night, 'ledger', [...corners(5), ...daysBefore(DAY, 3).map(day => fact(day, 'soft', 'soft', {}))]);
     await home(night);
     await expect(night.locator('.courtyard-stars')).toHaveCount(1);
-    const rings = night.getByRole('navigation', { name: "Today's rings" });
+    const rings = night.getByRole('navigation', { name: "Today’s rings" });
     await expect(rings.locator('.ring-mark-moon')).toHaveCount(3);
     await rings.getByRole('button').first().click();
     await expect(night.locator('.today-rings-line')).toHaveText('Rings rest for the night.');
@@ -250,7 +250,7 @@ test('header rings: Mind unlit, half and closed, light and dark (360 crops)', as
       await put(page, 'tasks', [{ id: 's2-task', title: 'Call the bank', status: 'done', dayKey: DAY, updatedAt: 1, deleted: 0, deviceId: 's2' }]);
       await put(page, 'ledger', [...facts]);
       await home(page);
-      await expect(page.getByRole('navigation', { name: "Today's rings" })).toBeVisible();
+      await expect(page.getByRole('navigation', { name: "Today’s rings" })).toBeVisible();
       const slot = (await page.locator('.today-rings-slot').boundingBox())!;
       if (state === 'body' || state === 'all') await expect(page.locator('.today-ring').nth(1).locator('.ring-mark')).not.toHaveCount(0);
       await snap(page, `s2-${theme === 'light' ? 'l' : 'd'}-rings-${state}`, { x: 0, y: 0, width: 360, height: Math.ceil(slot.y + slot.height + 8) });

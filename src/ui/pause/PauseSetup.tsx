@@ -86,7 +86,7 @@ export function PauseSetup() {
           <p className="pause-line-preview">{pauseLine(labelOf(card.packages[0] ?? first), card.act)}</p>
           <p className="small">{card.packages.map(labelOf).join(', ')} · {windowText(card.window)} · {card.mode === 'limit' ? `after ${card.limitMin}\u00a0min a day` : 'every open'} · quiet {card.grace}&nbsp;min after "Open anyway"</p>
         </>}
-        {card.legacy && !card.act && <p>Your day pause now shows a plan. Write the one thing you'll do first.</p>}
+        {card.legacy && !card.act && <p>Your day pause now shows a plan. Write the one thing you’ll do first.</p>}
         {card.on && card.switchedTo10 && <p className="pause-switched">Now shows after {card.limitMin}&nbsp;min a day. <button type="button" className="text-button" onClick={() => { setDraft(null); setView('when'); }}>Change it here.</button></p>}
         <div className="pause-setup-nav">
           {card.on && !card.offToday && <button type="button" className="secondary" onClick={() => void quick({ offDay: today }, 'Off for today. It comes back tomorrow.')}>Off for today</button>}
@@ -116,7 +116,7 @@ export function PauseSetup() {
 
     {current === 'line' && <div className="card pause-step">
       <h2>Write your line</h2>
-      <label htmlFor="pause-act">If I open {appNames.length ? appNames.join(' or ') : 'one of them'}, I'll … first.</label>
+      <label htmlFor="pause-act">If I open {appNames.length ? appNames.join(' or ') : 'one of them'}, I’ll … first.</label>
       <input id="pause-act" value={work.act} maxLength={80} onChange={event => change({ act: event.target.value })} placeholder="do 10 squats" />
       <div className="pause-acts" role="group" aria-label="Quick picks">{PAUSE_ACTS.map(pick => <button type="button" key={pick} className={act === pick ? undefined : 'secondary'} aria-pressed={act === pick} onClick={() => change({ act: pick })}>{pick}</button>)}</div>
       <p className="small">A small thing you can do in 2&nbsp;minutes, away from the screen if you can.</p>
@@ -159,12 +159,12 @@ export function PauseSetup() {
     </div>}
 
     {current === 'permissions' && <>
-      <div className="card pause-step"><h2>The Pause card is on</h2><p>Two phone settings let it appear over the app. Without them it can't show.</p></div>
-      {access ? <PhoneAccess access={access} /> : <p className="small">Checking the phone's settings…</p>}
+      <div className="card pause-step"><h2>The Pause card is on</h2><p>Two phone settings let it appear over the app. Without them it can’t show.</p></div>
+      {access ? <PhoneAccess access={access} /> : <p className="small">Checking the phone’s settings…</p>}
       <button type="button" onClick={() => setView('manage')}>Done</button>
     </>}
 
-    {!phone && current !== 'manage' && <p className="small">The card appears in NANDI's Android app. Here you can set it up and see it once.</p>}
+    {!phone && current !== 'manage' && <p className="small">The card appears in NANDI’s Android app. Here you can set it up and see it once.</p>}
     {message && <p role="status">{message}</p>}
     {demo && <PauseCard demo demoAct={act || null} packageName={first} close={() => setDemo(false)} />}
   </section>;
@@ -187,7 +187,7 @@ function OpensCard({ settings, packages, today }: { settings: readonly SettingRo
   const log = readOpensLog(settings);
   return <div className="card pause-step pause-opens">
     <h2>Your opens</h2>
-    {!log ? <p className="small">These show once NANDI can read the phone's usage log (Usage access).</p> : (() => {
+    {!log ? <p className="small">These show once NANDI can read the phone’s usage log (Usage access).</p> : (() => {
       const summary = summarizeOpens(log, packages, today);
       return <>
         <dl className="pause-opens-list">
@@ -196,7 +196,7 @@ function OpensCard({ settings, packages, today }: { settings: readonly SettingRo
           <div><dt>The week before the card · a day</dt><dd>{summary.before ? opensText(summary.before) : 'Not enough days yet'}</dd></div>
           <div><dt>After "Open anyway"</dt><dd>{summary.afterAnyway.count ? `${minutesInWords(Math.round(summary.afterAnyway.ms / summary.afterAnyway.count / 60_000))} on average · ${summary.afterAnyway.count} ${summary.afterAnyway.count === 1 ? 'time' : 'times'}` : 'None yet'}</dd></div>
         </dl>
-        <p className="small">Counted from the phone's own usage log, only for the apps you picked. A day runs from 04:00 to 04:00. It stays on this phone.</p>
+        <p className="small">Counted from the phone’s own usage log, only for the apps you picked. A day runs from 04:00 to 04:00. It stays on this phone.</p>
       </>;
     })()}
   </div>;

@@ -85,7 +85,7 @@ export function PhoneChhutti() {
   return <section className="card phone-chhutti" aria-label="Phone ki chhutti">
     <h2>Phone ki chhutti</h2>
     <p>{window.label}, the phone goes on the shelf from {shown.from} until {shown.to}.</p>
-    {upcoming && now >= fromMs && <p className="small">This is the phone's chhutti now.</p>}
+    {upcoming && now >= fromMs && <p className="small">This is the phone’s chhutti now.</p>}
     {skipped && <p className="small">Not today. It comes back tomorrow.</p>}
     {learning && <p className="small chhutti-learning">NANDI is still learning how this phone locks ({lockTest.passes} of {RULES.plan.chhutti.lockPasses}). Lock the phone once while NANDI is open to help. Until then, it may ask you.</p>}
     {showLast && <p className="chhutti-line" role="status">{chhuttiLine(ended, ended.inputs.label === window.label ? window.label : String(ended.inputs.label ?? window.label))}</p>}

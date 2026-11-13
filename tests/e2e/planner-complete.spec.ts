@@ -41,7 +41,7 @@ test('fresh start offers a calm one-tap Must', async ({ page }) => {
   await seed(page, 'fresh');
   await openMore(page);
   const fresh = page.getByRole('region', { name: 'Fresh start' });
-  await expect(fresh).toContainText("Yesterday didn't go to plan. That's data, not a verdict.");
+  await expect(fresh).toContainText("Yesterday didn’t go to plan. That’s data, not a verdict.");
   await fresh.getByRole('button', { name: 'Pick one Must' }).click();
   await fresh.getByRole('button', { name: 'Yesterday task' }).click();
   await expect(fresh).toHaveCount(0);

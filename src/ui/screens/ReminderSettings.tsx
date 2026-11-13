@@ -33,7 +33,7 @@ export function OldReminders() {
   const list = row && !row.deleted ? readReminders(row.value) : [];
   if (!list.length) return message ? <p role="status" className="small">{message}</p> : null;
   return <section className="old-reminders" aria-labelledby="old-reminders-title" data-testid="old-reminders"><h3 id="old-reminders-title">Old reminders</h3>
-    <p className="small">These are in Plan's Later list now. This copy is only for reading.</p>
+    <p className="small">These are in Plan’s Later list now. This copy is only for reading.</p>
     <ul className="history-list">{list.map(item => <li key={item.id}>{item.text}{item.doneAt !== undefined ? ' · done' : ''}</li>)}</ul>
     <button type="button" className="secondary" onClick={() => void deleteOldReminders(db).then(() => setMessage('Old reminders deleted.')).catch(() => setMessage('Could not delete them. Try again.'))}>Delete old reminders</button>
   </section>;

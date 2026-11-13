@@ -36,7 +36,7 @@ export function BedtimeSettings() {
   return <section className="card settings-group bedtime-settings" aria-label="Shutdown and bedtime" data-testid="bedtime-settings"><h2>Shutdown and bedtime</h2>
     <label>Shutdown time <input type="time" value={shutdown} onChange={event => void save('planner.shutdown', event.target.value)} /></label>
     <label>Bedtime target <input type="time" value={bedtime} onChange={event => void save('planner.bedtime', event.target.value)} /></label>
-    <p className="setting-help">Your current lights-out time. It sets tonight's reminders and check-in.</p>
+    <p className="setting-help">Your current lights-out time. It sets tonight’s reminders and check-in.</p>
     <label><input type="checkbox" checked={settings?.find(row => row.key === BUSY_SHIFT_KEY && !row.deleted)?.value !== false} onChange={event => void save(BUSY_SHIFT_KEY, event.target.checked)} /> On busy days, start my night later (up to 1&nbsp;hour)</label>
     {night && night.shift > 0 && <p className="small busy-day">Busy day: about {Math.round(night.plannedMinutes / 60)} h planned, so tonight starts {night.shift}&nbsp;min later (bedtime {night.bedtime}). <button type="button" className="text-button" onClick={() => void save(shiftOffKey(today), true)}>Keep my usual time</button></p>}
     <label>Long-term bedtime goal <input type="time" value={goal} onChange={event => void save('planner.goalBedtime', event.target.value)} /></label>

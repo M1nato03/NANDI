@@ -100,7 +100,7 @@ function PlanSheet({ trek, plan, ahead, close }: { trek: JourneyTrek; plan: JarP
       {ahead.map(({ place, index }) => <option key={index} value={index}>{place.name}</option>)}
     </select></label>
     <p className="jar-plan-far">About {jarDuration(minutesTo(trek, camp))} on the trail from here</p>
-    <label>What it's for<input value={line} maxLength={PLAN_MAX} placeholder="the new book, movie night…" onChange={event => setLine(event.target.value)} /></label>
+    <label>What it’s for<input value={line} maxLength={PLAN_MAX} placeholder="the new book, movie night…" onChange={event => setLine(event.target.value)} /></label>
     <div className="jar-plan-actions">
       <button type="button" disabled={busy || !line.trim()} onClick={() => void save()}>Save</button>
       {plan && <button type="button" className="secondary" disabled={busy} onClick={() => void remove()}>Delete the plan</button>}

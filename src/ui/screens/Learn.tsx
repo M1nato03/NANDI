@@ -82,15 +82,15 @@ function TodayIdea({ drop, selected }: { drop?: Drop; selected: readonly string[
   if (drop && drop.items.length > 0 && drop.cursor >= drop.items.length) {
     const lesson = drop.items.find(item => item.lesson)?.lesson;
     const taught = lesson ? findStep(concepts, lesson) : undefined;
-    return <section className="card read-today-idea" data-state="done" aria-label="Today's idea">
-      <p className="eyebrow"><span aria-hidden="true">✓ </span>Today's idea</p>
+    return <section className="card read-today-idea" data-state="done" aria-label="Today’s idea">
+      <p className="eyebrow"><span aria-hidden="true">✓ </span>Today’s idea</p>
       <p className="small">{taught?.step.takeaway ?? 'Done for today.'}</p>
     </section>;
   }
   const during = !!drop && drop.items.length > 0 && (drop.cursor > 0 || !!drop.pendingFeedback);
   const pack = packOf(drop?.items[0]?.conceptId) ?? (selected.length === 1 ? topics.find(row => row.body.topic.id === selected[0]) : undefined);
   return <button type="button" className="card read-today-idea" data-state={during ? 'during' : 'before'} data-testid="today-idea-link" onClick={() => go('read/drop')}>
-    <span className="eyebrow">Today's idea</span>
+    <span className="eyebrow">Today’s idea</span>
     <strong>{during ? `Continue · ${Math.min(drop!.cursor + 1, drop!.items.length)} of ${drop!.items.length}` : pack ? bookTitle(pack) : 'One idea, about five minutes'}</strong>
     <span className="read-today-arrow" aria-hidden="true">›</span>
   </button>;
@@ -165,8 +165,8 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
   // Spec 30 second door: ideas finished before their scene existed can still teach Chiku once (Codex B item 110).
   const taughtSteps = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => fact.refId));
   const chikuPlayedIds = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'chiku' && !fact.deleted).map(fact => fact.refId));
-  if (chikuFor) return <section className="screen learn-screen"><ChikuStage scene={chikuFor.scene} seed={`${chikuFor.conceptId}:${dayKey(now)}`} onPlayed={(card, matched) => { const at = Date.now(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chikuFor.conceptId, card, matched, deviceId, now: at })).catch(() => setMessage("Could not save Chiku's turn.")); }} onDone={() => { setChikuBack(chikuFor.title); setChikuFor(null); }} />{message && <p role="status">{message}</p>}</section>;
-  if (entry === 'drop') return <section className="screen learn-screen"><p className="eyebrow">Today</p><h1>Today's drop</h1><LearnDrop daily itemCount={5} onDone={() => go('learn')} />{scene}</section>;
+  if (chikuFor) return <section className="screen learn-screen"><ChikuStage scene={chikuFor.scene} seed={`${chikuFor.conceptId}:${dayKey(now)}`} onPlayed={(card, matched) => { const at = Date.now(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chikuFor.conceptId, card, matched, deviceId, now: at })).catch(() => setMessage("Could not save Chiku’s turn.")); }} onDone={() => { setChikuBack(chikuFor.title); setChikuFor(null); }} />{message && <p role="status">{message}</p>}</section>;
+  if (entry === 'drop') return <section className="screen learn-screen"><p className="eyebrow">Today</p><h1>Today’s drop</h1><LearnDrop daily itemCount={5} onDone={() => go('learn')} />{scene}</section>;
   if (practice) return <section className="screen learn-screen">{(practice.reviewDue || practice.goldReview) && <AreaScope area="review" />}<LearnDrop daily={false} itemCount={practice.goldReview ? 5 : 3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} goldReview={practice.goldReview} onDone={() => setPractice(undefined)} />{scene}</section>;
   // Spec 33: chapters done, books touched most recently, and each idea's place in the trail (Practice, Teach Chiku, Gold).
   const { done: chaptersDone, lastTouched } = readingState(topics, data?.ledger ?? []);

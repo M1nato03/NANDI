@@ -25,7 +25,7 @@ test('Read: Grow is the tab; Continue sits above the fold; no Games fold', async
   await expect(page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link')).toHaveText(['Courtyard', 'Yatra', 'Grow', 'You']);
   // Spec 571 (b2): the reading dot keeps the name Read.
   // Spec 571 §0.20: the header's rings (Yatra · Body · Mind) replaced the Today dots.
-  await expect(page.getByRole('navigation', { name: "Today's rings" }).getByRole('button')).toHaveCount(3);
+  await expect(page.getByRole('navigation', { name: "Today’s rings" }).getByRole('button')).toHaveCount(3);
   await expect(page.getByRole('heading', { name: 'Read', level: 1 })).toBeVisible();
   const resume = page.getByRole('region', { name: 'Continue' });
   await expect(resume).toContainText(pack('psychology').body.book.title);
@@ -71,8 +71,8 @@ test('spec 41: a chapter is read one idea a sitting (the first is the day\'s dro
   // A real stop: two equal buttons, no timer, nothing moves on by itself.
   const end = page.locator('.idea-end');
   await expect(end).toContainText('Idea done');
-  await expect(end.getByRole('button')).toHaveText(['One more idea', "That's enough for now"]);
-  await end.getByRole('button', { name: "That's enough for now" }).click();
+  await expect(end.getByRole('button')).toHaveText(['One more idea', "That’s enough for now"]);
+  await end.getByRole('button', { name: "That’s enough for now" }).click();
   await expect(page.getByRole('button', { name: /^Chapter 1: Things that fly, In progress$/ })).toBeVisible();
   await page.getByRole('button', { name: 'Continue · Chapter 1' }).click();
   await expect(page.getByRole('list', { name: `Idea 2 of ${ideas}` })).toBeVisible();
@@ -113,7 +113,7 @@ test('stage 2 (rows 89-90): “Today’s idea” is the first row on Grow › Re
   const idea = page.getByTestId('today-idea-link');
   await expect(idea).toHaveCount(1);
   await expect(idea).toHaveAttribute('data-state', 'before');
-  await expect(idea).toContainText("Today's idea");
+  await expect(idea).toContainText("Today’s idea");
   // First: above the shelf (Continue and the Library come after it), so ring → Read → drop needs no scroll.
   expect(await idea.evaluate(node => [...document.querySelectorAll('.read-continue, .read-library')].every(row => !!(node.compareDocumentPosition(row) & Node.DOCUMENT_POSITION_FOLLOWING)))).toBe(true);
   expect(await idea.evaluate(node => node.getBoundingClientRect().bottom <= innerHeight)).toBe(true);
@@ -140,7 +140,7 @@ test('a finished book offers the next one; the recall and Chiku checks finish th
   await page.getByRole('button', { name: idea.title, exact: true }).click();
   for (const piece of idea.recall!.pieces) await page.locator('.haveli-tiles').getByRole('button', { name: piece, exact: true }).click();
   // The haveli's own Close (the economy toast for the rebuild has a Close too, over the top bar).
-  await page.getByRole('region', { name: "Moti's haveli" }).getByRole('button', { name: 'Close' }).click();
+  await page.getByRole('region', { name: "Moti’s haveli" }).getByRole('button', { name: 'Close' }).click();
   await expect(page.locator('.read-done-card')).toContainText('Chapter 1 done');
   // Chiku: the chapter's scene (skipping it still finishes the chapter; nothing is lost).
   await openHash(page, 'grow/read/chapter/psychology/psychology-ch1');

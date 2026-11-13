@@ -27,7 +27,7 @@ export function NightPauseCard({ packageName, reason = 'night', minutes = 0, clo
   const copy = pauseCardCopy({ reason, minutes, label, planText: plan ? nightPlanText(plan) : null, suggestion });
   // Spec 24 #1: inside a planned Phone ki chhutti the card says so, and "Go anyway" stays one tap.
   const chhutti = activeChhutti(rows, Date.now(), dayKey(Date.now())); // eslint-disable-line react-hooks/purity
-  const lead = chhutti ? `This is your phone's chhutti (${chhutti.label.toLowerCase()}). Back to it, or go anyway?` : copy.lead;
+  const lead = chhutti ? `This is your phone’s chhutti (${chhutti.label.toLowerCase()}). Back to it, or go anyway?` : copy.lead;
   useEffect(() => {
     const timer = window.setInterval(() => setSeconds(value => Math.max(0, value - 1)), 1000);
     return () => window.clearInterval(timer);

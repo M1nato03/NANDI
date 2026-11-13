@@ -178,7 +178,7 @@ export function YouHistory() {
     {shardsCard && <section className="card" aria-labelledby="history-shards"><h2 id="history-shards">Shards kept: {view.shards.toLocaleString()}</h2>
       <p>The shop has closed. What you own stays yours{owned.length ? ':' : '.'}</p>
       {owned.length > 0 && <ul className="history-list">{owned.map(name => <li key={name}>{name}</li>)}</ul>}
-      <p className="small">Rest days held: {view.streak.restDays}. They still keep a streak on a missed day, and more arrive on the 1st.</p>
+      <p className="small">Rest days held: {view.streak.restDays}. More arrive on the 1st.</p>
     </section>}
     <section className="card" aria-labelledby="history-seasons"><h2 id="history-seasons">Past seasons</h2>
       {seasons.length ? <ul className="history-list">{seasons.map(season => <li key={season.start}>{seasonLine(season)} · {season.usefulDays === 1 ? '1 useful day' : `${season.usefulDays} useful days`}</li>)}</ul> : <p>No season has finished yet.</p>}

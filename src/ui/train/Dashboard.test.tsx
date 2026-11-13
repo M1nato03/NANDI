@@ -56,7 +56,7 @@ describe('Nordic ready card (spec 17)', () => {
 
   it('keeps the ready button off until all three boxes are ticked', () => {
     show();
-    const ready = screen.getByRole('button', { name: "I'm ready" });
+    const ready = screen.getByRole('button', { name: "I’m ready" });
     const boxes = screen.getAllByRole('checkbox');
     expect(boxes).toHaveLength(3);
     for (const box of boxes.slice(0, 2)) fireEvent.click(box);

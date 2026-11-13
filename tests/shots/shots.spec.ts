@@ -615,7 +615,7 @@ for (const theme of themes) test.describe(theme, () => {
     await page.evaluate(() => window.dispatchEvent(new Event('nandi:storage-full')));
     await page.evaluate(() => window.scrollTo(0, 0));
     await shot(page, 'a2-4-storage-full-line', false);
-    await page.getByRole('button', { name: /out of room for NANDI's data/ }).click();
+    await page.getByRole('button', { name: /out of room for NANDI’s data/ }).click();
     await page.getByRole('button', { name: 'Ask to keep data on this device' }).click();
     await page.getByRole('button', { name: 'Ask to keep data on this device' }).scrollIntoViewIfNeeded();
     await shot(page, 'a2-5-keep-data-answer', false);
@@ -906,7 +906,7 @@ for (const theme of themes) test.describe(theme, () => {
     await page.clock.fastForward(9 * 60_000);
     await expect(focus.getByRole('alert')).toBeVisible();
     await shot(page, 'effort-still-working', false);
-    await focus.getByRole('button', { name: "I'm still working" }).click();
+    await focus.getByRole('button', { name: "I’m still working" }).click();
     const startedAt = await page.evaluate(async () => {
       const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
       const rows = await new Promise<{ startedAt: number; endedAt?: number }[]>(resolve => { const request = database.transaction('focus').objectStore('focus').getAll(); request.onsuccess = () => resolve(request.result); });
@@ -1268,8 +1268,8 @@ for (const theme of themes) test.describe(theme, () => {
     // Welcome, Get fit: straight into the easy first workout.
     await page.goto('/?e2e&welcome');
     const welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
-    await welcome.getByLabel("I'm 18 or older.").check();
-    await welcome.getByRole('button', { name: "Let's start" }).click();
+    await welcome.getByLabel("I’m 18 or older.").check();
+    await welcome.getByRole('button', { name: "Let’s start" }).click();
     await welcome.getByRole('button', { name: 'Get fit' }).click();
     await welcome.getByRole('button', { name: 'Continue' }).click();
     await welcome.getByRole('button', { name: 'Start an easy first workout' }).click();
@@ -1344,7 +1344,7 @@ for (const theme of themes) test.describe(theme, () => {
     const record = page.getByRole('region', { name: 'Daily minutes record' });
     await record.scrollIntoViewIfNeeded();
     await shot(page, 'm1-settings-granted', false);
-    await record.getByText("What's kept").click();
+    await record.getByText("What’s kept").click();
     await record.scrollIntoViewIfNeeded();
     await shot(page, 'm2-whats-kept', false);
     await record.getByRole('button', { name: 'Stop and delete the record' }).click();
@@ -1365,7 +1365,7 @@ for (const theme of themes) test.describe(theme, () => {
     await phone(true);
     await page.reload();
     await textAt200(page);
-    await record.getByText("What's kept").click();
+    await record.getByText("What’s kept").click();
     await record.scrollIntoViewIfNeeded();
     await shot(page, 'm6-200pct', false);
   });
@@ -1515,8 +1515,8 @@ for (const theme of themes) test.describe(theme, () => {
     await page.goto('/?e2e&welcome');
     await page.reload();
     const welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
-    await welcome.getByLabel("I'm 18 or older.").check();
-    await welcome.getByRole('button', { name: "Let's start" }).click();
+    await welcome.getByLabel("I’m 18 or older.").check();
+    await welcome.getByRole('button', { name: "Let’s start" }).click();
     // Reduced motion gives every property a 0.01 ms transition (theme.css), so a shot taken in the click's own frame can
     // catch a step dash still on its old colour: wait two frames before each Welcome shot.
     const settled = () => page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
@@ -1597,13 +1597,13 @@ for (const theme of themes) test.describe(theme, () => {
     await page.goto('/?e2e#courtyard');
     await seedRecapWeek(page, '2026-11-05');
     await page.locator('.courtyard-card-handle').click();
-    const link = page.getByRole('button', { name: "Your week's receipt is ready" });
+    const link = page.getByRole('button', { name: "Your week’s receipt is ready" });
     await expect(link).toBeVisible();
     const move = await page.locator('.next-move').boundingBox();
     console.log(`spec 53 shots [${theme}]: next-move card top y=${Math.round(move!.y)}, bottom y=${Math.round(move!.y + move!.height)}; receipt link y=${Math.round((await link.boundingBox())!.y)}`);
     await shot(page, 'p53-01-home-sunday-link', false);
     await link.click();
-    const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
+    const sheet = page.getByRole('dialog', { name: "Your week’s receipt" });
     await expect(sheet.getByRole('img')).toBeVisible({ timeout: 20_000 });
     await shot(page, 'p53-03-sheet', false);
     await textAt200(page);
@@ -1667,13 +1667,13 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'p54-02-home-no-plan-scrolled', false);
     await page.getByRole('button', { name: 'Add a plan to a camp ahead' }).click();
     const sheet = page.getByRole('dialog', { name: 'A plan for a camp ahead' });
-    await sheet.getByLabel("What it's for").fill('movie night with Dev');
+    await sheet.getByLabel("What it’s for").fill('movie night with Dev');
     await shot(page, 'p54-03-plan-sheet', false);
     await textAt200(page);
     await shot(page, 'p54-04-plan-sheet-200pct', false);
     await page.reload();
     await page.getByRole('button', { name: 'Add a plan to a camp ahead' }).click();
-    await page.getByRole('dialog', { name: 'A plan for a camp ahead' }).getByLabel("What it's for").fill('movie night with Dev');
+    await page.getByRole('dialog', { name: 'A plan for a camp ahead' }).getByLabel("What it’s for").fill('movie night with Dev');
     await page.getByRole('dialog', { name: 'A plan for a camp ahead' }).getByRole('button', { name: 'Save' }).click();
     await page.getByRole('region', { name: 'Your plan on the trail' }).scrollIntoViewIfNeeded();
     await shot(page, 'p54-05-home-with-plan', false);

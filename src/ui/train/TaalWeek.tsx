@@ -23,10 +23,10 @@ export function TaalWeekCard({ week, sheetWeeks, loadSheet }: { week: Week; shee
   const [open, setOpen] = useState(false);
   const sheet = useMemo(() => open ? loadSheet() : [], [open, loadSheet]);
   return <div className="card taal-card">
-    <h2>This week's rhythm</h2>
+    <h2>This week’s rhythm</h2>
     <Beats week={week} />
     <p>{weekLine(week)}</p>
-    {today?.plan === 'rest' && !today.filled && <p className="small">Rest is today's beat.</p>}
+    {today?.plan === 'rest' && !today.filled && <p className="small">Rest is today’s beat.</p>}
     <p className="small taal-key"><span className="taal-key-clap">Training day</span><span className="taal-key-rest">Rest day</span></p>
     {sheetWeeks > 0 && <details className="taal-sheet" onToggle={event => setOpen(event.currentTarget.open)}><summary>Rhythm sheet</summary><ul>{sheet.map(past => <li key={past.weekStart}><Beats week={past} small /><span className="small">{weekLine(past)}</span></li>)}</ul></details>}
   </div>;

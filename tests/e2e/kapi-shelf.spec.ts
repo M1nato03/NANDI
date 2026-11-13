@@ -18,7 +18,7 @@ const boardFacts = (page: Page) => page.evaluate(async () => {
 test('a first open starts with the how-to: one move per step, Kapi on the square, then the first board; it can be replayed', async ({ page }) => {
   await page.clock.setFixedTime(monday);
   await page.goto('/?e2e#grow/play');
-  const shelf = page.getByRole('region', { name: "Kapi's shelf" });
+  const shelf = page.getByRole('region', { name: "Kapi’s shelf" });
   await expect(shelf.getByRole('button', { name: /^Crowns/ })).toContainText('Starts with a how-to');
   await shelf.getByRole('button', { name: /^Crowns/ }).click();
   const howto = page.getByRole('region', { name: 'How to play Crowns' });
@@ -81,7 +81,7 @@ test('Skip how-to opens the board at once and is remembered; Check names the bro
   await cell(page, /^Row 1, column 3,/).click();
   await expect(grid.locator('.conflict')).toHaveCount(0);
   await page.goto('/?e2e#grow/play');
-  await expect(page.getByRole('region', { name: "Kapi's shelf" }).getByRole('button', { name: /^Crowns/ })).not.toContainText('Starts with a how-to');
+  await expect(page.getByRole('region', { name: "Kapi’s shelf" }).getByRole('button', { name: /^Crowns/ })).not.toContainText('Starts with a how-to');
 });
 
 test('the daily board plus two more, then Kapi naps; the first is the daily board fact and the rest are side boards', async ({ page }) => {
@@ -101,7 +101,7 @@ test('the daily board plus two more, then Kapi naps; the first is the daily boar
   await expect(page.getByRole('button', { name: 'Another puzzle' })).toHaveCount(0);
   expect(await boardFacts(page)).toEqual([true, false, false]);
   await page.goto('/?e2e#grow/play');
-  const tile = page.getByRole('region', { name: "Kapi's shelf" }).getByRole('button', { name: /^Crowns/ });
+  const tile = page.getByRole('region', { name: "Kapi’s shelf" }).getByRole('button', { name: /^Crowns/ });
   await expect(tile).toContainText('Done for today');
   await tile.click();
   await expect(page.getByText('That’s all of today’s puzzles. Kapi’s off to nap.')).toBeVisible();
@@ -125,7 +125,7 @@ test("Kapi's case starts with its 4-step walkthrough of the grid", async ({ page
   await expect(howto).toContainText("Ravi didn't have the lamp.");
   await howto.getByRole('group', { name: 'Name the culprit' }).getByRole('button', { name: 'Meera' }).click();
   await howto.getByRole('button', { name: 'Done' }).click();
-  await howto.getByRole('button', { name: "Open today's case" }).click();
+  await howto.getByRole('button', { name: "Open today’s case" }).click();
   await expect(page.getByText(/^Case of the day/)).toBeVisible({ timeout: 30_000 });
   // No running timer unless pace is on; How to play replays the walkthrough (Codex B item 105).
   await expect(page.locator('.mind-case').getByText(/^Time \d/)).toHaveCount(0);
@@ -142,7 +142,7 @@ test("Kapi's case starts with its 4-step walkthrough of the grid", async ({ page
   await cell(page, /^Ravi, book:/).click(); await cell(page, /^Ravi, book:/).click(); await howto.getByRole('button', { name: 'Next' }).click();
   await howto.getByRole('group', { name: 'Name the culprit' }).getByRole('button', { name: 'Meera' }).click();
   await howto.getByRole('button', { name: 'Done' }).click();
-  await howto.getByRole('button', { name: "Open today's case" }).click();
+  await howto.getByRole('button', { name: "Open today’s case" }).click();
   await expect(page.getByText(/^Case of the day/)).toBeVisible({ timeout: 30_000 });
 });
 

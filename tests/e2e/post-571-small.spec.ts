@@ -8,7 +8,7 @@ test('Remember › cards on a fresh install says there are no cards, not "that\'
   await page.goto('/?e2e#grow/remember/cards');
   await expect(page.getByRole('heading', { name: 'Card reviews', exact: true })).toBeVisible();
   await expect(page.getByText('No cards to review.')).toBeVisible();
-  await expect(page.getByText("That's enough for today")).toHaveCount(0);
+  await expect(page.getByText("That’s enough for today")).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Finish reviews' })).toHaveCount(0);
   // E11: say where cards come from, and go there in one tap.
   await expect(page.getByText('Cards come from ideas you read.')).toBeVisible();
@@ -28,8 +28,8 @@ test('Read\'s library shelves start on the 16 px page gutter, not at the screen 
 test('Welcome names where bedtime lives now', async ({ page }) => {
   await page.goto('/?e2e&welcome');
   const welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
-  await welcome.getByLabel("I'm 18 or older.").check();
-  await welcome.getByRole('button', { name: "Let's start" }).click();
+  await welcome.getByLabel("I’m 18 or older.").check();
+  await welcome.getByRole('button', { name: "Let’s start" }).click();
   await welcome.getByRole('button', { name: 'Learn something', exact: true }).click();
   await welcome.getByRole('button', { name: 'Continue' }).click();
   await expect(welcome.getByText('You can change it any time in Calm & Sleep.')).toBeVisible();

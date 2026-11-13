@@ -56,7 +56,7 @@ export function ChikuStage({ scene, seed, onPlayed, onDone }: { scene: ChikuScen
   const timed = !!NEXT[beat];
   return <section className="chiku-step" aria-label="Teach Chiku" data-beat={beat}>
     <p className="sr-only" aria-live="polite">{said}</p>
-    <div className="chiku-scene" ref={sceneRef} tabIndex={-1} role="group" aria-label="Chiku's scene" onClick={event => skipFrom(event.target)} onKeyDown={event => { if ((event.key === 'Enter' || event.key === ' ') && timed && event.target === event.currentTarget) { event.preventDefault(); skipBeat(); } }}>
+    <div className="chiku-scene" ref={sceneRef} tabIndex={-1} role="group" aria-label="Chiku’s scene" onClick={event => skipFrom(event.target)} onKeyDown={event => { if ((event.key === 'Enter' || event.key === ' ') && timed && event.target === event.currentTarget) { event.preventDefault(); skipBeat(); } }}>
       <div className="chiku-stage" role="presentation">
         {beat !== 'ask' && <ChikuPropArt prop={scene.newDay.prop} className={`chiku-prop${beat === 'take' ? ' waiting' : ''}`} />}
         <span className={`chiku-actor chiku-${moment}${act ? ` chiku-act-${act}` : ''}`} key={`${beat}-${card ?? ''}`} data-moment={moment} data-act={act ?? ''}>

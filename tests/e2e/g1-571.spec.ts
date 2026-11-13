@@ -96,7 +96,7 @@ test('G1 group 6: Grow Read', async ({ page }) => {
   await expect(page.locator('.mind-courses')).toBeVisible();
   await page.locator('.mind-courses > summary').click();
   // row 94: Legacy daily lesson
-  await expect(page.getByRole('heading', { name: "Today's lesson" })).toBeVisible();
+  await expect(page.getByRole('heading', { name: "Today’s lesson" })).toBeVisible();
   // row 96: Learning tracks
   await expect(page.getByRole('region', { name: 'Learning tracks' })).toBeVisible();
   await page.getByRole('region', { name: 'Learning tracks' }).getByRole('button', { name: 'Pick this track' }).first().click();
@@ -126,11 +126,11 @@ test('G1 group 7: Grow Remember', async ({ page }) => {
   await expect(page.getByRole('region', { name: 'Review with Moti' })).toBeVisible();
   // row 91: Haveli, after all three habits steps have been taught.
   await page.getByRole('button', { name: /^Haveli/ }).click();
-  await expect(page.getByRole('region', { name: "Moti's haveli" })).toBeVisible();
+  await expect(page.getByRole('region', { name: "Moti’s haveli" })).toBeVisible();
   await page.getByRole('button', { name: 'Close' }).click();
   // row 92: Matka, on Sunday with earlier first guesses.
   await page.getByRole('button', { name: /^Matka/ }).click();
-  await expect(page.getByRole('region', { name: "Moti's matka" })).toBeVisible();
+  await expect(page.getByRole('region', { name: "Moti’s matka" })).toBeVisible();
   await door(page, 'remember');
   // row 117: Card reviews (moved here from Play)
   await expect(page.getByRole('region', { name: 'Card reviews' })).toBeVisible();
@@ -147,9 +147,9 @@ test('G1 group 8: Grow Play', async ({ page }) => {
   await seedFacts(page, [fact('purchase', 'paths-pack', '2026-11-05', 'economy', { itemId: 'puzzle:paths', price: 400 })]);
   await door(page, 'play');
   // row 101: Today's mystery case
-  await expect(page.getByRole('region', { name: "Today's case" })).toBeVisible();
+  await expect(page.getByRole('region', { name: "Today’s case" })).toBeVisible();
   // row 106: Daily puzzle shelf
-  await expect(page.getByRole('region', { name: "Kapi's shelf" })).toBeVisible();
+  await expect(page.getByRole('region', { name: "Kapi’s shelf" })).toBeVisible();
   // row 116: Case story so far
   await expect(page.locator('.mind-story > summary')).toContainText('Story so far');
   // row 113: Practice boards
@@ -164,11 +164,11 @@ test('G1 group 8: Grow Play', async ({ page }) => {
   await page.locator('.mind-techniques > summary').click();
   await expect(page.locator('.mind-technique-locked').first()).toBeVisible();
   // row 107: Board how-to
-  await page.getByRole('region', { name: "Kapi's shelf" }).getByRole('button', { name: /^How to play / }).first().click();
+  await page.getByRole('region', { name: "Kapi’s shelf" }).getByRole('button', { name: /^How to play / }).first().click();
   await expect(page.getByRole('button', { name: 'Skip how-to' })).toBeVisible();
   await page.getByRole('button', { name: 'Skip how-to' }).click();
   await door(page, 'play');
-  await page.getByRole('region', { name: "Kapi's shelf" }).locator('.mind-shelf-tile').first().click();
+  await page.getByRole('region', { name: "Kapi’s shelf" }).locator('.mind-shelf-tile').first().click();
   if (await page.getByRole('button', { name: 'Skip how-to' }).isVisible()) await page.getByRole('button', { name: 'Skip how-to' }).click();
   // row 108: Puzzle player
   await expect(page.locator('.mind-board .mind-grid')).toBeVisible();

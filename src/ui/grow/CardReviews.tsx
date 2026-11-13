@@ -39,7 +39,7 @@ export function CardReviews({ onReady }: { onReady?: () => void } = {}) {
   };
   return <section className="card remember-cards" aria-label="Card reviews" data-testid="card-reviews"><h2>Card reviews</h2>
     {todayReviews ? <><p>{todayReviews} for today</p>{dueCount > todayReviews && <p className="deck-meta">{dueCount} waiting</p>}<button type="button" className="secondary" onClick={() => go('grow/remember/cards')}>Review cards</button></>
-      : dueCount ? <><p>That's enough for today</p><p className="deck-meta">{dueCount} waiting</p></> : <EmptyState area="learn">You're all caught up for now.</EmptyState>}
+      : dueCount ? <><p>That’s enough for today</p><p className="deck-meta">{dueCount} waiting</p></> : <EmptyState area="learn">You’re all caught up for now.</EmptyState>}
     {deckOn ? <button type="button" className="secondary" onClick={() => go('grow/remember/deck')}>Practice people-reading deck</button>
       : <div className="mind-deck-off"><p className="small">People-reading deck: {deck?.body.cards.length ?? 0} cards on reading people and power. It stays off until you want it.</p><button type="button" className="secondary" onClick={() => void turnOn().catch(error => recordError('window', error))}>Turn on the deck</button></div>}
   </section>;

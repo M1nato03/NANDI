@@ -112,7 +112,7 @@ test('the Train workout logger follows 200% text', async ({ page }) => {
 // runs into the rings' slot; the rings are pictures (24 px), so they keep their size.
 test('the top bar at 200% text: the brand and the rings keep apart, and the rings keep their size', async ({ page }) => {
   await page.goto('/#yatra');
-  await expect(page.getByRole('navigation', { name: "Today's rings" })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: "Today’s rings" })).toBeVisible();
   await textAt200(page);
   await page.waitForTimeout(300);
   const { brand, slot, ring } = await page.evaluate(() => {

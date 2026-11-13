@@ -80,8 +80,8 @@ test('Calm: the breath leads in and out, a full minute saves one quiet row, and 
 test("Kapi's shelf leads with today's case, visible without a scroll", async ({ page }) => {
   await page.clock.setFixedTime(NOON);
   await page.goto('/#grow/play');
-  const card = page.getByRole('region', { name: "Today's case" });
-  await expect(card).toContainText("Today's case");
+  const card = page.getByRole('region', { name: "Today’s case" });
+  await expect(card).toContainText("Today’s case");
   const open = card.getByRole('button', { name: 'Open the case' });
   await expect(open).toBeEnabled();
   const box = (await open.boundingBox())!;

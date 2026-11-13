@@ -46,7 +46,7 @@ function firstViewToday(): boolean {
 export function CourtyardView({ state, phase, onFriend, selected, forcePose }: { state: CourtyardState; phase: Phase; onFriend?: (id: AreaId) => void; selected?: AreaId; forcePose?: 'idle' }) {
   const [taps, setTaps] = useState<Partial<Record<AreaId, number>>>({});
   const [nod] = useState(firstViewToday);
-  const title = `${PHASE_WORD[phase]} in the courtyard. ${courtyardLine(state, phase)}${state.lanterns ? ` ${state.lanterns === 1 ? 'One lantern glows' : `${state.lanterns} lanterns glow`} in Kachhua's corner.` : ''}${state.toran ? ` ${state.toran === 1 ? 'One marigold hangs' : `${state.toran} marigolds hang`} over the door.` : ''}`;
+  const title = `${PHASE_WORD[phase]} in the courtyard. ${courtyardLine(state, phase)}${state.lanterns ? ` ${state.lanterns === 1 ? 'One lantern glows' : `${state.lanterns} lanterns glow`} in Kachhua’s corner.` : ''}${state.toran ? ` ${state.toran === 1 ? 'One marigold hangs' : `${state.toran} marigolds hang`} over the door.` : ''}`;
   return <div className={`courtyard courtyard-${phase}`} style={{ aspectRatio: `${SCENE_W} / ${SCENE_H}` }}>
     <CourtyardScene phase={phase} stages={stagesOf(state)} treeStage={state.treeStage} title={title} lanterns={state.lanterns} toran={state.toran} />
     {state.areas.map(area => {
@@ -94,7 +94,7 @@ export function CourtyardScreen({ area: initial }: { area?: string } = {}) {
   return <section className="screen courtyard-screen"><p className="eyebrow">Your courtyard</p><h1>Courtyard</h1>
     <CourtyardView state={data.state} phase={data.phase} onFriend={setSelected} selected={selected} />
     <p className="courtyard-caption">{courtyardLine(data.state, data.phase)}</p>
-    <p className="small">Each friend looks after one part of your day and grows with the days you practise it. Missed days never take anything away.</p>
+    <p className="small">Each friend looks after one part of your day and grows with the days you practise it. Days off never take anything away.</p>
     <FriendCard area={area} />
     <section className="card courtyard-card" aria-label="Neem tree"><h2>The neem tree</h2><p className="small">{data.state.activeDays} active {data.state.activeDays === 1 ? 'day' : 'days'} · stage {data.state.treeStage} of 5</p>
       <p>{treeNext != null ? `${treeNext - data.state.activeDays} more active ${treeNext - data.state.activeDays === 1 ? 'day adds' : 'days add'} ${TREE_OBJECTS[data.state.treeStage]}.` : 'The tree is full grown, with lights in its branches.'}</p></section>

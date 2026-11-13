@@ -63,7 +63,7 @@ test('with Usage access the record fills silently, and the only sign is the Sett
   await page.goto('/?e2e#you/settings');
   const record = page.getByRole('region', { name: 'Daily minutes record' });
   await expect(record).toContainText('Keeping a daily minutes record on this phone');
-  await record.getByText("What's kept").click();
+  await record.getByText("What’s kept").click();
   await expect(record).toContainText('A daily minutes record for the apps you picked and similar apps, on this phone only.');
   await expect(record).toContainText('It never leaves this phone: not in a backup, a share or a notification.');
   // No other app is named.
@@ -105,7 +105,7 @@ test('Stop and delete asks once, deletes every row, and stays off until turned o
   await page.goto('/?e2e#you/settings');
   const record = page.getByRole('region', { name: 'Daily minutes record' });
   await record.getByRole('button', { name: 'Stop and delete the record' }).click();
-  await expect(record).toContainText("Delete the record? This can't be undone.");
+  await expect(record).toContainText("Delete the record? This can’t be undone.");
   await record.getByRole('button', { name: 'Keep it' }).click();
   expect((await minutesRows(page)).length).toBeGreaterThan(0);
   await record.getByRole('button', { name: 'Stop and delete the record' }).click();
@@ -130,7 +130,7 @@ test('the Settings line reads at 200% text without spilling', async ({ page }) =
   const record = page.getByRole('region', { name: 'Daily minutes record' });
   await expect(record).toBeVisible();
   await textAt200(page);
-  await record.getByText("What's kept").click();
+  await record.getByText("What’s kept").click();
   // The help text follows the text size too (rem), not a fixed 13px. Polled with the 200% style re-applied, since the
   // first open's offline-ready reload can drop it after textAt200 returns (a 13px read in gate-snack2).
   await expect.poll(async () => {

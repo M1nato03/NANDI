@@ -89,10 +89,10 @@ export function CaseTutorial({ onDone }: { onDone: (skipped: boolean) => void })
   const go = (next: number) => { setIndex(next); setDone(false); setNote(''); const s = steps[next]; if (s) setGrid(s.start); };
   return <section className="screen mind-tutorial" aria-label="How to play the case">
     <p className="eyebrow">How to play · {finished ? 'Ready' : `Step ${index + 1} of ${steps.length}`}</p>
-    <h1>Kapi's case</h1>
+    <h1>Kapi’s case</h1>
     {finished ? <>
       <KapiMoment moment="clap" at={index}>{outro}</KapiMoment>
-      <button type="button" onClick={() => onDone(false)}>Open today's case</button>
+      <button type="button" onClick={() => onDone(false)}>Open today’s case</button>
     </> : <>
       <KapiMoment moment={done ? 'clap' : 'hop'} at={index * 2 + (done ? 1 : 0)}>{done ? 'That is it.' : step.text}</KapiMoment>
       <div className="mind-tutorial-board mind-case">
@@ -105,7 +105,7 @@ export function CaseTutorial({ onDone }: { onDone: (skipped: boolean) => void })
         </div>
         {!done && step.cell !== undefined && <KapiOnCell cell={step.cell} step={index} />}
       </div>
-      {step.culprit !== undefined && !done && <div className="mind-review-actions" role="group" aria-label="Name the culprit">{suspects.map((who, i) => <button type="button" className="secondary" key={who} onClick={() => { if (i === step.culprit) { setDone(true); setNote(''); } else setNote(`${who} didn't have the lamp. Look at the ✓ marks.`); }}>{who}</button>)}</div>}
+      {step.culprit !== undefined && !done && <div className="mind-review-actions" role="group" aria-label="Name the culprit">{suspects.map((who, i) => <button type="button" className="secondary" key={who} onClick={() => { if (i === step.culprit) { setDone(true); setNote(''); } else setNote(`${who} didn’t have the lamp. Look at the ✓ marks.`); }}>{who}</button>)}</div>}
       {note && <p className="small" role="status">{note}</p>}
       {done && <button type="button" onClick={() => go(index + 1)}>{index + 1 < steps.length ? 'Next' : 'Done'}</button>}
     </>}

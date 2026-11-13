@@ -26,7 +26,7 @@ test('fresh install: the slot is there and empty before v10From, the rings arriv
   await page.clock.install({ time: NOON });
   await watchBar(page);
   await page.goto('/?e2e');
-  const rings = page.getByRole('navigation', { name: "Today's rings" });
+  const rings = page.getByRole('navigation', { name: "Today’s rings" });
   await expect(rings).toBeVisible({ timeout: 15_000 });
   await expect(rings.getByRole('button')).toHaveCount(3);
   const { bar, emptyFirst } = await page.evaluate(() => { const store = window as Window & { bar?: string[]; emptyFirst?: boolean }; return { bar: store.bar!, emptyFirst: store.emptyFirst }; });
@@ -55,7 +55,7 @@ test('inside the night window every ring shows the moon and says the rings rest'
   await page.goto('/?e2e#yatra');
   // After bedtime the app opens the night deck (no top bar there); the rings are one tap behind it, on a tab route.
   const leave = page.getByRole('button', { name: 'Leave night deck' });
-  const rings = page.getByRole('navigation', { name: "Today's rings" });
+  const rings = page.getByRole('navigation', { name: "Today’s rings" });
   // As yatra-trek's openYatra: stay only once the tab route holds (the deck can take over once settings load).
   await expect(async () => {
     if (await leave.isVisible()) await leave.click();

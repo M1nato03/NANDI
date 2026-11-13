@@ -34,7 +34,7 @@ test('Practice hub shows daily status, destinations and fits a phone', async ({ 
   await page.goto('/#grow/play');
   await expect(page.getByRole('heading', { name: 'Play', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: /^Open the case$/ })).toBeVisible();
-  await expect(todaysBoard(page)).toContainText("Today's board");
+  await expect(todaysBoard(page)).toContainText("Today’s board");
   await openMoreBoards(page);
   await expect(page.getByRole('heading', { name: 'Practice boards' })).toBeVisible();
   // Spec 571: card reviews are on Remember, not Play.
@@ -118,7 +118,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByTestId('door-read').click();
     await page.getByRole('button', { name: /^Short courses/ }).click();
     await page.getByText('Courses', { exact: true }).click();
-    await expect(page.getByRole('heading', { name: "Today's lesson" })).toBeVisible();
+    await expect(page.getByRole('heading', { name: "Today’s lesson" })).toBeVisible();
     await openGames(page);
 
     await openMoreBoards(page);

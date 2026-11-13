@@ -79,7 +79,7 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
       {(() => { const line = ideaLine(data.ledger, chapterRef(topicId, moduleId), ended.conceptId); return line ? <p className="read-earned">{line}</p> : null; })()}
       <p className="read-takeaway">{ended.takeaway}</p>
       <div className="idea-end-actions"><button type="button" className="secondary" onClick={() => setEnded(null)}>One more idea</button>
-        <button type="button" className="secondary" onClick={() => go(`read/book/${topicId}`)}>That's enough for now</button></div>
+        <button type="button" className="secondary" onClick={() => go(`read/book/${topicId}`)}>That’s enough for now</button></div>
     </div></section>;
     const idea = nextIdea(module, taught);
     if (!idea) return <section className="screen learn-screen" role="status">Saving your place…</section>;

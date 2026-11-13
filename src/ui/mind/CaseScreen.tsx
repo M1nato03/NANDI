@@ -308,7 +308,7 @@ export function CaseScreen({
                   type="button"
                   disabled={!!run?.result}
                   className={`case-cell ${value === 1 ? 'case-yes' : value === -1 || auto ? 'case-no' : 'case-blank'}${wrongCells.includes(`${name}:${r}:${c}`) ? ' case-error' : ''}`}
-                  aria-label={`${label}, ${col}: ${value === 1 ? 'yes' : value === -1 || auto ? 'no' : 'blank'}${wrongCells.includes(`${name}:${r}:${c}`) ? ", doesn't fit the clues yet" : ''}`}
+                  aria-label={`${label}, ${col}: ${value === 1 ? 'yes' : value === -1 || auto ? 'no' : 'blank'}${wrongCells.includes(`${name}:${r}:${c}`) ? ", doesn’t fit the clues yet" : ''}`}
                   onClick={() => mark(name, r * cols.length + c)}
                 >
                   {value === 1 ? '✓' : value === -1 || auto ? '×' : ''}
@@ -465,7 +465,7 @@ export function CaseScreen({
                     !marked
                       ? 'Mark some boxes first, then check.'
                       : wrong.length
-                        ? `These marks don't fit the clues yet: ${wrong.length}, outlined on the grid.`
+                        ? `These marks don’t fit the clues yet: ${wrong.length}, outlined on the grid.`
                         : 'Every mark so far is right. Keep going.',
                   );
                   if (marked)

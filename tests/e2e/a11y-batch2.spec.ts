@@ -85,7 +85,7 @@ test('C10: with notifications off, a timed task today shows how to turn them on;
   await seedTimedTask(page, 'Call the bank');
   await page.reload(); // the seed went straight to the database, past the app's live queries
   await expect(page.locator('.reminders-off')).toContainText('your timed tasks won\'t ring');
-  await expect(page.locator('.reminders-off')).toContainText("browser's site settings");
+  await expect(page.locator('.reminders-off')).toContainText("browser’s site settings");
 });
 
 test('C5: a full phone says so and leads to a backup; asking to keep data says what the browser answered', async ({ page }) => {
@@ -93,8 +93,8 @@ test('C5: a full phone says so and leads to a backup; asking to keep data says w
   await page.goto('/?e2e#plan');
   await expect(page.getByRole('heading', { name: 'Plan', level: 1 })).toBeVisible();
   await page.evaluate(() => window.dispatchEvent(new Event('nandi:storage-full')));
-  await page.getByRole('button', { name: /out of room for NANDI's data/ }).click();
+  await page.getByRole('button', { name: /out of room for NANDI’s data/ }).click();
   await expect(page).toHaveURL(/#you\/backup$/);
   await page.getByRole('button', { name: 'Ask to keep data on this device' }).click();
-  await expect(page.getByRole('status').filter({ hasText: /keep NANDI's data|did not agree|Could not ask/ })).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: /keep NANDI’s data|did not agree|Could not ask/ })).toBeVisible();
 });

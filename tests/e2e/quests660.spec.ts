@@ -127,7 +127,7 @@ test('one quest start to finish: card → do it → what happened → a stone, a
   await page.getByTestId('plan-quest-link').click();
   await expect(page).toHaveURL(/#courtyard\/quest\/kapi-five-red$/);
   await page.getByRole('button', { name: 'Start', exact: true }).click();
-  await page.getByRole('button', { name: 'I’m back' }).or(page.getByRole('button', { name: "I'm back" })).click();
+  await page.getByRole('button', { name: 'I’m back' }).or(page.getByRole('button', { name: "I’m back" })).click();
   await stepInView(page);
   await page.getByRole('button', { name: 'It went fine' }).click();
   await page.getByRole('button', { name: 'Save' }).click();

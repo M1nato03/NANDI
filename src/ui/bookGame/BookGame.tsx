@@ -85,7 +85,7 @@ function PotsStrip({ state }: { state: ArkadState }) {
 }
 
 function Cure({ month }: { month: number }) {
-  return <div className="book-game-cure"><strong>Arkad's cure #{CURE_NUMBERS[month]}{LAW_NUMBERS[month] ? ` · Gold law #${LAW_NUMBERS[month]}` : ''}</strong> {CURES[month]![1]}</div>;
+  return <div className="book-game-cure"><strong>Arkad’s cure #{CURE_NUMBERS[month]}{LAW_NUMBERS[month] ? ` · Gold law #${LAW_NUMBERS[month]}` : ''}</strong> {CURES[month]![1]}</div>;
 }
 
 function GoalBar({ state }: { state: ArkadState }) {
@@ -270,7 +270,7 @@ function ResultView({ state, month, footer, readOnly }: { state: ArkadState; mon
       <p className="book-game-net">Net worth: {fmt(result.before)} → {fmt(result.after)}</p>
       <ul className="book-game-ledger">{(rows.length ? rows : [{ label: 'No pot move this month', value: 0, month }]).slice(0, 4).map(row => <li key={row.label}><span>{row.label}</span><strong>{signed(row.value)}</strong></li>)}</ul>
       <p>{result.text}</p></div>
-    <div className="card"><p className="book-game-lesson">Arkad's lesson: {result.lesson}</p><p className="small">Try next: {result.habit}</p></div>
+    <div className="card"><p className="book-game-lesson">Arkad’s lesson: {result.lesson}</p><p className="small">Try next: {result.habit}</p></div>
     {!readOnly && <PotsStrip state={state} />}
     <BottomActions>{footer}</BottomActions>
   </section>;
@@ -287,7 +287,7 @@ function YearEnd({ state, footer }: { state: ArkadState; footer: ReactNode }) {
       <p><b>Best move:</b> {best[0]}. {best[1]}</p><p><b>Try differently:</b> {tryDifferent(state)}</p></div>
     <div className="card small"><h3>Three habits for next month</h3><p>1. Move a part on salary day.</p><p>2. Check the person and fee before paying.</p><p>3. Keep Cushion for surprises.</p></div>
     <details className="card"><summary>See every pot move</summary><ul className="book-game-ledger">{ledgerRows(state.ledger, true).map(row => <li key={`${row.month}-${row.label}-${row.value > 0}`}><span>{MONTHS[row.month]} · {row.label}</span><strong>{signed(row.value)}</strong></li>)}</ul></details>
-    <p className="small book-game-note">This is a fictional learning game. Growth and outcomes are examples, not promises or personal financial advice. One tenth is Arkad's story rule, not an amount that fits every home.</p>
+    <p className="small book-game-note">This is a fictional learning game. Growth and outcomes are examples, not promises or personal financial advice. One tenth is Arkad’s story rule, not an amount that fits every home.</p>
     <BottomActions>{footer}</BottomActions>
   </section>;
 }

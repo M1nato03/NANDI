@@ -34,7 +34,7 @@ test('the main button and the page tint follow the area', async ({ page }) => {
 test("Moti's review screens switch to the rose area and hand it back on leaving", async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
   await page.goto('/?e2e&cap=1#grow/read/haveli-demo');
-  await expect(page.getByRole('region', { name: "Moti's haveli" })).toBeVisible();
+  await expect(page.getByRole('region', { name: "Moti’s haveli" })).toBeVisible();
   await expect(shell(page)).toHaveAttribute('data-area', 'review');
   await page.goto('/?e2e#grow/read');
   await expect(shell(page)).toHaveAttribute('data-area', 'learn');

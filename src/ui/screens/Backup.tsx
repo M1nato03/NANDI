@@ -145,12 +145,12 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       {choice.kind === 'backup' && !!choice.privatePages && <p className="restore-private">It holds {choice.privatePages} saved {choice.privatePages === 1 ? 'answer' : 'answers'} in your own words. Keep the file somewhere only you can open.</p>}
       <p>{choice.kind === 'backup' ? 'This replaces current app data.' : 'This adds legacy data to this device.'}</p>
       {/* Jenil 24 Oct: a restore replaces today too (cj3 clock fuzz C1), so say so before it happens. */}
-      {choice.kind === 'backup' && <p className="restore-today">Today's activity, purchases, owned items, Shards and courtyard growth will be replaced by the backup's.</p>}
+      {choice.kind === 'backup' && <p className="restore-today">Today’s activity, purchases, owned items, Shards and courtyard growth will be replaced by the backup’s.</p>}
       <div className="actions"><button disabled={busy} onClick={() => void confirmRestore()}>Confirm restore</button><button className="secondary" onClick={() => setChoice(null)}>Cancel</button></div>
     </div>}
     <div className="card"><h2>Device storage</h2><p>Persistent storage: {persisted === null ? 'Unavailable' : persisted ? 'On' : 'Off'}</p>
       <p>Used: {usage?.usage === undefined ? 'Unavailable' : `${(usage.usage / 1048576).toFixed(1)} MB`} · Quota: {usage?.quota === undefined ? 'Unavailable' : `${(usage.quota / 1048576).toFixed(1)} MB`}</p>
-      <button className="secondary" onClick={() => void requestPersist().then(kept => { setKeepNote(kept ? 'This device will keep NANDI\'s data.' : 'This browser did not agree to keep it. Export a backup now and then, so you always have a copy.'); return refresh(); }).catch(() => setKeepNote('Could not ask just now. Export a backup to keep a copy.'))}>Ask to keep data on this device</button>
+      <button className="secondary" onClick={() => void requestPersist().then(kept => { setKeepNote(kept ? 'This device will keep NANDI’s data.' : 'This browser did not agree to keep it. Export a backup now and then, so you always have a copy.'); return refresh(); }).catch(() => setKeepNote('Could not ask just now. Export a backup to keep a copy.'))}>Ask to keep data on this device</button>
       {keepNote && <p className="small" role="status">{keepNote}</p>}</div>
     {counts && <p className="small">Current rows: {Object.values(counts).reduce((a, b) => a + b, 0)}</p>}
     {message && <p role="status">{message}</p>}

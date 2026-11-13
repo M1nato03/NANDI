@@ -199,7 +199,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
       <FocusPayLine board={board} focusId={running.id} taskId={runningTask.id} />
       {stillWorking(running, board.now, RULES.tasks.focusPay.stillCheckMin, RULES.tasks.focusPay.stillGraceMin).ask && <div className="mor-still" role="alert">
         <p>Still working? Tap to keep the timer.</p>
-        <button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.keepFocus(running.id, now), '')}>I'm still working</button>
+        <button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.keepFocus(running.id, now), '')}>I’m still working</button>
       </div>}
       <div className="sheet-actions">{isFocusRunning(running) ? <button type="button" className="secondary" disabled={board.busy} onClick={() => { clearUndo(); void board.act((repos, now) => repos.pauseFocus(running.id, now), 'Focus paused.'); }}>Pause</button> : <button type="button" disabled={board.busy} onClick={() => { clearUndo(); void board.act((repos, now) => repos.resumeFocus(running.id, now), 'Focus resumed.'); }}>Resume</button>}<button type="button" className={isFocusRunning(running) ? '' : 'secondary'} disabled={board.busy} onClick={() => void done(runningTask)}>Done</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void stopForNow(runningTask)}>Stop for now</button></div>
     </section>}
@@ -242,6 +242,6 @@ function FocusPayLine({ board, focusId, taskId }: { board: ReturnType<typeof use
   if (earned != null) return <p className="mor-earned">+{earned}&nbsp;XP so far</p>;
   if (!open?.guard) return null;
   if (!Capacitor.isNativePlatform() && !sessionStorageGuard()) return <p className="mor-guard-off small">Focus minutes earn XP in the phone app, where the focus check runs.</p>;
-  return <p className="mor-guard-off small">Focus check is off, so minutes don't earn XP. <button type="button" className="text-button" onClick={() => disclosed ? void openUsageSettings() : go('you/night')}>Turn it on</button></p>;
+  return <p className="mor-guard-off small">Focus check is off, so minutes don’t earn XP. <button type="button" className="text-button" onClick={() => disclosed ? void openUsageSettings() : go('you/night')}>Turn it on</button></p>;
 }
 const sessionStorageGuard = () => { try { return !!sessionStorage.getItem('nandi.e2eGuard'); } catch { return false; } };

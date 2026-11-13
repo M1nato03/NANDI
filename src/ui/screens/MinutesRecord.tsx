@@ -27,13 +27,13 @@ export function MinutesRecord({ settings }: { settings: readonly SettingRow[] | 
   const resume = () => void resumePhoneUsage(db).then(() => setNote('A new record starts the next time you open NANDI.'), () => setNote('Could not turn it on. Try again.'));
   return <section className="card settings-group minutes-record" aria-label="Daily minutes record">
     <p className="minutes-record-line">{line}</p>
-    <details className="minutes-record-what"><summary>What's kept</summary>
+    <details className="minutes-record-what"><summary>What’s kept</summary>
       <p className="setting-help">A daily minutes record for the apps you picked and similar apps, on this phone only. Similar apps are other video and short-video apps and web browsers. A browser counts as a whole app, since Android does not say which site was open.</p>
       <p className="setting-help">For each day, midnight to midnight, it keeps how many minutes each of these apps was on screen. It keeps about 60&nbsp;days. Nothing from it is shown yet.</p>
       <p className="setting-help">It never leaves this phone: not in a backup, a share or a notification.{!off && ' To end it, tap Stop and delete, or turn off Usage access in Android settings.'}</p>
     </details>
     {off ? <button type="button" className="secondary" onClick={resume}>Keep a record again</button>
-      : confirming ? <div className="minutes-record-confirm" role="group" aria-label="Delete the record?"><p className="setting-help">Delete the record? This can't be undone.</p><div className="actions"><button type="button" onClick={stop}>Delete it</button><button type="button" className="secondary" onClick={() => setConfirming(false)}>Keep it</button></div></div>
+      : confirming ? <div className="minutes-record-confirm" role="group" aria-label="Delete the record?"><p className="setting-help">Delete the record? This can’t be undone.</p><div className="actions"><button type="button" onClick={stop}>Delete it</button><button type="button" className="secondary" onClick={() => setConfirming(false)}>Keep it</button></div></div>
       : <button type="button" className="secondary" onClick={() => { setNote(''); setConfirming(true); }}>Stop and delete the record</button>}
     {note && <p className="setting-help" role="status">{note}</p>}
   </section>;

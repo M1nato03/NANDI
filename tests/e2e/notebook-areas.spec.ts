@@ -83,7 +83,7 @@ test('a sitting is pages: a folio on each, the corner and a swipe turn it like C
   });
   const end = page.locator('.idea-end');
   await expect(end).toContainText('Idea done');
-  await expect(end.getByRole('button')).toHaveText(['One more idea', "That's enough for now"]);
+  await expect(end.getByRole('button')).toHaveText(['One more idea', "That’s enough for now"]);
 });
 
 test('at 200% text every area keeps to the phone\'s width and its heading', async ({ page }) => {

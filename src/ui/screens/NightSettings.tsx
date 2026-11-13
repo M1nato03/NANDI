@@ -100,7 +100,7 @@ export function NightSettings() {
     <h3>App pause</h3>
     <p>Optional. NANDI checks which app is in front, so it can offer a short pause in a chosen app. This needs Android Usage access. The check and your choices stay on this phone.</p>
     <p>Usage access: {allowed ? 'Allowed' : 'Off'}</p>
-    {!allowed && <><p>If the switch is greyed out: open NANDI's App info, tap the ⋮ menu (top right), tap 'Allow restricted settings', confirm with your PIN, then come back and turn on Usage access.</p><div className="actions"><button type="button" className="secondary" onClick={() => usageStep('appInfo')}>Open NANDI App info</button><button type="button" className="secondary" onClick={() => usageStep('usage')}>Open Usage access settings</button></div></>}
+    {!allowed && <><p>If the switch is greyed out: open NANDI’s App info, tap the ⋮ menu (top right), tap 'Allow restricted settings', confirm with your PIN, then come back and turn on Usage access.</p><div className="actions"><button type="button" className="secondary" onClick={() => usageStep('appInfo')}>Open NANDI App info</button><button type="button" className="secondary" onClick={() => usageStep('usage')}>Open Usage access settings</button></div></>}
     <p>Pop-up over apps: {overlay ? 'Allowed' : 'Off'}</p>
     {!overlay && <><p>Without it, the pause comes only as a notification. Tap below, find NANDI, and turn on 'Allow display over other apps'.</p><div className="actions"><button type="button" className="secondary" onClick={() => void openOverlaySettings()}>Allow pop-up over apps</button></div></>}
     <label><input type="checkbox" checked={enabled} onChange={event => void save('night.pause.enabled', event.target.checked)} /> App pause on</label>

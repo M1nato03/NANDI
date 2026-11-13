@@ -33,7 +33,7 @@ test('the week shows claps and rest beats, and a low readiness answer offers equ
   await expect(page.getByText('Moved to Thu.')).toBeVisible();
   await expect(week.getByRole('listitem', { name: 'Wed: rest day, today' })).toBeVisible();
   await expect(week.getByRole('listitem', { name: 'Thu: training day' })).toBeVisible();
-  await expect(page.locator('.taal-card').getByText("Rest is today's beat.")).toBeVisible();
+  await expect(page.locator('.taal-card').getByText("Rest is today’s beat.")).toBeVisible();
   // One move a week, and today is a rest beat now, so neither choice is offered again.
   await expect(page.getByRole('button', { name: /^Move to / })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Rest today' })).toHaveCount(0);

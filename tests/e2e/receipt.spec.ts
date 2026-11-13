@@ -4,7 +4,7 @@ import { seedRecapWeek } from './recap-seed';
 
 // Spec 53: the week as a receipt. Home offers it from Sunday 18:00 through Monday; Share and Save image both run;
 // after shutdown it hides; the image is story size and its layout fits with the real fonts.
-const link = (page: Page) => page.getByRole('button', { name: "Your week's receipt is ready" });
+const link = (page: Page) => page.getByRole('button', { name: "Your week’s receipt is ready" });
 
 async function homeAt(page: Page, time: string) {
   await page.clock.setFixedTime(new Date(time));
@@ -77,7 +77,7 @@ test('Share and Save image both run, and the image is 1080×1920', async ({ page
   await seedRecapWeek(page, '2026-11-05');
   await openCard(page);
   await link(page).click();
-  const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
+  const sheet = page.getByRole('dialog', { name: "Your week’s receipt" });
   // Monday: last week has closed, so no "so far".
   await expect(sheet.getByRole('img')).toHaveAttribute('alt', 'Receipt, week of 2–8 Nov: Workouts 1, Tasks done 1.', { timeout: 20_000 });
   const saved = page.waitForEvent('download');
@@ -89,7 +89,7 @@ test('Share and Save image both run, and the image is 1080×1920', async ({ page
   await expect(page.getByRole('status').filter({ hasText: 'Image saved.' })).toBeVisible();
   await link(page).click();
   const shared = page.waitForEvent('download');
-  await page.getByRole('dialog', { name: "Your week's receipt" }).getByRole('button', { name: 'Share' }).click();
+  await page.getByRole('dialog', { name: "Your week’s receipt" }).getByRole('button', { name: 'Share' }).click();
   expect((await shared).suggestedFilename()).toBe('nandi-receipt-2026-11-02.png');
 });
 
@@ -136,6 +136,6 @@ test('spec 660: the Home receipt counts the week\'s finished quests (the quest f
   });
   await openCard(page);
   await link(page).click();
-  const sheet = page.getByRole('dialog', { name: "Your week's receipt" });
+  const sheet = page.getByRole('dialog', { name: "Your week’s receipt" });
   await expect(sheet.getByRole('img')).toHaveAttribute('alt', /Quests 1/, { timeout: 20_000 });
 });

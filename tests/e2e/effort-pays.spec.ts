@@ -96,7 +96,7 @@ test('with Usage access off the focus still counts and the task still pays, but 
   await start(page, 'Clean the desk');
   await page.clock.fastForward(30 * MIN);
   await lookAgain(page);
-  await expect(focus(page).locator('.mor-guard-off')).toContainText("Focus check is off, so minutes don't earn XP.");
+  await expect(focus(page).locator('.mor-guard-off')).toContainText("Focus check is off, so minutes don’t earn XP.");
   await expect(focus(page).getByRole('button', { name: 'Turn it on' })).toBeVisible();
   await expect(focus(page).locator('.mor-earned')).toHaveCount(0);
   await focus(page).getByRole('button', { name: 'Done' }).click();
@@ -111,7 +111,7 @@ test('"Still working?" asks after 60 minutes with no touch, a tap keeps the time
   await start(page, 'Long study block');
   await page.clock.fastForward(61 * MIN);
   await expect(focus(page).getByRole('alert')).toContainText('Still working? Tap to keep the timer.');
-  await focus(page).getByRole('button', { name: "I'm still working" }).click();
+  await focus(page).getByRole('button', { name: "I’m still working" }).click();
   await expect(focus(page).getByRole('alert')).toHaveCount(0);
   // No tap after the next question: it pauses itself at that question (60 minutes after the tap).
   await page.clock.fastForward(66 * MIN);

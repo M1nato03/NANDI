@@ -13,7 +13,7 @@ async function openHinge(page: Page, name: string) {
   await expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
 }
 
-// Spec 17: slow SL-RDL 3x8 brings the ready card; "I'm ready" makes the next hinge session a 2x3 banded Nordic.
+// Spec 17: slow SL-RDL 3x8 brings the ready card; "I’m ready" makes the next hinge session a 2x3 banded Nordic.
 for (const scheme of ['light', 'dark'] as const) {
   test(`slow SL-RDL 3x8, the ready card, then a 2x3 banded Nordic in ${scheme}`, async ({ page }, testInfo) => {
     test.setTimeout(90_000);
@@ -43,7 +43,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.goto('/?e2e#grow/train');
     const card = page.getByRole('region', { name: 'Ready for a harder hamstring move?' });
     await expect(card).toBeVisible();
-    const ready = card.getByRole('button', { name: "I'm ready" });
+    const ready = card.getByRole('button', { name: "I’m ready" });
     await expect(ready).toBeDisabled();
     await capture(page, testInfo.outputPath(`nordic-card-${scheme}.png`));
     for (const label of ['I have a resistance band', 'I have a secure ankle hold (a partner, or a heavy sofa that will not move)']) await card.getByRole('checkbox', { name: label }).check();

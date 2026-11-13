@@ -88,7 +88,7 @@ export function SafetyAsk() {
   const finish = async (safety: QuestSafety) => { try { await saveSafety(db, safety); } catch (error) { fail(error); } };
   return <section ref={node} className="quest-safety" aria-labelledby="quest-safety-title" data-testid="quest-safety">
     <h3 id="quest-safety-title">Which quests are OK for you?</h3>
-    <p>Some quests ask you to talk to people you don't know, travel somewhere, or go out after dark. Pick what suits you. You can change this any time.</p>
+    <p>Some quests ask you to talk to people you don’t know, travel somewhere, or go out after dark. Pick what suits you. You can change this any time.</p>
     {SAFETY_LABELS.map(([key, label]) => <label key={key} className="quest-safety-row"><input type="checkbox" checked={picked[key]} onChange={event => setPicked({ ...picked, [key]: event.target.checked })} /><span>{label}</span></label>)}
     <div className="quest-safety-actions"><button type="button" onClick={() => void finish(picked)}>Save</button><button type="button" className="secondary" onClick={() => void finish({ strangers: false, transit: false, afterDark: false })}>Not now</button></div>
   </section>;
@@ -278,10 +278,10 @@ export function QuestScreen({ questId }: { questId: string }) {
     moves = <>{waiting && <span className="quest-why small" data-testid="quest-why">{waiting}</span>}<button type="button" className="quest-go" disabled={!!waiting} onClick={() => setStep('doing')}>Go do it</button></>;
   } else if (step === 'doing') {
     const seconds = startedAt === undefined ? 0 : Math.floor((now - startedAt) / 1000);
-    body = <><p className="quest-doing">Go. Come back when it's done.</p>
+    body = <><p className="quest-doing">Go. Come back when it’s done.</p>
       {startedAt === undefined ? <button type="button" className="secondary quest-timer-start" onClick={() => { setStartedAt(Date.now()); setNow(Date.now()); }}>Start a {quest.minutes}-minute timer</button>
         : <p className="quest-timer" role="timer" aria-live="off">{Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, '0')} of {quest.minutes}:00</p>}</>;
-    moves = <><button type="button" className="quest-go" onClick={() => setStep('after')}>I'm back</button></>;
+    moves = <><button type="button" className="quest-go" onClick={() => setStep('after')}>I’m back</button></>;
   } else if (step === 'after') {
     body = <><fieldset className="quest-outcome"><legend>What actually happened?</legend><div className="quest-chips">
       {OUTCOMES.map(o => <button type="button" key={o.id} className="ui-chip" aria-pressed={outcome === o.id} onClick={() => setOutcome(o.id)}>{o.label}</button>)}
@@ -302,7 +302,7 @@ export function QuestScreen({ questId }: { questId: string }) {
     const kept = outcome !== 'not-done';
     body = <div className="quest-finish" role="status">
       {kept ? <p className="quest-finish-line"><strong>Quest done.</strong> A stone for your path.</p>
-        : <p className="quest-finish-line">No stone this time. It'll be here when you're ready.</p>}
+        : <p className="quest-finish-line">No stone this time. It’ll be here when you’re ready.</p>}
       {photoNote && <p className="small">{photoNote}</p>}
     </div>;
     moves = <><button type="button" className="quest-go" onClick={() => go('courtyard')}>Back to the courtyard</button></>;

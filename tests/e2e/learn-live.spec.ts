@@ -41,7 +41,7 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
     const number = Number((await page.locator('.learn-drop-head').innerText()).match(/(\d+) \/ 5/)?.[1]);
     await feedback.getByRole('button', { name: 'Next' }).click();
     if (number < 5) await expect(page.locator('.learn-drop-head')).toContainText(`${number + 1} / 5`);
-    else await expect(page.getByRole('heading', { name: "That's today's drop" })).toBeVisible();
+    else await expect(page.getByRole('heading', { name: "That’s today’s drop" })).toBeVisible();
   }
 }
 
@@ -67,7 +67,7 @@ test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo
   await page.reload();
   await expect(learnCard.locator('h2')).toHaveText(thirdStem);
   for (let i = 0; i < 3; i++) await answerItem(page, false);
-  await expect(learnCard.getByRole('heading', { name: "That's today's drop" })).toBeVisible();
+  await expect(learnCard.getByRole('heading', { name: "That’s today’s drop" })).toBeVisible();
   await expect(learnCard).toContainText('Next review:');
   await page.screenshot({ path: testInfo.outputPath('learn-stop-390x844.png') });
   await learnCard.getByRole('button', { name: 'Continue' }).click();

@@ -30,7 +30,7 @@ test('a solved daily board becomes a link that opens the same board for a friend
   await catchShares(friend);
   await friend.goto(`/?e2e&welcome${hash}`);
   await expect(friend).toHaveURL(/#grow\/play\/challenge\/20261021\//);
-  await expect(friend.getByText(/A friend's challenge/)).toBeVisible();
+  await expect(friend.getByText(/A friend’s challenge/)).toBeVisible();
   await expect(friend.getByRole('dialog', { name: 'Welcome to NANDI' })).toHaveCount(0);
   await hook(friend);
   expect(await board(friend)).toEqual(mine);
@@ -42,7 +42,7 @@ test('a solved daily board becomes a link that opens the same board for a friend
   await friend.goto('/?e2e&welcome#plan');
   await friend.reload(); // only the hash changed, so load the app again like a new visit
   await expect(friend.getByRole('dialog', { name: 'Welcome to NANDI' })).toBeVisible();
-  await expect(friend.getByRole('button', { name: "Let's start" })).toBeDisabled();
+  await expect(friend.getByRole('button', { name: "Let’s start" })).toBeDisabled();
 });
 
 test("a friend opening today's link plays today's daily board and gets the Today chip", async ({ page, browser }) => {
