@@ -50,7 +50,7 @@ test('the slip: the plan, the Start link, three equal full-width ways and a smal
   await page.clock.install({ time: NOON });
   await cardOn(page);
   await phoneOpens(page);
-  await expect(slip(page).getByRole('heading')).toHaveText("If I open Instagram, I'll do 10 squats first.");
+  await expect(slip(page).getByRole('heading')).toHaveText("If I open Instagram, I’ll do 10 squats first.");
   const ways = slip(page).locator('.pause-ways > button');
   // Spec 52 D: the in-app way names Home's next move (here, the first chapter of the book Continue offers).
   await expect(ways).toHaveText(['I did it', /^Read on: .+, ch\. 1$/, 'Open Instagram anyway']);

@@ -2,7 +2,8 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { db } from '../../data/db';
-import { shareOrDownload } from '../../platform/files';
+import { exportBackup } from '../../data/backup';
+import { pickFile, shareOrDownload } from '../../platform/files';
 import { recordError } from '../errorRing';
 import { Backup } from './Backup';
 
@@ -55,8 +56,45 @@ describe('Backup export status', () => {
     vi.mocked(shareOrDownload).mockRejectedValue(error);
     await startExport();
 
-    expect((await screen.findByRole('status')).textContent).toBe('Download failed');
+    expect((await screen.findByRole('status')).textContent).toBe('The backup couldn’t be saved. Try again.');
     expect(recordError).toHaveBeenCalledWith('promise', error);
     expect(await db.settings.get('lastBackupAt')).toBeUndefined();
+  });
+});
+
+// a9 13 Nov (w14 H6 + the rollback line): what the restore review and a failed restore say.
+async function chooseBackup(version?: number): Promise<void> {
+  await db.settings.put({ key: 'deviceId', value: 'device-a', updatedAt: 1, deleted: 0, deviceId: 'device-a' });
+  const envelope = structuredClone(await exportBackup(db, new Date(2026, 10, 13, 12)));
+  if (version !== undefined) {
+    envelope.dexie.data.databaseVersion = version;
+    envelope.dexie.data.tables = envelope.dexie.data.tables.filter(table => table.name !== 'bookGameStates');
+    envelope.dexie.data.data = envelope.dexie.data.data.filter(table => table.tableName !== 'bookGameStates');
+  }
+  vi.mocked(pickFile).mockResolvedValue(new File([JSON.stringify(envelope)], 'nandi.json', { type: 'application/json' }));
+  render(<Backup onRestored={async () => {}} />);
+  await screen.findByText(/Current rows:/);
+  fireEvent.click(screen.getByRole('button', { name: 'Choose restore file' }));
+  await screen.findByRole('button', { name: 'Confirm restore' });
+}
+
+describe('Backup restore review', () => {
+  it('a backup from before the book game (v6) says the Read game starts fresh', async () => {
+    await chooseBackup(6);
+    expect(screen.getByText('Your Read game starts fresh.')).toBeTruthy();
+  });
+
+  it('a backup from this version (v8 or later) does not', async () => {
+    await chooseBackup();
+    expect(screen.queryByText('Your Read game starts fresh.')).toBeNull();
+  });
+
+  it('a restore that failed and was put back says nothing on this phone changed', async () => {
+    await chooseBackup();
+    const spy = vi.spyOn(db.settings, 'bulkPut').mockRejectedValueOnce(new Error('disk full'));
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm restore' }));
+    expect((await screen.findByText(/The restore didn’t finish/)).textContent).toBe('The restore didn’t finish. Nothing on this phone was changed. Try again.');
+    spy.mockRestore();
+    expect(recordError).toHaveBeenCalled();
   });
 });

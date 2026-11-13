@@ -147,7 +147,7 @@ export function PayoutShare({ place, close }: { place: string; close: (message?:
   const save = async () => {
     setBusy(true);
     try { const result = await saveFileNow(file()); close(result === 'saved' ? 'Saved in Documents.' : result === 'downloaded' ? 'Image saved.' : shareNote(result)); }
-    catch { close('Could not save it.'); }
+    catch { close('Couldn’t save it. Try again.'); }
   };
   return <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => close()}><section ref={dialog} tabIndex={-1} className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Share this camp" onClick={event => event.stopPropagation()}>
     <div ref={logo} hidden aria-hidden="true"><Kachhua pose="cheer" size={170} /></div>

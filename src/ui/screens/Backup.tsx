@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { db } from '../../data/db';
-import { backupFileName, detectRestoreKind, exportBackup, importBackup, isPreviewDay, previewBackup, QUEST_PHOTOS_LINE, validateBackup, type BackupEnvelope } from '../../data/backup';
+import { backupFileName, detectRestoreKind, exportBackup, importBackup, isPreviewDay, previewBackup, QUEST_PHOTOS_LINE, RestoreRolledBack, validateBackup, type BackupEnvelope } from '../../data/backup';
 import { getOrCreateDeviceId } from '../../data/device';
 import { importLegacy, mapLegacy, validateLegacy, type LegacyExport } from '../../data/legacy-import';
 import { pickFile, shareOrDownload } from '../../platform/files';
@@ -8,7 +8,6 @@ import { estimate, requestPersist } from '../../platform/storage';
 import { recordError } from '../errorRing';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { dayKey } from '../../core/time/dayKey';
-import { errorMessage } from '../shell/errorMessage';
 import { Capacitor } from '@capacitor/core';
 import { readAutoBackupState, runAutoBackup, setAutoBackupEnabled, type AutoBackupState } from '../../data/autoBackup';
 import { listAutoBackups } from '../../platform/files';
@@ -77,7 +76,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       if (result === 'cancelled') { setMessage('No backup saved.'); return; }
       await db.settings.put({ key: 'lastBackupAt', value: now, updatedAt: now, deleted: 0, deviceId: envelope.deviceId });
       await refresh(); setMessage(result === 'shared' ? 'Shared.' : `Saved in Downloads as ${name}.`);
-    } catch (error) { recordError('promise', error); setMessage(errorMessage(error)); }
+    } catch (error) { recordError('promise', error); setMessage('The backup couldn’t be saved. Try again.'); }
     finally { setBusy(false); }
   }
 
@@ -114,7 +113,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       setAuto(state); setAutoKept((await listAutoBackups()).length);
       window.dispatchEvent(new Event('nandi:auto-backup-saved'));
       setMessage('Automatic backup saved to Documents/NANDI/auto.');
-    } catch (error) { setMessage(`Automatic backup could not be saved: ${errorMessage(error)}`); }
+    } catch (error) { recordError('promise', error); setMessage('The automatic backup couldn’t be saved.'); }
     finally { setBusy(false); }
   }
 
@@ -127,7 +126,11 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       // Bug hunt 30 Oct: say which backup came back. "Last backup" stays this phone's own last backup.
       const from = choice.kind === 'backup' ? formatDayKey(dayKey(choice.data.exportedAt)) : null;
       setChoice(null); await onRestored(); await refresh(); setRestored(from ? `Restored · backup from ${from}. Your data is ready.` : 'Restore complete. Your data is ready.');
-    } catch (error) { recordError('promise', error); setMessage(/Future backup format version/.test(String((error as Error)?.message ?? error)) ? readFailLine(error) : 'The restore didn’t finish. Try again.'); }
+    } catch (error) {
+      recordError('promise', error);
+      setMessage(error instanceof RestoreRolledBack ? 'The restore didn’t finish. Nothing on this phone was changed. Try again.'
+        : /Future backup format version/.test(String((error as Error)?.message ?? error)) ? readFailLine(error) : 'The restore didn’t finish. Try again.');
+    }
     finally { setBusy(false); }
   }
 
@@ -156,7 +159,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
           level and useful days keep the higher of the two (data/backup peak + useful/longest max). */}
       {choice.kind === 'backup'
         ? <><p>Everything on this phone, today included, will be replaced by what’s in the backup.</p><p className="restore-today">Your level and useful days never go down: the higher of the two is kept.</p></>
-        : <p>This adds legacy data to this device.</p>}
+        : <p>This adds the export’s data to this phone.</p>}
       {choice.kind === 'backup' && choice.freshGame && <p>Your Read game starts fresh.</p>}
       <div className="actions"><button disabled={busy} onClick={() => void confirmRestore()}>Confirm restore</button><button className="secondary" onClick={() => setChoice(null)}>Cancel</button></div>
     </div>}

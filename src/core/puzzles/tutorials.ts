@@ -25,7 +25,7 @@ const crowns: Tutorial = {
     { text: 'Every row gets one crown. This row has one open square left. Tap it twice for a crown.', board: crownsBoard(stripes), start: { grid: crownsGrid(['xxxx.', ...blank5.slice(1)]), path: [] }, cell: at(5, 0, 4), value: 2 },
     { text: 'Every column gets one crown too. Tap this square below the crown once to cross it out.', board: crownsBoard(stripes), start: { grid: crownsGrid(['..*..', ...blank5.slice(1)]), path: [] }, cell: at(5, 1, 2), value: 1 },
     { text: 'Every colour gets one crown. This square has the same colour as the crown, so cross it out.', board: crownsBoard(['EEEAA', 'BBEEA', 'DBECE', 'DDEEE', 'EEEEE']), start: { grid: crownsGrid([...blank5.slice(0, 4), '..*..']), path: [] }, cell: at(5, 0, 0), value: 1 },
-    { text: "Crowns can't touch, not even at a corner. Cross out this square at the crown's corner.", board: crownsBoard(stripes), start: { grid: crownsGrid(['.*...', ...blank5.slice(1)]), path: [] }, cell: at(5, 1, 2), value: 1 },
+    { text: "Crowns can’t touch, not even at a corner. Cross out this square at the crown’s corner.", board: crownsBoard(stripes), start: { grid: crownsGrid(['.*...', ...blank5.slice(1)]), path: [] }, cell: at(5, 1, 2), value: 1 },
   ],
   outro: 'That is all of Crowns. Your board is bigger, and the same four rules solve it.',
 };
@@ -60,7 +60,7 @@ const sunmoonStep = (text: string, rows: string[], cell: number, value: number, 
 const sunmoon: Tutorial = {
   type: 'sunmoon',
   steps: [
-    sunmoonStep("Fill each square with a sun or a moon. Three of the same can't sit side by side. Tap twice for a moon here.", ['SS....', ...empty6.slice(1)], at(6, 0, 2), 0),
+    sunmoonStep("Fill each square with a sun or a moon. Three of the same can’t sit side by side. Tap twice for a moon here.", ['SS....', ...empty6.slice(1)], at(6, 0, 2), 0),
     sunmoonStep('Each row has 3 suns and 3 moons. This row has its 3 suns, so tap twice for a moon in the last square.', ['SMSMS.', ...empty6.slice(1)], at(6, 0, 5), 0),
     sunmoonStep('Columns follow the same rules. Two suns sit above, so tap twice for a moon below them.', ['S.....', 'S.....', ...empty6.slice(2)], at(6, 2, 0), 0),
     sunmoonStep('= means the two squares match. Tap once for a sun next to this sun.', ['S.....', ...empty6.slice(1)], at(6, 0, 1), 1, { 0: 1 }),
@@ -109,10 +109,10 @@ export const CASE_TUTORIAL: { suspects: string[]; objects: string[]; steps: Case
   suspects: ['Asha', 'Ravi', 'Meera'],
   objects: ['key', 'lamp', 'book'],
   steps: [
-    { text: "Each suspect had exactly one object. Clue: Asha had the key. Tap Asha's key square twice for ✓.", start: [0, 0, 0, 0, 0, 0, 0, 0, 0], cell: 0, value: 1 },
-    { text: "A ✓ rules out the rest of its row and column, so they show × on their own. Clue: Ravi didn't have the lamp. Tap Ravi's lamp once for ×.", start: [1, 0, 0, 0, 0, 0, 0, 0, 0], cell: 4, value: -1 },
+    { text: "Each suspect had exactly one object. Clue: Asha had the key. Tap Asha’s key square twice for ✓.", start: [0, 0, 0, 0, 0, 0, 0, 0, 0], cell: 0, value: 1 },
+    { text: "A ✓ rules out the rest of its row and column, so they show × on their own. Clue: Ravi didn’t have the lamp. Tap Ravi’s lamp once for ×.", start: [1, 0, 0, 0, 0, 0, 0, 0, 0], cell: 4, value: -1 },
     { text: 'When one square is left in a row, it must be ✓. Mark the last open square in Ravi\'s row.', start: [1, 0, 0, 0, -1, 0, 0, 0, 0], cell: 5, value: 1 },
     { text: 'Last, name the culprit from the key clue. Key clue: the culprit had the lamp. Who had the lamp?', start: [1, 0, 0, 0, -1, 1, 0, 1, 0], culprit: 2 },
   ],
-  outro: "That is the whole case. Today's case has more clues and three grids, and the same moves solve it.",
+  outro: "That is the whole case. Today’s case has more clues and three grids, and the same moves solve it.",
 };

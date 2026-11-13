@@ -32,7 +32,7 @@ export const KIND_WORDS = [
   'Hope today is gentle with you.',
   'No reply needed. Just sending a little warmth.',
   'You make things better. Just saying.',
-  "Drink some water and take a breath. You've got this.",
+  "Drink some water and take a breath. You’ve got this.",
 ] as const;
 
 const live = (fact: LedgerRow) => !fact.deleted && /^\d{4}-\d{2}-\d{2}$/.test(fact.dayKey);

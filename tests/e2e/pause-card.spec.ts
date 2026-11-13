@@ -49,8 +49,8 @@ test('setup: pick apps (nothing ticked), write the line, keep all day, see it on
   await expect(page.getByRole('button', { name: 'Next' })).toBeDisabled();
   await page.getByLabel('Instagram').check();
   await page.getByRole('button', { name: 'Next' }).click();
-  await expect(page.getByText("If I open Instagram, I'll … first.")).toBeVisible();
-  await page.getByLabel("If I open Instagram, I'll … first.").fill('do 10 squats');
+  await expect(page.getByText("If I open Instagram, I’ll … first.")).toBeVisible();
+  await page.getByLabel("If I open Instagram, I’ll … first.").fill('do 10 squats');
   await page.getByRole('button', { name: 'Next' }).click();
   await expect(page.getByLabel('All day until bedtime')).toBeChecked();
   // Spec 39b: the card shows after 10 min a day unless "Every open" is picked.
@@ -58,7 +58,7 @@ test('setup: pick apps (nothing ticked), write the line, keep all day, see it on
   await expect(page.getByLabel('Minutes a day')).toHaveValue('10');
   await page.getByRole('button', { name: 'Next' }).click();
   await page.getByRole('button', { name: 'See it once' }).click();
-  await expect(card(page)).toContainText("If I open Instagram, I'll do 10 squats first.");
+  await expect(card(page)).toContainText("If I open Instagram, I’ll do 10 squats first.");
   await expect(card(page).getByRole('button', { name: 'Open Instagram anyway' })).toBeVisible();
   await card(page).getByRole('button', { name: 'Not now' }).click();
   await expect(card(page)).toHaveCount(0);
@@ -74,7 +74,7 @@ test('spec 39b: "I did it" shows from the start of the act (the clock is a guide
   const before = await totalXp(page);
   await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
   await phoneOpens(page);
-  await expect(card(page).getByRole('heading')).toHaveText("If I open Instagram, I'll do 10 squats first.");
+  await expect(card(page).getByRole('heading')).toHaveText("If I open Instagram, I’ll do 10 squats first.");
   for (const name of [/^Read on: /, 'Not now', 'Open Instagram anyway']) await expect(card(page).getByRole('button', { name })).toBeVisible();
   await card(page).getByRole('button', { name: /^Start the 2 minutes: / }).click();
   await expect(card(page).getByRole('timer')).toHaveText('2:00');
@@ -234,7 +234,7 @@ test('the old day pause is kept and asks once for a line; until then the card of
   await expect(page.getByRole('heading', { name: 'Write your line' })).toBeVisible();
   await page.getByRole('group', { name: 'Quick picks' }).getByRole('button', { name: 'step outside for 2 minutes' }).click();
   await page.getByRole('button', { name: 'Save my line' }).click();
-  await expect(page.getByText("If I open Instagram, I'll step outside for 2 minutes first.")).toBeVisible();
+  await expect(page.getByText("If I open Instagram, I’ll step outside for 2 minutes first.")).toBeVisible();
 });
 
 test('the opens log: the week before the card is read at once, and today counts as it goes', async ({ page }) => {

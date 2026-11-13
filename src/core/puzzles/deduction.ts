@@ -12,7 +12,7 @@ export function nudgeFor(board: PuzzleBoard, state: PuzzleState, deduction?: Ded
   const width = board.type === 'path' ? board.C : board.type === 'sunmoon' ? 6 : board.N;
   if (conflict !== undefined) return { message: `Check row ${Math.floor(conflict / width) + 1}. The marked cells break a rule.`, cells: checkRules(board, state).conflicts, conflict: true };
   // A generated path board is solvable by logic from any correct line, so no next step means the line has gone wrong.
-  if (!deduction && board.type === 'path' && state.path.length) return { message: "This line can't reach every square from here. Undo a few steps.", cells: state.path.slice(-1), conflict: false };
+  if (!deduction && board.type === 'path' && state.path.length) return { message: "This line can’t reach every square from here. Undo a few steps.", cells: state.path.slice(-1), conflict: false };
   if (!deduction) return { message: 'Look at an open row or group.', cells: [], conflict: false };
   return { message: `Look at row ${Math.floor(deduction.cell / width) + 1}.`, cells: deduction.cells, conflict: false };
 }

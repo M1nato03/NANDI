@@ -13,7 +13,7 @@ describe('daily nudges', () => {
   it('uses local morning and shutdown times, plan text, and first task', () => {
     const rows = wanted([setting(NUDGE_MORNING_TIME, '09:20'), setting('night.plan', { cue: 'reach for Reels at night', action: 'open my night deck' })]);
     expect(rows.filter(row => row.id === 'nudge:morning:2026-10-16')).toEqual([expect.objectContaining({
-      at: new Date(2026, 9, 16, 9, 20).getTime(), title: "Today's first step", body: 'Read first page · 25\u00a0min',
+      at: new Date(2026, 9, 16, 9, 20).getTime(), title: "Today’s first step", body: 'Read first page · 25\u00a0min',
     })]);
     expect(rows.find(row => row.id === 'nudge:night:2026-10-16')).toEqual(expect.objectContaining({
       at: new Date(2026, 9, 16, 23, 15).getTime(), title: 'Your night deck is ready',

@@ -319,6 +319,16 @@ const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offline
 // test in backup.test.ts lists them from the code so a new one cannot be left out.
 export const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From', 'economy.v5From', 'economy.v6From', 'economy.v7From', 'economy.v8From', 'economy.v9From', 'economy.v10From', 'economy.v11From', 'economy.v12From'];
 
+/** w14 H (a9 13 Nov): a restore failed and the safety copy went back in whole, so nothing on the phone changed. */
+export class RestoreRolledBack extends Error {
+  readonly original: unknown;
+  constructor(original: unknown) {
+    super(`Restore rolled back: ${original instanceof Error ? original.message : String(original)}`);
+    this.name = 'RestoreRolledBack';
+    this.original = original;
+  }
+}
+
 /** Full restore only. The current device's local settings survive the clear. */
 export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promise<void> {
   const validated = validateBackup(envelope);
@@ -335,7 +345,8 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     await restoreInto(db, restored);
   } catch (error) {
     await trackWrite(() => duringRestore(() => importInto(db, safety, { acceptVersionDiff: true, acceptNameDiff: true, clearTablesBeforeImport: true, overwriteValues: true })));
-    throw error;
+    // Only reached when the rollback itself finished; a failed rollback throws its own error above.
+    throw new RestoreRolledBack(error);
   }
 }
 

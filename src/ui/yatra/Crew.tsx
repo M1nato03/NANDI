@@ -252,7 +252,7 @@ function CrewShare({ size, close }: { size: number; close: (message?: string) =>
   }, [size]);
   const file = () => new File([blob!], 'nandi-crew-filled.png', { type: 'image/png' });
   const share = async () => { setBusy(true); try { close(shareNote(await shareFileNow(file(), crewFilledText(size), { title: 'Our crew filled', dialogTitle: 'Share the crew jar' })) || 'Shared.'); } catch { close('Could not share it.'); } };
-  const save = async () => { setBusy(true); try { const result = await saveFileNow(file()); close(result === 'saved' ? 'Saved in Documents.' : result === 'downloaded' ? 'Image saved.' : shareNote(result)); } catch { close('Could not save it.'); } };
+  const save = async () => { setBusy(true); try { const result = await saveFileNow(file()); close(result === 'saved' ? 'Saved in Documents.' : result === 'downloaded' ? 'Image saved.' : shareNote(result)); } catch { close('Couldn’t save it. Try again.'); } };
   return <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => close()}><section ref={dialog} tabIndex={-1} className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Share the crew jar" onClick={event => event.stopPropagation()}>
     <div ref={logo} hidden aria-hidden="true"><Kachhua pose="cheer" size={170} /></div>
     <div className="ui-sheet-handle" aria-hidden="true" />

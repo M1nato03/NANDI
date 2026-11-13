@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createDb, type NandiDb } from '../db';
-import { exportBackup, importBackup, previewBackup, validateBackup, backupFileName, migrateEnvelope, cutoffKeys } from './index';
+import { exportBackup, importBackup, previewBackup, validateBackup, backupFileName, migrateEnvelope, cutoffKeys, RestoreRolledBack } from './index';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
 
 let serial = 0;
@@ -277,8 +277,12 @@ describe('a11y audit C2: a damaged backup never costs the phone its data', () =>
     const theirs = await exportBackup(other, new Date(2026, 9, 9, 12));
     const before = await snapshot(db);
     const spy = vi.spyOn(db.settings, 'bulkPut').mockRejectedValueOnce(new Error('disk full'));
-    await expect(importBackup(db, theirs)).rejects.toThrow('disk full');
+    const failure = await importBackup(db, theirs).then(() => null, (error: unknown) => error);
     spy.mockRestore();
+    // a9 13 Nov: the rolled-back failure is its own error, so the screen can say nothing changed.
+    expect(failure).toBeInstanceOf(RestoreRolledBack);
+    expect((failure as RestoreRolledBack).message).toContain('disk full');
+    expect(((failure as RestoreRolledBack).original as Error).message).toBe('disk full');
     const after = await snapshot(db);
     for (const name of Object.keys(before)) expect(after[name], name).toEqual(before[name]);
   });

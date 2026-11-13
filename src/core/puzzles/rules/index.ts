@@ -41,7 +41,7 @@ function latin(board: Extract<PuzzleBoard, { type: 'sudoku' | 'calc' }>, grid: n
         : cage.op === '×' ? values.reduce((product, value) => product * value, 1) === cage.target
           : cage.op === '−' ? Math.abs(a - b) === cage.target
             : Math.max(a, b) / Math.min(a, b) === cage.target;
-    if (!valid) mark(cage.cells, `This group doesn't make ${cage.target}${cage.op}.`);
+    if (!valid) mark(cage.cells, `This group doesn’t make ${cage.target}${cage.op}.`);
   }
 }
 

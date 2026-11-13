@@ -122,7 +122,7 @@ test("Kapi's case starts with its 4-step walkthrough of the grid", async ({ page
   await cell(page, /^Ravi, book:/).click();
   await howto.getByRole('button', { name: 'Next' }).click();
   await howto.getByRole('group', { name: 'Name the culprit' }).getByRole('button', { name: 'Ravi' }).click();
-  await expect(howto).toContainText("Ravi didn't have the lamp.");
+  await expect(howto).toContainText("Ravi didn’t have the lamp.");
   await howto.getByRole('group', { name: 'Name the culprit' }).getByRole('button', { name: 'Meera' }).click();
   await howto.getByRole('button', { name: 'Done' }).click();
   await howto.getByRole('button', { name: "Open today’s case" }).click();

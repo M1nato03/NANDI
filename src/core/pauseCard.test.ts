@@ -38,7 +38,7 @@ describe('spec 39 the Pause card settings', () => {
 
 describe('spec 39 the card says the person\'s own plan', () => {
   it('in their words', () => {
-    expect(pauseLine('Instagram', 'do 10 squats')).toBe("If I open Instagram, I'll do 10 squats first.");
+    expect(pauseLine('Instagram', 'do 10 squats')).toBe("If I open Instagram, I’ll do 10 squats first.");
     expect(pauseLine('Instagram', null)).toBe('Take 2\u00a0minutes first.');
     expect(cleanAct('  ill step outside!! ')).toBe('step outside');
   });

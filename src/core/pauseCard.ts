@@ -105,7 +105,7 @@ export function pauseAppLabel(packageName: string, extra: readonly { label: stri
 
 /** "If I open Instagram, I'll do 10 squats first." Until an act is written: "Take 2 minutes first." */
 export function pauseLine(label: string, act: string | null): string {
-  return act ? `If I open ${label}, I'll ${act} first.` : 'Take 2\u00a0minutes first.';
+  return act ? `If I open ${label}, I’ll ${act} first.` : 'Take 2\u00a0minutes first.';
 }
 
 /** "From 09:00 to 21:00" or "All day until bedtime". */

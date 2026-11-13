@@ -10,10 +10,10 @@ describe('ring tap lines', () => {
     const lines: string[] = [];
     for (let i = 0; i < MIND_ACTS.length; i++) for (let j = i + 1; j < MIND_ACTS.length; j++) lines.push(mindLine([MIND_ACTS[i]!, MIND_ACTS[j]!]));
     expect(lines).toEqual([
-      "Mind: today's idea and a chapter.", "Mind: today's idea and a Calm sit.", "Mind: today's idea and a solved case.", "Mind: today's idea and Kapi's board.", "Mind: today's idea and your cards.",
-      'Mind: a chapter and a Calm sit.', 'Mind: a chapter and a solved case.', "Mind: a chapter and Kapi's board.", 'Mind: a chapter and your cards.',
-      'Mind: a Calm sit and a solved case.', "Mind: a Calm sit and Kapi's board.", 'Mind: a Calm sit and your cards.',
-      "Mind: a solved case and Kapi's board.", 'Mind: a solved case and your cards.', "Mind: Kapi's board and your cards.",
+      "Mind: today’s idea and a chapter.", "Mind: today’s idea and a Calm sit.", "Mind: today’s idea and a solved case.", "Mind: today’s idea and Kapi’s board.", "Mind: today’s idea and your cards.",
+      'Mind: a chapter and a Calm sit.', 'Mind: a chapter and a solved case.', "Mind: a chapter and Kapi’s board.", 'Mind: a chapter and your cards.',
+      'Mind: a Calm sit and a solved case.', "Mind: a Calm sit and Kapi’s board.", 'Mind: a Calm sit and your cards.',
+      "Mind: a solved case and Kapi’s board.", 'Mind: a solved case and your cards.', "Mind: Kapi’s board and your cards.",
     ]);
     // The other order names them the other way round, and a third act changes nothing.
     expect(mindLine(['calm', 'chapter'])).toBe('Mind: a Calm sit and a chapter.');
@@ -22,7 +22,7 @@ describe('ring tap lines', () => {
   it('Mind unlit and half', () => {
     expect(mindLine([])).toBe('Mind: any two.');
     expect(mindLine(['chapter'])).toBe('Mind: a chapter. One more, a different one, closes it.');
-    expect(mindLine(['drop'])).toBe("Mind: today's idea. One more, a different one, closes it.");
+    expect(mindLine(['drop'])).toBe("Mind: today’s idea. One more, a different one, closes it.");
   });
   it('Yatra names the promise kept, up to 28 characters; Body names the move; the night line', () => {
     expect(yatraLine(null)).toBe('Yatra: keep one promise.');
