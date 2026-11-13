@@ -80,7 +80,8 @@
 .home-week-arrow { margin-left: auto; align-self: center; color: var(--ink-2); font-size: 1.5rem; line-height: 1; }
 .home-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
 .home-title h1 { min-width: 0; margin: 0; font-size: 1.5rem; line-height: 1.15; overflow-wrap: anywhere; }
-.home-permit { display: grid; place-content: center; justify-items: center; flex: none; width: 64px; height: 64px; min-width: 44px; min-height: 44px; margin: 0; padding: 0; border: 2px solid var(--home-stamp); border-radius: 50%; background: transparent; box-shadow: none; color: var(--home-stamp); transform: rotate(-8deg); }
+/* O1 (b2 13 Nov): the stamp's circle grows with the text (64 px at 100%), so "JOURNAL" never spills onto the heading at 200%. */
+.home-permit { display: grid; place-content: center; justify-items: center; flex: none; width: 4rem; height: 4rem; min-width: 44px; min-height: 44px; margin: 0; padding: 0; border: 2px solid var(--home-stamp); border-radius: 50%; background: transparent; box-shadow: none; color: var(--home-stamp); transform: rotate(-8deg); }
 .home-permit span { font: 700 .5625rem/1 'DM Sans', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
 .home-permit b { font: italic 700 1.25rem/1.05 Georgia, serif; }
 .yatra-home .trek-scene { height: 300px; }
