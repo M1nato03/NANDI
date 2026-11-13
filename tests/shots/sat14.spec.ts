@@ -152,3 +152,44 @@ for (const theme of ['light', 'dark'] as const) {
     });
   }
 }
+
+// Jenil 14 Nov: the Pause card's "Go to NANDI home" way, on the card, in the 2 minutes and on the done screen. N2: a
+// generic app (an unknown package reads "the app"), never a real brand on a forwardable picture.
+for (const theme of ['light', 'dark'] as const) for (const size of [100, 200] as const) {
+  test(`Pause card with the home way, ${theme}, ${size}%`, async ({ browser }) => {
+    const t = theme === 'light' ? 'l' : 'd';
+    const page = await phone(browser, theme);
+    await page.goto('/?e2e#plan');
+    await page.getByRole('button', { name: /^Pause card/ }).click();
+    await page.getByLabel('Instagram').check();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('group', { name: 'Quick picks' }).getByRole('button', { name: 'do 10 squats' }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Turn it on' }).click();
+    await expect(page.getByRole('heading', { name: 'On', exact: true })).toBeVisible();
+    if (size === 200) await textAt200(page);
+    await page.evaluate(() => {
+      sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.example.video', pendingReason: 'open' }));
+      window.dispatchEvent(new Event('nandi:night-pause'));
+    });
+    const card = page.getByRole('dialog', { name: 'Pause card' });
+    await expect(card).toBeVisible();
+    await settle(page);
+    // a9: the card (3 ways and 3 links) on one screen, and the links each on a line of their own.
+    const links = await card.locator('.ink-link').evaluateAll(nodes => nodes.map(node => { const r = node.getBoundingClientRect(); return { text: node.textContent, top: Math.round(r.top), bottom: Math.round(r.bottom) }; }));
+    console.log(`pause card ${t} ${size}%: links ${JSON.stringify(links)}`);
+    const tops = links.filter(link => link.text !== 'Start the 2 minutes').map(link => link.top);
+    expect(new Set(tops).size).toBe(tops.length);
+    if (size === 100) expect(Math.max(...links.map(link => link.bottom))).toBeLessThanOrEqual(800);
+    await snap(page, `pause-${t}-${size}-card`, { full: size === 200 });
+    await card.getByRole('button', { name: /^Start the 2/ }).click();
+    await settle(page);
+    await snap(page, `pause-${t}-${size}-act`, { full: size === 200 });
+    await card.getByRole('button', { name: 'I did it' }).click();
+    await expect(card.getByRole('button', { name: 'Go to NANDI home' })).toBeVisible();
+    await settle(page);
+    await snap(page, `pause-${t}-${size}-done`, { full: size === 200 });
+    await page.context().close();
+  });
+}

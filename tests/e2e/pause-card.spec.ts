@@ -174,8 +174,17 @@ test('Jenil 14 Nov: "Go to NANDI home" closes the card on NANDI’s Home, from t
   await card(page).getByRole('button', { name: 'Go to NANDI home' }).click();
   await expect(card(page)).toHaveCount(0);
   await expect(page).toHaveURL(/#courtyard$/);
+  expect(await did(page)).toContain('clear');
   expect(await did(page)).not.toContain('home');
   expect(await attempts(page)).toEqual(['in_app']);
+  // In the 2 minutes: the same way out to NANDI's Home.
+  await page.goto('/?e2e#grow');
+  await phoneOpens(page);
+  await card(page).getByRole('button', { name: 'Start the 2 minutes: do 10 squats' }).click();
+  await card(page).getByRole('button', { name: 'Go to NANDI home' }).click();
+  await expect(card(page)).toHaveCount(0);
+  await expect(page).toHaveURL(/#courtyard$/);
+  expect(await attempts(page)).toEqual(['in_app', 'in_app']);
   await page.goto('/?e2e#grow');
   await phoneOpens(page);
   await card(page).getByRole('button', { name: 'I did it' }).click();
