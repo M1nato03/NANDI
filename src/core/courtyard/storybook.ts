@@ -14,8 +14,8 @@ const LINES: Record<AreaId, Lines> = {
   },
   plan: {
     one: ['Mor saw one day of finished tasks. One flower opened.', 'A task got done this week, and Mor fanned out to celebrate.'],
-    some: ['Tasks got done on {n}\u00a0days. Mor\'s garden has new colour.', 'Mor counted {n}\u00a0days of plans turned into done.'],
-    many: ['{n}\u00a0days of getting things done. Mor\'s garden is in full bloom.', 'Mor watched you finish tasks on {n}\u00a0days. The courtyard is tidy and bright.'],
+    some: ['Tasks got done on {n}\u00a0days. Mor’s garden has new colour.', 'Mor counted {n}\u00a0days of plans turned into done.'],
+    many: ['{n}\u00a0days of getting things done. Mor’s garden is in full bloom.', 'Mor watched you finish tasks on {n}\u00a0days. The courtyard is tidy and bright.'],
   },
   learn: {
     one: ['Chiku found one new idea with you this week.', 'One day of learning. Chiku tucked a new page into the pile.'],
@@ -24,7 +24,7 @@ const LINES: Record<AreaId, Lines> = {
   },
   remember: {
     one: ['Moti checked one old idea with you. It stays sharp now.', 'One day of idea checks. Moti put it safely in the box.'],
-    some: ['Moti kept old ideas fresh on {n}\u00a0days.', '{n}\u00a0days of looking back. Moti\'s shelf of jars is filling up.'],
+    some: ['Moti kept old ideas fresh on {n}\u00a0days.', '{n}\u00a0days of looking back. Moti’s shelf of jars is filling up.'],
     many: ['{n}\u00a0days of idea checks. Moti forgets nothing this week.', 'Moti counted {n}\u00a0days of remembering. Your ideas are well kept.'],
   },
   mind: {
@@ -34,7 +34,7 @@ const LINES: Record<AreaId, Lines> = {
   },
   sleep: {
     one: ['One night on time. Kachhua slept well beside you.', 'Kachhua remembers one early night this week. A good start.'],
-    some: ['You slept on time {n}\u00a0nights. Kachhua is well rested.', '{n}\u00a0nights on time. Kachhua\'s cot never felt so comfy.'],
+    some: ['You slept on time {n}\u00a0nights. Kachhua is well rested.', '{n}\u00a0nights on time. Kachhua’s cot never felt so comfy.'],
     many: ['{n}\u00a0nights on time! Kachhua has never slept this well.', 'Kachhua counted {n} good nights. Rest is part of the work.'],
   },
 };

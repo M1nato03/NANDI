@@ -162,8 +162,8 @@ test('the move follows the order: focus, then Book check, then Train day, then a
   // A Train day (Wednesday is a program day) comes before it.
   await put(page, 'programs', [{ id: 'train-program', track: 'bodyweight', days: [1, 3, 5], weeklyTarget: 3, startedAt: WED.getTime() - 7 * 86_400_000, ...meta }]);
   await page.reload();
-  await expect(move(page)).toContainText('Today\'s session with Nandi');
-  // Yesterday's chapter waits for its Book check, before Train.
+  await expect(move(page)).toContainText('Today’s session with Nandi');
+  // Yesterday’s chapter waits for its Book check, before Train.
   await put(page, 'ledger', [{ id: 'ch1', mode: 'read', kind: 'chapter', refId: 'richest-man-in-babylon:babylon-2', dayKey: '2026-10-27', inputs: { checkLater: true }, ...meta }]);
   await page.reload();
   await expect(move(page)).toContainText('Book check');

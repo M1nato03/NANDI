@@ -111,7 +111,7 @@ export const CASE_TUTORIAL: { suspects: string[]; objects: string[]; steps: Case
   steps: [
     { text: "Each suspect had exactly one object. Clue: Asha had the key. Tap Asha’s key square twice for ✓.", start: [0, 0, 0, 0, 0, 0, 0, 0, 0], cell: 0, value: 1 },
     { text: "A ✓ rules out the rest of its row and column, so they show × on their own. Clue: Ravi didn’t have the lamp. Tap Ravi’s lamp once for ×.", start: [1, 0, 0, 0, 0, 0, 0, 0, 0], cell: 4, value: -1 },
-    { text: 'When one square is left in a row, it must be ✓. Mark the last open square in Ravi\'s row.', start: [1, 0, 0, 0, -1, 0, 0, 0, 0], cell: 5, value: 1 },
+    { text: 'When one square is left in a row, it must be ✓. Mark the last open square in Ravi’s row.', start: [1, 0, 0, 0, -1, 0, 0, 0, 0], cell: 5, value: 1 },
     { text: 'Last, name the culprit from the key clue. Key clue: the culprit had the lamp. Who had the lamp?', start: [1, 0, 0, 0, -1, 1, 0, 1, 0], culprit: 2 },
   ],
   outro: "That is the whole case. Today’s case has more clues and three grids, and the same moves solve it.",

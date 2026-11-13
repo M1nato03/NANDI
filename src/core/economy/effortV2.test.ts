@@ -89,14 +89,14 @@ describe('spec 36 v2: a chapter pays for what it taught', () => {
     expect(view([row(day, 'read', 'chapter', { afterBedtime: true, newSteps: 2, firstRight: 2, readDrops: [] })], '2026-10-29').mind).toBe(0);
   });
 
-  it("a chapter read as the day's drop replaces the drop's 15, never adds to it", () => {
+  it("a chapter read as the day’s drop replaces the drop's 15, never adds to it", () => {
     const drop = row(day, 'mind', 'learn-drop');
     expect(view([drop], '2026-10-29').mind).toBe(15);
     expect(view([drop, chapter(2, 2, [`drop:daily:${day}`])], '2026-10-29').mind).toBe(25);
     // From the moment the reading ends the drop fact says it was a chapter's, so the 15 never pays first.
     expect(view([{ ...row(day, 'gamify', 'learn-drop', { chapter: true }), refId: day }, row(day, 'mind', 'learn-drop')], '2026-10-29').mind).toBe(0);
     expect(view([{ ...row(day, 'gamify', 'learn-drop'), refId: day }, row(day, 'mind', 'learn-drop')], '2026-10-29').mind).toBe(15);
-    // A chapter read on its own leaves the day's drop paying as before.
+    // A chapter read on its own leaves the day’s drop paying as before.
     expect(view([drop, chapter(2, 2, [`drop:chapter:t:m:1`])], '2026-10-29').mind).toBe(40);
   });
 

@@ -96,11 +96,11 @@ export function nextMove(input: NextMoveInput): NextMove {
 export function moveWords(move: NextMove): { title: string; detail: string } {
   switch (move.kind) {
     case 'focus': return { title: `${move.running ? 'Working on' : 'Paused'} '${move.title}'`, detail: '' };
-    case 'book-check': return { title: 'Book check', detail: 'Three questions on yesterday\'s chapter' };
-    case 'train': return { title: 'Today\'s session with Nandi', detail: 'A Train day' };
+    case 'book-check': return { title: 'Book check', detail: 'Three questions on yesterday’s chapter' };
+    case 'train': return { title: 'Today’s session with Nandi', detail: 'A Train day' };
     case 'task': return { title: move.title, detail: move.at != null ? `Planned for ${new Date(move.at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}` : 'Planned for today' };
     case 'read': return { title: 'Read one idea', detail: 'A short sitting with Chiku' };
-    case 'board': return { title: 'Today\'s puzzle board', detail: 'One board with Kapi' };
+    case 'board': return { title: 'Today’s puzzle board', detail: 'One board with Kapi' };
     case 'train-easy': return { title: 'An easy first workout', detail: 'The easiest step of each move' };
     case 'walk': return { title: 'A 10-minute walk', detail: 'A rest day with Nandi' };
     case 'plan-day': return { title: 'Plan today', detail: 'A few minutes with Mor' };

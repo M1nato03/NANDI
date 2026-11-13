@@ -16,7 +16,7 @@ import type { Drop } from '../../core/learn/engine';
 import type { CardRow, PuzzleRunRow } from '../types';
 
 // Spec 571 §0.20 rule 3 (b2's call (a)): slot facts written in the night window carry `night: true`, stamped at write
-// time with the bedtime then in force; outside it the inputs are exactly as before. Answer 3: today's drop writes its
+// time with the bedtime then in force; outside it the inputs are exactly as before. Answer 3: today’s drop writes its
 // learn-drop fact at its finishing write, and reconcileGamify's backstop never adds a second one.
 let serial = 0;
 const opened: NandiDb[] = [];
@@ -111,14 +111,14 @@ describe('spec 571 answer 3: the drop\'s learn-drop fact at its finishing write'
     expect(await learnDrops(db)).toEqual([fact]);
   });
 
-  it('an unfinished drop or another day\'s drop writes nothing; reconcile alone (a drop finished by an older build) still writes it with the stamps', async () => {
+  it('an unfinished drop or another day’s drop writes nothing; reconcile alone (a drop finished by an older build) still writes it with the stamps', async () => {
     const db = await fresh();
     const now = at(DAY, '12:00');
     const two: Drop = { ...drop(DAY), items: [...drop(DAY).items, { itemId: 'lesson:s2', conceptId: 'c1', optionOrder: [], mode: 'new', lesson: 's2' }] };
     await saveLessonDone(db, two, { stepId: 's1', conceptId: 'c1', dropId: two.id, hookCorrect: true, spotCorrect: true, guidedFirstTry: [] }, 'test', now);
     await saveLessonDone(db, drop('2026-11-07'), { stepId: 's9', conceptId: 'c1', dropId: drop('2026-11-07').id, hookCorrect: true, spotCorrect: true, guidedFirstTry: [] }, 'test', now);
     expect(await learnDrops(db)).toEqual([]);
-    // An older build finished today's drop with a night lesson and no learn-drop fact: the backstop copies the stamp.
+    // An older build finished today’s drop with a night lesson and no learn-drop fact: the backstop copies the stamp.
     const other = await fresh();
     const late = at('2026-11-09', '02:00');
     await other.learnDrops.put({ id: drop(DAY).id, drop: { ...drop(DAY), cursor: 1 }, updatedAt: late, deleted: 0, deviceId: 'test' });

@@ -12,7 +12,7 @@ const totalXp = async (page: Page) => {
   return Number(text.replace(/[^\d]/g, ''));
 };
 
-test('spec 41: an idea-sitting pays its share of the chapter (the day\'s drop never less than 15), and says so', async ({ page }) => {
+test('spec 41: an idea-sitting pays its share of the chapter (the day’s drop never less than 15), and says so', async ({ page }) => {
   test.setTimeout(150_000);
   // Reduced motion: with the clock installed, animation frames wait on it, so a moving button never settles.
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -21,7 +21,7 @@ test('spec 41: an idea-sitting pays its share of the chapter (the day\'s drop ne
   await page.goto('/?e2e#grow/read/chapter/how-things-work/how-things-work-ch1');
   const first = pack.body.modules[0]!.concepts.find(concept => concept.steps?.length)!;
   await walkIdea(page, 'how-things-work');
-  // The first sitting was the day's drop: its chapter pay (5 base + 5 a step), never less than the drop's 15.
+  // The first sitting was the day’s drop: its chapter pay (5 base + 5 a step), never less than the drop's 15.
   const pay = Math.max(15, 5 + 5 * first.steps!.length);
   await expect(page.locator('.idea-end .read-earned')).toHaveText(`+${pay} XP`);
   await expect.poll(() => totalXp(page)).toBe(before + pay);

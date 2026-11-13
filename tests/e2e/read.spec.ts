@@ -56,7 +56,7 @@ test('old Learn and Mind links still open in their Grow doors', async ({ page })
   await expect(page.getByRole('button', { name: /^Train \(paused\)/ })).toHaveCount(0);
 });
 
-test('spec 41: a chapter is read one idea a sitting (the first is the day\'s drop), each ending on a real stop; a quiz chapter is done after its last idea, and its Book check comes the next day', async ({ page }) => {
+test('spec 41: a chapter is read one idea a sitting (the first is the day’s drop), each ending on a real stop; a quiz chapter is done after its last idea, and its Book check comes the next day', async ({ page }) => {
   test.setTimeout(150_000);
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#grow/read/book/how-things-work');

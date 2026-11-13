@@ -19,7 +19,7 @@ const pay = (facts: LedgerRow[], from = days[0]!) => readingPay(facts, from, () 
 const sitting = (result: ReturnType<typeof pay>, day: string) => { const one = result.get(day); return one ? one.chapterXp + one.dropTopUp + one.checkXp : 0; };
 
 describe('spec 41 reading pays per idea, the chapter stays the paid unit', () => {
-  it('one sitting a day, each the day\'s drop: 20 · 15 · 5+10 · 0+15 · 0+15 · 0+15, then the check: 95 + 15', () => {
+  it('one sitting a day, each the day’s drop: 20 · 15 · 5+10 · 0+15 · 0+15 · 0+15, then the check: 95 + 15', () => {
     const facts = days.slice(0, 6).map(day => idea(day, 3, true));
     facts.push(check(days[6]!, 3));
     const result = pay(facts);

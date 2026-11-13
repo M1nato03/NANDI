@@ -86,7 +86,7 @@ test('two phones: make, invite, join, joined back, add, the same add twice, an i
   await openCard(dev);
   await dev.getByRole('button', { name: 'Send' }).click();
   const add = await lastSent(dev);
-  expect(add).toMatch(/^Dev added 4 h to our crew jar · 4 h of 5 h · https:\/\/\S+#crew\/add\//);
+  expect(add).toMatch(/^Dev added 4 h to our crew jar · 4 h of 5\u00a0h · https:\/\/\S+#crew\/add\//);
 
   await riya.clock.setFixedTime(LATER);
   await paste(riya, add);
