@@ -318,7 +318,10 @@ export function Lanterns({ count, glowLayer, rows = 'one' }: { count: number; gl
   }
   const f = LANTERN_FRAME;
   // b2 13 Nov: at night each lantern reads as its own light; the upper tier's glow is fainter, so the tiers don't merge.
-  if (glowLayer) return <g className="courtyard-flicker">{spots.map(spot => <circle key={spot.x} cx={spot.x} cy={spot.top + 5.5} r="3.5" fill={C.glow} opacity={spot.top === f.tiers[0] ? '.25' : '.35'} />)}</g>;
+  // a9 14 Nov: under the night tint a lantern read unlit; its window is drawn bright above the tint (like the stand
+  // lantern's flame), with a soft halo small enough that twelve still read as twelve.
+  if (glowLayer) return <g className="courtyard-flicker">{spots.map(spot => <g key={spot.x}><circle cx={spot.x} cy={spot.top + 5.5} r="5" fill={C.glow} opacity=".2" />
+    <rect x={spot.x - spot.width / 2 + 1.4} y={spot.top + 2.8} width={spot.width - 2.8} height="5" rx="1.4" fill="#ffe9a8" /></g>)}</g>;
   const postRight = f.postX + f.postW / 2;
   return <g className="courtyard-lanterns" data-lanterns={count}>
     {/* The stand: the post on its foot, the beam out from its top and the knee brace under the beam. */}

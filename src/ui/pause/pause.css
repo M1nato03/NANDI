@@ -6,14 +6,15 @@
 .pause-line { margin: 0; font-size: clamp(1.5rem, 7vw, 2rem); line-height: 1.2; }
 .pause-do { min-height: 56px; font-size: 1.125rem; }
 .pause-picks { display: grid; gap: 10px; }
-.pause-exits { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+/* a9 14 Nov: one column, like the done screen and the card's links (two columns wrapped ragged). */
+.pause-exits { display: grid; grid-template-columns: 1fr; gap: 8px; }
 .pause-exits .text-button { min-height: 48px; justify-content: center; text-align: center; }
 /* Spec 45c: the card is a paper slip; three full-width ways of one weight, then "Not now" as a small link. */
 /* At large text the slip is taller than the phone: the overlay scrolls, and it never centres the top out of reach. */
 .pause-overlay { overflow-y: auto; overscroll-behavior: contain; align-items: safe center; }
 /* The slip's words are in rem, so they grow with the phone's text size. The act and Done stay on the same sheet. */
 .pause-slip { gap: 12px; }
-.pause-slip .eyebrow { font-size: .75rem; }
+.pause-slip .eyebrow { font-size: .75rem; padding-inline-end: 48px; }
 .pause-slip .pause-plan-label { font-size: 1rem; }
 .pause-slip .pause-line { font-size: 1.5rem; }
 /* Done's line is the first thing on the sheet, beside Mor: it keeps clear of the friend. */
@@ -34,7 +35,9 @@
 .pause-when { display: grid; gap: 10px; border: 0; margin: 0; padding: 0; }
 .pause-when label { display: flex; align-items: center; gap: 8px; }
 .pause-times { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.pause-setup-nav { display: flex; gap: 10px; justify-content: space-between; }
+/* b2 14 Nov: side by side while the words fit, stacked full width when they don't ("Chan / ge it" at 200%). */
+.pause-setup-nav { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; }
+.pause-setup-nav button { flex: 1 1 auto; white-space: nowrap; }
 .plan-pause-row { color: var(--ink); display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; }
 .plan-pause-row small { display: block; color: var(--secondary-ink); font-weight: 400; }
 .plan-pause-row strong { color: var(--ink); }

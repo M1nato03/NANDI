@@ -193,6 +193,32 @@ test('Jenil 14 Nov: "Go to NANDI home" closes the card on NANDI’s Home, from t
   await expect(page).toHaveURL(/#courtyard$/);
 });
 
+test('at 200% text the card scrolls inside itself: its last ways are reachable on the card and in the 2 minutes (b2 14 Nov)', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await setUp(page);
+  await textAt200(page);
+  await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+  await phoneOpens(page);
+  const overlay = page.locator('.pause-overlay');
+  // The overlay is the scroller: taller than the screen, and it scrolls (the page under it does not).
+  expect(await overlay.evaluate(node => node.scrollHeight > node.clientHeight)).toBe(true);
+  for (const name of ['Open Instagram anyway', 'Go to NANDI home']) {
+    const target = card(page).getByRole('button', { name });
+    await target.scrollIntoViewIfNeeded();
+    await expect(target).toBeInViewport();
+  }
+  expect(await overlay.evaluate(node => node.scrollTop)).toBeGreaterThan(0);
+  await card(page).getByRole('button', { name: 'Start the 2 minutes: do 10 squats' }).click();
+  for (const name of ['Open Instagram anyway', 'Go to NANDI home']) {
+    const target = card(page).getByRole('button', { name });
+    await target.scrollIntoViewIfNeeded();
+    await expect(target).toBeInViewport();
+  }
+  await card(page).getByRole('button', { name: 'Go to NANDI home' }).click();
+  await expect(card(page)).toHaveCount(0);
+  await expect(page).toHaveURL(/#courtyard$/);
+});
+
 test('spec 54: "Open anyway" asks how long and why; the chosen time goes to the phone, the why stays private in You', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await setUp(page);

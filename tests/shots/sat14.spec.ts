@@ -182,14 +182,41 @@ for (const theme of ['light', 'dark'] as const) for (const size of [100, 200] as
     const tops = links.filter(link => link.text !== 'Start the 2 minutes').map(link => link.top);
     expect(new Set(tops).size).toBe(tops.length);
     if (size === 100) expect(Math.max(...links.map(link => link.bottom))).toBeLessThanOrEqual(800);
-    await snap(page, `pause-${t}-${size}-card`, { full: size === 200 });
+    // b2 14 Nov: the overlay scrolls, so a full-page shot cuts the card; shoot the screen, then the card scrolled to its end.
+    const toEnd = () => page.locator('.pause-overlay').evaluate(node => { node.scrollTop = node.scrollHeight; });
+    await snap(page, `pause-${t}-${size}-card`);
+    if (size === 200) { await toEnd(); await settle(page); await snap(page, `pause-${t}-${size}-card-end`); }
     await card.getByRole('button', { name: /^Start the 2/ }).click();
     await settle(page);
-    await snap(page, `pause-${t}-${size}-act`, { full: size === 200 });
+    await snap(page, `pause-${t}-${size}-act`);
+    if (size === 200) { await toEnd(); await settle(page); await snap(page, `pause-${t}-${size}-act-end`); }
     await card.getByRole('button', { name: 'I did it' }).click();
     await expect(card.getByRole('button', { name: 'Go to NANDI home' })).toBeVisible();
     await settle(page);
-    await snap(page, `pause-${t}-${size}-done`, { full: size === 200 });
+    await snap(page, `pause-${t}-${size}-done`);
+    await page.context().close();
+  });
+
+  test(`Pause setup with the card on, ${theme}, ${size}%`, async ({ browser }) => {
+    const t = theme === 'light' ? 'l' : 'd';
+    const page = await phone(browser, theme);
+    await page.goto('/?e2e#plan');
+    await page.getByRole('button', { name: /^Pause card/ }).click();
+    await page.getByLabel('Instagram').check();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('group', { name: 'Quick picks' }).getByRole('button', { name: 'do 10 squats' }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Turn it on' }).click();
+    await expect(page.getByRole('heading', { name: 'On', exact: true })).toBeVisible();
+    if (size === 200) await textAt200(page);
+    const row = page.locator('.pause-setup-nav');
+    await row.scrollIntoViewIfNeeded();
+    await settle(page);
+    // b2 14 Nov: no button word splits ("Chan / ge it" at 200%): each label's text is on one line.
+    const lines = await row.locator('button').evaluateAll(nodes => nodes.map(node => { const range = document.createRange(); range.selectNodeContents(node); return range.getClientRects().length; }));
+    expect(lines.every(count => count === 1), JSON.stringify(lines)).toBe(true);
+    await snap(page, `pause-setup-${t}-${size}`);
     await page.context().close();
   });
 }
