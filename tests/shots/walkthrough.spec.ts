@@ -141,3 +141,31 @@ for (const [theme, size] of variants) {
     await page.context().close();
   });
 }
+
+// w01 Fresh install: the first open, picking two, the first thing, then the Courtyard at s1.
+for (const [theme, size] of variants) {
+  test(`w01 fresh install${tag(theme, size)}`, async ({ browser }) => {
+    const page = await phone(browser, theme, NOON);
+    await page.goto('/?e2e&welcome');
+    const welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
+    await expect(welcome).toBeVisible({ timeout: 15_000 });
+    if (size === 200) await textAt200(page);
+    await settle(page);
+    await snap(page, `w01-fresh-01-welcome${tag(theme, size)}`);
+    await welcome.getByLabel('I’m 18 or older.').check();
+    await welcome.getByRole('button', { name: 'Let’s start' }).click();
+    await expect(welcome.getByRole('heading', { name: 'Pick two to start' })).toBeVisible();
+    await welcome.getByRole('button', { name: 'Get things done', exact: true }).click();
+    await welcome.getByRole('button', { name: 'Sleep earlier', exact: true }).click();
+    await settle(page);
+    await snap(page, `w01-fresh-02-pick-two${tag(theme, size)}`);
+    await welcome.getByRole('button', { name: 'Continue' }).click();
+    await settle(page);
+    await snap(page, `w01-fresh-03-first-thing${tag(theme, size)}`);
+    await page.goto('/?e2e#courtyard');
+    await expect(page.locator('.courtyard-b')).toBeVisible({ timeout: 15_000 });
+    await page.waitForTimeout(500);
+    await snap(page, `w01-fresh-04-courtyard${tag(theme, size)}`);
+    await page.context().close();
+  });
+}
