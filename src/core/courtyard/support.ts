@@ -82,6 +82,8 @@ export function placeAt(prop: string, props: Readonly<Record<string, Rect>>, sta
   // J1/J2 (a9 13 Nov): the picture frame hangs 22 px up the wall face; the jar shelf sits 6 px higher on it.
   if (prop === 'moti-picture-frame') return { rect: [rect[0], rect[1] - 22, rect[2], rect[3]], support };
   if (prop === 'moti-shelf-three-jars') return { rect: [rect[0], rect[1] - 6, rect[2], rect[3]], support };
+  // a9 13 Nov: with the shelf up, the bulb string's photos touched the jar lids (shots-sat14-9b358b0 s5); it hangs 3 px higher.
+  if (prop === 'moti-bulbs-small-photos') return { rect: [rect[0], rect[1] - 3, rect[2], rect[3]], support };
   if (prop === 'kapi-wall-puzzle' && stage('mind') <= 2) return { rect: KAPI_EARLY.cube, support };
   if (prop === 'kapi-flat-board-game' && stage('mind') <= 2) return { rect: KAPI_EARLY.board, support };
   return { rect, support };
