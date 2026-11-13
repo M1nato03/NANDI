@@ -10,6 +10,7 @@ import { buildWeeklySummary, isoFileWeek } from '../../core/weeklySummary';
 import { shareOrDownload } from '../../platform/files';
 import { taskRepos, useTaskBoard } from './useTaskBoard';
 import { QUEST_MODE, realityCheck, realityLine } from '../../core/quests660/quests';
+import { QUEST_PHOTOS_LINE } from '../../data/backup';
 
 /**
  * Spec 660 §3.3 (jenil-0b F3, 12 Nov): the weekly review's controls, each in its one new home. The review screen
@@ -107,5 +108,7 @@ export function RealityCheckLine() {
   const facts = useLiveQuery(() => db.ledger.where('mode').equals(QUEST_MODE).toArray(), []);
   const check = facts ? realityCheck(facts.filter(row => !row.deleted)) : null;
   const line = check ? realityLine(check) : '';
-  return line ? <p className="small reality-check-line">{line}</p> : null;
+  // C8 (660 checklist §6): once quests are in play, the sheet says where quest photos live (the same line as Backup).
+  const photos = facts?.some(row => !row.deleted) ? <p className="small quest-photos-line">{QUEST_PHOTOS_LINE}</p> : null;
+  return line || photos ? <>{line && <p className="small reality-check-line">{line}</p>}{photos}</> : null;
 }
