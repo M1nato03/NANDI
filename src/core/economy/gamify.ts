@@ -31,7 +31,7 @@ export function perfectDrop(facts: readonly LedgerRow[], dropId: string, length:
 }
 export const questPool: Quest[] = [
   // A teach-first drop can be the lesson and a few questions, so "finished" is the drop itself, not five answers.
-  { id: 'drop', title: "Finish today's Learn drop", target: 1, count: (f, d) => matching(f, d, 'gamify', 'learn-drop').length },
+  { id: 'drop', title: 'Finish today’s Learn drop', target: 1, count: (f, d) => matching(f, d, 'gamify', 'learn-drop').length },
   { id: 'combo', title: 'Get 5 right in a row', target: 5, count: dayCombo },
   { id: 'learn-three', title: 'Explore 3 Learn questions', target: 3, count: (f, d) => matching(f, d, 'mind', 'learn-answer').length },
   { id: 'learn-perfect', title: 'Finish a drop with every answer right', target: 1, count: (f, d) => matching(f, d, 'gamify', 'perfect-drop').length },

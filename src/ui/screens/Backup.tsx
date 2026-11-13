@@ -103,7 +103,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
 
   async function toggleAuto(enabled: boolean): Promise<void> {
     try { await setAutoBackupEnabled(enabled); setAuto(await readAutoBackupState()); }
-    catch (error) { recordError('promise', error); setMessage('Could not save automatic backup setting.'); }
+    catch (error) { recordError('promise', error); setMessage('The automatic backup setting couldn’t be saved.'); }
   }
 
   async function backUpNow(): Promise<void> {

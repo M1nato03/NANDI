@@ -106,7 +106,7 @@ test.describe('Welcome: pick two to start', () => {
     await expect(welcome.getByRole('status')).toHaveText('Four at most. Tap Everything to pick all five.');
     await welcome.getByRole('button', { name: 'Continue' }).click();
     // The first pick's first action is still the first action.
-    await welcome.getByRole('button', { name: "Try today's puzzle" }).click();
+    await welcome.getByRole('button', { name: 'Try today’s puzzle' }).click();
     await expect(welcome).toHaveCount(0);
     expect(await settingsOf(page, ['profile.goals', 'profile.size'])).toEqual({ 'profile.goals': ['mind', 'learn', 'train', 'plan'], 'profile.size': 'more' });
   });
@@ -459,7 +459,7 @@ test.describe('the first win: app time from first paint to the first finish mome
     record(testInfo, 'learn', `${Math.round(at - await firstPaint(page))} ms`);
   });
   test('Sharpen my mind', async ({ page }, testInfo) => {
-    await start(page, 'Sharpen my mind', "Try today's puzzle");
+    await start(page, 'Sharpen my mind', 'Try today’s puzzle');
     await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
     const at = await finishAt(page);

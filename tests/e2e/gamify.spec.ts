@@ -67,7 +67,7 @@ test('seeded daily quests complete; badges ended (spec 660 §3.1b): no new tier,
   await seed(page, rows);
   const quests = page.getByRole('region', { name: 'Small steps today' });
   await expect(quests).toContainText('Small steps today');
-  await expect(quests).toContainText("Finish today's Learn drop");
+  await expect(quests).toContainText('Finish today’s Learn drop');
   await expect(quests).toContainText('Focus boost');
   if (testInfo.project.name === 'mobile-360x800') {
     await quests.screenshot({ path: testInfo.outputPath('quests-light-360.png') });

@@ -16,7 +16,7 @@ export function weekInWordsSummary(done: number, training: number, nights: numbe
     training ? `trained ${training} ${training === 1 ? 'time' : 'times'}` : '',
     nights ? `kept ${nights} ${nights === 1 ? 'night' : 'nights'} on plan` : '',
   ].filter(Boolean);
-  if (!parts.length) return "A quiet week. That's data, not a verdict.";
+  if (!parts.length) return 'A quiet week. That’s data, not a verdict.';
   return `You ${parts.length === 1 ? parts[0] : `${parts.slice(0, -1).join(', ')} and ${parts.at(-1)}`}.`;
 }
 

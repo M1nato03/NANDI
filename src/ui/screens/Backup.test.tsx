@@ -9,9 +9,19 @@ import { Backup } from './Backup';
 
 vi.mock('../../platform/files', () => ({ shareOrDownload: vi.fn(), pickFile: vi.fn() }));
 vi.mock('../errorRing', () => ({ recordError: vi.fn() }));
+// A restore writes the file with importInto, then rolls back with a second importInto; a test can make that second one fail.
+const rollback = vi.hoisted(() => ({ fail: false, calls: 0 }));
+vi.mock('dexie-export-import', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('dexie-export-import')>();
+  return { ...actual, importInto: (...args: Parameters<typeof actual.importInto>) => {
+    rollback.calls++;
+    return rollback.fail && rollback.calls > 1 ? Promise.reject(new Error('rollback failed')) : actual.importInto(...args);
+  } };
+});
 
 beforeEach(async () => {
   vi.resetAllMocks();
+  rollback.fail = false; rollback.calls = 0;
   await Promise.all(db.tables.map(table => table.clear()));
 });
 
@@ -96,5 +106,16 @@ describe('Backup restore review', () => {
     expect((await screen.findByText(/The restore didn’t finish/)).textContent).toBe('The restore didn’t finish. Nothing on this phone was changed. Try again.');
     spy.mockRestore();
     expect(recordError).toHaveBeenCalled();
+  });
+
+  it('a restore whose rollback also failed keeps the plain line (it cannot say nothing changed)', async () => {
+    await chooseBackup();
+    // The restore fails on its write, and putting the safety copy back fails too.
+    const spy = vi.spyOn(db.settings, 'bulkPut').mockRejectedValueOnce(new Error('disk full'));
+    rollback.fail = true;
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm restore' }));
+    expect((await screen.findByText(/The restore didn’t finish/)).textContent).toBe('The restore didn’t finish. Try again.');
+    expect(rollback.calls).toBe(2);
+    spy.mockRestore();
   });
 });

@@ -3,7 +3,7 @@ import { weekInWordsSummary } from './plannerCopy';
 
 describe('weekly review sentence', () => {
   it('uses a gentle empty state', () => {
-    expect(weekInWordsSummary(0, 0, 0)).toBe("A quiet week. That's data, not a verdict.");
+    expect(weekInWordsSummary(0, 0, 0)).toBe('A quiet week. That’s data, not a verdict.');
   });
   it('skips missing facts and handles singular counts', () => {
     expect(weekInWordsSummary(1, 0, 1)).toBe('You finished 1 task and kept 1 night on plan.');
