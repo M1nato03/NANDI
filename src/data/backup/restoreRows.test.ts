@@ -4,7 +4,7 @@ import { createDb } from '../db';
 import { OTHER_LABEL, RESTORE_HIDDEN, RESTORE_LABELS, RESTORE_OTHER, restoreRows } from './restoreRows';
 import { exportBackup, previewBackup } from './index';
 
-const stamp = { updatedAt: 1, deleted: 0, deviceId: 'device-a' };
+const stamp = { updatedAt: 1, deleted: 0 as const, deviceId: 'device-a' };
 
 describe('Sat Q1: the restore review in plain words', () => {
   it('labels tables in a fixed order, hides zeros and sums the rest into Other', () => {
