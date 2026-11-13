@@ -127,7 +127,7 @@ test('575 swipe across a zone boundary (frames and a video)', async ({ browser }
   // A retake that names none of the swipe shots skips it whole (its first shot seeds the page; shots-575-64a6ffc).
   test.skip(!!ONLY && !ONLY.test('575-swipe-start'), 'SHOTS575_ONLY names no swipe shot');
   test.setTimeout(120_000);
-  const context = await browser.newContext({ baseURL: testInfo.project.use.baseURL, viewport: { width: 360, height: 800 }, reducedMotion: 'reduce', recordVideo: { dir: `${OUT}/video`, size: { width: 360, height: 800 } } });
+  const context = await browser.newContext({ serviceWorkers: 'block', baseURL: testInfo.project.use.baseURL, viewport: { width: 360, height: 800 }, reducedMotion: 'reduce', recordVideo: { dir: `${OUT}/video`, size: { width: 360, height: 800 } } });
   const page = await context.newPage();
   await page.goto('/?e2e#plan');
   // Hampta leg 4 (pass-snow) runs into lahaul-dry: stand at Hampta Pass and swipe right across the change.

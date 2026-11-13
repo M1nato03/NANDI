@@ -44,7 +44,7 @@ async function put(page: Page, store: string, rows: Row[]) {
 const setting = (key: string, value: unknown): Row => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 's2' });
 
 async function phone(browser: Browser, colorScheme: 'light' | 'dark', time = NOON, size = { width: 360, height: 800 }): Promise<Page> {
-  const context = await browser.newContext({ viewport: size, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
+  const context = await browser.newContext({ serviceWorkers: 'block', viewport: size, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
   const page = await context.newPage();
   await page.clock.setFixedTime(time);
   await page.goto('/?e2e#courtyard');
@@ -280,7 +280,7 @@ test('the 15 closed-Mind pairs at 10 CSS, ring vs 28x16 pill, light and dark (§
       .ring{position:relative;width:24px;height:24px}.ring .marks{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:1px;color:${palette.surface}}
       .pill{display:flex;align-items:center;justify-content:center;gap:1px;width:28px;height:16px;border-radius:8px;background:${palette.learn.area};color:${palette.surface}}small{grid-column:1/-1;opacity:.7}</style>
       <div class="grid">${pairs.map(cell).join('')}</div></body></html>`;
-    const page = await (await browser.newContext({ viewport: { width: 360, height: 520 }, deviceScaleFactor: 3 })).newPage();
+    const page = await (await browser.newContext({ serviceWorkers: 'block', viewport: { width: 360, height: 520 }, deviceScaleFactor: 3 })).newPage();
     await page.setContent(html);
     await snap(page, `s2-${theme === 'light' ? 'l' : 'd'}-mind-pairs-ring-vs-pill`);
     await page.context().close();

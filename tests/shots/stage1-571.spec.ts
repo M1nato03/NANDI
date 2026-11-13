@@ -8,7 +8,7 @@ const NOON = new Date('2026-11-06T12:00:00');
 const settle = (page: Page) => page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
 
 async function phone(browser: Browser, colorScheme: 'light' | 'dark'): Promise<Page> {
-  const context = await browser.newContext({ viewport: { width: 360, height: 800 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
+  const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 360, height: 800 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
   const page = await context.newPage();
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#yatra');

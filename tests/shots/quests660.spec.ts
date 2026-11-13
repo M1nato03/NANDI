@@ -32,7 +32,7 @@ async function put(page: Page, store: string, rows: Row[]) {
   }, { store, rows });
 }
 async function phone(browser: Browser, colorScheme: 'light' | 'dark'): Promise<Page> {
-  const context = await browser.newContext({ viewport: { width: 360, height: 800 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
+  const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 360, height: 800 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
   const page = await context.newPage();
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#courtyard');
@@ -327,7 +327,7 @@ async function budgetLineInView(page: Page, where: string) {
 const noShards = async (page: Page, where: string) => expect(await page.locator('main').innerText(), `${where}: no "Shards"`).not.toMatch(/Shards/);
 const SUNDAY_EVE = new Date('2026-12-13T12:00:00'); // a Sunday before shutdown (shares hide after it); first week of a month, so Lower-by-1 can come
 async function phoneAt(browser: Browser, colorScheme: 'light' | 'dark', time: Date): Promise<Page> {
-  const context = await browser.newContext({ viewport: { width: 360, height: 800 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
+  const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 360, height: 800 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
   const page = await context.newPage();
   await page.clock.setFixedTime(time);
   await page.goto('/?e2e#courtyard');

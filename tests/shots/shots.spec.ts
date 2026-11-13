@@ -317,7 +317,7 @@ for (const theme of themes) test.describe(theme, () => {
     await page.locator('.next-move-go').click();
     await page.getByRole('region', { name: 'Focus' }).getByRole('button', { name: 'Done' }).click();
     await expect(page.getByRole('region', { name: 'Focus' })).toHaveCount(0);
-    // Yesterday's chapter waits for its Book check.
+    // Yesterday’s chapter waits for its Book check.
     await put('ledger', [{ id: 'ch1', mode: 'read', kind: 'chapter', refId: 'richest-man-in-babylon:babylon-2', dayKey: '2026-10-27', inputs: { checkLater: true }, ...meta }]);
     await page.goto('/#courtyard');
     await expect(page.locator('.next-move')).toContainText('Book check');
@@ -1739,7 +1739,7 @@ for (const theme of themes) test.describe(theme, () => {
     const made = new Date('2026-11-01T10:00:00'), later = new Date('2026-11-05T12:00:00');
     const phone = async (at: Date) => {
       const use = info.project.use;
-      const context = await browser.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, baseURL: use.baseURL, storageState: use.storageState, colorScheme: theme, reducedMotion: 'reduce' });
+      const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, baseURL: use.baseURL, storageState: use.storageState, colorScheme: theme, reducedMotion: 'reduce' });
       const p = await context.newPage();
       await p.addInitScript(() => {
         Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });

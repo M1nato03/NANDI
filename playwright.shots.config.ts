@@ -8,5 +8,7 @@ export default defineConfig({
   testDir: 'tests/shots',
   reporter: 'line',
   workers: 1,
-  projects: [{ name: 'shots-360x800', use: { viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true } }],
+  // b2 13 Nov: no service worker in shots, so the first open's "Ready to work offline" notice never lands in a picture
+  // (the shots that are about that notice, post-571 and rem-fixes, open their own contexts with the worker allowed).
+  projects: [{ name: 'shots-360x800', use: { viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, serviceWorkers: 'block' } }],
 });

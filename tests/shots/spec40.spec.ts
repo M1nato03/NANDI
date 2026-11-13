@@ -8,7 +8,7 @@ const BOOK = 'richest-man-in-babylon';
 const NOON = new Date('2026-11-12T12:00:00');
 
 async function phone(browser: Browser, colorScheme: 'light' | 'dark'): Promise<Page> {
-  const context = await browser.newContext({ viewport: { width: 360, height: 800 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
+  const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 360, height: 800 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
   const page = await context.newPage();
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#courtyard');
@@ -135,7 +135,7 @@ for (const theme of ['light', 'dark'] as const) {
 for (const theme of ['light', 'dark'] as const) {
   test(`spec 40 recording, ${theme}`, async ({ browser }) => {
     test.setTimeout(180_000);
-    const context = await browser.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, colorScheme: theme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL, recordVideo: { dir: `${OUT}/raw-${theme}`, size: { width: 360, height: 800 } } });
+    const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, colorScheme: theme, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL, recordVideo: { dir: `${OUT}/raw-${theme}`, size: { width: 360, height: 800 } } });
     const page = await context.newPage();
     await page.clock.setFixedTime(NOON);
     await page.goto('/?e2e#courtyard');
@@ -169,7 +169,7 @@ for (const theme of ['light', 'dark'] as const) {
 // reviewed: Jan pick → result, the Mar Check-first sheet, the year end. To raw-motion → rec-motion-light.mp4.
 test('spec 40 recording, normal motion, light', async ({ browser }) => {
   test.setTimeout(180_000);
-  const context = await browser.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, colorScheme: 'light', reducedMotion: 'no-preference', baseURL: test.info().project.use.baseURL, recordVideo: { dir: `${OUT}/raw-motion`, size: { width: 360, height: 800 } } });
+  const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, colorScheme: 'light', reducedMotion: 'no-preference', baseURL: test.info().project.use.baseURL, recordVideo: { dir: `${OUT}/raw-motion`, size: { width: 360, height: 800 } } });
   const page = await context.newPage();
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#courtyard');
