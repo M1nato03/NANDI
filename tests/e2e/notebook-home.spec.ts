@@ -138,6 +138,10 @@ test('with motion, a tap plays the friend\'s reaction where it stands, then open
   // The walk-in step has ended once Kapi stands still: two readings 300 ms apart agree (a busy machine runs it late).
   let box = await within();
   await expect.poll(async () => { await page.waitForTimeout(300); const now = await within(); const still = JSON.stringify(now) === JSON.stringify(box); box = now; return still; }, { timeout: 10_000 }).toBe(true);
+  // Hold the page clock from here: the tap's 240 ms hand-off to the area waits for runFor below, so a slow runner can
+  // never leave Kapi's screen before the reaction is read (CI 43389063511 attempt 2: boundingBox null after the click).
+  // 1 s ahead: the read and the pause are two round trips, so a smaller step can land in the past on a busy machine.
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1000));
   await kapi.click();
   await expect(kapi.locator('svg')).toHaveAttribute('data-moment', 'tap');
   expect(await within()).toEqual(box);
