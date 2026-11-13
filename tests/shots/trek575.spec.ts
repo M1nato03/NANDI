@@ -39,6 +39,9 @@ async function shot(page: Page, name: string, legs: number, today: 'train' | 'mi
   await page.goto(`/?e2e#${options.route ?? 'yatra'}`);
   await page.reload();
   const scene = page.locator(options.target ?? '.trek-strip .trek-scene');
+  // One fresh load if the scene never came (shots-575-348b1de: one dark leg of 114 loaded blank), so one bad load
+  // doesn't lose the rest of the set.
+  if (!await scene.waitFor({ timeout: 15_000 }).then(() => true, () => false)) await page.reload();
   await expect(scene).toBeVisible({ timeout: 15_000 });
   const close = page.getByRole('button', { name: 'Keep in the journal' });
   if (await close.isVisible({ timeout: 1500 }).catch(() => false)) await close.click();
@@ -95,7 +98,8 @@ test('575 the highest points at night, clear of the stars; the switch; a caption
   await page.locator('.trek-strip .trek-group .trek-prop.tree').screenshot({ path: `${OUT}/575-camp-tree-crop.png` });
   // A caption at 200%: whole, not cut, not broken mid-word.
   await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
-  await page.getByRole('button', { name: 'Hampta Glacier' }).click();
+  // The landmark keeps a gentle pulse, so it never reads as "stable" to a normal click (shots-575-348b1de).
+  await page.getByRole('button', { name: 'Hampta Glacier' }).click({ force: true });
   await expect(page.locator('.trek-landmark-caption')).toBeVisible();
   await page.locator('.trek-landmark-caption').scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${OUT}/575-caption-200.png` });
