@@ -10,7 +10,7 @@ import type { LedgerRow } from '../../data/types';
 
 /**
  * Train done: "6 sets · +72 XP". A session stopped early says "6 sets logged · +48 XP" and, as a pointer rather than a
- * judgement, what the whole plan pays ("The full plan pays +76 next time."). A safety stop gets no such line.
+ * judgement, what the whole plan pays ("The full plan pays +76 XP next time."). A safety stop gets no such line.
  */
 export function trainLine(fact: LedgerRow | undefined): { line: string; next?: string } | null {
   if (!fact || typeof fact.inputs.paidSets !== 'number') return null;
@@ -21,7 +21,7 @@ export function trainLine(fact: LedgerRow | undefined): { line: string; next?: s
   const line = `${sets} ${sets === 1 ? 'set' : 'sets'}${stopped ? ' logged' : ''}${xp ? ` · +${xp}\u00a0XP` : ''}`;
   if (!stopped) return { line };
   const pay = RULES.train.setPay;
-  return { line, next: `The full plan pays +${pay.baseXp + pay.perSetXp * Math.min(pay.maxSets, planned)} next time.` };
+  return { line, next: `The full plan pays +${pay.baseXp + pay.perSetXp * Math.min(pay.maxSets, planned)}\u00a0XP next time.` };
 }
 
 const DIFF_NAME: Record<string, string> = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
@@ -51,7 +51,7 @@ export function ideaLine(facts: readonly LedgerRow[], chapter: string, conceptId
     const amount = Math.min((index === 0 ? pay.baseXp : 0) + pay.stepXp * (Number(row.inputs.newSteps) || 0), Math.max(0, pay.maxXp - paid));
     if (row.inputs.conceptId === conceptId) {
       const total = amount + (row.inputs.dropId ? Math.max(0, RULES.mind.learnDropXp - amount) : 0);
-      return total ? `+${total}\u00a0XP` : 'Chapter XP complete · your reading time still counts';
+      return total ? `+${total}\u00a0XP` : 'Today’s chapter XP is in · your reading time still counts';
     }
     paid += amount;
   }

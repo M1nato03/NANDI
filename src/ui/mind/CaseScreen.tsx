@@ -416,7 +416,7 @@ export function CaseScreen({
           {run.result ? (
             <div className="card">
               <h2>
-                {run.result === 'solved' ? 'Case closed.' : 'Case unsolved.'}
+                {run.result === 'solved' ? 'Case closed.' : 'Solution shown. A new case comes tomorrow.'}
               </h2>
               <p>
                 {mystery.S[mystery.culprit]!.n}, with{' '}

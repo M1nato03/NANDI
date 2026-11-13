@@ -23,6 +23,6 @@ describe('spec 41 an idea says what it earned', () => {
     expect(ideaLine(facts, 'b:b-ch1', 'a')).toBe('+15\u00a0XP');
     expect(ideaLine(facts, 'b:b-ch1', 'b')).toBe('+15\u00a0XP');
     expect(ideaLine(facts, 'b:b-ch1', 'c')).toBe('+15\u00a0XP');
-    expect(ideaLine(facts, 'b:b-ch1', 'd')).toBe('Chapter XP complete · your reading time still counts');
+    expect(ideaLine(facts, 'b:b-ch1', 'd')).toBe('Today’s chapter XP is in · your reading time still counts');
   });
 });

@@ -363,7 +363,7 @@ for (const theme of themes) test.describe(theme, () => {
     await expect(page.getByRole('heading', { name: 'Session saved' })).toBeVisible();
     // Six sets of a longer plan is a session stopped early: 8 a set, and what the whole plan pays (spec 36 v2 review).
     await expect(page.locator('.train-earned')).toHaveText('6 sets logged · +48 XP');
-    await expect(page.locator('.train-next')).toHaveText(/^The full plan pays \+\d+ next time\.$/);
+    await expect(page.locator('.train-next')).toHaveText(/^The full plan pays \+\d+\u00a0XP next time\.$/);
     await shot(page, 'v2-1-train-done', false);
     // Mind: three earlier Sun and moon solves, so on a Wednesday (not its featured day) its board is hard; one hint, then solved.
     await page.evaluate(async () => {

@@ -97,14 +97,14 @@ test('the daily board plus two more, then Kapi naps; the first is the daily boar
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     if (round < 2) await page.getByRole('button', { name: 'Another puzzle' }).click();
   }
-  await expect(page.getByLabel('Puzzle result')).toContainText("That's today's puzzles. Kapi's off to nap.");
+  await expect(page.getByLabel('Puzzle result')).toContainText('That’s all of today’s puzzles. Kapi’s off to nap.');
   await expect(page.getByRole('button', { name: 'Another puzzle' })).toHaveCount(0);
   expect(await boardFacts(page)).toEqual([true, false, false]);
   await page.goto('/?e2e#grow/play');
   const tile = page.getByRole('region', { name: "Kapi's shelf" }).getByRole('button', { name: /^Crowns/ });
   await expect(tile).toContainText('Done for today');
   await tile.click();
-  await expect(page.getByText("That's today's puzzles. Kapi's off to nap.")).toBeVisible();
+  await expect(page.getByText('That’s all of today’s puzzles. Kapi’s off to nap.')).toBeVisible();
 });
 
 test("Kapi's case starts with its 4-step walkthrough of the grid", async ({ page }) => {

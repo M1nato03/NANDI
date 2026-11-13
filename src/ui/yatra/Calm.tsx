@@ -236,7 +236,7 @@ export function Calm() {
         {run.sound && <p className="calm-sound-name small">{run.sound}</p>}
         {total !== null && <div className="calm-progress" role="progressbar" aria-label="Time" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(elapsed / total * 100)}><span style={{ width: `${elapsed / total * 100}%` }} /></div>}
       </> : unsaved ? <div className="calm-unsaved" role="alert"><p className="calm-phase">Your sit could not be saved.</p><button type="button" onClick={() => { finishing.current = true; record(unsaved.ran, unsaved.sat); }}>Try saving again</button></div>
-        : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : prefs.way === 'paced' && prefs.pattern === 'square' ? (holds ? 'In, hold, out, hold: 5\u00a0seconds each' : '5 in, 6 out, round the square') : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
+        : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : prefs.way === 'paced' && prefs.pattern === 'square' ? (holds ? 'In, hold, out, hold: 5\u00a0seconds each' : '5 in, 6 out, slow and easy') : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
     </div>
     {run ? <>
       {ownSit && sit!.status === 'paused' && <p className="small calm-paused" role="status">{sit!.pausedFor === 'call' ? 'Paused for a call.' : 'Paused.'} The clock waits.</p>}
