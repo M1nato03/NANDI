@@ -20,7 +20,7 @@
 .pause-done .pause-line { padding-right: 48px; }
 /* Spec 52 D: the in-app way names its move and can run to two lines; every way keeps one size, so none weighs more. */
 .pause-ways { display: grid; grid-auto-rows: 1fr; gap: 10px; margin-top: 4px; }
-.pause-not-now { justify-self: start; color: var(--ink-2); font-weight: 400; }
+.pause-not-now, .pause-home { justify-self: start; color: var(--ink-2); font-weight: 400; }
 .pause-clock { margin: 0; font: 800 3.5rem 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; text-align: center; }
 .pause-earned { margin: 0; color: var(--accent); font-weight: 700; }
 .pause-demo { margin: 0; text-align: center; }

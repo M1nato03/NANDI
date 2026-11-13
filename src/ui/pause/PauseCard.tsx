@@ -101,6 +101,14 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
       go(move.route);
     } catch { setMessage('That did not work. You can leave NANDI normally.'); }
   }
+  // Jenil 14 Nov: every other way leaves NANDI (to the phone's home) or opens a thing in it (Read, a quest); this one is
+  // plain NANDI, its Home (the Courtyard). On the card it counts as staying in the app; after "I did it" it just goes.
+  async function home() {
+    if (demo) { close(); return; }
+    if (stage.kind === 'done') { close(); go('courtyard'); return; }
+    await answer('in_app', clearNightPause);
+    go('courtyard');
+  }
   const clock = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`;
 
   return <div ref={dialog} tabIndex={-1} className="night-pause-overlay pause-overlay" role="dialog" aria-modal="true" aria-label="Pause card">
@@ -118,6 +126,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
           <button type="button" className="paper-choice" onClick={() => void openAnyway()}>Open {label} anyway</button>
         </div>
         <button type="button" className="ink-link pause-not-now" onClick={() => void notNow()}>Not now</button>
+        <button type="button" className="ink-link pause-home" onClick={() => void home()}>Go to NANDI home</button>
         <button type="button" className="ink-link pause-quest-link" data-testid="pause-quest-link" onClick={() => void fiveMinuteQuest()}>Or a 5-min quest?</button>
       </>}
       {stage.kind === 'act' && <>
@@ -128,6 +137,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
         <button type="button" className="pause-do" onClick={() => void finish()}>I did it</button>
         <div className="pause-exits">
           <button type="button" className="text-button" onClick={() => void notNow()}>Not now</button>
+          <button type="button" className="text-button" onClick={() => void home()}>Go to NANDI home</button>
           <button type="button" className="text-button" onClick={() => void openAnyway()}>Open {label} anyway</button>
         </div>
       </>}
@@ -146,6 +156,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
         <h1 className="pause-line">{stage.act ? `Done: ${stage.act[0]!.toUpperCase() + stage.act.slice(1)}.` : 'Done.'}</h1>
         {stage.paid && <p className="pause-earned">+{RULES.pause.actXp}&nbsp;XP</p>}
         <button type="button" className="pause-do" onClick={() => { if (demo) close(); else void goPhoneHome().then(close, close); }}>Back to my day</button>
+        <button type="button" className="text-button" onClick={() => void home()}>Go to NANDI home</button>
         <button type="button" className="text-button" onClick={() => { if (demo) close(); else void openPausedApp(packageName, card.grace * 60_000).then(close, close); }}>Open {label} now</button>
       </>}
       {demo && <p className="small pause-demo">This is how it looks. Nothing is saved.</p>}

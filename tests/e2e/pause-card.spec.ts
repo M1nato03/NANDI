@@ -166,6 +166,24 @@ test('"Not now" goes Home and pays nothing; "Open anyway" opens the app with the
   expect(await totalXp(page)).toBe(before);
 });
 
+test('Jenil 14 Nov: "Go to NANDI home" closes the card on NANDI’s Home, from the card and after "I did it"', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await setUp(page);
+  await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+  await phoneOpens(page);
+  await card(page).getByRole('button', { name: 'Go to NANDI home' }).click();
+  await expect(card(page)).toHaveCount(0);
+  await expect(page).toHaveURL(/#courtyard$/);
+  expect(await did(page)).not.toContain('home');
+  expect(await attempts(page)).toEqual(['in_app']);
+  await page.goto('/?e2e#grow');
+  await phoneOpens(page);
+  await card(page).getByRole('button', { name: 'I did it' }).click();
+  await card(page).getByRole('button', { name: 'Go to NANDI home' }).click();
+  await expect(card(page)).toHaveCount(0);
+  await expect(page).toHaveURL(/#courtyard$/);
+});
+
 test('spec 54: "Open anyway" asks how long and why; the chosen time goes to the phone, the why stays private in You', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await setUp(page);
