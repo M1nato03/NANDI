@@ -47,14 +47,24 @@ export type Run = { startedAt: number; length: CalmLength; way: CalmWay; breath:
 export function Calm() {
   const settings = useLiveQuery(() => db.settings.where('key').anyOf(calmKeys.breath, calmKeys.prefs, breathKeys.holds).toArray(), []);
   const breath = readBreath(settings?.find(row => row.key === calmKeys.breath && !row.deleted)?.value);
-  const prefs = readCalmPrefs(settings?.find(row => row.key === calmKeys.prefs && !row.deleted)?.value);
+  const stored = readCalmPrefs(settings?.find(row => row.key === calmKeys.prefs && !row.deleted)?.value);
+  // K3 (Sat): a tap counts at once and the saved row catches up, so Start right after a tap uses the tapped choice, not
+  // the one still being written (calm.spec:112 at 4x CPU: Scan, then Start, sat paced). A failed save takes it back.
+  const [pending, setPending] = useState<Partial<CalmPrefs>>({});
+  const prefs: CalmPrefs = { ...stored, ...pending };
   // Spec 45a: the square's holds are shared with the opening breath.
   const holds = readBreathSettings(settings).holds;
   const userSounds = useLiveQuery(() => calmSoundDb.sounds.orderBy('addedAt').toArray(), [], [] as CalmSoundRow[]);
   // A setting that could not be saved says so (a11y audit C1); the screen keeps working.
   const [saveNote, setSaveNote] = useState('');
   const saved = (write: Promise<unknown>) => void write.then(() => setSaveNote(''), () => setSaveNote('Could not save that setting. Try again.'));
-  const setPrefs = (change: Partial<CalmPrefs>) => saved(saveCalmSettings(db, { prefs: change }, stamp()));
+  const setPrefs = (change: Partial<CalmPrefs>) => {
+    setPending(current => ({ ...current, ...change }));
+    void saveCalmSettings(db, { prefs: change }, stamp()).then(() => setSaveNote(''), () => {
+      setSaveNote('Could not save that setting. Try again.');
+      setPending(current => Object.fromEntries(Object.entries(current).filter(([key]) => !(key in change))) as Partial<CalmPrefs>);
+    });
+  };
   const [run, setRun] = useState<Run | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [touchedAt, setTouchedAt] = useState(0);

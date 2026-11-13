@@ -108,6 +108,13 @@ test('Until I stop counts up and counts when stopped; under a minute saves nothi
   expect((await calmRows(page)).map(row => row.inputs)).toEqual([{ minutes: 2, way: 'paced', in: 4, out: 6 }, { minutes: 1, way: 'quiet' }]);
 });
 
+test('K3: a way tapped just before Start is the way that sits (no wait for the save)', async ({ page }) => {
+  await openCalm(page);
+  await page.getByRole('button', { name: 'Scan', exact: true }).click();
+  await startButton(page).click();
+  await expect(page.locator('.calm-line')).toHaveText('Notice your feet on the floor.');
+});
+
 test('a 30-minute sit is one row of 30 minutes, and Yatra moves one stretch for it', async ({ page }) => {
   await openCalm(page);
   await pick(page, 30);
