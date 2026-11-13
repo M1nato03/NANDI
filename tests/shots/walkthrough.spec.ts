@@ -178,6 +178,7 @@ for (const theme of ['light', 'dark'] as const) {
     await put(page, 'ledger', [...corners(4), ...daysBefore(DAY, 2).map(day => fact(day, 'soft', 'soft', {}))]);
     for (const [area, name] of [['sleep', 'kachhua'], ['plan', 'mor']] as const) {
       await open(page, `courtyard/view/${area}`, 'main h1, main h2, [role="dialog"]');
+      await expect(page.getByRole('heading', { name: 'Courtyard', level: 1 })).toBeVisible();
       await snap(page, `w03-card-${name}-s4${theme === 'dark' ? '-dark' : ''}`, true);
     }
     await page.context().close();

@@ -28,3 +28,5 @@
 /* You's row reads like the Private books card above it: title, then its line, no tile gap; the line may wrap. */
 .you-screen button.you-link.you-helps-link { min-height: 0; justify-content: flex-start; gap: 8px; }
 .you-screen button.you-link.you-helps-link > span:last-child { white-space: normal; font-size: .8125rem; line-height: 1.4; }
+/* The dialog starts on its heading (data-autofocus) so a reader hears it first; a heading is not a control, so no ring. */
+.welcome [data-autofocus]:focus { outline: none; }
