@@ -70,6 +70,8 @@ test('w02 day one: plan a task, focus 6 minutes, finish', async ({ browser }) =>
   await snap(page, 'w02-day-one-03-done');
   await page.goto('/?e2e#yatra');
   await expect(page.locator('.trek-strip').first()).toBeVisible({ timeout: 15_000 });
+  // The Yatra tab keeps Plan's scroll; the trek is at the top.
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(600);
   await snap(page, 'w02-day-one-04-yatra-after');
   await page.goto('/?e2e#courtyard');
