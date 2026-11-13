@@ -27,7 +27,8 @@ export const WALL_FOOT = LINES.wallFoot;
 export const DOOR_RECT: Rect = [85.5, 323, 50.5, 62];
 const DOOR_BOX: Rect = [94, 81, 42, 49];
 const TORAN_BOX: Rect = [94, 83, 42, 10];
-const LANTERNS_BOX: Rect = [10, 137, 111, 13];
+/** The classic string's box; layout B's two strings hang above it in the same box units (Scene lanternSpots). */
+export const LANTERNS_BOX: Rect = [10, 137, 111, 13];
 /** The floor's tile lines repeat past the frame's sides (frame mode shows more than 360 wide). */
 const FLOOR_LINES = Array.from({ length: 27 }, (_, i) => -900 + i * 80);
 
@@ -99,13 +100,13 @@ export function LayoutBScene({ anchors, fit, width, height, state, phase, onFrie
         <g transform={treeTransform}><Tree stage={state.treeStage} {...crown} dayCord={!lit} /></g>
         {spots.some(spot => spot.on === 'board') && <PegBoard />}
         {keepsakes.map((tag, i) => <KeepsakeTag key={tag.campId} tag={tag} spot={spots[i]!} />)}
-        {lanternRect && state.lanterns > 0 && <g transform={placed(LANTERNS_BOX, css(lanternRect))}><Lanterns count={state.lanterns} /></g>}
+        {lanternRect && state.lanterns > 0 && <g transform={placed(LANTERNS_BOX, css(lanternRect))}><Lanterns count={state.lanterns} rows="two" /></g>}
         {parts.map(row => <g key={row.prop} className="courtyard-part" data-prop={row.prop} data-part={row.part} data-support={supportName(row.support)} transform={placed(PARTS[row.part as PartId].box, row.rect)}>{PARTS[row.part as PartId].draw()}</g>)}
         {tint && <rect x={-2000} y={-2000} width={4360} height={6000} fill={tint} />}
         {/* Evening and night: the lights glow through the tint, each where its part stands (b2, 8 Nov). */}
         {lit && <g className="courtyard-b-glow">
           <g transform={treeTransform}><Tree stage={state.treeStage} {...crown} glowLayer /></g>
-          {lanternRect && state.lanterns > 0 && <g transform={placed(LANTERNS_BOX, css(lanternRect))}><Lanterns count={state.lanterns} glowLayer /></g>}
+          {lanternRect && state.lanterns > 0 && <g transform={placed(LANTERNS_BOX, css(lanternRect))}><Lanterns count={state.lanterns} rows="two" glowLayer /></g>}
           {parts.filter(row => (PARTS[row.part as PartId] as Part).glow).map(row => { const part = PARTS[row.part as PartId] as Part; return <g key={row.prop} transform={placed(part.box, row.rect)}>{part.glow!()}</g>; })}
         </g>}
       </g>

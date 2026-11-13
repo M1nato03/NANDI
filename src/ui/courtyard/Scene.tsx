@@ -283,14 +283,29 @@ export function lanternLine(count: number): string {
   return count === 1 ? 'One lantern hangs on Kachhua’s string.' : `${count} lanterns hang on Kachhua’s string.`;
 }
 
+/** A lantern's place in the string's box: its centre x, the top of its body, the string it hangs from, its width. */
+export type LanternSpot = { x: number; top: number; string: number; width: number };
+/**
+ * Where each lantern hangs. The classic scene: one string of up to 12, 9 apart. Layout B (a9 13 Nov, option a): two
+ * strings of up to six, the second 12 above the first, both lifted so every lantern is whole above the cot's bedroll
+ * and the last one ends left of Kachhua (one string of 12 ran over Kachhua's spot). Kachhua's nudged spot starts at
+ * canvas x 80, so a row is 7.6 apart from x 13 with slimmer lanterns (6.4 wide); lanternSpots.test measures it.
+ */
+export function lanternSpots(count: number, rows: 'one' | 'two' = 'one'): LanternSpot[] {
+  const shown = Math.min(Math.max(0, count), LANTERNS_DRAWN);
+  return Array.from({ length: shown }, (_, index) => rows === 'one' ? { x: 16 + index * 9, top: 140, string: 137, width: 7.2 }
+    : { x: 13 + (index % 6) * 7.6, top: index < 6 ? 115 : 103, string: index < 6 ? 112 : 100, width: 6.4 });
+}
+
 /** Spec 15: one lantern on Kachhua's string for each soft day (up to 12 drawn); they never go away. */
-export function Lanterns({ count, glowLayer }: { count: number; glowLayer?: boolean }) {
-  const shown = Math.min(count, LANTERNS_DRAWN);
-  if (!shown) return null;
-  const xs = Array.from({ length: shown }, (_, index) => 16 + index * 9);
-  if (glowLayer) return <g className="courtyard-flicker">{xs.map(x => <circle key={x} cx={x} cy="147" r="7" fill={C.glow} opacity=".35" />)}</g>;
-  return <g className="courtyard-lanterns" data-lanterns={count}><path d={`M10 137H${xs.at(-1)! + 6}`} stroke="#6b4a2c" strokeWidth="1" />
-    {xs.map(x => <g key={x}><path d={`M${x} 137v3`} stroke="#6b4a2c" strokeWidth=".8" /><rect x={x - 3.6} y="140" width="7.2" height="10" rx="2.4" fill="#f6a640" /><rect x={x - 2.2} y="142" width="4.4" height="6" rx="1.4" fill="#ffd98a" /></g>)}</g>;
+export function Lanterns({ count, glowLayer, rows = 'one' }: { count: number; glowLayer?: boolean; rows?: 'one' | 'two' }) {
+  const spots = lanternSpots(count, rows);
+  if (!spots.length) return null;
+  if (glowLayer) return <g className="courtyard-flicker">{spots.map(spot => <circle key={`${spot.x}-${spot.top}`} cx={spot.x} cy={spot.top + 7} r="7" fill={C.glow} opacity=".35" />)}</g>;
+  const strings = [...new Set(spots.map(spot => spot.string))].map(y => ({ y, end: Math.max(...spots.filter(spot => spot.string === y).map(spot => spot.x)) + 6 }));
+  const start = Math.min(...spots.map(spot => spot.x)) - 6;
+  return <g className="courtyard-lanterns" data-lanterns={count}>{strings.map(row => <path key={row.y} d={`M${start} ${row.y}H${row.end}`} stroke="#6b4a2c" strokeWidth="1" />)}
+    {spots.map(spot => <g key={`${spot.x}-${spot.top}`}><path d={`M${spot.x} ${spot.string}v3`} stroke="#6b4a2c" strokeWidth=".8" /><rect x={spot.x - spot.width / 2} y={spot.top} width={spot.width} height="10" rx="2.4" fill="#f6a640" /><rect x={spot.x - spot.width / 2 + 1.4} y={spot.top + 2} width={spot.width - 2.8} height="6" rx="1.4" fill="#ffd98a" /></g>)}</g>;
 }
 
 /** Spec 24 #1: a marigold toran over the door, one flower per day with a kept Phone ki chhutti (up to 15 drawn). */

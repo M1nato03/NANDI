@@ -133,11 +133,22 @@ for (const theme of ['light', 'dark'] as const) {
     await page.context().close();
   });
 
-  test(`D-lantern: s4 with 2 soft days, ${theme}`, async ({ browser }) => {
-    const page = await phone(browser, theme);
-    await put(page, 'ledger', [...corners(4), ...daysBefore(DAY, 2).map(day => fact(day, 'soft', 'soft', {}))]);
-    await open(page, 'courtyard', '.courtyard-b');
-    await snap(page, `lantern-${t}-s4-two-soft-days`);
-    await page.context().close();
-  });
+  // a9 13 Nov (option a): two strings of up to six, lifted clear of the bedroll and left of Kachhua. s4 and s5, 2 and 12
+  // soft days, by day and at night (01:45, as stage2-571's night).
+  for (const stage of [4, 5]) for (const soft of [2, 12]) for (const when of ['day', 'night'] as const) {
+    test(`D-lantern: s${stage} with ${soft} soft days, ${when}, ${theme}`, async ({ browser }) => {
+      const page = await phone(browser, theme, when === 'day' ? NOON : new Date('2026-11-11T01:45:00'));
+      await put(page, 'ledger', [...corners(stage), ...daysBefore(DAY, soft).map(day => fact(day, 'soft', 'soft', {}))]);
+      await page.goto('/?e2e#courtyard');
+      await page.reload();
+      const deck = page.getByRole('button', { name: 'Leave night deck' });
+      await expect(page.locator('.courtyard-b').or(deck).first()).toBeVisible({ timeout: 15_000 });
+      if (await deck.isVisible()) { await deck.click(); await page.getByRole('link', { name: 'Courtyard' }).click(); }
+      await expect(page.locator(`.courtyard-b [data-lanterns="${soft}"]`)).toHaveCount(1);
+      await page.waitForTimeout(500);
+      await settle(page);
+      await snap(page, `lantern-${t}-s${stage}-${soft}-soft-${when}`);
+      await page.context().close();
+    });
+  }
 }
