@@ -18,7 +18,7 @@ test('a wrong card: Chiku acts it out, the truth plays after, the mistake is the
   await expect(cards).toHaveCount(3);
   await cards.filter({ hasText: 'Wanting to revise' }).click();
   await expect(beat(page)).toHaveAttribute('data-beat', 'newday');
-  await expect(page.locator('.chiku-caption')).toHaveText("New day: Kunal's train is cancelled, so he takes the bus.");
+  await expect(page.locator('.chiku-caption')).toHaveText("New day: Kunal’s train is cancelled, so he takes the bus.");
   await expect(page.locator('.chiku-stage [data-prop="bus"]')).toBeVisible();
   await expect(beat(page)).toHaveAttribute('data-beat', 'guess');
   await expect(page.locator('.chiku-caption')).toContainText('Your card says wanting to revise makes him open it.');
@@ -69,7 +69,7 @@ test('the right card moves between seeds; no red anywhere; reduced motion shows 
   await open(page);
   await expect(page.locator('.chiku-actor')).toHaveCSS('animation-name', 'none');
   await page.getByRole('group', { name: 'Your cards' }).getByRole('button', { name: 'Wanting to revise' }).click();
-  for (const [name, caption] of [['newday', "Kunal's train is cancelled"], ['guess', 'wanting to revise'], ['truth', 'Kunal forgot the app']] as const) {
+  for (const [name, caption] of [['newday', "Kunal’s train is cancelled"], ['guess', 'wanting to revise'], ['truth', 'Kunal forgot the app']] as const) {
     await expect(beat(page)).toHaveAttribute('data-beat', name);
     await expect(page.locator('.chiku-caption')).toContainText(caption);
     await expect(page.locator('.chiku-actor')).toHaveCSS('animation-name', 'none');
@@ -101,7 +101,7 @@ test('after a card, focus moves to the scene; one polite region reads each beat;
   expect((await page.locator('.chiku-step [aria-live="polite"]').boundingBox())!.width).toBeLessThanOrEqual(1);
   await page.getByRole('button', { name: 'Skip ahead' }).click();
   await expect(beat(page)).toHaveAttribute('data-beat', 'newday');
-  await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText("New day: Kunal's train is cancelled, so he takes the bus.");
+  await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText("New day: Kunal’s train is cancelled, so he takes the bus.");
   await page.getByRole('group', { name: "Chiku’s scene" }).focus();
   await page.keyboard.press('Enter');
   await expect(beat(page)).toHaveAttribute('data-beat', 'guess');

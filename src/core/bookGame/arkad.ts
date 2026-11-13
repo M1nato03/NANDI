@@ -125,7 +125,7 @@ export function enterMonth(state: ArkadState, m: number): ArkadState {
       if (m >= 2) depositCushion(s, freed(s), 'Subscriptions stayed off');
       if (m >= 5 && s.invested) move(s, 'growing', 40, 'Example growth (Growing pot)');
       if (m === 6 && s.lent) move(s, 'mine', 4300, 'Rohan repaid on the 15th');
-      if (m === 9 && s.lent) move(s, 'mine', 1000, "Rohan's paid gig");
+      if (m === 9 && s.lent) move(s, 'mine', 1000, "Rohan’s paid gig");
       if (m >= 7 && s.phone) charge(s, 6667, `Phone EMI ${MONTHS[m]}`);
     }
   }
@@ -274,7 +274,7 @@ export function tryDifferent(s: ArkadState): string {
 
 const OLD_LABELS: Readonly<Record<string, string>> = {
   'Salary split to Mine': 'Salary: kept in Mine', 'Salary split to Cushion': 'Salary: added to Cushion', 'Cushion target reached · to Mine': 'Cushion is full, so the rest went to Mine',
-  'Fictional example growth': 'Example growth (Growing pot)', 'Course raise · salary': 'Course raise, extra salary', 'Rohan paid gig': "Rohan's paid gig",
+  'Fictional example growth': 'Example growth (Growing pot)', 'Course raise · salary': 'Course raise, extra salary', 'Rohan paid gig': "Rohan’s paid gig",
   'Cancelled subscriptions · February': 'Cancelled subscriptions', 'Laptop repair covered': 'Laptop repair, paid from Cushion', 'Rushed laptop repair': 'Laptop repair, paid from Cushion',
   'Rushed laptop repair · unpaid': 'Unpaid repair bill', 'Festival budget': 'Festival budget spent',
 };

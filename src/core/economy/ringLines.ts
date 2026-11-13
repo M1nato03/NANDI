@@ -5,7 +5,7 @@ import type { BodyMark, MindAct } from './daySlots';
  * template and the noun table, so the 15 Mind pairings never drift (the list in the spec is the test fixture).
  */
 export const MIND_NOUN: Record<MindAct, string> = {
-  drop: "today's idea", chapter: 'a chapter', calm: 'a Calm sit', case: 'a solved case', board: "Kapi's board", cards: 'your cards',
+  drop: "today’s idea", chapter: 'a chapter', calm: 'a Calm sit', case: 'a solved case', board: "Kapi’s board", cards: 'your cards',
 };
 export const RINGS_NIGHT_LINE = 'Rings rest for the night.';
 export const PROMISE_TITLE_MAX = 28;

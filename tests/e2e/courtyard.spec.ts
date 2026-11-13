@@ -46,7 +46,7 @@ test('the courtyard grows from practice days and opens from Plan', async ({ page
   await page.getByRole('button', { name: /^Kachhua, Sleep/ }).click();
   const kachhua = page.getByRole('region', { name: 'Kachhua card' });
   await expect(kachhua).toContainText('0 practice days · stage 0 of 5');
-  await expect(kachhua).toContainText('3 more days of on-time nights add a sleeping mat.');
+  await expect(kachhua).toContainText('3 more on-time nights add a sleeping mat.');
   await expect(page.getByRole('region', { name: 'Neem tree' })).toContainText('7 active days · stage 2 of 5');
 });
 

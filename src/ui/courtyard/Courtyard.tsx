@@ -5,7 +5,7 @@ import { dayKey } from '../../core/time/dayKey';
 import { RULES } from '../../core/rules.config';
 import { effectiveShutdown } from '../../core/tasks/planner';
 import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
-import { AREAS, COURTYARD_KINDS, courtyardLine, courtyardNightFrom, deriveCourtyard, phaseAt, poseFor, TREE_OBJECTS, type AreaId, type AreaState, type CourtyardState, type Phase } from '../../core/courtyard/courtyard';
+import { AREAS, COURTYARD_KINDS, courtyardLine, courtyardNightFrom, deriveCourtyard, nextObjectLine, phaseAt, poseFor, TREE_OBJECTS, type AreaId, type AreaState, type CourtyardState, type Phase } from '../../core/courtyard/courtyard';
 import { Cast } from '../cast/Cast';
 import { go } from '../shell/router';
 import { CourtyardScene, lanternLine, SCENE_H, SCENE_W, type Stages } from './Scene';
@@ -80,7 +80,7 @@ function FriendCard({ area }: { area: AreaState }) {
     <div className="cast-inline"><Cast name={area.friend} pose={area.today ? 'cheer' : 'idle'} size={52} /><div><h2>{area.friend} · {area.label}</h2>
       <p className="small">{area.days} practice {area.days === 1 ? 'day' : 'days'} · stage {area.stage} of 5{area.today ? ' · done today' : ''}</p></div></div>
     <div className="courtyard-steps" aria-label={`Stage ${area.stage} of 5`}>{objects.map((object, index) => <span key={object} className={index < area.stage ? 'got' : ''} title={object} />)}</div>
-    <p>{area.nextAt != null ? `${area.nextAt - area.days} more ${area.nextAt - area.days === 1 ? 'day' : 'days'} of ${area.practice} ${area.nextAt - area.days === 1 ? 'adds' : 'add'} ${area.nextObject}.` : 'Every object is here. This corner is complete.'}</p>
+    <p>{nextObjectLine(area)}</p>
     {area.stage > 0 && <p className="small">Here now: {objects.slice(0, area.stage).join(', ')}.</p>}
   </section>;
 }

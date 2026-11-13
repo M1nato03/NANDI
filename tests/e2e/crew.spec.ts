@@ -65,7 +65,7 @@ test('two phones: make, invite, join, joined back, add, the same add twice, an i
   await riya.getByRole('button', { name: 'Make the crew' }).click();
   await riya.getByRole('button', { name: 'Invite a friend' }).click();
   const invite = await lastSent(riya);
-  expect(invite).toMatch(/^Join my NANDI crew: when we fill 5 h together, it's Sunday chai at the hill point\. https:\/\/nandi\.nandi11\.workers\.dev\/#crew\/join\//);
+  expect(invite).toMatch(/^Join my NANDI crew: when we fill 5\u00a0h together, it’s Sunday chai at the hill point\. https:\/\/nandi\.nandi11\.workers\.dev\/#crew\/join\//);
 
   const dev = await phone(browser, MADE, info);
   await paste(dev, invite);

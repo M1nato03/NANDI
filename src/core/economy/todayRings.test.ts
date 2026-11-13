@@ -38,7 +38,7 @@ describe('spec 571 §0.20: today’s rings', () => {
     const rings = { yatra: 'task1', body: 'walk' as const, mind: ['drop' as const] };
     expect(ringState('mind', rings)).toBe('half');
     expect(ringState('body', rings)).toBe('done');
-    expect(ringLine('mind', rings, false)).toBe("Mind: today's idea. One more, a different one, closes it.");
+    expect(ringLine('mind', rings, false)).toBe("Mind: today’s idea. One more, a different one, closes it.");
     expect(ringLine('body', rings, false)).toBe('Body: a rest walk.');
     expect(ringLine('yatra', rings, false, 'Call the bank')).toBe('Yatra: you kept a promise, Call the bank.');
     expect(ringLine('yatra', { ...rings, yatra: null }, false, 'ignored')).toBe('Yatra: keep one promise.');

@@ -123,8 +123,8 @@ describe('spec 52 D: the Pause card names the move', () => {
   it('names the chapter, the task, the board; a time only where measured', () => {
     expect(moveLine(picked(['learn']))).toBe('Read on: Why We Do What We Do, ch. 2');
     expect(moveLine(picked(['plan'], { tasks: [task('Email Riya')] }))).toBe('Start: Email Riya');
-    expect(moveLine(picked(['mind']))).toBe('Today\'s puzzle board');
-    expect(moveLine(picked(['mind']), { boardMedianMs: 4.4 * 60_000 })).toBe('Today\'s puzzle board · about 4\u00a0min');
+    expect(moveLine(picked(['mind']))).toBe('Today’s puzzle board');
+    expect(moveLine(picked(['mind']), { boardMedianMs: 4.4 * 60_000 })).toBe('Today’s puzzle board · about 4\u00a0min');
     expect(moveLine(picked(['sleep']))).toBe('Plan tonight');
     expect(moveLine(nextMove({ ...base, focus: { title: 'Write', running: true } }))).toBe('Back to: Write');
   });

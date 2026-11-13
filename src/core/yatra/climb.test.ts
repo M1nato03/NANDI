@@ -98,7 +98,7 @@ describe('spec 571 stage 2 §4: trek weather from a guard pause', () => {
     expect(weatherFor([focus(`${DAY}T10:00:00`, undefined, { pauses: [{ at: t(`${DAY}T10:10:00`) }] })], t(now))).toBe('clear');
     expect(weatherFor([focus(`${DAY}T10:00:00`, `${DAY}T10:12:00`, { pauses: [{ at: t(`${DAY}T10:10:00`), reason: 'guard' }] })], t(now))).toBe('clear');
     expect(weatherFor([], t(now))).toBe('clear');
-    expect(RAIN_LINE).toBe('Waiting out the rain. Back to focus to climb on.');
+    expect(RAIN_LINE).toBe('Waiting out the rain. Go back to your focus to climb on.');
   });
 
   it('a guard pause leaves the trek position and the jar minutes exactly as they were at the pause', () => {

@@ -134,7 +134,7 @@ describe('spec 55: join order is the same on every phone', () => {
 describe('spec 55: the plan travels in the invite only', () => {
   it('invite names the plan; joined and add say "our crew"', () => {
     const dev = { ...crew0, me: { ...crew0.me, first: 'Dev' } };
-    expect(inviteText(crew0, 'U')).toBe("Join my NANDI crew: when we fill 15 h together, it's Sunday chai at the hill point. U");
+    expect(inviteText(crew0, 'U')).toBe("Join my NANDI crew: when we fill 15\u00a0h together, it’s Sunday chai at the hill point. U");
     expect(joinedText(dev, 'U')).toBe('Dev joined our NANDI crew. U');
     expect(addText(dev, 45, 100, 'U')).toBe('Dev added 45 m to our crew jar · 1 h 40 m of 15\u00a0h · U');
     for (const text of [joinedText(dev, 'U'), addText(dev, 45, 100, 'U')]) expect(text).not.toContain('chai');

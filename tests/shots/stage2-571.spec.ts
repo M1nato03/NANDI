@@ -293,7 +293,7 @@ test('rain on the Yatra home during a focus-guard pause (light)', async ({ brows
   await put(page, 'focus', [{ id: 'rain-focus', taskId: 'rain-task', startedAt: NOON.getTime() - 20 * 60_000, pauses: [{ at: NOON.getTime() - 5 * 60_000, reason: 'guard', app: 'com.example.feed' }], updatedAt: 1, deleted: 0, deviceId: 's2' }]);
   await page.goto('/?e2e#yatra');
   await page.reload();
-  await expect(page.locator('.trek-weather')).toHaveText('Waiting out the rain. Back to focus to climb on.');
+  await expect(page.locator('.trek-weather')).toHaveText('Waiting out the rain. Go back to your focus to climb on.');
   await settle(page);
   await snap(page, 's2-l-yatra-rain');
   await page.context().close();

@@ -135,7 +135,7 @@ const dayWord = (date: string, today: string) => { const gap = days(date, today)
 
 /** The words that travel in chats: they must read well for someone without the app (Jenil sees them at the preview). */
 export function inviteText(crew: Crew, url: string): string {
-  return `Join my NANDI crew: when we fill ${crew.size} h together, it's ${crew.plan}. ${url}`;
+  return `Join my NANDI crew: when we fill ${crew.size}\u00a0h together, it’s ${crew.plan}. ${url}`;
 }
 /** After the invite the plan never travels again: these two read as "our crew" (jenil-a9's wording, Jenil's at the preview). */
 export function joinedText(crew: Crew, url: string): string {

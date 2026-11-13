@@ -169,7 +169,7 @@ test('You: the same toggles; a change applies at once to the next move and the r
   await page.getByRole('button', { name: 'Sleep earlier', exact: true }).click();
   await expect.poll(() => settingsOf(page, ['profile.goals'])).toEqual({ 'profile.goals': ['mind', 'sleep'] });
   await page.goto('/?e2e#courtyard');
-  await expect(move(page)).toContainText("Today's puzzle board");
+  await expect(move(page)).toContainText("Today’s puzzle board");
   // Mind and Sleep: the Mind ring only (Sleep has no ring).
   await expect.poll(() => ringLines(page)).toEqual(['Mind: any two.']);
   // Train alone: the Body ring.
@@ -226,7 +226,7 @@ async function lowPhone(browser: Browser, testInfo: TestInfo, goals: string[]) {
 }
 const LANDS: { area: string; title: string; route: RegExp; first: (page: Page) => ReturnType<Page['locator']> }[] = [
   { area: 'learn', title: 'Read one idea', route: /#grow\/read\/chapter\/psychology\/psychology-ch1$/, first: page => page.locator('.idea-page') },
-  { area: 'mind', title: "Today's puzzle board", route: /#grow\/play\/board\/daily$/, first: page => page.getByText(/Daily board (#\d+ )?· /) },
+  { area: 'mind', title: "Today’s puzzle board", route: /#grow\/play\/board\/daily$/, first: page => page.getByText(/Daily board (#\d+ )?· /) },
   { area: 'train', title: 'An easy first workout', route: /#grow\/train\/workout$/, first: page => page.getByText('Current exercise') },
   { area: 'plan', title: 'Plan today', route: /#plan\/morning$/, first: page => page.getByRole('heading', { name: 'Morning plan' }) },
   { area: 'sleep', title: 'Plan tonight', route: /#you\/tonight$/, first: page => page.getByRole('region', { name: 'Night plan setting' }) },

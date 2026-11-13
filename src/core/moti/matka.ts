@@ -71,14 +71,14 @@ export function matkaReveal(item: MatkaItem, recalled: number | string, show: { 
   if (item.level === 2) {
     const line = `Sealed: ${show.value(item.sealed as number)}. You remembered: ${show.value(recalled as number)}. Answer: ${show.value(item.answer!)}.`;
     return matkaShift(item.sealed as number, recalled as number, item.answer!) > 0
-      ? [line, "Your memory slid toward the answer. That's hindsight bias: once we know how it ended, it feels like we knew.", "Many people show it and don't notice. That's why Moti seals the guess first."]
+      ? [line, "Your memory slid toward the answer. That’s hindsight bias: once we know how it ended, it feels like we knew.", "Many people show it and don’t notice. That’s why Moti seals the guess first."]
       : [line, 'Spot on. Hindsight often nudges memory toward the answer without us noticing. The sealed guess is how we check.'];
   }
   // Matka 1 matches by the sealed words when it has them (a pack update may rename an option id or reword it).
   const matches = item.level === 1 ? (item.sealedText !== undefined ? show.option?.(recalled as string) === item.sealedText : recalled === item.sealed) : (recalled === 'landed') === item.sealed;
-  if (matches) return ["Matches the seal. Hindsight can still nudge memory on other ideas; that's why Moti keeps the matka."];
+  if (matches) return ["Matches the seal. Hindsight can still nudge memory on other ideas; that’s why Moti keeps the matka."];
   // cj8 has no line for "recalled missed, sealed landed"; this one says the seal plainly (sent to the idea engine to confirm).
-  if (item.level === 0 && item.sealed === true) return ['Sealed: your first guess landed.', "Memory can drift either way. That's why Moti keeps the matka."];
+  if (item.level === 0 && item.sealed === true) return ['Sealed: your first guess landed.', "Memory can drift either way. That’s why Moti keeps the matka."];
   const lead = item.level === 1 ? `Sealed: your first pick was ${sealedText}.` : 'Sealed: your first guess missed.';
-  return [lead, "After learning an idea, it's easy to feel you knew it already. That's hindsight bias. The lesson still did its job."];
+  return [lead, "After learning an idea, it’s easy to feel you knew it already. That’s hindsight bias. The lesson still did its job."];
 }

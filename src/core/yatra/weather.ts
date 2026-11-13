@@ -7,7 +7,7 @@ import type { FocusRow } from '../../data/types';
  * usage log is read, and the rain shows no time-away figure.
  */
 export type Weather = 'rain' | 'clear';
-export const RAIN_LINE = 'Waiting out the rain. Back to focus to climb on.';
+export const RAIN_LINE = 'Waiting out the rain. Go back to your focus to climb on.';
 
 export function weatherFor(focus: readonly FocusRow[], now: number): Weather {
   const open = focus.find(row => !row.deleted && row.endedAt == null && row.startedAt <= now);

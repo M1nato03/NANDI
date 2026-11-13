@@ -26,7 +26,7 @@ const ACT: Record<MindAct, (time: string, extra?: Record<string, unknown>, day?:
   cards: (time, extra = {}, day = KEY) => Array.from({ length: RULES.streak.minDueCardsForMark }, () => fact('mind', 'card', { correct: true, ...extra }, time, day)),
 };
 const ctx = (v10: boolean, key = KEY, rules: Rules = RULES, v7 = false, v9 = false) => ({ key, rules, history: RULES_HISTORY, v7, v9, v10 });
-const NOUN: Record<MindAct, string> = { drop: "today's idea", chapter: 'a chapter', calm: 'a Calm sit', case: 'a solved case', board: "Kapi's board", cards: 'your cards' };
+const NOUN: Record<MindAct, string> = { drop: "today’s idea", chapter: 'a chapter', calm: 'a Calm sit', case: 'a solved case', board: "Kapi’s board", cards: 'your cards' };
 
 describe('spec 571 rings: each ring per source (from v10)', () => {
   it('Yatra lights for a planned task done, not for an unplanned one, and keeps the first promise', () => {
@@ -64,10 +64,10 @@ describe('spec 571 rings: each ring per source (from v10)', () => {
       lines.push(`Mind: ${NOUN[a]} and ${NOUN[b]}.`);
     }
     expect(lines).toEqual([
-      "Mind: today's idea and a chapter.", "Mind: today's idea and a Calm sit.", "Mind: today's idea and a solved case.", "Mind: today's idea and Kapi's board.", "Mind: today's idea and your cards.",
-      'Mind: a chapter and a Calm sit.', 'Mind: a chapter and a solved case.', "Mind: a chapter and Kapi's board.", 'Mind: a chapter and your cards.',
-      'Mind: a Calm sit and a solved case.', "Mind: a Calm sit and Kapi's board.", 'Mind: a Calm sit and your cards.',
-      "Mind: a solved case and Kapi's board.", 'Mind: a solved case and your cards.', "Mind: Kapi's board and your cards.",
+      "Mind: today’s idea and a chapter.", "Mind: today’s idea and a Calm sit.", "Mind: today’s idea and a solved case.", "Mind: today’s idea and Kapi’s board.", "Mind: today’s idea and your cards.",
+      'Mind: a chapter and a Calm sit.', 'Mind: a chapter and a solved case.', "Mind: a chapter and Kapi’s board.", 'Mind: a chapter and your cards.',
+      'Mind: a Calm sit and a solved case.', "Mind: a Calm sit and Kapi’s board.", 'Mind: a Calm sit and your cards.',
+      "Mind: a solved case and Kapi’s board.", 'Mind: a solved case and your cards.', "Mind: Kapi’s board and your cards.",
     ]);
   });
 

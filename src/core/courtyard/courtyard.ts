@@ -14,6 +14,18 @@ export const AREAS: readonly { id: AreaId; friend: FriendName; label: string; pr
   { id: 'mind', practice: 'puzzles', friend: 'Kapi', label: 'Mind', objects: ['a puzzle cube', 'a chess stool', 'a kite', 'a telescope', 'a slate of sums'] },
   { id: 'sleep', practice: 'on-time nights', friend: 'Kachhua', label: 'Sleep', objects: ['a sleeping mat', 'a pillow', 'a woven cot', 'a lantern', 'a soft blanket'] },
 ];
+/**
+ * P1 (a9 w03 #1, b2 13 Nov): the line under a corner, in that area's own words. Sleep counts nights and Plan counts days
+ * with a task done; the others keep "N more days of <practice>".
+ */
+export function nextObjectLine(area: Pick<AreaState, 'id' | 'practice' | 'days' | 'nextAt' | 'nextObject'>): string {
+  if (area.nextAt == null || area.nextObject == null) return 'Every object is here. This corner is complete.';
+  const n = area.nextAt - area.days, one = n === 1;
+  const what = area.id === 'sleep' ? (one ? 'on-time night' : 'on-time nights')
+    : area.id === 'plan' ? (one ? 'day with a task done' : 'days with a task done')
+    : `${one ? 'day' : 'days'} of ${area.practice}`;
+  return `${n} more ${what} ${one ? 'adds' : 'add'} ${area.nextObject}.`;
+}
 export const TREE_OBJECTS = ['a neem sapling', 'a young neem', 'a leafy neem', 'a swing on the neem', 'lights in the neem'] as const;
 /** Practice days needed for stages 1–5. Days, never points, so one long sitting cannot rush it. */
 export const STAGE_DAYS = RULES.courtyard.stageDays;

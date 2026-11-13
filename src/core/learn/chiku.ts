@@ -77,7 +77,7 @@ export const KUNAL_SCENE: ChikuScene = {
     { text: 'Wanting to revise', misconceptionId: 'habits-m1' },
     { text: 'Having free time', misconceptionId: 'habits-m2' },
   ],
-  newDay: { caption: "New day: Kunal's train is cancelled, so he takes the bus.", prop: 'bus', question: 'Will he open the app on the bus?' },
+  newDay: { caption: "New day: Kunal’s train is cancelled, so he takes the bus.", prop: 'bus', question: 'Will he open the app on the bus?' },
   guesses: [
     { answer: 'no', why: 'Your card says the train makes him open it. No train today, so no app.', act: 'pat-pocket' },
     { answer: 'yes', why: 'Your card says wanting to revise makes him open it. He still wants to.', act: 'pull-phone' },
