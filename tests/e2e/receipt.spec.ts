@@ -20,8 +20,13 @@ async function toHome(page: Page) {
   // After bedtime the card's row is the resting line, not a move (b2 9 Nov).
   // Spec 660: when nothing is due the row is today's quest instead of the move.
   const row = page.locator('.courtyard-card-next .next-move-go').or(page.locator('.courtyard-card-next .courtyard-card-row')).or(page.locator('.courtyard-rest-row'));
-  await expect(row.or(deck).first()).toBeVisible();
-  if (await deck.isVisible()) { await deck.click(); await page.getByRole('link', { name: 'Courtyard' }).click(); }
+  // K2: the card's row is chosen once its data is in (data-ready, b922833); wait on that, not on a fixed time. The deck
+  // can open after the card has settled (sat-targeted-785138b), so leave it whenever it shows, until Home stays put.
+  await expect(async () => {
+    if (await deck.isVisible()) { await deck.click(); await page.getByRole('link', { name: 'Courtyard' }).click(); }
+    await expect(page.locator('.courtyard-card[data-ready]')).toBeAttached({ timeout: 2_000 });
+    await expect(deck).toHaveCount(0);
+  }).toPass({ timeout: 20_000 });
   await expect(row.first()).toBeVisible();
 }
 
