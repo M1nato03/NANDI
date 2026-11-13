@@ -1,4 +1,4 @@
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 
 // Spec 575 shots (a9's checklist §7): every leg of the three trails mid-leg, its landmark before (hazed) and after
@@ -15,7 +15,8 @@ const walk = (legs: number, today: 'train' | 'mind' | null) => [
   ...(today ? [row(today, 999, dayOf(legs))] : []),
 ];
 async function seed(page: Page, facts: ReturnType<typeof row>[], rainAt?: number, theme: 'light' | 'dark' = 'light') {
-  await page.evaluate(async ({ facts, rainAt, theme }) => {
+  await page.evaluate(async ({ facts, rainAt, theme, kept }) => {
+    localStorage.setItem('nandi.yatra.cards', JSON.stringify(kept));
     const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
     await new Promise<void>((resolve, reject) => {
       const transaction = database.transaction(['ledger', 'settings', 'focus'], 'readwrite');
@@ -30,7 +31,7 @@ async function seed(page: Page, facts: ReturnType<typeof row>[], rainAt?: number
       transaction.oncomplete = () => resolve(); transaction.onerror = () => reject(transaction.error);
     });
     database.close();
-  }, { facts, rainAt, theme });
+  }, { facts, rainAt, theme, kept: KEPT });
 }
 async function shot(page: Page, name: string, legs: number, today: 'train' | 'mind' | null, hour = 12, options: { rain?: boolean; route?: string; target?: string; theme?: 'light' | 'dark'; landmark?: number } = {}) {
   const at = new Date(`${dayOf(legs)}T${String(hour).padStart(2, '0')}:00:00`);
@@ -43,6 +44,8 @@ async function shot(page: Page, name: string, legs: number, today: 'train' | 'mi
   // doesn't lose the rest of the set.
   if (!await scene.waitFor({ timeout: 15_000 }).then(() => true, () => false)) await page.reload();
   await expect(scene).toBeVisible({ timeout: 15_000 });
+  // a9 review 3 (6): the app's own theme is on (the scene art is the same in both; the page around it is not).
+  await expect(page.locator('html')).toHaveAttribute('data-theme', options.theme ?? 'light');
   const close = page.getByRole('button', { name: 'Keep in the journal' });
   if (await close.isVisible({ timeout: 1500 }).catch(() => false)) await close.click();
   if (options.landmark !== undefined) {
@@ -57,6 +60,9 @@ async function shot(page: Page, name: string, legs: number, today: 'train' | 'mi
   await scene.screenshot({ path: `${OUT}/${name}.png` });
 }
 const TRAILS = [['hampta', 5], ['tarsar', 6], ['sandakphu', 8]] as const;
+/** a9 review 3 (5): every landmark's postcard counts as kept, so no "Keep in the journal" sheet opens over a shot. */
+const KEPT = readdirSync('content/yatra').filter(name => name.endsWith('.json'))
+  .flatMap(name => (JSON.parse(readFileSync(`content/yatra/${name}`, 'utf8')) as { legs?: { landmark: { id: string } }[] }).legs?.map(leg => leg.landmark.id) ?? []);
 
 for (const theme of ['light', 'dark'] as const) {
   test(`575 every leg before and after its landmark opens (${theme})`, async ({ page }) => {
@@ -67,9 +73,9 @@ for (const theme of ['light', 'dark'] as const) {
     for (const [trail, legs] of TRAILS) {
       for (let leg = 0; leg < legs; leg++) {
         // The group mid-leg (where the zone reads), then the landmark framed shut and open.
-        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-group`, offset + leg, 'train', 12, { theme });
-        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-landmark-before`, offset + leg, 'train', 12, { theme, landmark: leg });
-        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-landmark-after`, offset + leg, 'mind', 12, { theme, landmark: leg });
+        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-group`, offset + leg, 'train', 12, { theme, target: '.trek-strip' });
+        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-landmark-before`, offset + leg, 'train', 12, { theme, landmark: leg, target: '.trek-strip' });
+        await shot(page, `575-${theme}-${trail}-leg${leg + 1}-landmark-after`, offset + leg, 'mind', 12, { theme, landmark: leg, target: '.trek-strip' });
       }
       offset += legs;
     }

@@ -3,7 +3,7 @@ import { STAR_COLOURS, STRETCHES_PER_LEG, type Constellation, type Trek } from '
 import { RAIN_LINE, type Weather } from '../../core/yatra/weather';
 import { Cast, type CastName } from '../cast/Cast';
 import { hash } from './hash';
-import { Kit, Landmark, RIDGE_W, RidgeTile, scatterLeg, TALL_KIT } from './trekKit';
+import { Kit, kitPiece, Landmark, RIDGE_W, RidgeTile, scatterLeg, TALL_KIT, type Scattered } from './trekKit';
 /** The camp's width: the five friends stand from this far left of the place's point. */
 const CAMP_CLEAR = 320;
 import { liftAt, placeLifts } from '../../core/yatra/path';
@@ -84,6 +84,20 @@ function writeSeen(value: number) { try { localStorage.setItem(SEEN_KEY, String(
 function skyCentre(row: Constellation, trek: Trek): number {
   return trek.legs[row.leg]?.doneOn && row.formedOn === trek.legs[row.leg]!.doneOn ? centreOf(placeX(row.leg + 1)) : placeX(row.leg) + LEG_W / 2;
 }
+/**
+ * a9 review 3 (2): a constellation's name sits ~18 px under its lowest star; if that would touch the group (the friends
+ * and Kapi's tree), it sits over its top star instead. Returns the 44 px button's top (its text is centred in it).
+ */
+const NAME_TEXT = 20, TREE_H = 140;
+export function nameTop(row: Constellation, trek: Trek, lift: (x: number) => number, gx: number): number {
+  const centre = skyCentre(row, trek);
+  const ys = row.stars.map((_, i) => tonightPoint(i, centre, lift(centre + 128)).y);
+  const below = Math.max(...ys) + 18;
+  const groupTop = 276 - (39 + lift(gx)) - TREE_H - 6;
+  const overGroup = centre + 90 > gx - 310 && centre - 90 < gx + 40;
+  const text = overGroup && below + NAME_TEXT > groupTop ? Math.max(2, Math.min(...ys) - 12 - NAME_TEXT) : below;
+  return text + NAME_TEXT / 2 - 22;
+}
 /** The prototype's kite: stars in order, closed into a shape from three on, with one strut across a four-star kite. */
 function kitePath(points: { x: number; y: number }[]): string {
   const at = (point: { x: number; y: number }) => `${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
@@ -127,16 +141,52 @@ const toLayer = (x: number, factor: number) => x * (1 - factor) + factor * VIEW 
 function ZoneLayer({ spans, kind, factor, width }: { spans: readonly ZoneSpan[]; kind: 'far' | 'mid' | 'front'; factor: number; width: number }) {
   return <div className={`trek-ridge trek-ridge-${kind}`} aria-hidden="true">{spans.map((span, i) => {
     const left = i === 0 ? 0 : toLayer(span.from, factor) - BLEND / 2;
-    const right = i === spans.length - 1 ? width : toLayer(span.to, factor) + BLEND / 2;
     // a9 review 2: the next span (drawn later, so on top) fades in over this one, which stays opaque underneath.
-    const fadeIn = i === 0 ? 0 : BLEND;
-    const mask = `linear-gradient(90deg, transparent 0, #000 ${fadeIn}px, #000 100%)`;
+    // a9 review 3 (4): it then runs one BLEND further and fades out there, so where the incoming tile has gaps (sky
+    // between peaks) no square end shows.
+    const end = i === spans.length - 1;
+    const right = end ? width : toLayer(span.to, factor) + BLEND / 2 + BLEND;
+    const fadeIn = i === 0 ? 0 : BLEND, fadeOut = end ? 0 : BLEND;
+    const mask = `linear-gradient(90deg, transparent 0, #000 ${fadeIn}px, #000 calc(100% - ${fadeOut}px), transparent 100%)`;
     const first = Math.floor(left / RIDGE_W), last = Math.ceil(right / RIDGE_W);
     return <div key={`${span.zone}-${i}`} className="trek-zone" data-zone={span.zone} style={{ left, width: right - left, WebkitMaskImage: mask, maskImage: mask }}>
       {Array.from({ length: last - first + 1 }, (_, k) => <svg key={k} viewBox="0 0 1110 294" preserveAspectRatio="none" style={{ left: (first + k) * RIDGE_W - left }}><RidgeTile zone={span.zone} kind={kind} /></svg>)}
     </div>;
   })}</div>;
 }
+/** b2 13 Nov (B) + a9 review 3: the back row stands further back and smaller, so its crowns sit above the heads. */
+export const BACK_BOTTOM = 112, BACK_SCALE = 0.5, FRONT_BOTTOM = 60;
+type Box = { left: number; right: number; bottom: number; top: number };
+/** Every place the group can stand on a trail: each leg's camp and its two mid-leg stops, and the last camp. */
+export function groupStops(legs: number): number[] {
+  return [...Array.from({ length: legs }, (_, i) => STOPS.map(stop => placeX(i) + stop * LEG_W)).flat(), placeX(legs)];
+}
+/** Each friend's head (its top 40 %), in the scene's bottom-up px, at one stop. */
+export function headBoxes(gx: number, lift: (x: number) => number): Box[] {
+  const ground = 39 + lift(gx);
+  return CAMP.map(spot => ({ left: gx + spot.left, right: gx + spot.left + spot.size, bottom: ground + spot.bottom + spot.size * 0.6, top: ground + spot.bottom + spot.size }));
+}
+const overlaps = (a: Box, b: Box) => a.left < b.right && a.right > b.left && a.bottom < b.top && a.top > b.bottom;
+export type PlacedKit = Scattered & { tall: boolean; box: Box };
+/**
+ * The trail's kit, placed: clear of the camps and the landmark spots, and (a9 review 3, b2 ruling 3) no back-row piece
+ * over any friend's head at any stop. Fixed per trail, so nothing pops in or out as the group walks.
+ */
+export function trailKit(trail: Trail, lift: (x: number) => number): PlacedKit[] {
+  const heads = groupStops(trail.legs.length).flatMap(gx => headBoxes(gx, lift));
+  return trail.legs.flatMap((leg, i) => scatterLeg(leg, placeX(i), LEG_W, [[placeX(i) - CAMP_CLEAR, placeX(i) + 40], [placeX(i) + GATE_AT * LEG_W - 60, placeX(i) + GATE_AT * LEG_W + 60], [placeX(i + 1) - CAMP_CLEAR, placeX(i + 1) + 40]]))
+    .map(piece => {
+      const tall = TALL_KIT.has(piece.kind);
+      const scale = tall ? piece.scale * BACK_SCALE : piece.scale;
+      const { w, h } = kitPiece(piece.kind, piece.seed);
+      // A back-row piece stands on the higher ground behind the trail (the most lift within 150 px), so on a climb its
+      // crown stays above the friends' heads instead of dropping onto them.
+      const bottom = tall ? BACK_BOTTOM + Math.max(lift(piece.x - 150), lift(piece.x), lift(piece.x + 150)) : FRONT_BOTTOM + lift(piece.x);
+      return { ...piece, scale, tall, box: { left: piece.x - w * scale / 2, right: piece.x + w * scale / 2, bottom, top: bottom + h * scale } };
+    })
+    .filter(piece => !piece.tall || !heads.some(head => overlaps(piece.box, head)));
+}
+
 /** The ground under the path (option A, §10: the path is drawn): a hill fill under a raised stretch, the grass and the road, all on one lift. */
 function Ground({ width, lift, spans }: { width: number; lift: (x: number) => number; spans: readonly ZoneSpan[] }) {
   const xs = Array.from({ length: Math.ceil(width / 16) + 1 }, (_, i) => Math.min(width, i * 16));
@@ -195,6 +245,12 @@ export function TrekScene({ trek, night, dusk = false, weather = 'clear', bright
       const left = label.offsetLeft - label.offsetWidth / 2, right = left + label.offsetWidth;
       label.dataset.cut = left < node.scrollLeft + 4 || right > node.scrollLeft + node.clientWidth - 4 ? 'yes' : 'no';
     }
+    // a9 review 3 (9): a place's sign shows whole or not at all (no "OBRA" at the edge).
+    const view = node.getBoundingClientRect();
+    for (const sign of world.current.querySelectorAll<HTMLElement>('.trek-place')) {
+      const box = sign.querySelector('b')?.getBoundingClientRect();
+      if (box) sign.dataset.cut = box.left < view.left || box.right > view.right ? 'yes' : 'no';
+    }
   };
   // a11y C9 (jenil-87): the current camp's sign sits fully in view too, at any text size: the least scroll that shows it.
   const keepSign = () => {
@@ -249,8 +305,8 @@ export function TrekScene({ trek, night, dusk = false, weather = 'clear', bright
         {/* b2 13 Nov (A+B): nothing stands in a camp, where the five friends stand (from 320 px left of the place to just
             past it), so nothing pops in or out as the group walks; tall pieces stand in a back row, smaller, so mid-leg
             they read as trees behind the trail. */}
-        <div className="trek-kit" aria-hidden="true">{trek.trail.legs.flatMap((leg, i) => scatterLeg(leg, placeX(i), LEG_W, [[placeX(i) - CAMP_CLEAR, placeX(i) + 40], [placeX(i) + GATE_AT * LEG_W - 60, placeX(i) + GATE_AT * LEG_W + 60], [placeX(i + 1) - CAMP_CLEAR, placeX(i + 1) + 40]]))
-          .map(piece => { const tall = TALL_KIT.has(piece.kind); return <span key={piece.seed} className={tall ? 'tall' : undefined} style={{ left: piece.x, bottom: (tall ? 90 : 60) + lift(piece.x) }}><Kit kind={piece.kind} seed={piece.seed} scale={tall ? piece.scale * 0.6 : piece.scale} /></span>; })}</div>
+        <div className="trek-kit" aria-hidden="true">{trailKit(trek.trail, lift)
+          .map(piece => <span key={piece.seed} className={piece.tall ? 'tall' : undefined} style={{ left: piece.x, bottom: piece.box.bottom }}><Kit kind={piece.kind} seed={piece.seed} scale={piece.scale} /></span>)}</div>
         <div className="trek-overlay" /><div className="trek-pinpricks" aria-hidden="true">{pinpricks.map((dot, i) => <span key={i} style={{ left: dot.x, top: dot.y, opacity: dot.o }} />)}</div>
         {/* The sky over each leg: its constellation, joined and named, stays above that part of the trail. */}
         <svg className="trek-sky" width={width} height="276" aria-hidden="true">{trek.constellations.map(row => {
@@ -261,7 +317,7 @@ export function TrekScene({ trek, night, dusk = false, weather = 'clear', bright
           {trek.constellations.flatMap(row => row.stars.map((star, i) => ({ star, ...tonightPoint(i, skyCentre(row, trek), lift(skyCentre(row, trek) + 128)) }))).concat(loose.map((star, i) => ({ star, ...tonightPoint(i, centreOf(gx), lift(gx)) })))
             .map(({ star, x, y }, i) => <i key={star.id} className={`trek-star${brightId === star.id ? ' bright' : ''}`} data-kind={star.kind} style={{ left: x, top: y, '--star': STAR_COLOURS[star.kind], '--delay': `${i * 0.23}s` } as CSSProperties} />)}
         </div>
-        {night && trek.constellations.map(row => <button type="button" key={row.id} className="trek-constellation-name" style={{ left: skyCentre(row, trek) }} onClick={() => onRename(row)} aria-label={`${row.name}, a constellation. Rename it`}>{row.name}</button>)}
+        {night && trek.constellations.map(row => <button type="button" key={row.id} className="trek-constellation-name" style={{ left: skyCentre(row, trek), top: nameTop(row, trek, lift, gx) }} onClick={() => onRename(row)} aria-label={`${row.name}, a constellation. Rename it`}>{row.name}</button>)}
         {/* D2: nothing stands at a pass (no cairn, no pennant); the leg's landmark is the saddle itself. */}
         {trek.trail.places.map((spot, i) => spot.kind === 'pass' ? null : <div key={spot.id} className="trek-tent" style={{ left: placeX(i) - 45, bottom: 44 + lift(placeX(i)) }}><Tent /></div>)}
         {/* §3 + must 9: each leg's real landmark, hazed until its gate opens; a tap names it in a caption outside the art. */}

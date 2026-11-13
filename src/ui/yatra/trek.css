@@ -23,7 +23,9 @@
 .trek-sun { position: absolute; top: 31px; z-index: 1; width: 58px; height: 58px; border-radius: 50%; background: #f5ca7d; box-shadow: 0 0 0 20px #f7d59933, 0 0 55px #ffebaa77; transition: opacity .8s; }
 /* Spec 575 §10 option A: the road is drawn on the path's own lift (an SVG path in .trek-ground). */
 .trek-road { fill: #c7ad85; opacity: .75; }
-.trek-stream { position: absolute; z-index: 6; left: 0; right: 0; bottom: 5px; height: 48px; background: linear-gradient(178deg, transparent 0 35%, #4a9a9b55 37%, #a4d7cbba 59%, #356f7e80 100%); clip-path: polygon(0 57%, 9% 64%, 19% 52%, 28% 68%, 37% 56%, 48% 63%, 57% 51%, 68% 63%, 81% 50%, 91% 61%, 100% 53%, 100% 100%, 0 100%); }
+.trek-stream { position: absolute; z-index: 6; left: 0; right: 0; bottom: 5px; height: 48px; background: linear-gradient(178deg, transparent 0 35%, #4a9a9b55 37%, #a4d7cbba 59%, #356f7e80 100%); clip-path: polygon(0 57%, 9% 64%, 19% 52%, 28% 68%, 37% 56%, 48% 63%, 57% 51%, 68% 63%, 81% 50%, 91% 61%, 100% 53%, 100% 100%, 0 100%);
+  /* a9 review 3 (7): the water tapers in and out over 40 px, never a square end. */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%); }
 .trek-overlay { position: absolute; inset: 0; z-index: 8; pointer-events: none; opacity: 0; background: linear-gradient(180deg, #101b33e8 0%, #14213ac0 42%, #142b37ab 73%, #15222cab 100%); transition: opacity 1.1s; }
 .trek-pinpricks { position: absolute; inset: 0; z-index: 9; pointer-events: none; opacity: 0; transition: opacity .8s; }
 .trek-pinpricks span { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff7d5; box-shadow: 0 0 5px #fff7d5; }
@@ -98,6 +100,7 @@
 .trek-postcard p { margin: 0 0 8px; }
 .trek-postcard .trek-sources { margin: 8px 0 0; padding: 0; list-style: none; font-size: .75rem; color: var(--ink-3); }
 .trek-constellation-name[data-cut='yes'] { visibility: hidden; }
+.trek-place[data-cut='yes'] { visibility: hidden; }
 .trek-actor.kachhua .kachhua-shell { transform-box: view-box; transform-origin: 58px 77px; transition: transform var(--calm-out, 6s) ease-in-out; }
 .trek-actor.kachhua[data-phase='in'] .kachhua-shell { transform: translateY(-5px) scaleY(1.08); transition-duration: var(--calm-in, 4s); }
 @media (prefers-reduced-motion: reduce) { .trek-actor.kachhua .kachhua-shell { transition: none; transform: none; } }
