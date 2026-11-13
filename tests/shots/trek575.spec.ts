@@ -124,6 +124,8 @@ test('575 the highest points at night, clear of the stars; the switch; a caption
 });
 
 test('575 swipe across a zone boundary (frames and a video)', async ({ browser }, testInfo) => {
+  // A retake that names none of the swipe shots skips it whole (its first shot seeds the page; shots-575-64a6ffc).
+  test.skip(!!ONLY && !ONLY.test('575-swipe-start'), 'SHOTS575_ONLY names no swipe shot');
   test.setTimeout(120_000);
   const context = await browser.newContext({ baseURL: testInfo.project.use.baseURL, viewport: { width: 360, height: 800 }, reducedMotion: 'reduce', recordVideo: { dir: `${OUT}/video`, size: { width: 360, height: 800 } } });
   const page = await context.newPage();
