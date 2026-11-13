@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { offerWait, postcardPlan } from '../../core/yatra/postcards';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time/dayKey';
@@ -262,12 +263,37 @@ export function TrekStrip() {
   const postcardDialog = useModalFocus<HTMLElement>(closePostcard);
   const renameDialog = useModalFocus<HTMLElement>(() => setRenaming(null));
   // A newly opened gate shows its postcard once (Kapi swings it open by day), then it lives in the Journal.
+  // 575 review 3: only a real arrival (a gate done today or yesterday) offers its postcard; older open gates go to the
+  // Journal as kept. The offer waits until the strip is still (no finger down, no scroll for a moment), never mid-swipe.
+  const strip = useRef<HTMLElement>(null);
+  const motion = useRef({ lastMoveAt: 0, down: false });
+  useEffect(() => {
+    const node = strip.current;
+    if (!node) return;
+    const moved = () => { motion.current.lastMoveAt = Date.now(); };
+    const down = () => { motion.current.down = true; moved(); };
+    const up = () => { motion.current.down = false; moved(); };
+    node.addEventListener('scroll', moved, true);
+    node.addEventListener('pointerdown', down);
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
+    return () => { node.removeEventListener('scroll', moved, true); node.removeEventListener('pointerdown', down); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up); };
+  }, [yatra === undefined]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!yatra || yatra.night || postcard !== null) return;
-    const kept = readCards();
-    const fresh = yatra.trek.legs.find(leg => leg.gateOn && !kept.includes(yatra.trek.trail.legs[leg.index]!.landmark.id));
-    if (!fresh) return;
-    const timer = window.setTimeout(() => setPostcard(fresh.index), 900);
+    const now = Date.now();
+    const yesterday = new Date(now); yesterday.setDate(yesterday.getDate() - 1);
+    const plan = postcardPlan(yatra.trek.legs.map(row => ({ id: yatra.trek.trail.legs[row.index]!.landmark.id, gateOn: row.gateOn, doneOn: row.doneOn })), readCards(), dayKey(now), dayKey(yesterday.getTime()));
+    for (const id of plan.silent) keepCard(id);
+    if (plan.offer === null) return;
+    const offer = plan.offer;
+    let timer = 0;
+    const check = () => {
+      const wait = offerWait(Date.now(), now, motion.current.lastMoveAt, motion.current.down);
+      if (wait === 0) setPostcard(offer);
+      else timer = window.setTimeout(check, wait ?? 300);
+    };
+    timer = window.setTimeout(check, offerWait(now, now, motion.current.lastMoveAt, motion.current.down) ?? 300);
     return () => window.clearTimeout(timer);
   }, [yatra, postcard]);
   const trek = yatra?.trek;
@@ -287,7 +313,7 @@ export function TrekStrip() {
 
   // CLS gate C7 (stage 2): until the trek's data is read, hold the strip's settled height, so Mor's plan below never moves.
   if (yatra === undefined) return <div className="trek-slot" aria-hidden="true" />;
-  return <section className="screen yatra-screen yatra-home trek-strip" aria-label="Yatra">
+  return <section ref={strip} className="screen yatra-screen yatra-home trek-strip" aria-label="Yatra">
     <div className="home-title">
       <h2>{trek && yatra ? campLine(trek, yatra.night) : 'Field notes'}</h2>
       {/* From the first postcard on: a 0 stamp on a new phone reads as a score. */}
