@@ -116,6 +116,6 @@ test('"Still working?" asks after 60 minutes with no touch, a tap keeps the time
   // No tap after the next question: it pauses itself at that question (60 minutes after the tap).
   await page.clock.fastForward(66 * MIN);
   await lookAgain(page);
-  await expect(focus(page)).toContainText('Paused: no tap after "Still working?"');
+  await expect(focus(page)).toContainText('Paused: no tap after “Still working?”');
   await expect(focus(page).locator('.mor-clock')).toHaveText(/^121:\d\d$/);
 });

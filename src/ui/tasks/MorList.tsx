@@ -231,7 +231,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
 /** Why a focus stopped by itself: the guard saw a distracting app, or "Still working?" had no tap. */
 function pausedLabel(pause: { reason?: 'still' | 'guard'; app?: string } | undefined): string {
   if (pause?.reason === 'guard') return `Paused: you opened ${pause.app ? guardAppName(pause.app) : 'another app'}`;
-  if (pause?.reason === 'still') return 'Paused: no tap after "Still working?"';
+  if (pause?.reason === 'still') return 'Paused: no tap after “Still working?”';
   return 'Paused';
 }
 

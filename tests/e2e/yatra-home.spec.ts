@@ -100,7 +100,7 @@ test('a focus left running is held at "Still working?" when the app next opens o
   await expect(strip(page)).toHaveText(/6\d:\d\d on the clock/);
   await strip(page).click();
   const card = page.getByRole('region', { name: 'Focus' });
-  await expect(card).toContainText('Paused: no tap after "Still working?"');
+  await expect(card).toContainText('Paused: no tap after “Still working?”');
   // 60 minutes, two clean 25-minute runs: 30 + 10, and no more.
   await expect(card.locator('.mor-earned')).toHaveText('+40 XP so far');
 });

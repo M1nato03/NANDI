@@ -32,14 +32,23 @@ export function findStraightApostrophes(text: string): { line: number; phrase: s
   return text.split(/\r?\n/).flatMap((line, index) => [...line.matchAll(/[A-Za-z]+'[A-Za-z]+/g)].map(match => ({ line: index + 1, phrase: `straight apostrophe: ${match[0]}` })));
 }
 
+/** S1 (Sun): a phrase in straight double quotes ("Open anyway") in user-facing copy; a CSS font list is not copy. */
+export function findStraightQuotes(text: string): { line: number; phrase: string }[] {
+  // Not copy: a CSS font list or a canvas font (700 20px "DM Sans"), or a selector ([type="range"]).
+  if (/\b(sans-serif|serif|monospace)\b|\d(px|rem|em)\b|=\s*"/.test(text)) return [];
+  // A string that is only a quoted name ('"DM Sans"', a font picked in code) is a value, not a sentence.
+  if (/^"[^"]*"$/.test(text.trim())) return [];
+  return text.split(/\r?\n/).flatMap((line, index) => [...line.matchAll(/"[A-Za-z][^"\n]*"/g)].map(match => ({ line: index + 1, phrase: `straight quotes: ${match[0]}` })));
+}
+
 export function findCopyIssues(text: string): { line: number; phrase: string }[] {
   return text.split(/\r?\n/).flatMap((line, index) => [...line.matchAll(pattern)].map(match => ({ line: index + 1, phrase: match[0] })));
 }
 
-function visibleFragments(path: string, source: string): { line: number; text: string }[] {
+function visibleFragments(path: string, source: string): { line: number; text: string; attr?: boolean }[] {
   if (path.endsWith('.json')) return source.split(/\r?\n/).map((text, index) => ({ line: index + 1, text }));
   const file = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, path.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
-  const fragments: { line: number; text: string }[] = [];
+  const fragments: { line: number; text: string; attr?: boolean }[] = [];
   // A className is never copy: its strings are skipped (b2 13 Nov, A2).
   const inClassName = (node: ts.Node) => {
     for (let at: ts.Node | undefined = node.parent; at; at = at.parent) if (ts.isJsxAttribute(at)) return at.name.getText(file) === 'className';
@@ -49,7 +58,7 @@ function visibleFragments(path: string, source: string): { line: number; text: s
     if ((ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node) || ts.isTemplateExpression(node)) && inClassName(node)) return;
     if (ts.isJsxText(node)) fragments.push({ line: file.getLineAndCharacterOfPosition(node.getStart(file)).line + 1, text: node.getText(file) });
     if (ts.isStringLiteral(node) && (/\s|[.!?]/.test(node.text) || ts.isJsxAttribute(node.parent))) {
-      fragments.push({ line: file.getLineAndCharacterOfPosition(node.getStart(file)).line + 1, text: node.text });
+      fragments.push({ line: file.getLineAndCharacterOfPosition(node.getStart(file)).line + 1, text: node.text, attr: ts.isJsxAttribute(node.parent) });
     }
     // Template copy is checked for apostrophes only (see scan).
     if (ts.isNoSubstitutionTemplateLiteral(node) || ts.isTemplateExpression(node)) {
@@ -73,7 +82,7 @@ async function scan(path: string): Promise<number> {
       for (const fragment of visibleFragments(child, source)) {
         const template = fragment.text.startsWith('\u0000');
         const text = template ? fragment.text.slice(1) : fragment.text;
-        const issues = [...(template ? [] : findCopyIssues(text)), ...(ui ? [...findStraightApostrophes(text), ...findLossWords(text, child)] : [])];
+        const issues = [...(template ? [] : findCopyIssues(text)), ...(ui ? [...findStraightApostrophes(text), ...findLossWords(text, child), ...(fragment.attr ? [] : findStraightQuotes(text))] : [])];
         for (const hit of issues) {
           console.log(`${child}:${fragment.line + hit.line - 1}:${hit.phrase}`);
           hits++;

@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { findCopyIssues, findLossWords, findStraightApostrophes } from './copy-lint';
+import { findCopyIssues, findLossWords, findStraightApostrophes, findStraightQuotes } from './copy-lint';
 
 it('finds discouraged product phrases without regard to case', () => {
   expect(findCopyIssues('Addiction, FAIL, Lost, You Should, streak broken.')).toEqual([
@@ -26,4 +26,12 @@ it('b2 13 Nov (A2): "streak" and "missed" are loss words in app copy, except the
   expect(findLossWords('Missed', 'src\\ui\\learn\\Matka.tsx')).toEqual([]);
   expect(findLossWords('Missed', 'src/ui/screens/Today.tsx')).toHaveLength(1);
   expect(findLossWords('Days off never take anything away.', 'src/ui/courtyard/Courtyard.tsx')).toEqual([]);
+});
+
+it('S1: flags a phrase in straight double quotes, not curly ones or a CSS font list', () => {
+  expect(findStraightQuotes('quiet 10 min after "Open anyway"').map(hit => hit.phrase)).toEqual(['straight quotes: "Open anyway"']);
+  expect(findStraightQuotes('quiet after \u201cOpen anyway\u201d')).toEqual([]);
+  expect(findStraightQuotes('"DM Sans", sans-serif')).toEqual([]);
+  expect(findStraightQuotes('700 20px "Bricolage Grotesque"')).toEqual([]);
+  expect(findStraightQuotes('input[type="range"]')).toEqual([]);
 });
