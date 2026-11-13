@@ -184,7 +184,7 @@ export function questStones(facts: readonly LedgerRow[]): { id: string; questId:
 
 export interface RealityCheck {
   quests: number;
-  /** Per prediction made: how often it was made, and how often it happened. Misses stay in. */
+  /** Per prediction made: how often it was made, and how often it happened (a done quest whose fear did not come true counts). */
   predictions: { id: Prediction; label: string; made: number; happened: number }[];
   fearBefore: number | null; feltAfter: number | null;
 }
@@ -193,7 +193,8 @@ export const REALITY_CHECK_AFTER = 3;
 export function realityCheck(facts: readonly LedgerRow[]): RealityCheck | null {
   const rows = facts.filter(fact => !fact.deleted && fact.mode === QUEST_MODE && fact.kind === QUEST_KIND.done && typeof fact.inputs.prediction === 'string' && fact.inputs.outcome !== 'not-done');
   if (rows.length < REALITY_CHECK_AFTER) return null;
-  const mean = (values: number[]) => values.length ? Math.round(values.reduce((a, b) => a + b, 0) / values.length * 10) / 10 : null;
+  // a9 13 Nov (w08 #6): whole numbers, so both read the same way ("4/5 … 2/5").
+  const mean = (values: number[]) => values.length ? Math.round(values.reduce((a, b) => a + b, 0) / values.length) : null;
   const scores = (key: string) => rows.map(row => row.inputs[key]).filter((n): n is number => typeof n === 'number' && n >= 1 && n <= 5);
   return {
     quests: rows.length,
@@ -204,7 +205,12 @@ export function realityCheck(facts: readonly LedgerRow[]): RealityCheck | null {
 
 /** The Reality Check in one line (the view's headline, the Sunday receipt line). No names, no rankings. */
 export function realityLine(check: RealityCheck): string {
-  const top = [...check.predictions].sort((a, b) => b.made - a.made)[0]!;
+  // a9 13 Nov (w08): the headline names a real prediction, never "Something else"; the label keeps its own case ("I’ll").
+  const top = [...check.predictions].filter(p => p.id !== 'other').sort((a, b) => b.made - a.made)[0];
+  if (!top) {
+    const made = check.predictions.reduce((sum, p) => sum + p.made, 0), happened = check.predictions.reduce((sum, p) => sum + p.happened, 0);
+    return `Your fear came true ${happened} of ${made} times.`;
+  }
   const times = (n: number) => n === 1 ? 'once' : n === 2 ? 'twice' : `${n} times`;
-  return `You predicted “${top.label.toLowerCase()}” ${times(top.made)}. It happened ${top.happened === 0 ? 'never' : times(top.happened)}.`;
+  return `You predicted “${top.label}” ${times(top.made)}. ${top.happened === 0 ? 'It never happened.' : `It happened ${times(top.happened)}.`}`;
 }

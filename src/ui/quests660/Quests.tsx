@@ -323,8 +323,8 @@ export function YouQuests() {
       <h2 id="reality-title">Reality Check</h2>
       <p className="reality-line">{realityLine(data.check)}</p>
       {data.check.fearBefore !== null && data.check.feltAfter !== null && <p className="reality-fear">Your fear before: <strong>{data.check.fearBefore}/5</strong>. How it actually felt: <strong>{data.check.feltAfter}/5</strong>.</p>}
-      <ul className="reality-list">{data.check.predictions.map(p => <li key={p.id}><span>{p.label}</span><span>predicted {p.made}, happened {p.happened}</span></li>)}</ul>
-      <p className="small">From {data.check.quests} courage and speak quests. Misses stay in.</p>
+      <ul className="reality-list">{data.check.predictions.map(p => <li key={p.id}><span>{p.label}</span><span className="reality-count">predicted {p.made}, happened {p.happened}</span></li>)}</ul>
+      <p className="small">From the {data.check.quests} Courage and Speak quests you did.</p>
     </section> : <section className="card"><h2>Reality Check</h2><p>After 3 Courage or Speak quests, this shows how often your fear came true.</p></section>}
     <p className="quest-stones-count">{data.stones.length} {data.stones.length === 1 ? 'stone' : 'stones'} on your path</p>
     {finished.length > 0 && <ul className="quest-done-list">{finished.slice(0, 30).map(row => {

@@ -169,7 +169,7 @@ test('Courage and Speak ask fear and a prediction; after 3 the Reality Check app
   await play('courage-tell-them', 'They’ll ignore me', 'What I feared happened');
   await play('speak-spin-60', 'I’ll freeze', 'Better than I thought');
   await open(page, 'you/quests', '.you-quests');
-  await expect(page.getByTestId('reality-check')).toContainText('You predicted “they’ll ignore me” twice. It happened once.');
+  await expect(page.getByTestId('reality-check')).toContainText('You predicted “They’ll ignore me” twice. It happened once.');
   await expect(page.getByTestId('reality-check')).toContainText('Your fear before: 4/5. How it actually felt: 2/5.');
 });
 

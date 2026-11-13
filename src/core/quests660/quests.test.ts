@@ -149,9 +149,21 @@ describe('stones and Reality Check', () => {
     const check = realityCheck(rows)!;
     expect(check.quests).toBe(3);
     expect(check.predictions.find(p => p.id === 'ignore')).toMatchObject({ made: 2, happened: 1 });
-    expect(check.fearBefore).toBe(4.3);
+    expect(check.fearBefore).toBe(4);
     expect(check.feltAfter).toBe(2);
-    expect(realityLine(check)).toBe('You predicted “they’ll ignore me” twice. It happened once.');
+    expect(realityLine(check)).toBe('You predicted “They’ll ignore me” twice. It happened once.');
+  });
+  it('a9 13 Nov (w08): the label keeps its case, 0 reads "It never happened.", and "Something else" is never the headline', () => {
+    const freeze = [
+      done('courage-ask-at-home', '2026-11-13', { prediction: 'freeze', outcome: 'better', fear: 4, felt: 1 }),
+      done('courage-tell-them', '2026-11-14', { prediction: 'freeze', outcome: 'fine', fear: 3, felt: 2 }),
+      done('speak-spin-60', '2026-11-15', { prediction: 'other', outcome: 'fine', fear: 2, felt: 2 }),
+      done('courage-class-question', '2026-11-16', { prediction: 'other', outcome: 'happened', fear: 2, felt: 2 }),
+      done('courage-ask-twice', '2026-11-17', { prediction: 'other', outcome: 'fine', fear: 2, felt: 2 }),
+    ];
+    expect(realityLine(realityCheck(freeze)!)).toBe('You predicted “I’ll freeze” twice. It never happened.');
+    const others = freeze.map(row => ({ ...row, inputs: { ...row.inputs, prediction: 'other' } }));
+    expect(realityLine(realityCheck(others)!)).toBe('Your fear came true 1 of 5 times.');
   });
   it('b2 12 Nov (§2.3 "honest misses included"): a done quest whose prediction did not come true counts, made 1 happened 0', () => {
     const rows = [
