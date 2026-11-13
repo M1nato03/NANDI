@@ -26,7 +26,7 @@ test('a wrong card: Chiku acts it out, the truth plays after, the mistake is the
   await expect(beat(page)).toHaveAttribute('data-beat', 'truth');
   await expect(page.locator('.chiku-actor')).toHaveAttribute('data-act', 'pat-pocket');
   await expect(beat(page)).toHaveAttribute('data-beat', 'done');
-  await expect(page.locator('.chiku-end')).toContainText('My card said "Wanting to revise"');
+  await expect(page.locator('.chiku-end')).toContainText('My card said “Wanting to revise”');
   await expect(page.locator('.chiku-end')).not.toContainText(/\byou\b|wrong/i);
   await expect(page.locator('[data-played]')).toHaveAttribute('data-played', '1:false');
   // Another card: still open, and the first play already counted.
@@ -126,6 +126,6 @@ test('a card that ends with a full stop is quoted without it (spec 51 HTWF cards
   await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText('You gave Chiku: Blame the classmate for my message.');
   for (let i = 0; i < 4; i++) await stage(page).click();
   await expect(beat(page)).toHaveAttribute('data-beat', 'done');
-  await expect(page.locator('.chiku-end .chiku-say')).toContainText('My card said "Blame the classmate for my message", so I guessed');
+  await expect(page.locator('.chiku-end .chiku-say')).toContainText('My card said “Blame the classmate for my message”, so I guessed');
   await expect(page.locator('.chiku-step')).not.toContainText(/\.",|\.\./);
 });

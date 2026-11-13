@@ -41,6 +41,13 @@ export function findStraightQuotes(text: string): { line: number; phrase: string
   return text.split(/\r?\n/).flatMap((line, index) => [...line.matchAll(/"[A-Za-z][^"\n]*"/g)].map(match => ({ line: index + 1, phrase: `straight quotes: ${match[0]}` })));
 }
 
+/** S2 (Sun): in a template, straight quotes around an interpolation ('${title}', "${card}") in user-facing copy. */
+export function findQuotedInterpolations(source: string): { line: number; phrase: string }[] {
+  return source.split(/\r?\n/).flatMap((line, index) => [...line.matchAll(/(['"])\$\{[^}]+\}\1/g)]
+    .filter(match => line.lastIndexOf('`', match.index) !== -1)
+    .map(match => ({ line: index + 1, phrase: `straight quotes around an interpolation: ${match[0]}` })));
+}
+
 export function findCopyIssues(text: string): { line: number; phrase: string }[] {
   return text.split(/\r?\n/).flatMap((line, index) => [...line.matchAll(pattern)].map(match => ({ line: index + 1, phrase: match[0] })));
 }
@@ -79,6 +86,7 @@ async function scan(path: string): Promise<number> {
     else if (entry.isFile() && /\.(tsx?|json)$/.test(child) && !/\.test\./.test(child)) {
       const source = await readFile(child, 'utf8');
       const ui = !child.endsWith('.json');
+      if (ui) for (const hit of findQuotedInterpolations(source)) { console.log(`${child}:${hit.line}:${hit.phrase}`); hits++; }
       for (const fragment of visibleFragments(child, source)) {
         const template = fragment.text.startsWith('\u0000');
         const text = template ? fragment.text.slice(1) : fragment.text;

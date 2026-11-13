@@ -95,7 +95,7 @@ export function nextMove(input: NextMoveInput): NextMove {
 /** Home's card: a title and one detail line per move. The words for spec 45b's moves are unchanged. */
 export function moveWords(move: NextMove): { title: string; detail: string } {
   switch (move.kind) {
-    case 'focus': return { title: `${move.running ? 'Working on' : 'Paused'} '${move.title}'`, detail: '' };
+    case 'focus': return { title: `${move.running ? 'Working on' : 'Paused'} “${move.title}”`, detail: '' };
     case 'book-check': return { title: 'Book check', detail: 'Three questions on yesterday’s chapter' };
     case 'train': return { title: 'Today’s session with Nandi', detail: 'A Train day' };
     case 'task': return { title: move.title, detail: move.at != null ? `Planned for ${new Date(move.at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}` : 'Planned for today' };

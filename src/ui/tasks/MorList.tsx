@@ -38,7 +38,7 @@ export function notedLine(task: TaskRow, workedMinutes: number, finished: boolea
   const set = task.timeSet && task.estimateMin ? ` You set ${task.estimateMin}.` : '';
   // Spec 36: the guard-watched minutes earned focus XP; the Done line says how much.
   const earned = focusXp > 0 ? ` · +${focusXp} focus XP` : '';
-  return finished ? `Noted: '${task.title}' took ${minutes(workedMinutes)}${earned}.${set}` : `Noted: ${minutes(workedMinutes)} on '${task.title}' so far.`;
+  return finished ? `Noted: “${task.title}” took ${minutes(workedMinutes)}${earned}.${set}` : `Noted: ${minutes(workedMinutes)} on “${task.title}” so far.`;
 }
 
 /** The optional average line: shown once there are 5 or more timed, finished tasks. */

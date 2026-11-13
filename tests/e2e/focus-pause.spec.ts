@@ -24,14 +24,14 @@ test('Start after Stop for now carries on from 10:00 and keeps counting', async 
   await page.clock.fastForward(10 * MIN);
   await expect(clock(page)).toHaveText(/^10:0\d$/);
   await focus(page).getByRole('button', { name: 'Stop for now' }).click();
-  await expect(page.locator('.mor-noted')).toHaveText("Noted: 10 minutes on 'Write the report' so far.");
+  await expect(page.locator('.mor-noted')).toHaveText("Noted: 10 minutes on “Write the report” so far.");
   await start(page, 'Write the report');
   await expect(clock(page)).toHaveText(/^10:0\d$/);
   await page.clock.fastForward(2 * MIN);
   await expect(clock(page)).toHaveText(/^12:0\d$/);
   // Stop for now again says the whole time so far.
   await focus(page).getByRole('button', { name: 'Stop for now' }).click();
-  await expect(page.locator('.mor-noted')).toHaveText("Noted: 12 minutes on 'Write the report' so far.");
+  await expect(page.locator('.mor-noted')).toHaveText("Noted: 12 minutes on “Write the report” so far.");
 });
 
 test('Pause holds the clock at 3:00 and Resume carries on from the same second', async ({ page }) => {
@@ -75,7 +75,7 @@ test('Done after Stop for now and Start again notes the full minutes', async ({ 
   await start(page, 'Fix the bike');
   await page.clock.fastForward(5 * MIN);
   await focus(page).getByRole('button', { name: 'Done' }).click();
-  await expect(page.locator('.mor-noted')).toHaveText("Noted: 'Fix the bike' took 12 minutes.");
+  await expect(page.locator('.mor-noted')).toHaveText("Noted: “Fix the bike” took 12 minutes.");
 });
 
 test('the focus timer screen carries on from the task total too', async ({ page }) => {

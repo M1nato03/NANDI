@@ -18,9 +18,9 @@ describe("Mor's list (spec 27)", () => {
     expect(listOf(task({ status: 'dropped' }), today)).toBeUndefined();
   });
   it("Mor's line says what it took, adds the set time only when one was set, and never judges", () => {
-    expect(notedLine(task({}), 42, true)).toBe("Noted: 'Revise chapter 4' took 42 minutes.");
-    expect(notedLine(task({ timeSet: true }), 42, true)).toBe("Noted: 'Revise chapter 4' took 42 minutes. You set 30.");
-    expect(notedLine(task({}), 1, false)).toBe("Noted: 1 minute on 'Revise chapter 4' so far.");
+    expect(notedLine(task({}), 42, true)).toBe("Noted: “Revise chapter 4” took 42 minutes.");
+    expect(notedLine(task({ timeSet: true }), 42, true)).toBe("Noted: “Revise chapter 4” took 42 minutes. You set 30.");
+    expect(notedLine(task({}), 1, false)).toBe("Noted: 1 minute on “Revise chapter 4” so far.");
     for (const line of [notedLine(task({ timeSet: true }), 90, true), notedLine(task({ timeSet: true }), 5, true)]) expect(line).not.toMatch(/late|over|under|fail/i);
   });
   it('the average line waits for 5 timed tasks', () => {

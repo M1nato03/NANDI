@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { findCopyIssues, findLossWords, findStraightApostrophes, findStraightQuotes } from './copy-lint';
+import { findCopyIssues, findLossWords, findQuotedInterpolations, findStraightApostrophes, findStraightQuotes } from './copy-lint';
 
 it('finds discouraged product phrases without regard to case', () => {
   expect(findCopyIssues('Addiction, FAIL, Lost, You Should, streak broken.')).toEqual([
@@ -34,4 +34,11 @@ it('S1: flags a phrase in straight double quotes, not curly ones or a CSS font l
   expect(findStraightQuotes('"DM Sans", sans-serif')).toEqual([]);
   expect(findStraightQuotes('700 20px "Bricolage Grotesque"')).toEqual([]);
   expect(findStraightQuotes('input[type="range"]')).toEqual([]);
+});
+
+it('S2: flags straight quotes around an interpolation in a template, not curly ones', () => {
+  const tick = String.fromCharCode(96);
+  expect(findQuotedInterpolations(`const a = ${tick}Noted: '\${title}' took\${tick};`).map(hit => hit.line)).toEqual([1]);
+  expect(findQuotedInterpolations(`const a = ${tick}My card said "\${card}"\${tick};`).map(hit => hit.line)).toEqual([1]);
+  expect(findQuotedInterpolations(`const a = ${tick}Noted: “\${title}” took\${tick};`)).toEqual([]);
 });

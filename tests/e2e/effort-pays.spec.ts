@@ -48,7 +48,7 @@ test('a watched 25-minute focus shows +17 XP so far and the Done line says +17 f
   await expect(focus(page).locator('.mor-clock')).toHaveText(/^25:\d\d$/);
   await expect(focus(page).locator('.mor-earned')).toHaveText('+17 XP so far');
   await focus(page).getByRole('button', { name: 'Done' }).click();
-  await expect(page.locator('.mor-noted')).toHaveText("Noted: 'Read chapter 5' took 25 minutes · +17 focus XP.");
+  await expect(page.locator('.mor-noted')).toHaveText("Noted: “Read chapter 5” took 25 minutes · +17 focus XP.");
   const [fact] = await focusFacts(page);
   expect(fact).toMatchObject({ guard: true, blocks: 1, distractedMs: 0 });
   expect(Number(fact!.paidMs)).toBeGreaterThanOrEqual(25 * MIN);
@@ -84,7 +84,7 @@ test('time in a guarded app never pays, and the visit breaks the clean block', a
   await lookAgain(page);
   await expect(focus(page).locator('.mor-earned')).toHaveText('+12 XP so far');
   await focus(page).getByRole('button', { name: 'Done' }).click();
-  await expect(page.locator('.mor-noted')).toHaveText("Noted: 'Write the essay' took 30 minutes · +12 focus XP.");
+  await expect(page.locator('.mor-noted')).toHaveText("Noted: “Write the essay” took 30 minutes · +12 focus XP.");
   const [fact] = await focusFacts(page);
   expect(fact).toMatchObject({ guard: true, blocks: 0, distractedMs: 5 * MIN });
   expect(Math.floor(Number(fact!.paidMs) / MIN)).toBe(25);
@@ -100,7 +100,7 @@ test('with Usage access off the focus still counts and the task still pays, but 
   await expect(focus(page).getByRole('button', { name: 'Turn it on' })).toBeVisible();
   await expect(focus(page).locator('.mor-earned')).toHaveCount(0);
   await focus(page).getByRole('button', { name: 'Done' }).click();
-  await expect(page.locator('.mor-noted')).toHaveText("Noted: 'Clean the desk' took 30 minutes.");
+  await expect(page.locator('.mor-noted')).toHaveText("Noted: “Clean the desk” took 30 minutes.");
   await expect.poll(async () => (await focusFacts(page)).length).toBe(1);
   expect((await focusFacts(page))[0]).toMatchObject({ guard: false });
 });
