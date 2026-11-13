@@ -28,7 +28,12 @@ test('each friend opens a notebook page: the place, one heading, the friend on i
     await expect(head(page).locator('.eyebrow')).toHaveText(area.place);
     await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toHaveText(area.heading);
     // The friend stands on the head's ground, not on a coloured band (Calm's friend is on its breathing stage).
-    if (area.hash !== 'grow/calm') {
+    // J3 (Jenil 13 Nov, "only keep one"): Plan sits under the trek strip, so its heading keeps its words only and the
+    // camp's Mor above is its friend.
+    if (area.hash === 'plan') {
+      await expect(head(page).locator('.notebook-ground [data-cast]')).toHaveCount(0);
+      await expect(page.locator('main .trek-strip .mor-friend')).toBeVisible();
+    } else if (area.hash !== 'grow/calm') {
       await expect(head(page).locator('.notebook-ground [data-cast]')).toHaveCount(1);
       await expect(head(page)).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     }

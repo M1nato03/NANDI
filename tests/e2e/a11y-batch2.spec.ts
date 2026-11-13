@@ -84,7 +84,7 @@ test('C10: with notifications off, a timed task today shows how to turn them on;
   await expect(page.locator('.reminders-off')).toHaveCount(0);
   await seedTimedTask(page, 'Call the bank');
   await page.reload(); // the seed went straight to the database, past the app's live queries
-  await expect(page.locator('.reminders-off')).toContainText('your timed tasks won\'t ring');
+  await expect(page.locator('.reminders-off')).toContainText('your timed tasks won’t ring');
   await expect(page.locator('.reminders-off')).toContainText("browser’s site settings");
 });
 

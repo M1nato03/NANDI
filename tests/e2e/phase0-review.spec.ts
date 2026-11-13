@@ -50,9 +50,12 @@ test('legacy fixture previews and imports through the restore picker', async ({ 
   await (await chooserPromise).setFiles('legacy/data/fixture-legacy-export.json');
   const preview = page.getByLabel('Restore preview');
   await expect(preview).toContainText('Older export');
-  for (const [name, count] of Object.entries({ cards: 3, ratings: 2, deckProg: 3, puzzleRuns: 2, flags: 1, settings: 8 })) {
+  // Sat Q1: the rows read in plain words; ratings, deck progress, flags and settings are part of "Other app data".
+  for (const [name, count] of Object.entries({ 'Remember cards': 3, 'Puzzles played': 2 })) {
     await expect(preview.locator('.count-list li').filter({ has: page.locator('span', { hasText: new RegExp(`^${name}$`) }) }).locator('strong')).toHaveText(String(count));
   }
+  const other = Number(await preview.locator('.count-list li').filter({ has: page.locator('span', { hasText: /^Other app data$/ }) }).locator('strong').textContent());
+  expect(other).toBeGreaterThanOrEqual(2 + 3 + 1 + 8);
   await preview.getByRole('button', { name: 'Confirm restore' }).click();
   await expect(page.getByRole('main').getByRole('status')).toContainText('Your data is ready.');
   const counts = await page.evaluate(() => (globalThis as unknown as { __nandiTest: TestHook }).__nandiTest.shellCounts());
