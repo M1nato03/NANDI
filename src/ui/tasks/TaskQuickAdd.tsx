@@ -39,7 +39,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [], label = 'Add a task'
     const scheduledStart = schedule === 'today' ? new Date(slot).getTime() : undefined;
     if (schedule === 'today' && (!Number.isFinite(scheduledStart) || Number.isNaN(scheduledStart))) { setFeedback('Pick a date and time.'); return; }
     const parts = count > RULES.tasks.maxEstimateMin ? splitEstimates(count) : null;
-    if (count > RULES.tasks.maxEstimateMin && !parts) { setFeedback('Try an estimate that can split into 25 to 60 minute steps.'); return; }
+    if (count > RULES.tasks.maxEstimateMin && !parts) { setFeedback('Try an estimate that splits into 25–60\u00a0min steps.'); return; }
     if (parts) {
       const draft = splitPreview(trimmed, count, priority, schedule, scheduledStart, parts.length);
       if (draft) setPreview({ title: trimmed, total: count, priority, placement: schedule, scheduledStart, count: parts.length, names: draft.steps.map((step) => step.title) });
@@ -79,7 +79,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [], label = 'Add a task'
       <label>Category <select value={category} onChange={event => setCategory(event.target.value)}>{['general', 'study', 'project', 'admin', 'personal', 'trading', 'health'].map(item => <option key={item}>{item}</option>)}</select></label>
       {calibrated && <p className="small">Your {category} tasks usually take about {calibrated.ratio.toFixed(1)}x the estimate. <button type="button" className="text-button" onClick={() => setEstimate(String(calibratedMinutes(taskMinutes, calibrated.ratio)))}>Use {calibratedMinutes(taskMinutes, calibrated.ratio)}&nbsp;min</button>?</p>}
       <fieldset><legend>Priority</legend><label><input type="radio" name="priority" checked={priority === 'could'} onChange={() => setPriority('could')} /> Could</label><label><input type="radio" name="priority" checked={priority === 'must'} onChange={() => setPriority('must')} /> Must</label></fieldset>
-      <fieldset><legend>Place it</legend><label><input type="radio" name="schedule" checked={schedule === 'today'} onChange={() => setSchedule('today')} /> Today / time</label><label><input type="radio" name="schedule" checked={schedule === 'unplaced'} onChange={() => setSchedule('unplaced')} /> Unplaced</label><label><input type="radio" name="schedule" checked={schedule === 'someday'} onChange={() => setSchedule('someday')} /> Someday</label></fieldset>
+      <fieldset><legend>Place it</legend><label><input type="radio" name="schedule" checked={schedule === 'today'} onChange={() => setSchedule('today')} /> Today / time</label><label><input type="radio" name="schedule" checked={schedule === 'unplaced'} onChange={() => setSchedule('unplaced')} /> Today, no time</label><label><input type="radio" name="schedule" checked={schedule === 'someday'} onChange={() => setSchedule('someday')} /> Later</label></fieldset>
       {schedule === 'today' && <label>Repeat <select value={repeat} onChange={(event) => setRepeat(event.target.value as Repeat | '')}><option value="">Does not repeat</option>{REPEATS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>}
       {schedule === 'today' && <label>Start time <input type="datetime-local" required value={slot} onChange={(event) => setSlot(event.target.value)} /></label>}
       <button type="submit" disabled={submitting}>{submitting ? 'Adding task…' : 'Add task'}</button>{feedback && <p role="alert">{feedback}</p>}

@@ -35,7 +35,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Plan project outline');
-    await page.getByRole('radio', { name: 'Unplaced' }).check();
+    await page.getByRole('radio', { name: 'Today, no time' }).check();
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     // Spec 27: a task with no time stays on Today.
     await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Plan project outline');
@@ -43,17 +43,17 @@ for (const scheme of ['light', 'dark'] as const) {
       await openMore(page);
       await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
       await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill(title);
-      await page.getByRole('radio', { name: 'Unplaced' }).check();
+      await page.getByRole('radio', { name: 'Today, no time' }).check();
       await page.getByRole('button', { name: 'Add task', exact: true }).click();
       await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText(title);
     }
     // Rituals stay folded until the first one is used; after that they open by themselves.
     await openMore(page);
     await page.getByRole('button', { name: 'Morning plan' }).click();
-    await expect(page.getByRole('region', { name: 'Not scheduled yet' })).toContainText('Plan project outline');
+    await expect(page.getByRole('region', { name: 'Later', exact: true })).toContainText('Plan project outline');
     await expect(page.getByRole('region', { name: 'Time for today' })).toContainText('Today you have about');
     if (scheme === 'light' && page.viewportSize()?.width === 390) {
-      await page.getByRole('region', { name: 'Not scheduled yet' }).evaluate((element) => element.scrollIntoView({ block: 'start' }));
+      await page.getByRole('region', { name: 'Later', exact: true }).evaluate((element) => element.scrollIntoView({ block: 'start' }));
       await capture(page, 'morning-sample-390x844');
     }
     await expectLayout(page);
@@ -61,9 +61,9 @@ for (const scheme of ['light', 'dark'] as const) {
     await item.getByLabel('Start time').fill('2026-10-11T14:00');
     await item.getByLabel('Priority').selectOption('must');
     await item.getByRole('button', { name: 'Place today' }).click();
-    await page.locator('.planner-item').filter({ hasText: 'Keep for later' }).getByRole('button', { name: 'Someday' }).click();
+    await page.locator('.planner-item').filter({ hasText: 'Keep for later' }).getByRole('button', { name: 'Later' }).click();
     await page.locator('.planner-item').filter({ hasText: 'Drop this one' }).getByRole('button', { name: 'Drop', exact: true }).click();
-    await expect(page.getByRole('region', { name: 'Not scheduled yet' })).toHaveCount(0);
+    await expect(page.getByRole('region', { name: 'Later', exact: true })).toHaveCount(0);
     await expect(page.getByRole('region', { name: 'Top 3 for today' })).toContainText('Plan project outline');
     await expect(page.getByRole('region', { name: 'Top 3 for today' })).toContainText('1/3');
     await page.getByRole('button', { name: 'Finish morning plan' }).click();
@@ -120,7 +120,7 @@ test('empty rituals show a gentle start and fit a phone', async ({ page }) => {
     await page.goto(`/#${route}`);
     if (route === 'plan/morning') {
       await expect(page.getByRole('region', { name: 'Time for today' })).toContainText('Today you have about 6 h free');
-      await expect(page.getByRole('region', { name: 'Not scheduled yet' })).toHaveCount(0);
+      await expect(page.getByRole('region', { name: 'Later', exact: true })).toHaveCount(0);
     }
     if (route === 'plan/shutdown') {
       await expect(page.getByRole('region', { name: 'Close today' })).toContainText('Nothing left open.');

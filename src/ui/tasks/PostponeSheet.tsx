@@ -48,7 +48,7 @@ export function PostponeSheet({ task, run, close, onMoved, onUndoable }: { task:
       <fieldset className="move-another"><legend>Another day</legend>
         <label>Day <input type="date" value={day} onChange={(event) => setDay(event.target.value)} /></label>
         <label>Time <span className="small">Optional</span><input type="time" value={time} onChange={(event) => setTime(event.target.value)} /></label>
-        <p className="small">Times before 4 am count as the night before.</p>
+        <p className="small">Times before 4&nbsp;am count as the night before.</p>
         <button type="button" className="secondary" onClick={another}>Move to this day</button>
       </fieldset>
       {moved && <p className="small move-offer">This one has moved a few times.{parts ? <> <button type="button" className="text-button" onClick={() => void split()}>Make it smaller?</button></> : null} <button type="button" className="text-button" onClick={() => void move('later', 'Later')}>Move it to Later?</button></p>}

@@ -6,6 +6,9 @@ import { useModalFocus } from '../shell/useModalFocus';
 import { REPEATS, type Repeat } from '../../core/tasks/repeat';
 import { stepLabel, taskGroups } from './model';
 
+/** w07 F3: one short date in History ("13 Nov" with a no-break space), the same on every phone. */
+const shortDay = (at: number) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(at)).replace(' ', '\u00a0');
+
 type Run = (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
 const categories = ['general', 'study', 'project', 'admin', 'personal', 'trading', 'health'];
 export function TaskDetail({ task, tasks, focus, events, run, close, move, startStep }: { task: TaskRow; tasks: TaskRow[]; focus: FocusRow[]; events: TaskEventRow[]; run: Run; close: () => void; move: () => void; startStep?: (step: TaskRow) => void }) {
@@ -57,7 +60,7 @@ export function TaskDetail({ task, tasks, focus, events, run, close, move, start
     <label>Repeat <select value={repeat} onChange={event => setRepeat(event.target.value as Repeat | '')}><option value="">Does not repeat</option>{REPEATS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
     {error && <p role="alert">{error} <button type="button" className="secondary" onClick={() => setPriority('could')}>Make it a Could</button></p>}
     <div className="sheet-actions"><button type="button" onClick={() => void save()}>Save task</button><button type="button" className="secondary" onClick={move}>Another day…</button></div>
-    {history.length > 0 && <section><h3>History</h3>{history.map(event => <p className="small" key={event.id}>{new Date(event.at).toLocaleDateString()} · {event.kind === 'realReasonMove' ? 'Moved for a real reason' : 'Moved'}{event.reason ? ` · ${event.reason}` : ''}</p>)}</section>}
+    {history.length > 0 && <section><h3>History</h3>{history.map(event => <p className="small" key={event.id}>{shortDay(event.at)} · Moved{event.reason ? ` · ${event.reason}` : ''}</p>)}</section>}
     {proposed.length > 0 && checkpoints.length === 0 && <section><button type="button" className="secondary" onClick={() => setProposal(true)}>Add checkpoints</button>{proposal && <><p>Make room for smaller steps before the due date.</p>{proposed.map(item => <p key={item.scheduledStart}>{item.title} · {new Date(item.scheduledStart).toLocaleDateString()}</p>)}<button type="button" onClick={() => void run((repos, now) => repos.addCheckpoints(task.id, proposed, now), 'Checkpoints added.').then(ok => { if (ok) close(); })}>Accept checkpoints</button></>}</section>}
     <div className="sheet-actions"><button type="button" className="secondary" onClick={move}>Split</button>{confirmDrop ? <><button type="button" onClick={() => void run((repos, now) => repos.dropTask(task.id, now), 'Task dropped.').then(ok => { if (ok) close(); })}>Confirm drop</button><button type="button" className="secondary" onClick={() => setConfirmDrop(false)}>Cancel</button></> : <button type="button" className="secondary" onClick={() => setConfirmDrop(true)}>{subtasks.length ? 'Drop whole task' : 'Drop'}</button>}</div>
     {confirmDrop && subtasks.length > 0 && <p className="small">This drops the task and its remaining steps.</p>}

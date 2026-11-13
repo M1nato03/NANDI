@@ -120,7 +120,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Keep this task');
-    await page.getByRole('radio', { name: 'Unplaced' }).check();
+    await page.getByRole('radio', { name: 'Today, no time' }).check();
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     await openMore(page);
     await expect(page.getByPlaceholder('Add a task, e.g. call bank 15m')).toBeVisible();
