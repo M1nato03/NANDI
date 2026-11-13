@@ -5,6 +5,7 @@ import { getOrCreateDeviceId } from '../../data/device';
 import { isNewerVersion, isUpdateSnoozed, shouldCheckForUpdate, type UpdateVersion } from '../../core/updates';
 import { saveBackupToDocuments } from '../../platform/files';
 import { checkForUpdate, downloadAndInstall, getInstalledVersion, updaterAvailable, type InstalledVersion } from '../../platform/updater';
+import { recordError } from '../errorRing';
 
 const LAST_CHECK = 'updates.lastCheckedAt';
 const SNOOZE_CODE = 'updates.snoozedVersionCode';
@@ -75,7 +76,8 @@ export function useNativeUpdater(): NativeUpdaterState {
         setSnooze({ code: null, at: null });
       } else setSnooze({ code: await readNumber(SNOOZE_CODE), at: await readNumber(SNOOZE_AT) });
     } catch (error) {
-      if (force) setMessage(error instanceof Error ? error.message : 'Could not check for updates. Please try again.');
+      recordError('promise', error);
+      if (force) setMessage('Couldn’t check for updates. Try again later.');
       if (force) setError(true);
     } finally {
       checking.current = false;
@@ -114,7 +116,7 @@ export function useNativeUpdater(): NativeUpdaterState {
       setMessage('');
       setError(false);
     } catch {
-      setMessage('Could not save Later. Please try again.');
+      setMessage('Couldn’t save that. Try again.');
       setError(true);
     }
   }, [update]);
@@ -130,11 +132,12 @@ export function useNativeUpdater(): NativeUpdaterState {
       const name = backupFileName(now).replace('.json', `-${now}.json`);
       const path = await saveBackupToDocuments(new File([JSON.stringify(envelope)], name, { type: 'application/json' }));
       await writeNumber('lastBackupAt', now);
-      setMessage(`Backup saved to ${path}. Downloading update…`);
+      setMessage(path ? 'Backup saved in Documents. Downloading the update…' : 'Downloading the update…');
       await downloadAndInstall(update, setProgress);
-      setMessage(`Backup saved to ${path}. Android will ask you to confirm installation.`);
+      setMessage('Backup saved in Documents. Android will ask you to confirm the install.');
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Could not prepare the update. Please try again.');
+      recordError('promise', error);
+      setMessage('The update didn’t finish. Your data is safe. Try again.');
       setError(true);
     } finally { installing.current = false; setBusy(false); }
   }, [update]);
