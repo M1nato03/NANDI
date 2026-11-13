@@ -5,7 +5,7 @@ import './welcome.css';
 /** What a refused extra tap says, per size. */
 const FULL: Record<Exclude<PickSize, 'all'>, string> = {
   two: 'Two to start. You can add more later.',
-  more: 'Four at most here. Everything picks all five.',
+  more: 'Four at most. Tap Everything to pick all five.',
 };
 
 /** Moving to a smaller size keeps the first picks in tap order; Everything picks all five, the tapped ones first. */

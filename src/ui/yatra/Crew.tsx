@@ -65,7 +65,7 @@ export function CrewBar() {
   return <section className="crew-bar" aria-label={`${crew.plan} crew`}>
     <button type="button" className="crew-bar-go" onClick={() => go('yatra/crew')}>
       <Dots crew={crew} />
-      <span><strong>{jarDuration(Math.min(total, crew.size * 60))} of {crew.size} h</strong> for {crew.plan}</span>
+      <span><strong>{jarDuration(Math.min(total, crew.size * 60))} of {crew.size}&nbsp;h</strong> for {crew.plan}</span>
     </button>
     {offer && <p className="crew-send">{send.onlyToday ? `Send today’s ${jarDuration(send.minutes)}` : `Send your ${jarDuration(send.minutes)}`} to the {crew.plan} crew?
       <span className="crew-send-actions">
@@ -107,10 +107,10 @@ export function CrewScreen({ paste = false }: { paste?: boolean }) {
     <p className="eyebrow">Your crew</p>
     <h1>{crew.plan}</h1>
     <div className="crew-meter" role="progressbar" aria-label="Crew jar" aria-valuemin={0} aria-valuemax={crew.size * 60} aria-valuenow={Math.min(total, crew.size * 60)}><i style={{ width: `${Math.min(100, total / (crew.size * 60) * 100)}%` }} /></div>
-    <p><strong>{jarDuration(Math.min(total, crew.size * 60))} of {crew.size} h</strong></p>
+    <p><strong>{jarDuration(Math.min(total, crew.size * 60))} of {crew.size}&nbsp;h</strong></p>
     {asOf && <p className="small">{asOf}</p>}
     <p><Dots crew={crew} /> {crew.members.length + 1} walking</p>
-    {filled && <div className="card crew-filled"><h2>The crew filled {crew.size} h: {crew.plan}</h2><div className="crew-filled-actions"><button type="button" className="secondary" onClick={() => setSharing(true)}>Share</button><button type="button" onClick={() => void leave(crew)}>Plan the next one</button></div></div>}
+    {filled && <div className="card crew-filled"><h2>The crew filled {crew.size}&nbsp;h: {crew.plan}</h2><div className="crew-filled-actions"><button type="button" className="secondary" onClick={() => setSharing(true)}>Share</button><button type="button" onClick={() => void leave(crew)}>Plan the next one</button></div></div>}
     {sharing && <CrewShare size={crew.size} close={result => { setSharing(false); if (result) setMessage(result); }} />}
     {adds.length > 0 && <><h2>Latest</h2><ul className="crew-adds">{adds.map(line => <li key={line}>{line}</li>)}</ul></>}
     {crew.members.length + 1 < CREW_MAX && <button type="button" className="secondary" onClick={() => void invite()}>Invite a friend</button>}
@@ -225,7 +225,7 @@ export function CrewLinkScreen({ route }: { route: string }) {
   if (crew) return <section className="screen crew-screen"><h1>Join the {link.p} crew?</h1><p>You are already in the {crew.plan} crew. One crew at a time: leave it first in Yatra → your crew.</p></section>;
   return <section className="screen crew-screen">
     <h1>Join the {link.p} crew?</h1>
-    <p>{link.n} made it: when you fill {link.s} h together, it’s {link.p}.</p>
+    <p>{link.n} made it: when you fill {link.s}&nbsp;h together, it’s {link.p}.</p>
     <p className="small">Crews hold up to {CREW_MAX}.</p>
     <label>Your first name<input value={first} maxLength={NAME_MAX} onChange={event => setFirst(event.target.value)} /></label>
     <button type="button" disabled={!cleanText(first, NAME_MAX)} onClick={() => void acceptJoin(db, route, { first: cleanText(first, NAME_MAX), colour: joinerColour(link.k) }, Date.now()).then(() => setDone('joined'))}>Join</button>
@@ -234,7 +234,7 @@ export function CrewLinkScreen({ route }: { route: string }) {
 
 /** The crew's filled jar as an image: the size only, no member, no per-person number and no plan words. */
 export function crewFilledContent(size: number): ReceiptContent {
-  return { dates: '', soFar: false, lines: [{ label: 'Filled together', value: `${size} h` }], slots: {}, heading: 'NANDI · CREW', subline: 'a crew jar filled' };
+  return { dates: '', soFar: false, lines: [{ label: 'Filled together', value: `${size}\u00a0h` }], slots: {}, heading: 'NANDI · CREW', subline: 'a crew jar filled' };
 }
 export const crewFilledText = (size: number) => `Our NANDI crew filled ${size} h together.\n${WEB_APP}`;
 
@@ -252,12 +252,12 @@ function CrewShare({ size, close }: { size: number; close: (message?: string) =>
   }, [size]);
   const file = () => new File([blob!], 'nandi-crew-filled.png', { type: 'image/png' });
   const share = async () => { setBusy(true); try { close(shareNote(await shareFileNow(file(), crewFilledText(size), { title: 'Our crew filled', dialogTitle: 'Share the crew jar' })) || 'Shared.'); } catch { close('Could not share it.'); } };
-  const save = async () => { setBusy(true); try { const result = await saveFileNow(file()); close(result === 'saved' ? 'Saved in Documents/NANDI' : result === 'downloaded' ? 'Image saved.' : shareNote(result)); } catch { close('Could not save it.'); } };
+  const save = async () => { setBusy(true); try { const result = await saveFileNow(file()); close(result === 'saved' ? 'Saved in Documents.' : result === 'downloaded' ? 'Image saved.' : shareNote(result)); } catch { close('Could not save it.'); } };
   return <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => close()}><section ref={dialog} tabIndex={-1} className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Share the crew jar" onClick={event => event.stopPropagation()}>
     <div ref={logo} hidden aria-hidden="true"><Kachhua pose="cheer" size={170} /></div>
     <div className="ui-sheet-handle" aria-hidden="true" />
     <h2>Share the crew jar</h2>
-    {preview ? <img src={preview} width="1080" height="1920" alt={`A crew jar filled: ${size} h`} /> : <p>Making your card…</p>}
+    {preview ? <img src={preview} width="1080" height="1920" alt={`A crew jar filled: ${size}\u00a0h`} /> : <p>Making your card…</p>}
     <div className="recap-sheet-actions">
       <button type="button" onClick={() => void share()} disabled={!blob || busy}>Share</button>
       <button type="button" className="secondary" onClick={() => void save()} disabled={!blob || busy}>Save image</button>

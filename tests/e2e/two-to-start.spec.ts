@@ -84,7 +84,7 @@ test.describe('Welcome: pick two to start', () => {
     await page.clock.setFixedTime(NOON);
     await page.goto('/?e2e&welcome');
     const welcome = await hello(page);
-    await expect(welcome).toContainText('The rest is always there. You can change this any time in You.');
+    await expect(welcome).toContainText('The rest is always there. You can change this any time in the You tab.');
     await expect(welcome.getByRole('button', { name: 'Continue' })).toHaveCount(0);
     const area = (name: string) => welcome.getByRole('button', { name, exact: true });
     await area('Sharpen my mind').click();
@@ -103,7 +103,7 @@ test.describe('Welcome: pick two to start', () => {
     await area('Get things done').click();
     await area('Sleep earlier').click();
     await expect(area('Sleep earlier')).toHaveAttribute('aria-pressed', 'false');
-    await expect(welcome.getByRole('status')).toHaveText('Four at most here. Everything picks all five.');
+    await expect(welcome.getByRole('status')).toHaveText('Four at most. Tap Everything to pick all five.');
     await welcome.getByRole('button', { name: 'Continue' }).click();
     // The first pick's first action is still the first action.
     await welcome.getByRole('button', { name: "Try today's puzzle" }).click();

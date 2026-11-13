@@ -142,6 +142,6 @@ export function joinedText(crew: Crew, url: string): string {
   return `${crew.me.first} joined our NANDI crew. ${url}`;
 }
 export function addText(crew: Crew, minutes: number, total: number, url: string): string {
-  return `${crew.me.first} added ${jarDuration(minutes)} to our crew jar · ${jarDuration(total)} of ${crew.size} h · ${url}`;
+  return `${crew.me.first} added ${jarDuration(minutes)} to our crew jar · ${jarDuration(total)} of ${crew.size}\u00a0h · ${url}`;
 }
 

@@ -109,7 +109,7 @@ export function Welcome({ onDone }: { onDone: () => void }) {
       </>}
       {step === 1 && <>
         <h1>{picked.size === 'more' ? 'Pick up to four' : 'Pick two to start'}</h1>
-        <p>The rest is always there. You can change this any time in You.</p>
+        <p>The rest is always there. You can change this any time in the You tab.</p>
         <GoalPicker value={picked} onChange={setPicked} onEverything={before => { setLead(before.goals[0]); setStep(2); }} />
         {/* Continue's space is kept from the start, so the first pick never moves the rows under a finger. */}
         {picked.goals.length > 0 ? <button type="button" onClick={() => setStep(2)}>Continue</button> : <button type="button" className="welcome-reserve" aria-hidden="true" tabIndex={-1} disabled>Continue</button>}

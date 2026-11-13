@@ -141,12 +141,12 @@ export function PayoutShare({ place, close }: { place: string; close: (message?:
   const file = () => new File([blob!], 'nandi-trail-camp.png', { type: 'image/png' });
   const share = async () => {
     setBusy(true);
-    try { const result = await shareFileNow(file(), payoutShareText(place), { title: 'A camp reached', dialogTitle: 'Share my camp' }); close(result === 'shared' ? 'Shared.' : result === 'downloaded' ? 'Image downloaded.' : shareNote(result)); }
+    try { const result = await shareFileNow(file(), payoutShareText(place), { title: 'A camp reached', dialogTitle: 'Share my camp' }); close(result === 'shared' ? 'Shared.' : result === 'downloaded' ? 'Image saved.' : shareNote(result)); }
     catch { close('Could not share it.'); }
   };
   const save = async () => {
     setBusy(true);
-    try { const result = await saveFileNow(file()); close(result === 'saved' ? 'Saved in Documents/NANDI' : result === 'downloaded' ? 'Image saved.' : shareNote(result)); }
+    try { const result = await saveFileNow(file()); close(result === 'saved' ? 'Saved in Documents.' : result === 'downloaded' ? 'Image saved.' : shareNote(result)); }
     catch { close('Could not save it.'); }
   };
   return <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => close()}><section ref={dialog} tabIndex={-1} className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Share this camp" onClick={event => event.stopPropagation()}>

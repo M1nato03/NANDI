@@ -44,7 +44,7 @@ export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; li
       // One line plus the app's link travels with the image, so a friend has somewhere to go.
       const result = await shareFileNow(file(), weekShareText(receiptShareLines(card)), { title: "My week’s receipt", dialogTitle: 'Share my receipt' });
       setOpen(false);
-      setMessage(result === 'shared' ? 'Receipt shared.' : result === 'downloaded' ? 'Receipt image downloaded.' : shareNote(result));
+      setMessage(result === 'shared' ? 'Receipt shared.' : result === 'downloaded' ? 'Image saved.' : shareNote(result));
     } catch { setMessage('Could not share the receipt.'); }
     finally { setBusy(false); }
   };
@@ -55,7 +55,7 @@ export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; li
       const result = await saveFileNow(file());
       setOpen(false);
       // On Android this is a file in Documents/NANDI, not a photo in the gallery, and the line says where it is.
-      setMessage(result === 'saved' ? 'Saved in Documents/NANDI' : result === 'downloaded' ? 'Image saved.' : shareNote(result));
+      setMessage(result === 'saved' ? 'Saved in Documents.' : result === 'downloaded' ? 'Image saved.' : shareNote(result));
     } catch { setMessage('Could not save the receipt.'); }
     finally { setBusy(false); }
   };

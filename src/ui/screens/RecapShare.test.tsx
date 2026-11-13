@@ -70,10 +70,10 @@ it('spec 53 privacy: no task, book or topic title reaches the image or the share
   }
 });
 
-it('Save image keeps the receipt and says where: Documents/NANDI on the phone', async () => {
+it('Save image keeps the receipt and says where: Documents on the phone (I4, one line everywhere)', async () => {
   await openSheet(recap);
   fireEvent.click(screen.getByRole('button', { name: 'Save image' }));
-  expect(await screen.findByRole('status')).toHaveProperty('textContent', 'Saved in Documents/NANDI');
+  expect(await screen.findByRole('status')).toHaveProperty('textContent', 'Saved in Documents.');
   expect((sent.save.mock.calls[0]![0] as File).name).toBe('nandi-receipt-2026-11-02.png');
 });
 

@@ -103,7 +103,7 @@ describe('spec 55: what this phone sends', () => {
 describe('spec 55: the crew\'s texts use the jar\'s duration format', () => {
   it('reads "4 h", never "4 h 0 m" or "min"', () => {
     const text = addText({ ...crew0, me: { ...crew0.me, first: 'Dev' } }, 240, 240, 'https://x/#crew/add/a');
-    expect(text).toBe('Dev added 4 h to our crew jar · 4 h of 15 h · https://x/#crew/add/a');
+    expect(text).toBe('Dev added 4 h to our crew jar · 4 h of 15\u00a0h · https://x/#crew/add/a');
     expect(text).not.toMatch(/ 0 m|\bmin\b/);
   });
 });
@@ -136,7 +136,7 @@ describe('spec 55: the plan travels in the invite only', () => {
     const dev = { ...crew0, me: { ...crew0.me, first: 'Dev' } };
     expect(inviteText(crew0, 'U')).toBe("Join my NANDI crew: when we fill 15 h together, it's Sunday chai at the hill point. U");
     expect(joinedText(dev, 'U')).toBe('Dev joined our NANDI crew. U');
-    expect(addText(dev, 45, 100, 'U')).toBe('Dev added 45 m to our crew jar · 1 h 40 m of 15 h · U');
+    expect(addText(dev, 45, 100, 'U')).toBe('Dev added 45 m to our crew jar · 1 h 40 m of 15\u00a0h · U');
     for (const text of [joinedText(dev, 'U'), addText(dev, 45, 100, 'U')]) expect(text).not.toContain('chai');
   });
 });
