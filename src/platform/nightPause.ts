@@ -64,11 +64,6 @@ export async function openPausedApp(packageName: string, snoozeMs: number): Prom
   if (fake()) return fakeDid({ pendingPackage: '' }, `open:${packageName}:${snoozeMs}`);
   if (Capacitor.isNativePlatform()) await native.openApp({ packageName, snoozeMs });
 }
-/** Spec 39 "Not now": the phone's Home screen, out of NANDI and out of the app. */
-export async function goPhoneHome(): Promise<void> {
-  if (fake()) return fakeDid({ pendingPackage: '' }, 'home');
-  if (Capacitor.isNativePlatform()) await native.goHome();
-}
 /** Spec 39: every app this phone can open, for "Add another app" (null on the web). */
 export async function readLauncherApps(): Promise<{ packageName: string; label: string }[] | null> {
   if (!Capacitor.isNativePlatform()) return null;

@@ -5,24 +5,24 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { actsToday, GRACE_CHOICES, PAUSE_ACTS, pauseAppLabel, pauseLine, readPauseCard } from '../../core/pauseCard';
 import { PAUSE_REASONS, type PauseReason } from '../../core/pauseReasons';
-import { moveLine } from '../../core/nextMove';
 import { recordPauseAttempt, recordPauseReason, type PauseOutcome } from '../../data/repos/pause';
-import { clearNightPause, goPhoneHome, openPausedApp } from '../../platform/nightPause';
+import { clearNightPause, openPausedApp } from '../../platform/nightPause';
 import { Mor } from '../cast/Cast';
 import { go } from '../shell/router';
 import { useModalFocus } from '../shell/useModalFocus';
-import { readNextMove } from '../yatra/nextMoveRows';
 import './pause.css';
 
-type Stage = { kind: 'card' } | { kind: 'act'; act: string; endsAt: number } | { kind: 'done'; act: string | null; paid: boolean } | { kind: 'anyway'; minutes: number; why: PauseReason | null };
+type Stage = { kind: 'card' } | { kind: 'pick' } | { kind: 'act'; act: string; endsAt: number } | { kind: 'done'; act: string | null; paid: boolean } | { kind: 'anyway'; minutes: number; why: PauseReason | null };
 
 /**
  * Spec 39, the Pause card: shown when a picked app comes to the front inside the window. Every way out is one tap,
- * with no countdown before it and no "are you sure". Spec 39b: "I did it" shows from the start of the act; the 2
- * minutes are a guide, never a gate, and the person's word is enough. Spec 45c (decision 8): a paper slip with the
- * person's plan, a quiet "Start the 2 minutes" link into the act, and three full-width ways of equal weight: "I did it"
- * (the act's own outcome and pay), the in-app move and "Open <app> anyway"; "Not now" stays as a small link. Spec 52 D: the
- * in-app choice names Home's own next move (one loader, one nextMove), e.g. "Read on: <book>, ch. 2".
+ * with no countdown before it and no "are you sure".
+ * Jenil 14 Nov: three ways, no more. A filled "Start the 2 minutes" (the person's plan; with no plan set, the picks come
+ * on the next screen), "Open <app> anyway", and a small "Not now" that keeps the person in NANDI, on its home (the
+ * Courtyard, where the next move and the quests already are). "I did it" shows once the 2 minutes are started; the
+ * clock is a guide, never a gate, and the person's word is enough. After it: "Back to NANDI", or open the app now.
+ * (This replaces spec 39b's "I did it" on the card, 45c's three ways of one weight, 52 D's in-app move and 660's
+ * quest link.) The night card after bedtime is NightPauseCard, apart from this one.
  * `demo` is the setup's "See it once": nothing is recorded or opened.
  */
 export function PauseCard({ packageName, close, demo, demoAct }: { packageName: string; close: () => void; demo?: boolean; demoAct?: string | null }) {
@@ -37,7 +37,6 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
   const [left, setLeft] = useState<number>(RULES.pause.actSeconds);
   const [message, setMessage] = useState('');
   const acting = useRef(false);
-  const next = useLiveQuery(() => readNextMove(Date.now()), []);
 
   // The clock is a guide only: it counts down to 0:00 and stays there; "I did it" is there the whole time.
   useEffect(() => {
@@ -48,25 +47,27 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
     return () => window.clearInterval(timer);
   }, [stage]);
 
-  async function answer(outcome: PauseOutcome, then: () => Promise<void>) {
-    if (acting.current) return;
+  /** Records the choice, then closes the card; false (and the card stays, with one line) when the save failed. */
+  async function answer(outcome: PauseOutcome, then: () => Promise<void>): Promise<boolean> {
+    if (acting.current) return false;
     acting.current = true;
     try {
       if (!demo) await recordPauseAttempt(db, packageName, outcome, Date.now());
-    } catch { acting.current = false; setMessage('That did not work. You can leave NANDI normally.'); return; }
-    // The choice is saved; the card goes even if the phone could not open the app, so nobody is stuck on it.
-    try { if (!demo) await then(); } catch { /* the app can be opened from the phone as usual */ }
+    } catch { acting.current = false; setMessage('That didn’t work. You can leave NANDI normally.'); return false; }
+    // The choice is saved; the card goes even if the phone could not do its part, so nobody is stuck on it.
+    try { if (!demo) await then(); } catch { /* the phone's pending card clears on its own next time */ }
     close();
+    return true;
   }
-  function start(what: string) { setMessage(''); setStage({ kind: 'act', act: what, endsAt: Date.now() + RULES.pause.actSeconds * 1000 }); } // eslint-disable-line react-hooks/purity
-  // One showing of the card pays at most once: "I did it", on the slip or in the act, leaves for the done screen.
+  function start(what: string) { setMessage(''); setStage({ kind: 'act', act: what, endsAt: Date.now() + RULES.pause.actSeconds * 1000 }); }
+  // One showing of the card pays at most once: "I did it" (in the 2 minutes) leaves for the done screen.
   async function finish() {
     if (stage.kind === 'done' || acting.current) return;
     acting.current = true;
     const paid = actsToday(facts, dayKey(Date.now())).nextPays;
     if (!demo) {
       try { await recordPauseAttempt(db, packageName, 'act_done', Date.now()); await clearNightPause(); }
-      catch { setMessage('Could not save that. Your 2\u00a0minutes still happened.'); }
+      catch { setMessage('Couldn’t save that. Your 2\u00a0minutes still happened.'); }
     }
     setStage({ kind: 'done', act: stage.kind === 'act' ? stage.act : act, paid });
   }
@@ -81,64 +82,55 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
       const at = Date.now();
       const attempt = await recordPauseAttempt(db, packageName, 'opened_anyway', at);
       if (why) await recordPauseReason(db, attempt, why, at + 1);
-    } catch { acting.current = false; setMessage('That did not work. You can leave NANDI normally.'); return; }
+    } catch { acting.current = false; setMessage('That didn’t work. You can leave NANDI normally.'); return; }
     try { await openPausedApp(packageName, minutes * 60_000); } catch { /* the app can be opened from the phone as usual */ }
     close();
   }
-  const notNow = () => answer('backed_out', async () => { await clearNightPause(); await goPhoneHome(); });
-  // Spec 660 §2.1: the hook moment. "Not now" stays first; this opens the courtyard's Quests at 5 minutes, in NANDI.
-  async function fiveMinuteQuest() {
+  // Jenil 14 Nov: "Not now" stays in NANDI, on its home (the Courtyard), not the phone's home screen. The app was not
+  // opened, so it is recorded as backing out; the pending card is cleared, so it doesn't come back on the next look.
+  async function notNow() {
     if (demo) { close(); return; }
-    await answer('in_app', clearNightPause);
-    go('courtyard/quests/5');
+    // a9 14 Nov: only once it is saved; a failed save keeps the card (with its line) and the screen under it.
+    if (await answer('backed_out', clearNightPause)) go('courtyard');
   }
-  // Spec 39b, spec 52 D: the next real thing in NANDI instead, the same move Home offers. The card pays nothing for it.
-  async function inApp() {
-    if (demo) { close(); return; }
-    try {
-      const { move } = await readNextMove(Date.now());
-      await answer('in_app', clearNightPause);
-      go(move.route);
-    } catch { setMessage('That did not work. You can leave NANDI normally.'); }
-  }
-  // Jenil 14 Nov: every other way leaves NANDI (to the phone's home) or opens a thing in it (Read, a quest); this one is
-  // plain NANDI, its Home (the Courtyard). On the card it counts as staying in the app; after "I did it" it just goes.
-  async function home() {
-    if (demo) { close(); return; }
-    if (stage.kind === 'done') { close(); go('courtyard'); return; }
-    await answer('in_app', clearNightPause);
-    go('courtyard');
-  }
+  const backToNandi = () => { close(); if (!demo) go('courtyard'); };
   const clock = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`;
 
   return <div ref={dialog} tabIndex={-1} className="night-pause-overlay pause-overlay" role="dialog" aria-modal="true" aria-label="Pause card">
     <section className={`card pause-card pause-slip paper paper-tape pause-${stage.kind}`}>
       <span className="pause-friend" aria-hidden="true"><Mor pose="idle" size={40} /></span>
       {stage.kind === 'card' && <>
-        <p className="eyebrow">{label}</p>
-        <p className="pause-plan-label">Your plan:</p>
-        <h1 className="pause-line">{pauseLine(label, act)}</h1>
-        {act ? <button type="button" className="ink-link pause-start" aria-label={`Start the 2\u00a0minutes: ${act}`} onClick={() => start(act)}>Start the 2&nbsp;minutes</button>
-          : <div className="pause-picks" role="group" aria-label="Pick a 2-minute thing">{PAUSE_ACTS.slice(0, 4).map(pick => <button type="button" key={pick} className="secondary" onClick={() => start(pick)}>{pick[0]!.toUpperCase() + pick.slice(1)}</button>)}</div>}
-        <div className="pause-ways">
-          <button type="button" className="paper-choice" onClick={() => void finish()}>I did it</button>
-          <button type="button" className="paper-choice" onClick={() => void inApp()}>{next ? moveLine(next.move, next) : 'Do it in NANDI'}</button>
+        <div className="pause-middle">
+          <p className="eyebrow">{label}</p>
+          <p className="pause-plan-label">Your plan:</p>
+          <h1 className="pause-line">{pauseLine(label, act)}</h1>
+        </div>
+        <div className="pause-foot"><div className="pause-ways">
+          <button type="button" className="pause-do pause-start" aria-label={act ? `Start the 2\u00a0minutes: ${act}` : undefined} onClick={() => { if (act) start(act); else setStage({ kind: 'pick' }); }}>Start the 2&nbsp;minutes</button>
           <button type="button" className="paper-choice" onClick={() => void openAnyway()}>Open {label} anyway</button>
         </div>
-        <button type="button" className="ink-link pause-not-now" onClick={() => void notNow()}>Not now</button>
-        <button type="button" className="ink-link pause-home" onClick={() => void home()}>Go to NANDI home</button>
-        <button type="button" className="ink-link pause-quest-link" data-testid="pause-quest-link" onClick={() => void fiveMinuteQuest()}>Or a 5-min quest?</button>
+        <button type="button" className="ink-link pause-link" onClick={() => void notNow()}>Not now</button></div>
+      </>}
+      {stage.kind === 'pick' && <>
+        {/* An older setup has no 2-minute thing: the picks come here, after Start, so the card itself stays at three ways. */}
+        <div className="pause-middle">
+          <p className="eyebrow">Your 2&nbsp;minutes</p>
+          <h1 className="pause-line">Pick a 2-minute thing</h1>
+          <div className="pause-picks" role="group" aria-label="Pick a 2-minute thing">{PAUSE_ACTS.slice(0, 4).map(pick => <button type="button" key={pick} className="secondary" onClick={() => start(pick)}>{pick[0]!.toUpperCase() + pick.slice(1)}</button>)}</div>
+        </div>
+        <div className="pause-foot"><button type="button" className="ink-link pause-link" onClick={() => void notNow()}>Not now</button></div>
       </>}
       {stage.kind === 'act' && <>
-        <p className="eyebrow">Your 2&nbsp;minutes</p>
-        <h1 className="pause-line">{stage.act[0]!.toUpperCase() + stage.act.slice(1)}</h1>
-        <p className="pause-clock" role="timer" aria-live="off">{clock}</p>
-        <p className="small">About 2&nbsp;minutes. Tap when it’s done, however long it took.</p>
-        <button type="button" className="pause-do" onClick={() => void finish()}>I did it</button>
-        <div className="pause-exits">
-          <button type="button" className="text-button" onClick={() => void notNow()}>Not now</button>
-          <button type="button" className="text-button" onClick={() => void home()}>Go to NANDI home</button>
-          <button type="button" className="text-button" onClick={() => void openAnyway()}>Open {label} anyway</button>
+        <div className="pause-middle">
+          <p className="eyebrow">Your 2&nbsp;minutes</p>
+          <h1 className="pause-line">{stage.act[0]!.toUpperCase() + stage.act.slice(1)}</h1>
+          <p className="pause-clock" role="timer" aria-live="off">{clock}</p>
+          <p className="small">About 2&nbsp;minutes. Tap when it’s done, however long it took.</p>
+        </div>
+        <div className="pause-foot">
+          <button type="button" className="pause-do" onClick={() => void finish()}>I did it</button>
+          <button type="button" className="ink-link pause-link" onClick={() => void openAnyway()}>Open {label} anyway</button>
+          <button type="button" className="ink-link pause-link" onClick={() => void notNow()}>Not now</button>
         </div>
       </>}
       {stage.kind === 'anyway' && <>
@@ -149,15 +141,14 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
         <p className="pause-plan-label" id="pause-why">Why? <span className="small">Only you see this. You can skip it.</span></p>
         <div className="pause-picks pause-chips" role="group" aria-labelledby="pause-why">{PAUSE_REASONS.map(reason => <button type="button" key={reason.id} className="secondary" aria-pressed={stage.why === reason.id} onClick={() => setStage({ ...stage, why: stage.why === reason.id ? null : reason.id })}>{reason.label}</button>)}</div>
         <button type="button" className="pause-do" onClick={() => void openFor(stage.minutes, stage.why)}>Open for {stage.minutes}&nbsp;min</button>
-        <button type="button" className="ink-link pause-not-now" onClick={() => setStage({ kind: 'card' })}>Back</button>
+        <button type="button" className="ink-link pause-link" onClick={() => setStage({ kind: 'card' })}>Back</button>
       </>}
       {stage.kind === 'done' && <>
         {/* What was done, in the person's words; the XP on its own line. No claim of time given back. */}
         <h1 className="pause-line">{stage.act ? `Done: ${stage.act[0]!.toUpperCase() + stage.act.slice(1)}.` : 'Done.'}</h1>
         {stage.paid && <p className="pause-earned">+{RULES.pause.actXp}&nbsp;XP</p>}
-        <button type="button" className="pause-do" onClick={() => { if (demo) close(); else void goPhoneHome().then(close, close); }}>Back to my day</button>
-        <button type="button" className="text-button" onClick={() => void home()}>Go to NANDI home</button>
-        <button type="button" className="text-button" onClick={() => { if (demo) close(); else void openPausedApp(packageName, card.grace * 60_000).then(close, close); }}>Open {label} now</button>
+        <button type="button" className="pause-do" onClick={backToNandi}>Back to NANDI</button>
+        <button type="button" className="ink-link pause-link" onClick={() => { if (demo) close(); else void openPausedApp(packageName, card.grace * 60_000).then(close, close); }}>Open {label} now</button>
       </>}
       {demo && <p className="small pause-demo">This is how it looks. Nothing is saved.</p>}
       {message && <p role="status">{message}</p>}

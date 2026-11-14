@@ -1,4 +1,5 @@
-/* Spec 39, the Pause card: the plan first and big, one main button, two equal text exits. */
+/* Spec 39, the Pause card (Jenil 14 Nov: three ways): the plan first and big, one filled Start, "Open anyway", and a
+   small "Not now". */
 .pause-card { position: relative; width: min(100%, 520px); display: grid; gap: 16px; padding: 28px 24px 24px; }
 .pause-card .eyebrow { margin: 0; }
 .pause-friend { position: absolute; top: 14px; right: 14px; }
@@ -6,10 +7,7 @@
 .pause-line { margin: 0; font-size: clamp(1.5rem, 7vw, 2rem); line-height: 1.2; }
 .pause-do { min-height: 56px; font-size: 1.125rem; }
 .pause-picks { display: grid; gap: 10px; }
-/* a9 14 Nov: one column, like the done screen and the card's links (two columns wrapped ragged). */
-.pause-exits { display: grid; grid-template-columns: 1fr; gap: 8px; }
-.pause-exits .text-button { min-height: 48px; justify-content: center; text-align: center; }
-/* Spec 45c: the card is a paper slip; three full-width ways of one weight, then "Not now" as a small link. */
+/* Spec 45c: the card is a paper slip. */
 /* At large text the slip is taller than the phone: the overlay scrolls, and it never centres the top out of reach. */
 .pause-overlay { overflow-y: auto; overscroll-behavior: contain; align-items: safe center; }
 /* The slip's words are in rem, so they grow with the phone's text size. The act and Done stay on the same sheet. */
@@ -19,9 +17,14 @@
 .pause-slip .pause-line { font-size: 1.5rem; }
 /* Done's line is the first thing on the sheet, beside Mor: it keeps clear of the friend. */
 .pause-done .pause-line { padding-right: 48px; }
-/* Spec 52 D: the in-app way names its move and can run to two lines; every way keeps one size, so none weighs more. */
-.pause-ways { display: grid; grid-auto-rows: 1fr; gap: 10px; margin-top: 4px; }
-.pause-not-now, .pause-home { justify-self: start; color: var(--ink-2); font-weight: 400; }
+/* Start (filled) above "Open anyway"; the small links ("Not now", "Back", "Open … now") sit under them. */
+.pause-ways { display: grid; gap: 10px; margin-top: 4px; }
+.pause-link { justify-self: start; color: var(--ink-2); font-weight: 400; }
+/* b2 14 Nov, E12: the card, the picks and the 2 minutes fit one screen; at large text only the middle (the plan, the
+   clock) scrolls, and the ways stay in view at the bottom of the slip. Done and "Open anyway" keep the overlay's scroll. */
+.pause-slip:not(.pause-done):not(.pause-anyway) { max-height: calc(100dvh - 40px); grid-template-rows: minmax(0, 1fr); }
+.pause-middle { min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: grid; gap: 12px; align-content: start; }
+.pause-foot { display: grid; gap: 12px; }
 .pause-clock { margin: 0; font: 800 3.5rem 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; text-align: center; }
 .pause-earned { margin: 0; color: var(--accent); font-weight: 700; }
 .pause-demo { margin: 0; text-align: center; }
