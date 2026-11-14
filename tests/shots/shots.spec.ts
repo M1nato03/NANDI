@@ -1049,10 +1049,12 @@ for (const theme of themes) test.describe(theme, () => {
     await card.getByRole('button', { name: 'Not now' }).click();
     await expect(card).toHaveCount(0);
     await opens();
+    // Jenil 14 Nov: "I did it" is in the 2 minutes, not on the slip; the done screen goes back to NANDI.
+    await card.getByRole('button', { name: /^Start the 2 minutes: / }).click();
     await card.getByRole('button', { name: 'I did it' }).click();
     await expect(card.getByRole('heading')).toHaveText('Done: Drink a glass of water.');
     await shot(page, '45c-p3-done', false);
-    await card.getByRole('button', { name: 'Back to my day' }).click();
+    await card.getByRole('button', { name: 'Back to NANDI' }).click();
     await expect(card).toHaveCount(0);
     await opens();
     await textAt200(page);
@@ -1085,20 +1087,7 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'p39b-2-act-i-did-it-at-start', false);
     await card.getByRole('button', { name: 'Not now' }).click();
     await expect(card).toHaveCount(0);
-    // Spec 52 D: the in-app way names Home's next move; with nothing else on, the chapter Continue offers.
-    await opens();
-    await card.getByRole('button', { name: /^Read on: / }).click();
-    await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
-    await shot(page, 'p39b-3-in-nandi-read-drop', false);
-    // With a task planned for today: its focus.
-    await page.goto('/?e2e#plan/focus');
-    await page.getByLabel('Add a task').fill('Email Riya the slides');
-    await page.getByRole('button', { name: 'Add', exact: true }).click();
-    await page.goto('/?e2e#you');
-    await opens();
-    await card.getByRole('button', { name: 'Start: Email Riya the slides' }).click();
-    await expect(page).toHaveURL(/#plan$/);
-    await shot(page, 'p39b-4-in-nandi-task-focus', false);
+    // Spec 52 D's in-app way (p39b-3, p39b-4) is off the card since Jenil 14 Nov.
     // A card that was on "every open": moved once to after 10 min a day, and Plan says so.
     await page.evaluate(async () => {
       const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
@@ -1563,14 +1552,7 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'p52-09-you-row', false);
     await page.getByRole('button', { name: /^What NANDI helps with/ }).click();
     await shot(page, 'p52-10-you-helps', false);
-    // The pause card with a named move.
-    await put([['pause.card.on', true], ['pause.act', 'do 10 squats'], ['night.pause.apps', ['com.instagram.android']], ['night.pause.dayMode', 'open']]);
-    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
-    await page.goto('/?e2e#yatra');
-    await page.reload();
-    await page.evaluate(() => { sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'open' })); window.dispatchEvent(new Event('nandi:night-pause')); });
-    await expect(page.getByRole('dialog', { name: 'Pause card' }).getByRole('button', { name: /^Read on: / })).toBeVisible();
-    await shot(page, 'p52-11-pause-card-named-move', false);
+    // p52-11 (the Pause card's named move) is gone: Jenil 14 Nov took the move off the card.
     // The pause offer after the first finish (a new install on a phone, the card not set up).
     await page.evaluate(() => indexedDB.deleteDatabase('nandi'));
     await page.goto('/?e2e#plan');

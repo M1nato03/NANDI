@@ -183,7 +183,8 @@ test('Settings › Quests: three switches, all off on a fresh install; one on le
   await expect(page.getByText('Quest photos stay on this phone. They are not in backups or shares.')).toBeVisible();
 });
 
-test('Plan\'s "+ quest" and the Pause card\'s "Or a 5-min quest?" open the board (5 min)', async ({ page }) => {
+// Jenil 14 Nov: the Pause card no longer links to the board; the 5-minute board route stays.
+test('Plan\'s "+ quest" and the 5-minute board route open the board (5 min)', async ({ page }) => {
   await open(page, 'courtyard', '.courtyard-card');
   await answered(page);
   await open(page, 'plan', '.plan-screen');

@@ -153,50 +153,139 @@ for (const theme of ['light', 'dark'] as const) {
   }
 }
 
-// Jenil 14 Nov: the Pause card's "Go to NANDI home" way, on the card, in the 2 minutes and on the done screen. N2: a
-// generic app (an unknown package reads "the app"), never a real brand on a forwardable picture.
+// Jenil 14 Nov (pause-simple): the Pause card's three ways (a filled Start, "Open anyway", a small "Not now"), the picks
+// when no 2-minute thing is set, the 2 minutes, Done, and the Open-anyway stage (unchanged). N2: a generic app (an
+// unknown package reads "the app"), never a real brand on a forwardable picture. E12 (b2): the card, the picks and the
+// 2 minutes fit one screen; at 200% only the middle scrolls and every way stays in view.
+const pauseSettings = (act: boolean): [string, unknown][] => act
+  ? [['pause.card.on', true], ['pause.act', 'do 10 squats'], ['night.pause.apps', ['com.example.video']], ['night.pause.dayMode', 'open']]
+  : [['night.pause.enabled', true], ['night.pause.apps', ['com.example.video']], ['night.pause.dayMode', 'open']];
+async function pauseShows(page: Page, reason = 'open', minutes = 0) {
+  await page.evaluate(({ reason, minutes }) => {
+    sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.example.video', pendingReason: reason, pendingMinutes: minutes }));
+    window.dispatchEvent(new Event('nandi:night-pause'));
+  }, { reason, minutes });
+}
+/** E12: every way in the slip's foot is on the screen, and the slip itself is no taller than the screen. */
+async function waysInView(page: Page, label: string) {
+  const at = await page.locator('.pause-slip').evaluate(slip => {
+    const box = slip.getBoundingClientRect();
+    const middle = slip.querySelector('.pause-middle');
+    const ways = [...slip.querySelectorAll('.pause-foot button')].map(node => { const r = node.getBoundingClientRect(); return { text: node.textContent, top: Math.round(r.top), bottom: Math.round(r.bottom) }; });
+    return { slip: [Math.round(box.top), Math.round(box.bottom)], middleScrolls: middle ? middle.scrollHeight > middle.clientHeight + 1 : null, ways };
+  });
+  console.log(`pause-simple ${label}: ${JSON.stringify(at)}`);
+  expect(at.slip[0]).toBeGreaterThanOrEqual(0);
+  expect(at.slip[1]).toBeLessThanOrEqual(800);
+  for (const way of at.ways) { expect(way.top, `${way.text} on screen`).toBeGreaterThanOrEqual(0); expect(way.bottom, `${way.text} on screen`).toBeLessThanOrEqual(800); }
+}
 for (const theme of ['light', 'dark'] as const) for (const size of [100, 200] as const) {
-  test(`Pause card with the home way, ${theme}, ${size}%`, async ({ browser }) => {
+  test(`Pause card, three ways, ${theme}, ${size}%`, async ({ browser }) => {
     const t = theme === 'light' ? 'l' : 'd';
     const page = await phone(browser, theme);
-    await page.goto('/?e2e#plan');
-    await page.getByRole('button', { name: /^Pause card/ }).click();
-    await page.getByLabel('Instagram').check();
-    await page.getByRole('button', { name: 'Next' }).click();
-    await page.getByRole('group', { name: 'Quick picks' }).getByRole('button', { name: 'do 10 squats' }).click();
-    await page.getByRole('button', { name: 'Next' }).click();
-    await page.getByRole('button', { name: 'Next' }).click();
-    await page.getByRole('button', { name: 'Turn it on' }).click();
-    await expect(page.getByRole('heading', { name: 'On', exact: true })).toBeVisible();
+    await put(page, 'settings', pauseSettings(true).map(([key, value]) => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 'sat14' })));
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+    await page.reload();
+    await expect(page.locator('.courtyard-b')).toBeVisible({ timeout: 15_000 });
     if (size === 200) await textAt200(page);
-    await page.evaluate(() => {
-      sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.example.video', pendingReason: 'open' }));
-      window.dispatchEvent(new Event('nandi:night-pause'));
-    });
     const card = page.getByRole('dialog', { name: 'Pause card' });
+    await pauseShows(page);
     await expect(card).toBeVisible();
+    await expect(card.getByRole('button')).toHaveCount(3);
     await settle(page);
-    // a9: the card (3 ways and 3 links) on one screen, and the links each on a line of their own.
-    const links = await card.locator('.ink-link').evaluateAll(nodes => nodes.map(node => { const r = node.getBoundingClientRect(); return { text: node.textContent, top: Math.round(r.top), bottom: Math.round(r.bottom) }; }));
-    console.log(`pause card ${t} ${size}%: links ${JSON.stringify(links)}`);
-    const tops = links.filter(link => link.text !== 'Start the 2 minutes').map(link => link.top);
-    expect(new Set(tops).size).toBe(tops.length);
-    if (size === 100) expect(Math.max(...links.map(link => link.bottom))).toBeLessThanOrEqual(800);
-    // b2 14 Nov: the overlay scrolls, so a full-page shot cuts the card; shoot the screen, then the card scrolled to its end.
-    const toEnd = () => page.locator('.pause-overlay').evaluate(node => { node.scrollTop = node.scrollHeight; });
+    await waysInView(page, `${t} ${size}% card`);
     await snap(page, `pause-${t}-${size}-card`);
-    if (size === 200) { await toEnd(); await settle(page); await snap(page, `pause-${t}-${size}-card-end`); }
     await card.getByRole('button', { name: /^Start the 2/ }).click();
     await settle(page);
+    await waysInView(page, `${t} ${size}% act`);
     await snap(page, `pause-${t}-${size}-act`);
-    if (size === 200) { await toEnd(); await settle(page); await snap(page, `pause-${t}-${size}-act-end`); }
     await card.getByRole('button', { name: 'I did it' }).click();
-    await expect(card.getByRole('button', { name: 'Go to NANDI home' })).toBeVisible();
+    await expect(card.getByRole('button', { name: 'Back to NANDI' })).toBeVisible();
     await settle(page);
-    await snap(page, `pause-${t}-${size}-done`);
+    await snap(page, `pause-${t}-${size}-done-paid`);
+    await card.getByRole('button', { name: 'Back to NANDI' }).click();
+    await expect(card).toHaveCount(0);
+    // The done screen unpaid: five acts already done today fill the day's cap (dailyCap 10 XP, 2 a time). Seeded,
+    // because with the shots' fixed clock every attempt has the same time, and so the same id.
+    await put(page, 'ledger', Array.from({ length: 5 }, (_, i) => ({ id: `pause-attempt:sat14-${i}`, dayKey: DAY, mode: 'pause', kind: 'attempt', refId: `sat14-${i}`, inputs: { packageName: 'com.example.video', outcome: 'act_done' }, updatedAt: NOON.getTime() - 60_000 * (i + 1), deleted: 0, deviceId: 'sat14' })));
+    await page.reload(); // the seed went straight to the database, past the app's live queries
+    await expect(page.locator('.courtyard-b')).toBeVisible({ timeout: 15_000 });
+    if (size === 200) await textAt200(page);
+    await pauseShows(page);
+    await card.getByRole('button', { name: /^Start the 2/ }).click();
+    await card.getByRole('button', { name: 'I did it' }).click();
+    await expect(card.getByRole('button', { name: 'Back to NANDI' })).toBeVisible();
+    await expect(card.locator('.pause-earned')).toHaveCount(0);
+    await settle(page);
+    await snap(page, `pause-${t}-${size}-done-unpaid`);
+    await card.getByRole('button', { name: 'Back to NANDI' }).click();
+    // The Open-anyway stage, unchanged.
+    await pauseShows(page);
+    await card.getByRole('button', { name: 'Open the app anyway' }).click();
+    await settle(page);
+    await snap(page, `pause-${t}-${size}-anyway`);
     await page.context().close();
   });
 
+  test(`Pause card with no 2-minute thing set (an older setup), ${theme}, ${size}%`, async ({ browser }) => {
+    const t = theme === 'light' ? 'l' : 'd';
+    const page = await phone(browser, theme);
+    await put(page, 'settings', pauseSettings(false).map(([key, value]) => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 'sat14' })));
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+    await page.reload();
+    await expect(page.locator('.courtyard-b')).toBeVisible({ timeout: 15_000 });
+    if (size === 200) await textAt200(page);
+    const card = page.getByRole('dialog', { name: 'Pause card' });
+    await pauseShows(page);
+    await expect(card.getByRole('button')).toHaveCount(3);
+    await settle(page);
+    await snap(page, `pause-${t}-${size}-noact-card`);
+    await card.getByRole('button', { name: /^Start the 2/ }).click();
+    await expect(card.getByRole('group', { name: 'Pick a 2-minute thing' })).toBeVisible();
+    await settle(page);
+    await waysInView(page, `${t} ${size}% picks`);
+    await snap(page, `pause-${t}-${size}-noact-picks`);
+    await page.context().close();
+  });
+}
+
+// b2 14 Nov: the night card (NightPauseCard, untouched by pause-simple) had no shot. During its breath and after it, at
+// 360 light, 100% and 200%. AppShell sends only the "night" reason to it; any other reason (the daily limit by day
+// included) gets the day's Pause card, so the limit is shot on that card.
+for (const size of [100, 200] as const) {
+  test(`Night pause card, during the breath and after it, light, ${size}%`, async ({ browser }) => {
+    const page = await phone(browser, 'light', new Date('2026-11-10T23:30:00'));
+    await put(page, 'settings', [['night.pause.enabled', true], ['night.pause.apps', ['com.example.video']]].map(([key, value]) => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 'sat14' })));
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+    await page.reload();
+    if (size === 200) await textAt200(page);
+    await pauseShows(page, 'night');
+    const card = page.getByRole('dialog', { name: 'Night pause' });
+    await expect(card).toBeVisible({ timeout: 15_000 });
+    await settle(page);
+    await snap(page, `nightpause-l-${size}-breath`);
+    await page.waitForTimeout(5_500); // the breath is RULES.night.pauseBreathSeconds (5 s), on the real clock
+    await settle(page);
+    await snap(page, `nightpause-l-${size}-after`);
+    await page.context().close();
+  });
+
+  test(`Pause card for the daily limit by day, light, ${size}%`, async ({ browser }) => {
+    const page = await phone(browser, 'light');
+    await put(page, 'settings', pauseSettings(true).map(([key, value]) => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 'sat14' })));
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+    await page.reload();
+    await expect(page.locator('.courtyard-b')).toBeVisible({ timeout: 15_000 });
+    if (size === 200) await textAt200(page);
+    await pauseShows(page, 'limit', 12);
+    await expect(page.getByRole('dialog', { name: 'Pause card' })).toBeVisible();
+    await settle(page);
+    await snap(page, `pause-l-${size}-limit-card`);
+    await page.context().close();
+  });
+}
+
+for (const theme of ['light', 'dark'] as const) for (const size of [100, 200] as const) {
   test(`Pause setup with the card on, ${theme}, ${size}%`, async ({ browser }) => {
     const t = theme === 'light' ? 'l' : 'd';
     const page = await phone(browser, theme);

@@ -68,53 +68,29 @@ test('setup: pick apps (nothing ticked), write the line, keep all day, see it on
   await expect(page.getByRole('button', { name: /^Pause card/ })).toContainText('On · Instagram');
 });
 
-test('spec 39b: "I did it" shows from the start of the act (the clock is a guide), pays +2 once, and the card offers three equal ways on', async ({ page }) => {
+test('Jenil 14 Nov: the card has three ways; "I did it" comes after Start, pays +2 once, and "Back to NANDI" lands on the Courtyard', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await setUp(page);
   const before = await totalXp(page);
   await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
   await phoneOpens(page);
   await expect(card(page).getByRole('heading')).toHaveText("If I open Instagram, I’ll do 10 squats first.");
-  for (const name of [/^Read on: /, 'Not now', 'Open Instagram anyway']) await expect(card(page).getByRole('button', { name })).toBeVisible();
+  // Three ways and nothing else: no "I did it" before the 2 minutes, no in-app move, no home or quest link.
+  await expect(card(page).getByRole('button')).toHaveText([/^Start the 2\s+minutes$/, 'Open Instagram anyway', 'Not now']);
   await card(page).getByRole('button', { name: /^Start the 2 minutes: / }).click();
   await expect(card(page).getByRole('timer')).toHaveText('2:00');
-  await expect(card(page).getByRole('button', { name: 'I did it' })).toBeVisible();
-  await expect(card(page)).not.toContainText('Done shows when');
+  await expect(card(page).getByRole('button')).toHaveText(['I did it', 'Open Instagram anyway', 'Not now']);
   await page.clock.fastForward(20_000); // a glass of water takes 20 seconds
   await card(page).getByRole('button', { name: 'I did it' }).click();
   await expect(card(page).getByRole('heading')).toHaveText('Done: Do 10 squats.');
   await expect(card(page).locator('.pause-earned')).toHaveText('+2 XP');
   await expect(card(page).getByRole('button', { name: 'I did it' })).toHaveCount(0);
-  await card(page).getByRole('button', { name: 'Back to my day' }).click();
-  expect(await did(page)).toContain('home');
+  await card(page).getByRole('button', { name: 'Back to NANDI' }).click();
+  await expect(card(page)).toHaveCount(0);
+  await expect(page).toHaveURL(/#courtyard$/);
+  expect(await did(page)).toEqual(['clear']);
   expect(await attempts(page)).toEqual(['act_done']);
   await expect.poll(() => totalXp(page)).toBe(before + 2);
-});
-
-test('spec 39b, spec 52 D: the in-app way names and opens Home\'s next move (a task for today, else the chapter), pays nothing, and is logged', async ({ page }) => {
-  await page.clock.install({ time: NOON });
-  await setUp(page);
-  const before = await totalXp(page);
-  await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
-  // Nothing running, no Train programme, no task: the chapter Continue offers, at its next idea.
-  await phoneOpens(page);
-  await card(page).getByRole('button', { name: /^Read on: .+, ch\. 1$/ }).click();
-  await expect(card(page)).toHaveCount(0);
-  // Spec 571: the chapter route now sits under Grow.
-  await expect(page).toHaveURL(/#grow\/read\/chapter\/psychology\/psychology-ch1$/);
-  // A task planned for today: its focus.
-  await page.goto('/?e2e#plan/focus');
-  await page.getByLabel('Add a task').fill('Email Riya the slides');
-  await page.getByRole('button', { name: 'Add', exact: true }).click();
-  await page.goto('/?e2e#you');
-  await phoneOpens(page);
-  // A task planned for today: Plan, where its row has Start (the same route Home's card takes).
-  await card(page).getByRole('button', { name: 'Start: Email Riya the slides' }).click();
-  await expect(page).toHaveURL(/#plan$/);
-  await expect(page.locator('.plan-screen')).toContainText('Email Riya the slides');
-  expect(await attempts(page)).toEqual(['in_app', 'in_app']);
-  expect((await did(page)).filter(action => action === 'clear')).toHaveLength(2);
-  expect(await totalXp(page)).toBe(before);
 });
 
 test('spec 39b: a card on "every open" moves to after 10 min a day once, and Plan says so in one line', async ({ page }) => {
@@ -146,15 +122,22 @@ test('spec 39b: a card on "every open" moves to after 10 min a day once, and Pla
   await expect(page.locator('.pause-step').first()).toContainText('every open');
 });
 
-test('"Not now" goes Home and pays nothing; "Open anyway" opens the app with the 10-minute quiet', async ({ page }) => {
+test('Jenil 14 Nov: "Not now" lands on NANDI\'s Courtyard, pays nothing, and the card stays away after a reload; "Open anyway" opens the app with the 10-minute quiet', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await setUp(page);
   const before = await totalXp(page);
   await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+  await page.goto('/?e2e#grow');
   await phoneOpens(page);
   await card(page).getByRole('button', { name: 'Not now' }).click();
   await expect(card(page)).toHaveCount(0);
-  expect(await did(page)).toEqual(['clear', 'home']);
+  await expect(page).toHaveURL(/#courtyard$/);
+  // The pending card is cleared, not the phone's home screen: nothing leaves NANDI.
+  expect(await did(page)).toEqual(['clear']);
+  await page.reload();
+  await page.evaluate(() => window.dispatchEvent(new Event('nandi:night-pause')));
+  await expect(page.locator('.courtyard-b')).toBeVisible();
+  await expect(card(page)).toHaveCount(0);
   await phoneOpens(page);
   await card(page).getByRole('button', { name: 'Open Instagram anyway' }).click();
   // Spec 54: the setup's quiet time is chosen; a why is optional and skipped here.
@@ -166,55 +149,86 @@ test('"Not now" goes Home and pays nothing; "Open anyway" opens the app with the
   expect(await totalXp(page)).toBe(before);
 });
 
-test('Jenil 14 Nov: "Go to NANDI home" closes the card on NANDI’s Home, from the card and after "I did it"', async ({ page }) => {
+test('in the 2 minutes the same two ways: "Not now" lands on the Courtyard, "Open anyway" asks how long', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await setUp(page);
   await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
-  await phoneOpens(page);
-  await card(page).getByRole('button', { name: 'Go to NANDI home' }).click();
-  await expect(card(page)).toHaveCount(0);
-  await expect(page).toHaveURL(/#courtyard$/);
-  expect(await did(page)).toContain('clear');
-  expect(await did(page)).not.toContain('home');
-  expect(await attempts(page)).toEqual(['in_app']);
-  // In the 2 minutes: the same way out to NANDI's Home.
   await page.goto('/?e2e#grow');
   await phoneOpens(page);
   await card(page).getByRole('button', { name: 'Start the 2 minutes: do 10 squats' }).click();
-  await card(page).getByRole('button', { name: 'Go to NANDI home' }).click();
+  await card(page).getByRole('button', { name: 'Not now' }).click();
   await expect(card(page)).toHaveCount(0);
   await expect(page).toHaveURL(/#courtyard$/);
-  expect(await attempts(page)).toEqual(['in_app', 'in_app']);
-  await page.goto('/?e2e#grow');
+  expect(await attempts(page)).toEqual(['backed_out']);
   await phoneOpens(page);
-  await card(page).getByRole('button', { name: 'I did it' }).click();
-  await card(page).getByRole('button', { name: 'Go to NANDI home' }).click();
-  await expect(card(page)).toHaveCount(0);
-  await expect(page).toHaveURL(/#courtyard$/);
+  await card(page).getByRole('button', { name: 'Start the 2 minutes: do 10 squats' }).click();
+  await card(page).getByRole('button', { name: 'Open Instagram anyway' }).click();
+  await expect(card(page).getByRole('group', { name: 'How long?' })).toBeVisible();
 });
 
-test('at 200% text the card scrolls inside itself: its last ways are reachable on the card and in the 2 minutes (b2 14 Nov)', async ({ page }) => {
+test('a9 14 Nov: when "Not now" can\'t be saved, the card stays with one line and the screen under it doesn\'t move', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await setUp(page);
+  await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+  await page.goto('/?e2e#grow');
+  await phoneOpens(page);
+  // Every ledger write fails, as a full or broken store would (until the next page load).
+  await page.evaluate(() => {
+    const store = IDBObjectStore.prototype as unknown as Record<string, unknown>;
+    for (const name of ['add', 'put'] as const) {
+      const original = store[name] as (this: IDBObjectStore, ...args: unknown[]) => IDBRequest;
+      store[name] = function (this: IDBObjectStore, ...args: unknown[]) { if (this.name === 'ledger') throw new DOMException('Test', 'QuotaExceededError'); return original.apply(this, args); };
+    }
+  });
+  await card(page).getByRole('button', { name: 'Not now' }).click();
+  await expect(card(page).getByRole('status')).toHaveText('That didn’t work. You can leave NANDI normally.');
+  await expect(card(page)).toBeVisible();
+  await expect(page).toHaveURL(/#grow$/);
+  expect(await did(page)).toEqual([]);
+});
+
+test('an older setup with no 2-minute thing: the same three ways, and the picks come after Start', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await page.goto('/?e2e#plan');
+  await expect(page.getByRole('button', { name: /^Pause card/ })).toBeVisible();
+  await page.evaluate(async () => {
+    const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+    await new Promise<void>(resolve => {
+      const transaction = database.transaction('settings', 'readwrite');
+      for (const [key, value] of [['night.pause.enabled', true], ['night.pause.apps', ['com.instagram.android']], ['night.pause.dayMode', 'open']] as const) transaction.objectStore('settings').put({ key, value, updatedAt: 1, deleted: 0, deviceId: 'e2e' });
+      transaction.oncomplete = () => resolve();
+    });
+    database.close();
+  });
+  await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+  await page.reload();
+  await phoneOpens(page);
+  await expect(card(page).getByRole('button')).toHaveText([/^Start the 2\s+minutes$/, 'Open Instagram anyway', 'Not now']);
+  await card(page).getByRole('button', { name: /^Start the 2\s+minutes$/ }).click();
+  const picks = card(page).getByRole('group', { name: 'Pick a 2-minute thing' });
+  await expect(picks.getByRole('button')).toHaveCount(4);
+  await picks.getByRole('button').first().click();
+  await expect(card(page).getByRole('timer')).toHaveText('2:00');
+  await expect(card(page).getByRole('button', { name: 'I did it' })).toBeVisible();
+});
+
+test('E12 at 200% text (b2 14 Nov): every way stays on screen without scrolling; in the 2 minutes only the middle scrolls', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await setUp(page);
   await textAt200(page);
   await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+  await page.goto('/?e2e#grow');
   await phoneOpens(page);
-  const overlay = page.locator('.pause-overlay');
-  // The overlay is the scroller: taller than the screen, and it scrolls (the page under it does not).
-  expect(await overlay.evaluate(node => node.scrollHeight > node.clientHeight)).toBe(true);
-  for (const name of ['Open Instagram anyway', 'Go to NANDI home']) {
-    const target = card(page).getByRole('button', { name });
-    await target.scrollIntoViewIfNeeded();
-    await expect(target).toBeInViewport();
-  }
-  expect(await overlay.evaluate(node => node.scrollTop)).toBeGreaterThan(0);
+  for (const name of [/^Start the 2 minutes/, 'Open Instagram anyway', 'Not now']) await expect(card(page).getByRole('button', { name })).toBeInViewport({ ratio: 1 });
   await card(page).getByRole('button', { name: 'Start the 2 minutes: do 10 squats' }).click();
-  for (const name of ['Open Instagram anyway', 'Go to NANDI home']) {
-    const target = card(page).getByRole('button', { name });
-    await target.scrollIntoViewIfNeeded();
-    await expect(target).toBeInViewport();
-  }
-  await card(page).getByRole('button', { name: 'Go to NANDI home' }).click();
+  for (const name of ['I did it', 'Open Instagram anyway', 'Not now']) await expect(card(page).getByRole('button', { name })).toBeInViewport({ ratio: 1 });
+  // The plan and the clock are the part that scrolls, inside the slip, which stays within the screen; at 360x800 the
+  // 2 minutes at 200% are taller than that, so the middle does scroll there.
+  const slipBottom = await page.locator('.pause-slip').evaluate(node => node.getBoundingClientRect().bottom);
+  expect(slipBottom).toBeLessThanOrEqual(page.viewportSize()!.height);
+  await expect(page.locator('.pause-act .pause-middle')).toHaveCSS('overflow-y', 'auto');
+  if (page.viewportSize()!.height <= 800) expect(await page.locator('.pause-act .pause-middle').evaluate(node => node.scrollHeight > node.clientHeight)).toBe(true);
+  await card(page).getByRole('button', { name: 'Not now' }).click();
   await expect(card(page)).toHaveCount(0);
   await expect(page).toHaveURL(/#courtyard$/);
 });
@@ -260,7 +274,7 @@ test('off for today from Plan, and on again', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'On', exact: true })).toBeVisible();
 });
 
-test('the old day pause is kept and asks once for a line; until then the card offers quick picks', async ({ page }) => {
+test('the old day pause is kept and asks once for a line; until then its card keeps the three ways (the picks come after Start)', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await page.goto('/?e2e#plan');
   // The app has made its database once Plan shows.
@@ -280,7 +294,8 @@ test('the old day pause is kept and asks once for a line; until then the card of
   await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
   await phoneOpens(page);
   await expect(card(page).getByRole('heading')).toHaveText('Take 2 minutes first.');
-  await expect(card(page).getByRole('group', { name: 'Pick a 2-minute thing' }).getByRole('button')).toHaveCount(4);
+  // Jenil 14 Nov: no picks on the card itself; they come after Start (the test above).
+  await expect(card(page).getByRole('group', { name: 'Pick a 2-minute thing' })).toHaveCount(0);
   await card(page).getByRole('button', { name: 'Open Instagram anyway' }).click();
   await card(page).getByRole('button', { name: 'Open for 10 min' }).click();
   await page.goto('/?e2e#plan/pause');

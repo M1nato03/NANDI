@@ -292,31 +292,6 @@ test.describe('lands in the thing in 2 s or less on the Low profile (median of 3
       expect(median(times)).toBeLessThanOrEqual(2000);
     });
   }
-  test('the Pause card\'s in-app way lands in the same thing', async ({ browser }, testInfo) => {
-    test.setTimeout(120_000);
-    const times: number[] = [];
-    for (let run = 0; run < 3; run++) {
-      const phone = await lowPhone(browser, testInfo, ['learn']);
-      await putSettings(phone.page, [['pause.card.on', true], ['pause.act', 'do 10 squats'], ['night.pause.apps', ['com.instagram.android']], ['night.pause.dayMode', 'open']]);
-      await phone.page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
-      await phone.page.reload();
-      await expect(cardRow(phone.page)).toBeVisible();
-      await phone.page.evaluate(() => {
-        sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'open' }));
-        window.dispatchEvent(new Event('nandi:night-pause'));
-      });
-      const way = phone.page.getByRole('dialog', { name: 'Pause card' }).getByRole('button', { name: /^Read on: .+, ch\. 1$/ });
-      await expect(way).toBeVisible();
-      const start = performance.now();
-      await way.click();
-      await expect(phone.page.locator('.idea-page')).toBeVisible({ timeout: 15_000 });
-      times.push(Math.round(performance.now() - start));
-      await phone.close();
-    }
-    testInfo.annotations.push({ type: 'ms', description: `pause card: ${times.join(', ')} (median ${median(times)})` });
-    console.log(`spec 52 gate 5 [${testInfo.project.name} r${testInfo.repeatEachIndex}]: pause card ${times.join(', ')} ms, median ${median(times)}`);
-    expect(median(times)).toBeLessThanOrEqual(2000);
-  });
 });
 
 test.describe('the ten-day offer', () => {

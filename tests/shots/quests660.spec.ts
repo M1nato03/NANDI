@@ -293,15 +293,7 @@ for (const theme of ['light', 'dark'] as const) {
     await page.waitForTimeout(400);
     await expect(page.locator('.quest-hero .cast-svg')).toHaveCSS('opacity', '1');
     await page.screenshot({ path: `${OUT}/660-${t}-08-finish.png` });
-    // 11: the Pause card with "Or a 5-min quest?" (the e2e stand-in for the phone's pause).
-    await put(page, 'settings', [{ key: 'pause.card.on', value: true, updatedAt: 1, deleted: 0, deviceId: 'q660' }, { key: 'pause.act', value: 'do 10 squats', updatedAt: 1, deleted: 0, deviceId: 'q660' }, { key: 'night.pause.apps', value: ['com.instagram.android'], updatedAt: 1, deleted: 0, deviceId: 'q660' }, { key: 'night.pause.dayMode', value: 'open', updatedAt: 1, deleted: 0, deviceId: 'q660' }]);
-    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
-    await page.goto('/?e2e#courtyard');
-    await page.reload();
-    await page.evaluate(() => { sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'open' })); window.dispatchEvent(new Event('nandi:night-pause')); });
-    const card = page.getByRole('dialog', { name: 'Pause card' });
-    await expect(card.getByTestId('pause-quest-link')).toBeVisible();
-    await page.screenshot({ path: `${OUT}/660-${t}-11-pause-card.png` });
+    // 11 (the Pause card's quest link) is gone: Jenil 14 Nov took the link off the card.
     await page.context().close();
   });
 }
