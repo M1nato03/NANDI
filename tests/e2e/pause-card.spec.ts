@@ -225,12 +225,33 @@ test('E12 at 200% text (b2 14 Nov): every way stays on screen without scrolling;
   for (const name of [/^Start the 2 minutes/, 'Open Instagram anyway', 'Not now']) await expect(card(page).getByRole('button', { name })).toBeInViewport({ ratio: 1 });
   await card(page).getByRole('button', { name: 'Start the 2 minutes: do 10 squats' }).click();
   for (const name of ['I did it', 'Open Instagram anyway', 'Not now']) await expect(card(page).getByRole('button', { name })).toBeInViewport({ ratio: 1 });
-  // The plan and the clock are the part that scrolls, inside the slip, which stays within the screen; at 360x800 the
-  // 2 minutes at 200% are taller than that, so the middle does scroll there.
+  // The plan and the clock are the part that scrolls, inside the slip, which stays within the screen. Whether the middle
+  // overflows depends on the fonts' metrics (it does on Windows at 360x800, not on the Linux CI runner, gate 14 Nov), so
+  // the test asks what E12 asks either way: if it overflows, it scrolls to its end with the slip still on screen; if
+  // not, its last line is fully on screen.
+  const height = page.viewportSize()!.height;
   const slipBottom = await page.locator('.pause-slip').evaluate(node => node.getBoundingClientRect().bottom);
-  expect(slipBottom).toBeLessThanOrEqual(page.viewportSize()!.height);
-  await expect(page.locator('.pause-act .pause-middle')).toHaveCSS('overflow-y', 'auto');
-  if (page.viewportSize()!.height <= 800) expect(await page.locator('.pause-act .pause-middle').evaluate(node => node.scrollHeight > node.clientHeight)).toBe(true);
+  expect(slipBottom).toBeLessThanOrEqual(height);
+  const middle = page.locator('.pause-act .pause-middle');
+  await expect(middle).toHaveCSS('overflow-y', 'auto');
+  if (await middle.evaluate(node => node.scrollHeight > node.clientHeight + 1)) {
+    await middle.evaluate(node => { node.scrollTop = node.scrollHeight; });
+    expect(await middle.evaluate(node => node.scrollTop + node.clientHeight >= node.scrollHeight - 1)).toBe(true);
+    expect(await page.locator('.pause-slip').evaluate(node => node.getBoundingClientRect().bottom)).toBeLessThanOrEqual(height);
+  } else {
+    await expect(middle.locator(':scope > :last-child')).toBeInViewport({ ratio: 1 });
+  }
+  // a9/b2 14 Nov: so the scroll branch is tested on every runner, a real small phone (360x640) at 200% forces it: the
+  // middle overflows, the three ways and the slip stay on screen, and scrolled to its end the slip is still on screen.
+  await page.setViewportSize({ width: 360, height: 640 });
+  await expect.poll(() => middle.evaluate(node => node.scrollHeight > node.clientHeight + 1)).toBe(true);
+  for (const name of ['I did it', 'Open Instagram anyway', 'Not now']) await expect(card(page).getByRole('button', { name })).toBeInViewport({ ratio: 1 });
+  expect(await page.locator('.pause-slip').evaluate(node => node.getBoundingClientRect().bottom)).toBeLessThanOrEqual(640);
+  await middle.evaluate(node => { node.scrollTop = node.scrollHeight; });
+  expect(await middle.evaluate(node => node.scrollTop + node.clientHeight >= node.scrollHeight - 1)).toBe(true);
+  const slip = await page.locator('.pause-slip').evaluate(node => { const r = node.getBoundingClientRect(); return { top: r.top, bottom: r.bottom }; });
+  expect(slip.top).toBeGreaterThanOrEqual(0);
+  expect(slip.bottom).toBeLessThanOrEqual(640);
   await card(page).getByRole('button', { name: 'Not now' }).click();
   await expect(card(page)).toHaveCount(0);
   await expect(page).toHaveURL(/#courtyard$/);
