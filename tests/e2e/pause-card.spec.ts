@@ -132,6 +132,9 @@ test('Jenil 14 Nov: "Not now" lands on NANDI\'s Courtyard, pays nothing, and the
   await card(page).getByRole('button', { name: 'Not now' }).click();
   await expect(card(page)).toHaveCount(0);
   await expect(page).toHaveURL(/#courtyard$/);
+  // b2 14 Nov: focus lands where any new screen puts it, on the Courtyard's heading.
+  await expect(page.locator('#main h1')).toHaveText('Courtyard');
+  await expect(page.locator('#main h1')).toBeFocused();
   // The pending card is cleared, not the phone's home screen: nothing leaves NANDI.
   expect(await did(page)).toEqual(['clear']);
   await page.reload();
@@ -329,4 +332,41 @@ test('the opens log: the week before the card is read at once, and today counts 
   await expect(opens).toContainText('The week before the card · a day3 opens · 30 min');
   await expect(opens).toContainText('Since the card · a dayAfter your first full day');
   await expect(opens).toContainText('After “Open anyway”None yet');
+});
+
+test('a9 14 Nov: the night card at 200% text scrolls; during the breath "Go to Instagram anyway" can be reached, and after it all four ways', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await page.goto('/?e2e#plan');
+  await expect(page.getByRole('button', { name: /^Pause card/ })).toBeVisible();
+  await page.evaluate(async () => {
+    const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+    await new Promise<void>(resolve => {
+      const transaction = database.transaction('settings', 'readwrite');
+      for (const [key, value] of [['night.pause.enabled', true], ['night.pause.apps', ['com.instagram.android']]] as const) transaction.objectStore('settings').put({ key, value, updatedAt: 1, deleted: 0, deviceId: 'e2e' });
+      transaction.oncomplete = () => resolve();
+    });
+    database.close();
+  });
+  await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+  await page.reload();
+  await textAt200(page);
+  await page.evaluate(() => {
+    sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'night' }));
+    window.dispatchEvent(new Event('nandi:night-pause'));
+  });
+  const night = page.getByRole('dialog', { name: 'Night pause' });
+  await expect(night).toBeVisible();
+  const anyway = night.getByRole('button', { name: 'Go to Instagram anyway' });
+  await anyway.scrollIntoViewIfNeeded();
+  await expect(anyway).toBeInViewport();
+  await page.clock.runFor(6_000);
+  await expect(night.getByRole('timer')).toHaveText('The breath is yours.');
+  const ways = night.getByRole('button');
+  await expect(ways).toHaveCount(4);
+  for (const way of await ways.all()) {
+    await way.scrollIntoViewIfNeeded();
+    await expect(way).toBeInViewport();
+  }
+  await night.getByRole('heading', { name: 'Take one breath' }).scrollIntoViewIfNeeded();
+  await expect(night.getByRole('heading', { name: 'Take one breath' })).toBeInViewport();
 });

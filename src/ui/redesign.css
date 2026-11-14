@@ -105,6 +105,9 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .app-shell:has(.mind-case) .screen-back:not(.mind-case > .screen-back) { display: none; }
 .timer-ring span { font: 800 3.25rem 'Bricolage Grotesque', sans-serif; }
 .night-pause-overlay { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; background: rgba(8, 10, 16, .9); }
+/* a9 14 Nov: at large text the night card is taller than the phone; the overlay scrolls (the day card's three rules,
+   pause.css), so every way out can be reached and the top is never centred out of reach. */
+.night-pause-overlay { overflow-y: auto; overscroll-behavior: contain; align-items: safe center; }
 .night-pause-card { width: min(100%, 520px); display: grid; gap: 20px; padding: 28px; }
 .night-pause-card h1 { margin: 0; }
 .night-pause-card [role="timer"] { font-size: 1.4rem; }

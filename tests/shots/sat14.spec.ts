@@ -267,6 +267,30 @@ for (const size of [100, 200] as const) {
     await page.waitForTimeout(5_500); // the breath is RULES.night.pauseBreathSeconds (5 s), on the real clock
     await settle(page);
     await snap(page, `nightpause-l-${size}-after`);
+    // a9 14 Nov: at 200% the overlay scrolls now; the card scrolled to its last way.
+    if (size === 200) {
+      await page.locator('.night-pause-overlay').evaluate(node => { node.scrollTop = node.scrollHeight; });
+      await settle(page);
+      await snap(page, `nightpause-l-${size}-after-end`);
+    }
+    await page.context().close();
+  });
+
+  // b2 14 Nov: one card with the real app name, as Jenil sees it on his phone.
+  test(`Pause card with Instagram, light, ${size}%`, async ({ browser }) => {
+    const page = await phone(browser, 'light');
+    await put(page, 'settings', [['pause.card.on', true], ['pause.act', 'drink a glass of water'], ['night.pause.apps', ['com.instagram.android']], ['night.pause.dayMode', 'open']].map(([key, value]) => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 'sat14' })));
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+    await page.reload();
+    await expect(page.locator('.courtyard-b')).toBeVisible({ timeout: 15_000 });
+    if (size === 200) await textAt200(page);
+    await page.evaluate(() => {
+      sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'open' }));
+      window.dispatchEvent(new Event('nandi:night-pause'));
+    });
+    await expect(page.getByRole('dialog', { name: 'Pause card' }).getByRole('button', { name: 'Open Instagram anyway' })).toBeVisible();
+    await settle(page);
+    await snap(page, `pause-l-${size}-instagram-card`);
     await page.context().close();
   });
 
