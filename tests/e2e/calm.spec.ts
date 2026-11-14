@@ -52,6 +52,14 @@ test('the setup fits one 360x800 screen: the stage, three rows and Start, with n
   await page.getByRole('dialog', { name: 'Other lengths' }).getByRole('button', { name: 'Until I stop' }).click();
   await page.getByRole('button', { name: 'Ocean waves', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Ocean waves', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  // K3: a chip shows chosen at once and its save follows; wait for the saved row before the reload reads it back
+  // (gate-sat-0aed748: under load the reload beat the write and the sound came back as None).
+  await expect.poll(() => page.evaluate(async () => {
+    const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+    const row = await new Promise<{ value?: { sound?: string; minutes?: unknown } } | undefined>(resolve => { const request = database.transaction('settings').objectStore('settings').get('calm.prefs'); request.onsuccess = () => resolve(request.result); });
+    database.close();
+    return row?.value?.sound ?? 'none';
+  })).not.toBe('none');
   await page.reload();
   await expect(page.locator('.calm-start')).toHaveText('Start, until I stop');
   expect(await fits()).toEqual({ scrolled: 0, inView: true });
